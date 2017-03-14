@@ -1,0 +1,53 @@
+int distance_1 = distance from S placement to middle of the first black tile in MM
+int distance_2 = distance to move tower off the F block in MM
+
+void forwardDistance(int){
+	int wheelCircumference 
+	int degreestoMove = distance/wheelCircumference/360
+	synchedMotorRotate(degreesToMove)
+	resetSynchedMotors(degreesToMove)	
+}
+
+void rotate90Right(){
+	rightMotorRotate(-180)
+	leftMotorRotate(180)
+	resetMotors()
+}
+
+forwardDistance(distance_1)
+Rotate90Right()
+While(blackTileCount <=15){
+	turnWheels(40)
+	if color = black
+	blackTileCount++
+	makeTone()
+}
+Rotate90Right()
+while(true){
+	if(noTouch){
+		turnWheels(40)
+	}
+	else{
+		forwardDistance(distance_2)
+		playTone()
+		break
+	}
+
+}
+
+
+============================
+
+To do list
+
+1. Need to measure the circumference of the wheels for the forwardDistance function
+2. Build forwardDistance function
+3. Rotate90Right function
+
+This will allow us to move off the S tile, move 15 tiles, then turn right again
+
+After this:
+
+1. Determine how to use the touch sensor
+
+
