@@ -17,54 +17,67 @@ void turn_wheels(int motor_pow)
 {
   motor[motorB] = motor_pow;
   motor[motorC] = motor_pow;
+}
 
+
+void rotateRight(){
+    displayCenteredBigTextLine(4, "rotating");
 }
 
 // main task
-task main()
-{
+task main(){
+    
   int black_count = 0;
   int motor_pow = 40;
+
+  bool on_track = false; // can set to true to test second if
+  bool hasRotated = false; // can set to true to test second if
+  bool firstBlack = false;
   
-  bool toggle_black = false;
-  bool toggle_start = true;
-  
-  // syncedMotors doesn't work
-  //nSyncedMotors = synchAB;
-  //nSyncedTurnRatio = 100;
+  short currentColour;
 
   nMotorEncoder[motorB] = 0;
   nMotorEncoder[motorC] = 0;
 
-  while (true)
-    {
+  while (true){
 
-      turn_wheels(motor_pow);
-      
-      switch(SensorValue[Colour])
-	{
-	case 1:
-	  
-	  displayCenteredBigTextLine(4, "black");
+      if(!on_track && !hasRotated) {
+        /* PseduoCode
+          We code the initial forward movement in distance
+          We code the initial rotation
+        */
+        rotateRight();
+        //on_track = true;
+        //has_rotated = true;
+        
+      }
 
-	  if(!toggle_black && !toggle_start) {
-	    black_count++;
-	    playTone(220,500);
-	    toggle_black = true;
-	  }
-	  
-	  break;
+      if(on_track && hasRotated) { // This equals true after first rotation
+            turn_wheels(motor_pow);
+            currentColour = SensorValue[Colour];
 
-	default:
-	  displayCenteredBigTextLine(4, "not black");
-	  toggle_black = false;
-	  toggle_start = false;
-	}
+            if(currentColour == 1) {
+                if(!firstBlack && black_count < 15){
+                         displayCenteredBigTextLine(4, "black");
+                     black_count++;
+                     playTone(200,20);
+                     firstBlack = true;
+                } else if (black_count == 15) {
+                         displayCenteredBigTextLine(4, "15 reached");
+                     on_track = false;
+                }
 
-      if(black_count == 15) break;
+            } else {
+                    displayCenteredBigTextLine(4, "not");
+                  firstBlack = false;
+            }
 
-      // Wait 100 ms to get 50 readings per second
-      sleep(100);
-    }
+            sleep(100); // Wait 100 ms to get 50 readings per second
+      }
 
+      if(!on_track && hasRotated) { // This equals true after second rotation
+            displayCenteredBigTextLine(4, "rotate now");
+          turn_wheels(0);
+      }
+   }
 }
