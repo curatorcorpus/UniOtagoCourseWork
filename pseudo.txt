@@ -1,0 +1,50 @@
+int distance_1 = distance from S placement to middle of the first black tile in MM
+int distance_2 = distance to move tower off the F block in MM
+
+void forwardDistance(int){
+	int wheelCircumference 
+	int degreestoMove = distance/wheelCircumference/360
+	synchedMotorRotate(degreesToMove)
+	resetSynchedMotors(degreesToMove)	
+}
+
+void rotate90Right(){
+	rightMotorRotate(-180)
+	leftMotorRotate(180)
+	resetMotors()
+}
+
+forwardDistance(distance_1)
+Rotate90Right()
+While(blackTileCount <=15){
+	turnWheels(40)
+	if color = black
+	blackTileCount++
+	makeTone()
+}
+Rotate90Right()
+while(true){
+	if(noTouch){
+		turnWheels(40)
+	}
+	else{
+		forwardDistance(distance_2)
+		playTone()
+		break
+	}
+
+}
+
+
+============================
+
+1. First we should work on getting motors in sync and working on rotations rather than power
+2. Figure out how to reset the rotations back to Zero without actually effecting the wheel placement
+3. RightRotate90 function: Rotate right 90 desgreees on the spot
+
+4. SenseTowerFunction:
+	Use sonar to detect
+	use touch to determine when pushing
+		use forwardDistance function to push for predefined amount of rotations.
+	
+	
