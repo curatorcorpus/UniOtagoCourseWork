@@ -31,7 +31,7 @@ void pivot_right(){
 
 	int speed = 30;//TODO: needs to be configured for our environment
 
-	displayCenteredBigTextLine(4, "Rotating 90 Right");
+	displayCenteredBigTextLine(4, "Rotating Right");
 
 	setMotorSpeed(motorB, speed);
 	setMotorSpeed(motorC, -speed);
@@ -47,6 +47,26 @@ task thread_sonar_locator()
 
 	while(true)
 	{
+		/*
+			TODO: distance orientation correction:
+			What we can do is, once the robot turns 90 degrees for sure,
+			could let it travel according to black squares again. Need to check if
+			the grey tiles correspond to them. because the object is 7 squares away.
+
+			During this course, if the current distance starts decreasing, then we have
+			detected an object.
+
+			Measure difference between current and last distance reading (measure error).
+
+			If the error is positive, then we are ok, we are heading closer to the object.
+			If the error is negative, stop the robot. check both sides left and right by rotating a certain angle.
+			Compare the difference between both sides.
+
+			And pick rotation path with lowest error.
+
+			Continue this process untill current distance get really low.
+		*/
+
 		curr_ant_dis = SensorValue[Sonar];
 		displayCenteredBigTextLine(4, "Dist: %3d cm", curr_ant_dis);
 	}
@@ -62,12 +82,13 @@ void run_stage1()
 
 	short current_color;
 
-	while (true){
+	while (true)
+	{
 
 		setMotorSync(motorB, motorC, 0, motor_pow);
 		current_color = SensorValue[Colour];
 
-		// TODO: need to double check these
+		// warning, if surface is too close to color sensor, the counter might iterate twice.
 		if(current_color == 1) {
 			if(!on_black && black_count < 15) {
 
