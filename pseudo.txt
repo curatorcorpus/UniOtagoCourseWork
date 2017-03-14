@@ -38,13 +38,16 @@ while(true){
 
 ============================
 
-1. First we should work on getting motors in sync and working on rotations rather than power
-2. Figure out how to reset the rotations back to Zero without actually effecting the wheel placement
-3. RightRotate90 function: Rotate right 90 desgreees on the spot
+To do list
 
-4. SenseTowerFunction:
-	Use sonar to detect
-	use touch to determine when pushing
-		use forwardDistance function to push for predefined amount of rotations.
-	
-	
+1. Need to measure the circumference of the wheels for the forwardDistance function
+2. Build forwardDistance function
+3. Rotate90Right function
+
+This will allow us to move off the S tile, move 15 tiles, then turn right again
+
+After this:
+
+1. Determine how to use the touch sensor
+
+
