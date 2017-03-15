@@ -14,19 +14,37 @@
 // White   = 6
 // Brown   = 7
 
+/*
+	Method used to reset motor pow back to zero.
+*/
 void reset_motors()
 {
 	setMotorSpeed(motorB, 0);
 	setMotorSpeed(motorC, 0);
-
-	sleep(10);
+	sleep(1);
 }
 
-void initial_step(int initial_rot, int speed)
+/*
+	Method used to tell both wheels to turn certain revs.
+*/
+void encoded_movement(long revs, long pow)
 {
-	forward(1, rotations, 50);
+	setMotorSyncEncoder(motorB, motorC, 0, (revs * 360), pow);
+	sleep(1000 * revs);
 }
 
+/*
+	Method used to travel forward from the starting tile 's'.
+*/
+void initial_step()
+{
+	//forward(1, rotations, 50);
+	encoded_movement(3, 50);
+}
+
+/*
+	Method used to pivot right.
+*/
 void pivot_right(){
 
 	int speed = 30;//TODO: needs to be configured for our environment
@@ -40,6 +58,9 @@ void pivot_right(){
 	eraseDisplay();
 }
 
+/*
+	Thread method used to detect distance from an object anteriorily.
+*/
 task thread_sonar_locator()
 {
 
@@ -72,6 +93,9 @@ task thread_sonar_locator()
 	}
 }
 
+/*
+	Method used to move along the black dotted line and count them.
+*/
 void run_stage1()
 {
 	int black_count = 0;
@@ -111,6 +135,9 @@ void run_stage1()
 	eraseDisplay();
 }
 
+/*
+	 Method used to count the 7 grey squares + move to finishing tile.
+*/
 void run_stage2()
 {
 	startTask(thread_sonar_locator);
@@ -121,7 +148,9 @@ void run_stage2()
 	}
 }
 
-// main task
+/*
+	main task.
+*/
 task main()
 {
 
@@ -142,6 +171,8 @@ task main()
 	pivot_right(); // TODO: needs to be configured for our environment
 	reset_motors();
 	*/
-	run_stage2();
-	reset_motors();
+	/*run_stage2();
+	reset_motors();*/
+
+	encoded_movement(1, 50);
 }
