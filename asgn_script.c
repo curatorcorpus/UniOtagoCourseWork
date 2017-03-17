@@ -13,7 +13,7 @@
 
 int dark = 0;
 int light = 0,
-int offset = 0;
+long offset = 0;
 
 long nEncoderValue = 0;
 
@@ -136,24 +136,6 @@ task thread_sonar_locator()
 	}
 }
 
-task thread_path_correction()
-{
-	long r,g,b;
-	long sum;
-
-	while(true){
-
-		getColorRGB(Colour,r,g,b);
-		sum = r + g + b;
-
-		// supposedly it is not white or black tiles.
-		if(40 < sum && sum < 130)
-		{
-			calc_deviation();
-		}
-	}
-}
-
 /*
 task thread_whiskers()
 {
@@ -173,7 +155,7 @@ int poll_whiskers()
 //==================== Calibration ============================
 /*
 	Method for calibrating the light dark threshold. Given 3 seconds to
-	calibrate.
+	calibrate. Values range between 0 to 765.
 */
 void light_calibration()
 {
@@ -189,7 +171,7 @@ void light_calibration()
 	{
 		getColorRGB(Colour,r,g,b);
 				displayCenteredTextLine(6, "r %d g %d b %d", r,g, b);
-		sum = (r + g + b)/3;
+		sum = (r + g + b);
 		light = sum;
 		displayCenteredTextLine(1, "delay %d ", calib_delay);
 		calib_delay--;
@@ -205,7 +187,7 @@ void light_calibration()
 	{
 		getColorRGB(Colour,r,g,b);
 		displayCenteredTextLine(6, "r %d g %d b %d", r,g, b);
-		sum = (r + g + b)/3;
+		sum = (r + g + b);
 		dark = sum;
 				displayCenteredTextLine(1, "delay %d ", calib_delay);
 		calib_delay--;
@@ -219,14 +201,91 @@ void light_calibration()
 	eraseDisplay();
 }
 
+//==================== Path Correction ==================================
+/*
+	Method for path correction between two lines.
+*/
+void path_correction()
+{
+	int rl_correction_tgl = 1;
+
+	long r = 0, g= 0, b = 0;
+	long sum;
+
+	while(true) // TODO: must be changed
+	{
+		getColorRGB(Colour,r,g,b);
+		sum = (r + g + b);
+
+		if(rl_correction_tgl == 0)
+		{
+			if(sum > offset)
+			{
+
+			} else
+			{
+				setMotorSync();
+			}
+		}
+	}
+}
+
+/*
+  int lightcount = 0; //a counter for the light sensor? or a counter used for tasks with the light sensor?
+
+  nMotorPIDSpeedCtrl[motorA] = mtrSpeedReg;  //keep the wheels going the same speed (no unwanted turning! finally =) )
+  nMotorPIDSpeedCtrl[motorB] = mtrSpeedReg;
+
+  nMotorEncoder[motorA] = 0;        //for turning control, probably not going to be used now..yet..maybe
+  nMotorEncoder[motorB] = 0;
+
+  while(nMotorEncoder[motorA] < 10800)  //motor A (right motor) turns 30 times before stopping
+  {
+     if(lightcount == 0)  //the counter starts at zero...should this be an "if" statement or a "while" statement?
+     {
+        if(SensorValue(lightsensor) > 49)  //light sensor reads lights object (white table)
+        {
+          motor[motorA] = 50;              //and so it moves forward at half speed...until...
+          motor[motorB] = 50;
+        }
+        else                               //it hits the black line
+        {
+          motor[motorA] = 50;              //so it turns to the right, off of the blasck line
+          motor[motorB] = -50;
+          wait1Msec(350);
+          lightcount = lightcount + 1;     // and adds "1" (one) to the lightcount value
+        }
+        if(lightcount == 1)  //now since the lightcount value is = 1, this next peice of code should run.
+        {                    //should i use "if(lightcount == 1)" or "while(lightcount == 1)" here?  does it matter?
+          if(SensorValue(lightsensor) > 49)
+           {                                //so the light sensors reads a light value, and tells the robot to move forward
+             motor[motorA] = 50;
+             motor[motorB] = 50;
+           }
+           else                             // this time when the light sensor reads a dark value....
+           {
+             motor[motorA] = -50;           // it turns the opposite direction as before
+             motor[motorB] = 50;
+             wait1Msec(350);
+             lightcount = lightcount -1;    //and reducing the lightcount value back to zero, so the first code can run again. =)
+           }
+        }
+    }
+  }
+}
+//conclusion:
+//the robot zigzags in between the lines via two motors and one light sensor.
+//going forward on a light surface and turning one way on a dark surface
+//and turning the opposite way when it hits another dark surface
+// comments, and helpful critic is very much appretiated
+*/
 //==================== Phases ==================================
 /*
 	Method used to travel forward from the starting tile 'S'.
 */
 void initial_step()
 {
-	//forward(1, rotations, 50);
-	encoded_mforward(1, 50);//TODO: revs needs to be altered to environment.
+	encoded_mforward(0.6, 50);//TODO: revs needs to be altered to environment.
 }
 
 /*
@@ -242,7 +301,7 @@ void run_stage1()
 
 	short current_color;
 
-	while (true)
+	while (black_count < 15)
 	{
 		setMotorSync(motorB, motorC, 0, motor_pow);
 		current_color = SensorValue[Colour];
@@ -256,7 +315,7 @@ void run_stage1()
 				displayCenteredBigTextLine(4, "%f", ++black_count);
 				playTone(700, 10);
 
-			} else if(black_count >= 15) break;
+			}
 
 		} else on_black = false;
 
