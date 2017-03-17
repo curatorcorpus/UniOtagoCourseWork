@@ -1,5 +1,5 @@
 #pragma config(Sensor, S2,     Touch,          sensorEV3_Touch)
-#pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Color)
+#pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Reflected_Raw)
 #pragma config(Sensor, S4,     Sonar,          sensorEV3_Ultrasonic)
 #pragma config(Motor,  motorB,          left,          tmotorEV3_Large, PIDControl, driveLeft, encoder)
 #pragma config(Motor,  motorC,          right,         tmotorEV3_Large, PIDControl, driveRight, encoder)
@@ -8,6 +8,7 @@
 #define REV_90 0.5437665781
 #define REV_360 2.175066313
 #define DEFAULT_SPD 40
+#define OFFSET 23
 
 //=================== Basic Mathematics ================
 /*
@@ -65,11 +66,31 @@ void encoded_rpivot(float revs, long pow)
 	displayCenteredBigTextLine(4, "Rotating Right");
 
 	reset_mencoder();
-	setMotorSyncEncoder(motorB, motorC, 100, (revs * 360 + 1), pow); // plus 1 to compensate rounding error
+	setMotorSyncEncoder(motorB, motorC, 100, (revs * 360 - OFFSET), pow); // plus 1 to compensate rounding error
 	sleep(duration); //TODO: Duration needs to be fixed - ideally, faster speed, less duration.
 
 	reset_mencoder();
 	eraseDisplay();
+}
+
+void encoded_lpivot(float revs, long pow)
+{
+	float divisor  = (pow / 10);
+	float duration = 10000 * 1 / divisor;
+
+	displayCenteredBigTextLine(4, "Rotating Right");
+
+	reset_mencoder();
+	setMotorSyncEncoder(motorB, motorC, -100, (revs * 360 - OFFSET), pow); // plus 1 to compensate rounding error
+	sleep(duration); //TODO: Duration needs to be fixed - ideally, faster speed, less duration.
+
+	reset_mencoder();
+	eraseDisplay();
+}
+
+void calc_deviation()
+{
+	encoded_rpivot(,50);
 }
 
 //==================== Sensor Operations ========================
@@ -106,6 +127,26 @@ task thread_sonar_locator()
 		displayCenteredBigTextLine(4, "Dist: %3d cm", curr_ant_dis);
 	}
 }
+
+task thread_path_correction()
+{
+	long r,g,b;
+	long sum;
+
+	while(true){
+
+		getColorRGB(Colour,r,g,b);
+		sum = r + g + b;
+
+		// supposedly it is not white or black tiles.
+		if(40 < sum && sum < 130)
+		{
+			calc_deviation();
+		}
+
+	}
+}
+
 /*
 task thread_whiskers()
 {
@@ -206,5 +247,5 @@ task main()
 	// rotate 90 degrees again
 	//encoded_rpivot(REV_90, DEFAULT_SPD); // TODO: needs to be configured for our environment
 
-	run_stage2();
+	//run_stage2();
 }
