@@ -25,22 +25,71 @@ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 #define OFFSET      23
 #define REV_90      0.5437665781
 #define REV_360     2.175066313
+#define SAMPLES     1000
 
 bool go_left = false;
 
-int dark = 0;
+int dark  = 0;
 int light = 0;
-int grey = 0;
+int grey  = 0;
+int smpl_idx = 0;
 
 long curr_color = 0;
-long thres_bl   = 0
+long thres_bl   = 0;
 long thres_bg   = 0;
 long thres_gw   = 0;
+
+long sample_arr[SAMPLES];
 
 /*
 	long thres_bg = 35;
 	long thres_gw = 51;
 */
+//=======================================================================
+
+//=================== Utility Methods =================================
+/*
+	Shell sort for sampling array when calibrating. Used to obtain max and min values.
+	O(n log n) apparently.
+*/
+void sample_sort()
+{
+	for(int m = smpl_idx/2 ; m > 0; m /= 2)
+	{
+		for(int j = m; j < smpl_idx; j++)
+		{
+   		for(int i = j - m; i >= 0; i -= m)
+   		{
+      	if(sample_arr[i + m] >= sample_arr[i])break;
+				else
+     		{
+        	int mid = sample_arr[i];
+        	sample_arr[i] = sample_arr[i + m];
+        	sample_arr[i + m] = mid;
+				}
+			}
+		}
+	}
+}
+
+/*
+ Method for obtaining the maximum value of the array.
+ Assuming the array is sorted. (Call sample_sort).
+*/
+int get_max_clr()
+{
+	return sample_arr[smpl_idx-1];
+}
+
+/*
+ Method for obtaining the minimum value of the array.
+ Assuming the array is sorted. (Call sample_sort).
+*/
+int get_min_clr()
+{
+	return sample_arr [0];
+}
+
 //=======================================================================
 
 //==================== Motor Operations =================================
@@ -178,7 +227,7 @@ task poll_color()
 
 int poll_whiskers()
 {
-	return SensorValue[touch];
+	return SensorValue[Touch];
 }
 //=======================================================================
 
@@ -187,8 +236,98 @@ int poll_whiskers()
 	Method for calibrating the light dark threshold. Used to sample multiple points in
 	the environment and then averaged to get optimal threshold values.
 */
-void light_calibration()
+
+task sample()
 {
+	// compensate for inital colors readings.
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+
+	while(smpl_idx < SAMPLES)
+	{
+		sample_arr[smpl_idx++] = getColorReflected(Colour);
+		sleep(10);
+	}
+}
+
+void reset_sampler()
+{
+	smpl_idx = 0;
+
+	// initialize
+	for(int i = 0; i < SAMPLES; i++)
+	{
+		sample_arr[i] = 0;
+	}
+}
+
+void point_sampling()
+{
+	while(smpl_idx < 5)
+	{
+		displayCenteredTextLine(4, "Point %d, waiting 5 secs", smpl_idx + 1);
+		sleep(5000);
+
+		sample_arr[smpl_idx++] = getColorReflected(Colour);
+	}
+}
+
+void circular_sampling()
+{
+	// start sample
+	startTask(sample);
+	turnLeft(REV_360, rotations, 10);
+	stopTask(sample);
+}
+
+void edge_sampling()
+{
+	encoded_mforward(1, 10);
+}
+
+int get_avg_tile_clr()
+{
+	// average
+	int ctr   = 0;
+	int size  = smpl_idx + 1;
+	int total = 0;
+
+	while(ctr < size) total += sample_arr[ctr++];
+
+	return ceil(total / size);
+}
+
+void color_calibration()
+{
+	int clr_avg = 0;
+
+	// reset
+	reset_sampler();
+
+	// grey tile sampling
+	point_sampling();
+
+	displayCenteredTextLine(4, "Starting circular_sampling 7 secs");
+	sleep(7000);
+
+	circular_sampling();
+
+	// sort samples
+	sample_sort();
+
+	// obtain average
+	clr_avg = get_avg_tile_clr();
+
+	// results
+	displayCenteredTextLine(4, "Color avg for Grey Tile was %d", clr_avg);
+	displayCenteredTextLine(6, "Min: %d, Max: %d", get_min_clr(), get_max_clr());
+	sleep(10000);
+
+	//edge_sampling();
+/*
 	int set_delay     = 7000;
 	int calib_delay   = set_delay;
 	int calib_verif_d = 3000;
@@ -241,7 +380,7 @@ void light_calibration()
 	thres_bg = (dark + grey) / 2;
 	thres_gw = (grey + light) / 2;
 
-	thres_gw -= 3;
+	thres_gw -= 3;*/
 	eraseDisplay();
 }
 //=======================================================================
@@ -259,7 +398,6 @@ void linear_backoff(bool direction)
 	int pow       = 20;
 	int samples   = 0;
 	int n_samples = 3;
-
 
 	while(samples < n_samples)
 	{
@@ -379,19 +517,19 @@ task main()
 {
 	short rot_pow = 20;
 
-	// Accumulative Light Calibration algorithm for ASGN.
-	//light_calibration();
+	// Accumulative color Calibration algorithm for ASGN.
+	color_calibration();
 
 	// initial movement from start tile to black line
-	initial_step();
+	//initial_step();
 
 	// first right rotation
-	encoded_rpivot(0.55585028, rot_pow);
+	//encoded_rpivot(0.55585028, rot_pow);
 
 	//startTask(poll_color);
 
 	// move along black line and count 15 black dots
-	run_phase1();
+	//run_phase1();
 
 	//stopTask(poll_color);
 
