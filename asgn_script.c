@@ -21,23 +21,20 @@ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 //=================== Global Variables ==================================
 
 // DEFAULLTS
-#define DEFAULT_SPD 40
-#define OFFSET      23
-#define REV_90      0.5437665781
-#define REV_360     2.175066313
-#define SAMPLES     1000
+#define DEFAULT_SPD 40           // default ev3 robot speed.
+#define OFFSET      23           // offset for revs user defined encoded movements.
+#define REV_90      0.5437665781 // exact revolutions for ev3 robot for 90 degrees.
+#define REV_360     2.175066313  // exact revolutions for ev3 robot for 360 degrees.
+#define SAMPLES     1000         // the maximum samples we can obtain.
 
-bool go_left = false;
+bool go_left = false; // bool for path correction.
 
-int dark  = 0;
-int light = 0;
-int grey  = 0;
-int smpl_idx = 0;
+int smpl_idx = 0;     // index used for sampling and obtaining sample size.
 
-long curr_color = 0;
-long thres_bl   = 0;
-long thres_bg   = 0;
-long thres_gw   = 0;
+long curr_color = 0;  // obtaining current color.
+long thres_bl   = 13; // threshold for identifying black.
+long thres_bg   = 0;  // threshold for idenifying black-grey line.
+long thres_gw   = 0;  // threshold for identifying grey-white line.
 
 long sample_arr[SAMPLES];
 
@@ -60,7 +57,7 @@ void sample_sort()
 		{
    		for(int i = j - m; i >= 0; i -= m)
    		{
-      	if(sample_arr[i + m] >= sample_arr[i])break;
+      	if(sample_arr[i + m] >= sample_arr[i]) break;
 				else
      		{
         	int mid = sample_arr[i];
@@ -245,6 +242,7 @@ task sample()
 	sample_arr[smpl_idx] = getColorReflected(Colour);
 	sample_arr[smpl_idx] = getColorReflected(Colour);
 	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sleep(30);
 
 	while(smpl_idx < SAMPLES)
 	{
@@ -253,6 +251,9 @@ task sample()
 	}
 }
 
+/*
+	Method for resetting sample variables + data structures.
+*/
 void reset_sampler()
 {
 	smpl_idx = 0;
@@ -264,6 +265,9 @@ void reset_sampler()
 	}
 }
 
+/*
+	Method for obtaining n arbutariy points on the tile.
+*/
 void point_sampling()
 {
 	while(smpl_idx < 5)
@@ -275,19 +279,28 @@ void point_sampling()
 	}
 }
 
-void circular_sampling()
+/*
+	Method for obtaining multiple number of sample points by rotating.
+*/
+void circular_sampling(float revs, int spd)
 {
 	// start sample
 	startTask(sample);
-	turnLeft(REV_360, rotations, 10);
+	turnLeft(revs, rotations, spd);
 	stopTask(sample);
 }
 
-void edge_sampling()
+/*
+	Method for obtaining mutliple number of sample points on the grey - black line edge.
+*/
+void edge_sampling(float revs, int pow)
 {
-	encoded_mforward(1, 10);
+	encoded_mforward(revs, pow);
 }
 
+/*
+	Method for obtaining averages of sample points.
+*/
 int get_avg_tile_clr()
 {
 	// average
@@ -300,20 +313,45 @@ int get_avg_tile_clr()
 	return ceil(total / size);
 }
 
+/*
+	Method for obtaining threshold values for path correction.
+*/
 void color_calibration()
 {
 	int clr_avg = 0;
+	int smpl_spd = 10;
+
+	int nw_tiles = 0;
+	int ng_tiles = 0;
+	int nb_tiles = 0;
+
+	int w_avg = 0;
+	int g_avg = 0;
+	int b_avg = 0;
+
+	int w_max = 0;
+	int g_max = 0;
+	int b_max = 0;
+
+	int w_min = 0;
+	int g_min = 0;
+	int b_min = 0;
+
+	//=================== WHITE TILE ========================================
+	// notify
+	displayCenteredTextLine(4, "Starting white tile calibration in 7 secs");
+	sleep(7000);
 
 	// reset
 	reset_sampler();
 
-	// grey tile sampling
+	// white tile sampling
 	point_sampling();
 
-	displayCenteredTextLine(4, "Starting circular_sampling 7 secs");
+	// notify
+	displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
 	sleep(7000);
-
-	circular_sampling();
+	circular_sampling(REV_90 / 2, smpl_spd);
 
 	// sort samples
 	sample_sort();
@@ -321,66 +359,90 @@ void color_calibration()
 	// obtain average
 	clr_avg = get_avg_tile_clr();
 
+	w_avg = clr_avg;
+	w_min = get_min_clr();
+	w_max = get_max_clr();
+
 	// results
-	displayCenteredTextLine(4, "Color avg for Grey Tile was %d", clr_avg);
-	displayCenteredTextLine(6, "Min: %d, Max: %d", get_min_clr(), get_max_clr());
+	displayCenteredTextLine(4, "Color avg for White Tile was %d", w_avg);
+	displayCenteredTextLine(6, "Min: %d, Max: %d", w_min, w_max);
 	sleep(10000);
 
-	//edge_sampling();
-/*
-	int set_delay     = 7000;
-	int calib_delay   = set_delay;
-	int calib_verif_d = 3000;
+	// reset average
+	clr_avg = 0;
 
-	long curr_color;
+	//=================== GREY TILE ========================================
+	// notify
+	displayCenteredTextLine(4, "Starting grey tile calibration in 7 secs");
+	sleep(7000);
 
-	displayCenteredTextLine(4, "Light Value?");
-	while(calib_delay > 0)
-	{
-		curr_color = getColorReflected(Colour);
+	// reset
+	reset_sampler();
 
-		light = curr_color;
-		displayCenteredTextLine(4, "delay %d ", calib_delay);
-		calib_delay--;
-	}
-	displayCenteredTextLine(4, "Light Value: %d", light);
-	sleep(calib_verif_d);
+	// grey tile sampling
+	point_sampling();
 
-	curr_color = 0;
-	calib_delay = set_delay;
+	// notify for circular sampling
+	displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
+	sleep(7000);
+	circular_sampling(REV_360, smpl_spd);
 
-	displayCenteredTextLine(4, "Grey Value?");
-	while(calib_delay > 0)
-	{
-		curr_color = getColorReflected(Colour);
+	// notify for edge sampling
+	displayCenteredTextLine(4, "Starting circular_sampling 7 secs");
+	sleep(7000);
+	edge_sampling(REV_360 * 10, smpl_spd);
 
-		grey = curr_color;
-		displayCenteredTextLine(4, "delay %d ", calib_delay);
-		calib_delay--;
-	}
-	displayCenteredTextLine(4, "Grey Value: %d", grey);
-	sleep(calib_verif_d);
+	// sort samples
+	sample_sort();
 
-	curr_color = 0;
-	calib_delay = set_delay;
+	// obtain average
+	clr_avg = get_avg_tile_clr();
 
-	displayCenteredTextLine(4, "Dark Value?");
-	while(calib_delay > 0)
-	{
-		curr_color = getColorReflected(Colour);
+	g_avg = clr_avg;
+	g_min = get_min_clr();
+	g_max = get_max_clr();
 
-		dark = curr_color;
-		displayCenteredTextLine(4, "delay %d ", calib_delay);
-		calib_delay--;
-	}
-	displayCenteredTextLine(4, "Dark Value: %d", dark);
-	sleep(calib_verif_d);
+	// results
+	displayCenteredTextLine(4, "Color avg for Grey Tile was %d", g_avg);
+	displayCenteredTextLine(6, "Min: %d, Max: %d", g_min, g_max);
+	sleep(10000);
 
-	// assumed that you calibration was given correct light, grey and dark values.
-	thres_bg = (dark + grey) / 2;
-	thres_gw = (grey + light) / 2;
+	// reset average
+	clr_avg = 0;
 
-	thres_gw -= 3;*/
+	//=================== BLACK TILE ========================================
+	// notify
+	displayCenteredTextLine(4, "Starting black tile calibration in 7 secs");
+	sleep(7000);
+
+	// reset
+	reset_sampler();
+
+	// grey tile sampling
+	point_sampling();
+
+	// notify for circular sampling
+	displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
+	sleep(7000);
+	circular_sampling(REV_90 / 2, smpl_spd);
+
+	// sort samples
+	sample_sort();
+
+	// obtain average
+	clr_avg = get_avg_tile_clr();
+
+	b_avg = clr_avg;
+	b_min = get_min_clr();
+	b_max = get_max_clr();
+
+	// results
+	displayCenteredTextLine(4, "Color avg for Black Tile was %d", b_avg);
+	displayCenteredTextLine(6, "Min: %d, Max: %d", b_min, b_max);
+	sleep(10000);
+
+	// record thresholds in global varibale manually.
+
 	eraseDisplay();
 }
 //=======================================================================
@@ -404,7 +466,7 @@ void linear_backoff(bool direction)
 		if(!direction) turnLeft( backoff_val, rotations, pow);
 		else           turnRight(backoff_val, rotations, pow);
 
-		// color sample
+		// sample color.
 		curr_color = getColorReflected(Colour);
 		samples++;
 
@@ -415,11 +477,11 @@ void linear_backoff(bool direction)
 		}
 	}
 
-	// return to original position if bad color values.
+	// return to original position if bad color values with offset.
 	if(skip_correction)
 	{
-		if(!direction) turnRight(backoff_val * samples, rotations, 20);
-		else           turnLeft( backoff_val * samples, rotations, 20);
+		if(!direction) turnRight(backoff_val * (samples + 1), rotations, pow);
+		else           turnLeft( backoff_val * (samples + 1), rotations, pow);
 	}
 }
 
@@ -475,7 +537,7 @@ void run_phase1()
 		curr_color = getColorReflected(Colour);
 		path_correction();
 
-		if(curr_color < 13)
+		if(curr_color < thres_bl)
 		{
 			if(!on_black)
 			{
