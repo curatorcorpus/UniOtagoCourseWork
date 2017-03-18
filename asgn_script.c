@@ -1,5 +1,5 @@
 #pragma config(Sensor, S2,     Touch,          sensorEV3_Touch)
-#pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Reflected_Raw)
+#pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Color)
 #pragma config(Sensor, S4,     Sonar,          sensorEV3_Ultrasonic)
 #pragma config(Motor,  motorA,           ,             tmotorEV3_Large, openLoop)
 #pragma config(Motor,  motorB,          left,          tmotorEV3_Large, PIDControl, driveLeft, encoder)
@@ -11,29 +11,34 @@
 #define DEFAULT_SPD 40
 #define OFFSET 23
 
+bool go_left = false;
+bool pause_black_ctr = false;
+bool pause_clr_polr  = false;
+
 int dark = 0;
-int light = 0,
-long offset = 0;
+int light = 0;
+int grey = 0;
 
-long nEncoderValue = 0;
+long thres_bg = 0;
+long thres_gw = 0;
 
+/*
+long thres_bg = 35;
+long thres_gw = 51;*/
 //=================== Basic Mathematics ================
 /*
-	Specifications of Robot:
-
-	Diameter of Rotation circle: 12.3 cm
-	Diameter of Wheel: 5.655 cm
-
-	Circumference of Rotation Circle: 38.64158964 cm
-	Circumference of Wheel: 17.76570646 cm
-
-	Revs in Rotation Circle: 2.175066313 revs (wheels)
-	Revs in 90 degree rotation: 0.5437665781 revs (wheels)
+Specifications of Robot:
+Diameter of Rotation circle: 12.3 cm
+Diameter of Wheel: 5.655 cm
+Circumference of Rotation Circle: 38.64158964 cm
+Circumference of Wheel: 17.76570646 cm
+Revs in Rotation Circle: 2.175066313 revs (wheels)
+Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 */
 
 //==================== Motor Operations =================
 /*
-	Method used to reset motor pow back to zero.
+Method used to reset motor pow back to zero.
 */
 void reset_motors()
 {
@@ -43,7 +48,7 @@ void reset_motors()
 }
 
 /*
-	Method used to reset the motor encoder (turn) values.
+Method used to reset the motor encoder (turn) values.
 */
 void reset_mencoder()
 {
@@ -52,7 +57,7 @@ void reset_mencoder()
 }
 
 /*
-	Method used to tell both wheels to turn certain revs.
+Method used to tell both wheels to turn certain revs.
 */
 void encoded_mforward(float revs, long pow)
 {
@@ -65,45 +70,40 @@ void encoded_mforward(float revs, long pow)
 }
 
 /*
-	Method for pivot left given a rev and pow.
+Method for pivot left given a rev and pow.
 */
 void encoded_lpivot(float revs, long pow)
 {
 	float revs_to_degs = (revs * 360 - OFFSET);
 
-	displayCenteredBigTextLine(4, "Rotating Left");
+	//displayCenteredBigTextLine(4, "Rotating Left");
 
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, -100, revs_to_degs, pow);
 
 	while(getMotorEncoder(motorC) <= revs_to_degs) {}
-	eraseDisplay();
+	//eraseDisplay();
 }
 
 /*
-	Method for pivoting right given a rev and pow.
+Method for pivoting right given a rev and pow.
 */
 void encoded_rpivot(float revs, long pow)
 {
 	float revs_to_degs = (revs * 360 - OFFSET);
 
-	displayCenteredBigTextLine(4, "Rotating Right");
+	//displayCenteredBigTextLine(4, "Rotating Right");
 
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, 100, revs_to_degs, pow);
 
 	while(getMotorEncoder(motorB) <= revs_to_degs) {}
-	eraseDisplay();
-}
-
-void calc_deviation()
-{
-	//encoded_rpivot(50);
+	//eraseDisplay();
 }
 
 //==================== Sensor Operations ========================
 /*
-	Thread method used to detect distance from an object anteriorily.
+Thread method used to detect distance from an object anteriorily.
 */
 task thread_sonar_locator()
 {
@@ -112,23 +112,18 @@ task thread_sonar_locator()
 	while(true)
 	{
 		/*
-			TODO: distance orientation correction:
-			What we can do is, once the robot turns 90 degrees for sure,
-			could let it travel according to black squares again. Need to check if
-			the grey tiles correspond to them. because the object is 7 squares away.
-
-			During this course, if the current distance starts decreasing, then we have
-			detected an object.
-
-			Measure difference between current and last distance reading (measure error).
-
-			If the error is positive, then we are ok, we are heading closer to the object.
-			If the error is negative, stop the robot. check both sides left and right by rotating a certain angle.
-			Compare the difference between both sides.
-
-			And pick rotation path with lowest error.
-
-			Continue this process untill current distance get really low.
+		TODO: distance orientation correction:
+		What we can do is, once the robot turns 90 degrees for sure,
+		could let it travel according to black squares again. Need to check if
+		the grey tiles correspond to them. because the object is 7 squares away.
+		During this course, if the current distance starts decreasing, then we have
+		detected an object.
+		Measure difference between current and last distance reading (measure error).
+		If the error is positive, then we are ok, we are heading closer to the object.
+		If the error is negative, stop the robot. check both sides left and right by rotating a certain angle.
+		Compare the difference between both sides.
+		And pick rotation path with lowest error.
+		Continue this process untill current distance get really low.
 		*/
 
 		curr_ant_dis = SensorValue[Sonar];
@@ -139,11 +134,11 @@ task thread_sonar_locator()
 /*
 task thread_whiskers()
 {
-	while(true)
-	{
-		int is_touch = SensorValue[touch];
-		displayCenteredBigTextLine(4, "Bumper: %d", is_touch);
-	}
+while(true)
+{
+int is_touch = SensorValue[touch];
+displayCenteredBigTextLine(4, "Bumper: %d", is_touch);
+}
 }
 */
 
@@ -154,8 +149,8 @@ int poll_whiskers()
 
 //==================== Calibration ============================
 /*
-	Method for calibrating the light dark threshold. Given 3 seconds to
-	calibrate. Values range between 0 to 765.
+Method for calibrating the light dark threshold. Given 3 seconds to
+calibrate. Values range between 0 to 765.
 */
 void light_calibration()
 {
@@ -164,132 +159,181 @@ void light_calibration()
 	int calib_verif_d = 3000;
 
 	long r = 0, g= 0, b = 0;
-	long sum;
+	long curr_color;
 
 	displayCenteredTextLine(4, "Light Value?");
 	while(calib_delay > 0)
 	{
-		getColorRGB(Colour,r,g,b);
-				displayCenteredTextLine(6, "r %d g %d b %d", r,g, b);
-		sum = (r + g + b);
-		light = sum;
-		displayCenteredTextLine(1, "delay %d ", calib_delay);
+		curr_color = getColorReflected(Colour);
+
+		light = curr_color;
+		displayCenteredTextLine(4, "delay %d ", calib_delay);
 		calib_delay--;
 	}
 	displayCenteredTextLine(4, "Light Value: %d", light);
 	sleep(calib_verif_d);
 
-	sum = 0;
+	curr_color = 0;
+	calib_delay = set_delay;
+
+	displayCenteredTextLine(4, "Grey Value?");
+	while(calib_delay > 0)
+	{
+		curr_color = getColorReflected(Colour);
+
+		grey = curr_color;
+		displayCenteredTextLine(4, "delay %d ", calib_delay);
+		calib_delay--;
+	}
+	displayCenteredTextLine(4, "Grey Value: %d", grey);
+	sleep(calib_verif_d);
+
+	curr_color = 0;
 	calib_delay = set_delay;
 
 	displayCenteredTextLine(4, "Dark Value?");
 	while(calib_delay > 0)
 	{
-		getColorRGB(Colour,r,g,b);
-		displayCenteredTextLine(6, "r %d g %d b %d", r,g, b);
-		sum = (r + g + b);
-		dark = sum;
-				displayCenteredTextLine(1, "delay %d ", calib_delay);
+		curr_color = getColorReflected(Colour);
+
+		dark = curr_color;
+		displayCenteredTextLine(4, "delay %d ", calib_delay);
 		calib_delay--;
 	}
 	displayCenteredTextLine(4, "Dark Value: %d", dark);
 	sleep(calib_verif_d);
 
-	// assumed that you calibration was given correct light and dark values.
-	offset = (light + dark) / 2;
+	// assumed that you calibration was given correct light, grey and dark values.
+	thres_bg = (dark + grey) / 2;
+	thres_gw = (grey + light) / 2;
+	/*displayCenteredTextLine(4, "range: %d - %d ", thres_bg, thres_gw);
+	sleep(10000);*/
 
+	thres_gw -= 3;
 	eraseDisplay();
 }
 
-//==================== Path Correction ==================================
-/*
-	Method for path correction between two lines.
-*/
-void path_correction()
+long curr_color = 0;
+task poll_color()
 {
-	int rl_correction_tgl = 1;
-
-	long r = 0, g= 0, b = 0;
-	long sum;
-
-	while(true) // TODO: must be changed
+	while(true)
 	{
-		getColorRGB(Colour,r,g,b);
-		sum = (r + g + b);
-
-		if(rl_correction_tgl == 0)
-		{
-			if(sum > offset)
-			{
-
-			} else
-			{
-				setMotorSync();
-			}
+		if(!pause_clr_polr){
+			//displayCenteredTextLine(8, "range %d - %d", thres_bg, thres_gw);
+			curr_color = getColorReflected(Colour);
+			//sleep(20);
 		}
 	}
 }
 
-/*
-  int lightcount = 0; //a counter for the light sensor? or a counter used for tasks with the light sensor?
 
-  nMotorPIDSpeedCtrl[motorA] = mtrSpeedReg;  //keep the wheels going the same speed (no unwanted turning! finally =) )
-  nMotorPIDSpeedCtrl[motorB] = mtrSpeedReg;
+//==================== Path Correction ==================================
 
-  nMotorEncoder[motorA] = 0;        //for turning control, probably not going to be used now..yet..maybe
-  nMotorEncoder[motorB] = 0;
+void linear_backoff(bool direction)
+{
+	bool skip_correction = true;
 
-  while(nMotorEncoder[motorA] < 10800)  //motor A (right motor) turns 30 times before stopping
-  {
-     if(lightcount == 0)  //the counter starts at zero...should this be an "if" statement or a "while" statement?
-     {
-        if(SensorValue(lightsensor) > 49)  //light sensor reads lights object (white table)
-        {
-          motor[motorA] = 50;              //and so it moves forward at half speed...until...
-          motor[motorB] = 50;
-        }
-        else                               //it hits the black line
-        {
-          motor[motorA] = 50;              //so it turns to the right, off of the blasck line
-          motor[motorB] = -50;
-          wait1Msec(350);
-          lightcount = lightcount + 1;     // and adds "1" (one) to the lightcount value
-        }
-        if(lightcount == 1)  //now since the lightcount value is = 1, this next peice of code should run.
-        {                    //should i use "if(lightcount == 1)" or "while(lightcount == 1)" here?  does it matter?
-          if(SensorValue(lightsensor) > 49)
-           {                                //so the light sensors reads a light value, and tells the robot to move forward
-             motor[motorA] = 50;
-             motor[motorB] = 50;
-           }
-           else                             // this time when the light sensor reads a dark value....
-           {
-             motor[motorA] = -50;           // it turns the opposite direction as before
-             motor[motorB] = 50;
-             wait1Msec(350);
-             lightcount = lightcount -1;    //and reducing the lightcount value back to zero, so the first code can run again. =)
-           }
-        }
-    }
-  }
+	float backoff_val = 0.1;
+	int i = 0;
+
+	eraseDisplay();
+
+	while(i < 3)
+	{
+		if(!direction) turnLeft(backoff_val, rotations, 20);
+		else           turnRight(backoff_val, rotations, 20);
+
+		i++;
+		curr_color = getColorReflected(Colour);
+
+		if(curr_color < thres_bg || thres_gw < curr_color)
+		{
+			skip_correction = false;
+			break;
+		}
+	}
+
+	if(skip_correction)
+	{
+		if(!direction) turnRight(backoff_val * i, rotations, 20);
+		else           turnLeft(backoff_val * i, rotations, 20);
+	}
 }
-//conclusion:
-//the robot zigzags in between the lines via two motors and one light sensor.
-//going forward on a light surface and turning one way on a dark surface
-//and turning the opposite way when it hits another dark surface
-// comments, and helpful critic is very much appretiated
+
+/*
+Method for path correction between two lines.
 */
+void path_correction()
+{
+	//long offset = (light + dark) / 2;
+	/*
+	while(true) // TODO: must be changed
+	{
+	if(thres_bg < curr_color && curr_color < thres_gw)
+	{
+	if(!go_left)
+	{
+	go_left = true;
+	turnRight(0.19, seconds, 20);
+	delay(180);
+	} else if(go_left)
+	{
+	go_left = false;
+	turnLeft(0.19, seconds, 20);
+	delay(180);
+	}
+	}
+	}*/
+
+	//while(true)
+	//{
+		if(thres_bg < curr_color && curr_color < thres_gw)
+		{
+			//pause_black_ctr = true;
+			//pause_clr_polr = true;
+
+			//setMotorSync(motorB, motorC, 0, 0);
+
+			//if(!go_left)
+			//{
+
+			linear_backoff(go_left);
+			go_left = !go_left;
+
+			//}
+			/*else if(go_left)
+			{
+
+			linear_backoff(go_left);
+			go_left = false;
+			}*/
+
+			//pause_clr_polr = false;
+			//pause_black_ctr = false;
+			eraseDisplay();
+			//setMotorSync(motorB, motorC, 0, 40);
+			//delay(100);
+		}
+	//}
+}
+
 //==================== Phases ==================================
 /*
-	Method used to travel forward from the starting tile 'S'.
+Method used to travel forward from the starting tile 'S'.
 */
 void initial_step()
 {
-	encoded_mforward(0.6, 50);//TODO: revs needs to be altered to environment.
+	displayCenteredBigTextLine(4, "Starting in 5 secs");
+	sleep(5000);
+
+	eraseDisplay();
+
+	//encoded_mforward(0.6, 50);//TODO: revs needs to be altered to environment.
+	encoded_mforward(0.65, 50);
 }
 
 /*
-	Method used to move along the black dotted line and count them.
+Method used to move along the black dotted line and count them.
 */
 void run_stage1()
 {
@@ -301,25 +345,31 @@ void run_stage1()
 
 	short current_color;
 
+	setMotorSync(motorB, motorC, 0, motor_pow);
+
 	while (black_count < 15)
 	{
 		setMotorSync(motorB, motorC, 0, motor_pow);
-		current_color = SensorValue[Colour];
+		curr_color = getColorReflected(Colour);
+		path_correction();
+		//if(!pause_black_ctr){
+			//current_color = SensorValue[Colour];
 
-		// warning, if surface is too close to color sensor, the counter might iterate twice.
-		if(current_color == 1)
-		{
-			if(!on_black && black_count < 15)
+			//if(current_color == 1)
+			//displayCenteredTextLine(4, "color %d", curr_color);
+			if(curr_color < 13)
 			{
-				on_black = true;
-				displayCenteredBigTextLine(4, "%f", ++black_count);
-				playTone(700, 10);
+				if(!on_black)
+				{
+					on_black = true;
+					displayCenteredBigTextLine(4, "%d", ++black_count);
+					playTone(700, 10);
+				}
 
-			}
+			} else on_black = false;
 
-		} else on_black = false;
-
-		sleep(100);
+			sleep(100);
+		//}
 	}
 
 	reset_motors();
@@ -327,7 +377,7 @@ void run_stage1()
 }
 
 /*
-	 Method used to count the 7 grey squares + move to finishing tile 'F'.
+Method used to count the 7 grey squares + move to finishing tile 'F'.
 */
 void run_stage2()
 {
@@ -344,7 +394,7 @@ void run_stage2()
 
 //==================== MAIN ==================================
 /*
-	main task.
+main task.
 */
 task main()
 {
@@ -352,16 +402,26 @@ task main()
 
 	// light offset calibration
 	light_calibration();
-	// initial movement from start tile to black line
-	//initial_step();
 
-	//encoded_rpivot(REV_90, rot_pow);
+	// initial movement from start tile to black line
+	initial_step();
+
+	// first right rotation
+	encoded_rpivot(0.55585028, rot_pow);
+
+	//startTask(poll_color);
+	//startTask(path_correction);
 
 	// move along black line and count 15 black dots
-	//run_stage1();
+	run_stage1();
+
+	//stopTask(poll_color);
+	//stopTask(path_correction);
 
 	// rotate 90 degrees again
 	//encoded_rpivot(REV_90, DEFAULT_SPD); // TODO: needs to be configured for our environment
 
 	//run_stage2();
+
+	//stopAllTasks();
 }
