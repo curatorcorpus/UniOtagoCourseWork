@@ -1,5 +1,6 @@
+#pragma config(Sensor, S1,     zzz,            sensorEV3_Color, modeEV3Color_Color)
 #pragma config(Sensor, S2,     Touch,          sensorEV3_Touch)
-#pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Color)
+#pragma config(Sensor, S3,     Colour,         sensorEV3_Color)
 #pragma config(Sensor, S4,     Sonar,          sensorEV3_Ultrasonic)
 #pragma config(Motor,  motorA,           ,             tmotorEV3_Large, openLoop)
 #pragma config(Motor,  motorB,          left,          tmotorEV3_Large, PIDControl, driveLeft, encoder)
@@ -21,27 +22,27 @@ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 //=================== Global Variables ==================================
 
 // DEFAULLTS
-#define DEFAULT_SPD 40           // default ev3 robot speed.
+#define DEFAULT_SPD 30           // default ev3 robot speed.
 #define OFFSET      23           // offset for revs user defined encoded movements.
 #define REV_90      0.5437665781 // exact revolutions for ev3 robot for 90 degrees.
 #define REV_360     2.175066313  // exact revolutions for ev3 robot for 360 degrees.
-#define SAMPLES     1000         // the maximum samples we can obtain.
+#define SAMPLES     2         // the maximum samples we can obtain.
 
 bool go_left = false; // bool for path correction.
 
 int smpl_idx = 0;     // index used for sampling and obtaining sample size.
 
 long curr_color = 0;  // obtaining current color.
-long thres_bl   = 13; // threshold for identifying black.
-long thres_bg   = 0;  // threshold for idenifying black-grey line.
-long thres_gw   = 0;  // threshold for identifying grey-white line.
+long thres_l_bl   = 9; // threshold for identifying black.
+long thres_h_bl   = 12;
+//long thres_bg   = 0;  // threshold for idenifying black-grey line.
+//long thres_gw   = 0;  // threshold for identifying grey-white line.
 
 long sample_arr[SAMPLES];
 
-/*
-	long thres_bg = 35;
-	long thres_gw = 51;
-*/
+long thres_bg = 31;
+long thres_gw = 44;
+
 //=======================================================================
 
 //=================== Utility Methods =================================
@@ -270,6 +271,14 @@ void reset_sampler()
 */
 void point_sampling()
 {
+		// compensate for inital colors readings.
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sample_arr[smpl_idx] = getColorReflected(Colour);
+	sleep(30);
+
 	while(smpl_idx < 5)
 	{
 		displayCenteredTextLine(4, "Point %d, waiting 5 secs", smpl_idx + 1);
@@ -318,6 +327,7 @@ int get_avg_tile_clr()
 */
 void color_calibration()
 {
+	int i = 0;
 	int clr_avg = 0;
 	int smpl_spd = 10;
 
@@ -336,7 +346,7 @@ void color_calibration()
 	int w_min = 0;
 	int g_min = 0;
 	int b_min = 0;
-
+/*
 	//=================== WHITE TILE ========================================
 	// notify
 	displayCenteredTextLine(4, "Starting white tile calibration in 7 secs");
@@ -370,84 +380,101 @@ void color_calibration()
 
 	// reset average
 	clr_avg = 0;
-
+*/
 	//=================== GREY TILE ========================================
 	// notify
-	displayCenteredTextLine(4, "Starting grey tile calibration in 7 secs");
-	sleep(7000);
+	/*
+	i = 0;
+	while(i < 19)
+	{
+		displayCenteredTextLine(4, "Starting grey tile calibration in 7 secs");
+		sleep(7000);
 
-	// reset
-	reset_sampler();
+		// reset
+		reset_sampler();
 
-	// grey tile sampling
-	point_sampling();
+		// grey tile sampling
+		displayCenteredTextLine(4, "Starting point_sampling 7 secs turning left");
+		sleep(7000);
+		point_sampling();
 
-	// notify for circular sampling
-	displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
-	sleep(7000);
-	circular_sampling(REV_360, smpl_spd);
+		// notify for circular sampling
+		displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
+		sleep(7000);
+		circular_sampling(1, smpl_spd);
 
-	// notify for edge sampling
-	displayCenteredTextLine(4, "Starting circular_sampling 7 secs");
-	sleep(7000);
-	edge_sampling(REV_360 * 10, smpl_spd);
+		// notify for edge sampling
+		displayCenteredTextLine(4, "Starting edge_sampling 7 secs");
+		sleep(7000);
+		edge_sampling(REV_360 *2 , smpl_spd);
 
-	// sort samples
-	sample_sort();
+		// sort samples
+		sample_sort();
 
-	// obtain average
-	clr_avg = get_avg_tile_clr();
+		// obtain average
+		clr_avg = get_avg_tile_clr();
 
-	g_avg = clr_avg;
-	g_min = get_min_clr();
-	g_max = get_max_clr();
+		g_avg = clr_avg;
+		g_min = get_min_clr();
+		g_max = get_max_clr();
 
-	// results
-	displayCenteredTextLine(4, "Color avg for Grey Tile was %d", g_avg);
-	displayCenteredTextLine(6, "Min: %d, Max: %d", g_min, g_max);
-	sleep(10000);
+		// results
+		displayCenteredTextLine(2, "Color avg for Grey Tile");
+		displayCenteredTextLine(4, "Avg: %d", g_avg);
+		displayCenteredTextLine(6, "Min: %d, Max: %d", g_min, g_max);
+		sleep(15000);
+		i++;
+
+		eraseDisplay();
+	}*/
 
 	// reset average
 	clr_avg = 0;
 
 	//=================== BLACK TILE ========================================
-	// notify
-	displayCenteredTextLine(4, "Starting black tile calibration in 7 secs");
-	sleep(7000);
+	i = 0;
+	while(i < 15)
+	{
+		// notify
+		displayCenteredTextLine(4, "Starting black tile calibration in 7 secs");
+		sleep(7000);
 
-	// reset
-	reset_sampler();
+		// reset
+		reset_sampler();
 
-	// grey tile sampling
-	point_sampling();
+		// grey tile sampling
+		point_sampling();
 
-	// notify for circular sampling
-	displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
-	sleep(7000);
-	circular_sampling(REV_90 / 2, smpl_spd);
+		// notify for circular sampling
+		displayCenteredTextLine(4, "Starting circular_sampling 7 secs turning left");
+		sleep(7000);
+		circular_sampling(REV_90 / 2, smpl_spd);
 
-	// sort samples
-	sample_sort();
+		// sort samples
+		sample_sort();
 
-	// obtain average
-	clr_avg = get_avg_tile_clr();
+		// obtain average
+		clr_avg = get_avg_tile_clr();
 
-	b_avg = clr_avg;
-	b_min = get_min_clr();
-	b_max = get_max_clr();
+		b_avg = clr_avg;
+		b_min = get_min_clr();
+		b_max = get_max_clr();
 
-	// results
-	displayCenteredTextLine(4, "Color avg for Black Tile was %d", b_avg);
-	displayCenteredTextLine(6, "Min: %d, Max: %d", b_min, b_max);
-	sleep(10000);
+		// results
+		displayCenteredTextLine(2, "Color avg for Black Tile");
+		displayCenteredTextLine(4, "Avg: %d", b_avg);
+		displayCenteredTextLine(6, "Min: %d, Max: %d", b_min, b_max);
+		sleep(15000);
 
-	// record thresholds in global varibale manually.
-
-	eraseDisplay();
+		i++;
+		eraseDisplay();
+	}
+		// record thresholds in global varibale manually.
 }
 //=======================================================================
 
 //==================== Path Correction ==================================
+bool path_corrected = true;
 /*
 	Method for path correction, called linear backoff. If the color is wrong,
 	then correct yourself by sampling your surroundings 3 times.
@@ -457,7 +484,7 @@ void linear_backoff(bool direction)
 	bool skip_correction = true;
 	float backoff_val    = 0.1;
 
-	int pow       = 20;
+	int pow       = 15;
 	int samples   = 0;
 	int n_samples = 3;
 
@@ -472,6 +499,7 @@ void linear_backoff(bool direction)
 
 		if(curr_color < thres_bg || thres_gw < curr_color)
 		{
+			path_corrected = true;
 			skip_correction = false;
 			break;
 		}
@@ -490,14 +518,18 @@ void linear_backoff(bool direction)
 */
 void path_correction()
 {
+	curr_color = getColorReflected(Colour);
+
 	if(thres_bg < curr_color && curr_color < thres_gw)
 	{
+		path_corrected = false;
+		while(path_corrected == false){
 		// use simple correction algorithm.
 		linear_backoff(go_left);
 		go_left = !go_left; // toggle.
 
-		eraseDisplay();
 	}
+}
 }
 //=======================================================================
 
@@ -512,32 +544,34 @@ void initial_step()
 
 	eraseDisplay();
 
-	//encoded_mforward(0.6, 50);// hardwired example.
-	encoded_mforward(0.65, 50);
+	encoded_mforward(0.62, 50);// hardwired example.
+	//encoded_mforward(0.65, 50);
 }
-
+int black;
+task black_sensor()
+{
+	while(true) black = SensorValue[S3];
+}
 /*
 	Method used to move along the black dotted line and count them.
 */
 void run_phase1()
 {
 	int black_count = 0;
-	int motor_pow = 40;
 
 	bool on_black = false;
 	bool on_dotted_line = true;
 
-	short current_color;
-
-	setMotorSync(motorB, motorC, 0, motor_pow);
+	startTask(black_sensor);
+curr_color = getColorReflected(Colour);
+curr_color = getColorReflected(Colour);
+curr_color = getColorReflected(Colour);
+curr_color = getColorReflected(Colour);
+curr_color = getColorReflected(Colour);
 
 	while (black_count < 15)
 	{
-		setMotorSync(motorB, motorC, 0, motor_pow);
-		curr_color = getColorReflected(Colour);
-		path_correction();
-
-		if(curr_color < thres_bl)
+		if(black == 1)
 		{
 			if(!on_black)
 			{
@@ -547,9 +581,12 @@ void run_phase1()
 			}
 		} else on_black = false;
 
-		sleep(100);
-	}
+		path_correction();
 
+		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
+		sleep(130);
+	}
+stopTask(black_sensor);
 	reset_motors();
 	eraseDisplay();
 }
@@ -580,23 +617,20 @@ task main()
 	short rot_pow = 20;
 
 	// Accumulative color Calibration algorithm for ASGN.
-	color_calibration();
+	//color_calibration();
 
 	// initial movement from start tile to black line
-	//initial_step();
+	initial_step();
 
 	// first right rotation
-	//encoded_rpivot(0.55585028, rot_pow);
-
-	//startTask(poll_color);
-
+	// encoded_rpivot(0.55585028, rot_pow);
+	//encoded_rpivot(REV_90, rot_pow);
+turnRight(REV_360/4,rotations,rot_pow);
 	// move along black line and count 15 black dots
-	//run_phase1();
-
-	//stopTask(poll_color);
+	run_phase1();
 
 	// rotate 90 degrees again
-	//encoded_rpivot(REV_90, DEFAULT_SPD); // TODO: needs to be configured for our environment
+	encoded_rpivot(REV_90, DEFAULT_SPD); // TODO: needs to be configured for our environment
 
 	//run_phase2();
 }
