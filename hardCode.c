@@ -74,22 +74,54 @@ void encoded_rpivot(float revs, long pow){
 
 /* Move forward specific rotations, and rotate right */
 void initial_move(){
-    encoded_mforward(0.62, 50);
-    encoded_rpivot(REV_90, 50);
+    encoded_mforward(0.62, DEFAULT_SPD);
+    encoded_rpivot(REV_90, DEFAULT_SPD);
 }
+
+
 
 /* Move forward specific rotations, check for black */
 void on_track(){
-	int blackCount = 0;
-	while(blackCount < 15){
-		encoded_mforward(SMALL_TILE_DISTANCE * 2, 50);
+	int tile_count = 0;
+	int black_count = 0;
+
+	while(black_count < 15){
+
+		
+
+
+		encoded_mforward(SMALL_TILE_DISTANCE, DEFAULT_SPD);
 
 		/* Reflected Colour */
-		currentColour = SensorValue[Colour];
-		if(currentColour < 15){
-			blackCount++;
-            playTone(200,20);
-        }
+		current_colour = SensorValue[Colour];
+
+		/* This should be a white tile */
+		if(tile_count % 2 == 1){
+			if(currentColour > 40){
+				tile_count++;
+			}
+			else{
+				displayCenteredBigTextLine(4, "Expecting White");
+				displayCenteredBigTextLine(4, "Off Course");
+				break;
+			}
+		}
+
+		/* This should be a black tile */
+		else{
+			if(current_colour < 15){
+				black_count++;
+				tile_count++;
+            	playTone(200,20);
+        	}
+        	else{
+				displayCenteredBigTextLine(4, "Expecting Black");
+				displayCenteredBigTextLine(4, "Off Course");				
+				break;
+        	}			
+		}
+
+		
 	}
 }
 
@@ -100,7 +132,7 @@ task main(){
 
 	initial_move();
 	on_track();
-	encoded_rpivot(REV_90, 30);
-  	encoded_mforward(SMALL_TILE_DISTANCE * 4, 50);
+	encoded_rpivot(REV_90, DEFAULT_SPD);
+  	encoded_mforward(SMALL_TILE_DISTANCE * 4, DEFAULT_SPD);
 
 }
