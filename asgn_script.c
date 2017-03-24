@@ -22,7 +22,7 @@ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 //=================== Global Variables ==================================
 
 // DEFAULLTS
-#define DEFAULT_SPD 30           // default ev3 robot speed.
+#define DEFAULT_SPD 28           // default ev3 robot speed.
 #define OFFSET      23           // offset for revs user defined encoded movements.
 #define REV_90      0.5437665781 // exact revolutions for ev3 robot for 90 degrees.
 #define REV_360     2.175066313  // exact revolutions for ev3 robot for 360 degrees.
@@ -40,8 +40,8 @@ long thres_h_bl   = 12;
 
 long sample_arr[SAMPLES];
 
-long thres_bg = 31;
-long thres_gw = 44;
+long thres_bg = 25;
+long thres_gw = 40;
 
 //=======================================================================
 
@@ -120,7 +120,7 @@ void encoded_mforward(float revs, long pow)
 	reset_mencoder();
 
 	setMotorSyncEncoder(motorB, motorC, 0, revs_to_degs, pow);
-	while(getMotorEncoder(motorB) <= revs_to_degs) {}
+	while(getMotorEncoder(motorB) < revs_to_degs) {}
 }
 
 /*
@@ -135,7 +135,7 @@ void encoded_lpivot(float revs, long pow)
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, -100, revs_to_degs, pow);
 
-	while(getMotorEncoder(motorC) <= revs_to_degs) {}
+	while(getMotorEncoder(motorC) < revs_to_degs) {}
 	eraseDisplay();
 }
 
@@ -151,7 +151,7 @@ void encoded_rpivot(float revs, long pow)
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, 100, revs_to_degs, pow);
 
-	while(getMotorEncoder(motorB) <= revs_to_degs) {}
+	while(getMotorEncoder(motorB) < revs_to_degs) {}
 	eraseDisplay();
 }
 //=======================================================================
@@ -562,7 +562,7 @@ void run_phase1()
 	bool on_black = false;
 	bool on_dotted_line = true;
 
-	startTask(black_sensor);
+	//startTask(black_sensor);
 curr_color = getColorReflected(Colour);
 curr_color = getColorReflected(Colour);
 curr_color = getColorReflected(Colour);
@@ -586,7 +586,7 @@ curr_color = getColorReflected(Colour);
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
 		sleep(130);
 	}
-stopTask(black_sensor);
+//stopTask(black_sensor);
 	reset_motors();
 	eraseDisplay();
 }
@@ -624,8 +624,8 @@ task main()
 
 	// first right rotation
 	// encoded_rpivot(0.55585028, rot_pow);
-	//encoded_rpivot(REV_90, rot_pow);
-turnRight(REV_360/4,rotations,rot_pow);
+	encoded_rpivot(REV_90, rot_pow);
+	//turnRight(REV_360/4,rotations,rot_pow);
 	// move along black line and count 15 black dots
 	run_phase1();
 
@@ -633,5 +633,6 @@ turnRight(REV_360/4,rotations,rot_pow);
 	encoded_rpivot(REV_90, DEFAULT_SPD); // TODO: needs to be configured for our environment
 
 	//run_phase2();
+
 }
 //=======================================================================
