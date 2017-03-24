@@ -176,8 +176,10 @@ void on_track(){
 		encoded_mforward(SMALL_TILE_DISTANCE, DEFAULT_SPD);
 		reset_mencoder();
 
-		/* At this stage the robot is sitting on white tile */
-		sleep(100); // Sleep time depends on speed, we need to ensure it is high enough for full tile transit
+		/* At this stage the robot is sitting on white tile 
+		Sleep time depends on speed, we need to ensure it is high enough for full tile transit.
+		This could be better handled with a toggle saying on_black */
+		sleep(100); 
 
 		short current_colour = SensorValue[Colour];	/* Reflected Colour */
 
