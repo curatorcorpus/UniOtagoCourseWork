@@ -97,19 +97,19 @@ void pathCorrect(char desiredTile){
 		if(left_pivots <= max_pivots && (!attempted_left)){
 			encoded_lpivot(REV_360/pivot_increment, DEFAULT_SPD);
 			sleep(50);
-  		short current_colour = SensorValue[Colour];
-  		left_pivots++;
-  		if(desiredTile=='w' && current_colour > white_threshold){ // Testing for White and white Found
-  			onPath = true;
-  			found_left = true;
-  		}
-  		else if(desiredTile=='b' && current_colour < black_threshold){ // testing for Black and black found
-  			onPath = true;
-  			found_left = true;
-  		}
-  		else{
-  			left_pivots++;
-  		}
+	  		short current_colour = SensorValue[Colour];
+	  		left_pivots++;
+	  		if(desiredTile=='w' && current_colour > white_threshold){ // Testing for White and white Found
+	  			onPath = true;
+	  			found_left = true;
+	  		}
+	  		else if(desiredTile=='b' && current_colour < black_threshold){ // testing for Black and black found
+	  			onPath = true;
+	  			found_left = true;
+	  		}
+	  		else{
+	  			left_pivots++;
+	  		}
 		}
 
 		// Max Left pivots reached. reset back to normal
@@ -121,19 +121,19 @@ void pathCorrect(char desiredTile){
 		else if(right_pivots <= max_pivots && (!attempted_right)){
 			encoded_rpivot(REV_360/pivot_increment, DEFAULT_SPD);
 			sleep(50);
-  		short current_colour = SensorValue[Colour];
-  		right_pivots++;
-  		if(desiredTile=='w' && current_colour > white_threshold){ // Testing for White and white Found
-  			onPath = true;
-  			found_right = true;
-  		}
-  		else if(desiredTile=='b' && current_colour < black_threshold){ // testing for Black and black found
-  			onPath = true;
-  			found_right = true;
-  		}
-  		else{
-  			left_pivots++;
-  		}
+	  		short current_colour = SensorValue[Colour];
+	  		right_pivots++;
+	  		if(desiredTile=='w' && current_colour > white_threshold){ // Testing for White and white Found
+	  			onPath = true;
+	  			found_right = true;
+	  		}
+	  		else if(desiredTile=='b' && current_colour < black_threshold){ // testing for Black and black found
+	  			onPath = true;
+	  			found_right = true;
+	  		}
+	  		else{
+	  			left_pivots++;
+	  		}
 		}
 		// Max right pivots reached. reset back to normal
 		else if(right_pivots == max_pivots && (!attempted_right)){ // Left incremental pivots did not find the color
@@ -219,13 +219,12 @@ void on_track(){
 task main(){
 	/* Initial Stage */
 	encoded_mforward(0.62, DEFAULT_SPD);
-  encoded_rpivot(REV_90, DEFAULT_SPD);
-
-  /* After Initial Pivot */
-  on_track();
-
-  /* After second pivot */
 	encoded_rpivot(REV_90, DEFAULT_SPD);
-  encoded_mforward(SMALL_TILE_DISTANCE * 4, DEFAULT_SPD);
 
+  	/* After Initial Pivot */
+  	on_track();
+
+  	/* After second pivot */
+	encoded_rpivot(REV_90, DEFAULT_SPD);
+  	encoded_mforward(SMALL_TILE_DISTANCE * 4, DEFAULT_SPD);
 }
