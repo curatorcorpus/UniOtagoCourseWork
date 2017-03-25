@@ -19,7 +19,7 @@ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 //=================== Global Variables ==================================
 
 // DEFAULLTS
-#define DEFAULT_SPD 30           // default ev3 robot speed.
+#define DEFAULT_SPD 40           // default ev3 robot speed.
 #define OFFSET      30           // offset for revs user defined encoded movements.
 #define REV_90      0.5437665781 // exact revolutions for ev3 robot for 90 degrees.
 #define REV_360     2.175066313  // exact revolutions for ev3 robot for 360 degrees.
@@ -55,7 +55,7 @@ void encoded_lpivot(float revs, long pow){
   reset_mencoder();
   setMotorSyncEncoder(motorB, motorC, -100, revs_to_degs, pow);
   while(getMotorEncoder(motorC) < revs_to_degs) {}
-  eraseDisplay();
+  //eraseDisplay();
 }
 
 /*
@@ -63,108 +63,19 @@ void encoded_lpivot(float revs, long pow){
 */
 void encoded_rpivot(float revs, long pow){
   float revs_to_degs = (revs * 360 - OFFSET);
-  displayCenteredBigTextLine(4, "Rotating Right");
+  //displayCenteredBigTextLine(4, "Rotating Right");
   reset_mencoder();
   setMotorSyncEncoder(motorB, motorC, 100, revs_to_degs, pow);
-  while(getMotorEncoder(motorB) < revs_to_degs) {
-
+  while(getMotorEncoder(motorC) >= -revs_to_degs) {
+  	//displayCenteredTextLine(2, "left: %f", getMotorEncoder(motorB));
+  	//displayCenteredTextLine(4, "cur val: %f", revs_to_degs);
+		//displayCenteredTextLine(6, "right: %f", getMotorEncoder(motorC));
   }
-  eraseDisplay();
+  	//displayCenteredTextLine(2, "left: %f", getMotorEncoder(motorB));
+  	//displayCenteredTextLine(4, "cur val: %f", revs_to_degs);
+		//displayCenteredTextLine(6, "right: %f", getMotorEncoder(motorC));
+ // eraseDisplay();
 }
-
-
-/*
-
-Does not work
-
-Can be sent whether we are looking for a white or a black tile
-Will take incremental rotations in either direction until it
-determines the correct color
-
-*/
-
-void pathCorrect(char desiredTile){
-	short pivot_increment = 20;
-	short left_pivots = 0;
-	short right_pivots = 0;
-	short max_pivots = 10;
-
-	bool onPath, attempted_left, attempted_right, found_left, found_right = false;
-
-	while(!onPath){
-		// Look for color pivoting left
-		if(left_pivots <= max_pivots && (!attempted_left)){
-			encoded_lpivot(REV_360/pivot_increment, DEFAULT_SPD);
-			sleep(50);
-	  		short current_colour = SensorValue[Colour];
-	  		left_pivots++;
-	  		if(desiredTile=='w' && current_colour > white_threshold){ // Testing for White and white Found
-	  			onPath = true;
-	  			found_left = true;
-	  		}
-	  		else if(desiredTile=='b' && current_colour < black_threshold){ // testing for Black and black found
-	  			onPath = true;
-	  			found_left = true;
-	  		}
-	  		else{
-	  			left_pivots++;
-	  		}
-		}
-
-		// Max Left pivots reached. reset back to normal
-		else if(left_pivots == max_pivots && (!attempted_left)){ // Left incremental pivots did not find the color
-			encoded_rpivot(REV_360/pivot_increment * max_pivots, DEFAULT_SPD);
-			attempted_left = true;
-		}
-
-		else if(right_pivots <= max_pivots && (!attempted_right)){
-			encoded_rpivot(REV_360/pivot_increment, DEFAULT_SPD);
-			sleep(50);
-	  		short current_colour = SensorValue[Colour];
-	  		right_pivots++;
-	  		if(desiredTile=='w' && current_colour > white_threshold){ // Testing for White and white Found
-	  			onPath = true;
-	  			found_right = true;
-	  		}
-	  		else if(desiredTile=='b' && current_colour < black_threshold){ // testing for Black and black found
-	  			onPath = true;
-	  			found_right = true;
-	  		}
-	  		else{
-	  			left_pivots++;
-	  		}
-		}
-		// Max right pivots reached. reset back to normal
-		else if(right_pivots == max_pivots && (!attempted_right)){ // Left incremental pivots did not find the color
-			encoded_rpivot(REV_360/pivot_increment * max_pivots, DEFAULT_SPD);
-			attempted_right = true;
-		}
-		else{
-			displayCenteredBigTextLine(4, "Robot is lost");
-		}
-	}
-
-	// Path was found at defined left pivots. Move forwards, then reverse pivot by pivoting right
-	if(onPath && found_left){
-		encoded_mforward(SMALL_TILE_DISTANCE/2, DEFAULT_SPD);
-		encoded_rpivot(REV_360/pivot_increment * left_pivots, DEFAULT_SPD);
-	}
-	// Path was found at defined right pivots. Move forwards, then reverse pivot by pivoting left
-	else if(onPath && found_right){
-			encoded_mforward(SMALL_TILE_DISTANCE/2, DEFAULT_SPD);
-			encoded_lpivot(REV_360/pivot_increment * right_pivots, DEFAULT_SPD);
-	}
-
-
-
-
-
-
-
-}
-
-
-
 
 /* Move forward specific rotations, check for black */
 void on_track(){
@@ -187,7 +98,7 @@ void on_track(){
 			if(!on_black)
 			{
 				on_black = true;
-				displayCenteredBigTextLine(4, "%d", ++black_count);
+				//displayCenteredBigTextLine(4, "%d", ++black_count);
 				playTone(700, 10);
 			}
 		} else on_black = false;
@@ -196,20 +107,16 @@ void on_track(){
 	reset_mencoder();
 }
 
-
-
-
 task main(){
 	/* Initial Stage */
-	//encoded_mforward(0.62, DEFAULT_SPD);
-	forward(0.62, rotations, DEFAULT_SPD);
-	reset_mencoder();
-	encoded_rpivot(REV_90, DEFAULT_SPD);
+	encoded_mforward(0.66, DEFAULT_SPD);
+	sleep(100);
+	encoded_rpivot(REV_90, 20);
 
   /* After Initial Pivot */
   on_track();
 
   /* After second pivot */
 	//encoded_rpivot(REV_90, DEFAULT_SPD);
-  	//encoded_mforward(SMALL_TILE_DISTANCE * 4, DEFAULT_SPD);
+  //encoded_mforward(SMALL_TILE_DISTANCE * 4, DEFAULT_SPD);
 }

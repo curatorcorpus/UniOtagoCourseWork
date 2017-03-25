@@ -23,7 +23,7 @@ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 
 // DEFAULLTS
 #define DEFAULT_SPD 30           // default ev3 robot speed.
-#define OFFSET      23           // offset for revs user defined encoded movements.
+#define OFFSET      21           // offset for revs user defined encoded movements.
 #define REV_90      0.5437665781 // exact revolutions for ev3 robot for 90 degrees.
 #define REV_360     2.175066313  // exact revolutions for ev3 robot for 360 degrees.
 #define SAMPLES     2         // the maximum samples we can obtain.
@@ -40,7 +40,7 @@ long thres_h_bl   = 12;
 
 long sample_arr[SAMPLES];
 
-long thres_bg = 31;
+long thres_bg = 23;
 long thres_gw = 44;
 
 //=======================================================================
