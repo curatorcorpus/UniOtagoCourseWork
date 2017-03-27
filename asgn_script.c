@@ -1,5 +1,5 @@
 #pragma config(Sensor, S2,     Touch,          sensorEV3_Touch)
-#pragma config(Sensor, S3,     Colour,         sensorEV3_Color)
+#pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Color)
 #pragma config(Sensor, S4,     Sonar,          sensorEV3_Ultrasonic)
 #pragma config(Motor,  motorA,           ,             tmotorEV3_Large, openLoop)
 #pragma config(Motor,  motorB,          left,          tmotorEV3_Large, PIDControl, driveLeft, encoder)
@@ -23,20 +23,21 @@
 //=================== Global Variables ==================================
 
 // DEFAULLTS
-#define DEFAULT_SPD 28           // default ev3 robot speed.
+#define DEFAULT_SPD 40           // default ev3 robot speed. working with speed of 28
 #define OFFSET      23           // offset for revs user defined encoded movements.
 #define REV_90      0.5437665781 // exact revolutions for ev3 robot for 90 degrees.
 #define REV_360     2.175066313  // exact revolutions for ev3 robot for 360 degrees.
-#define SAMPLES     2         // the maximum samples we can obtain.
+#define SAMPLES     2         	 // the maximum samples we can obtain.
+#define ROT_POW     27           // if rot pow is too small, the encoder is not sensitive enough to detect change
 
 bool go_left = false; // bool for path correction.
 
 long curr_color = 0;  // obtaining current color.
 long thres_l_bl   = 9; // threshold for identifying black.
-long thres_h_bl   = 12;
+long thres_h_bl   = 11;
 
-long thres_bg = 25;
-long thres_gw = 40;
+long thres_bg = 28;
+long thres_gw = 46;
 //=======================================================================
 
 //==================== Mobility Operations ==============================
@@ -79,13 +80,17 @@ void encoded_lpivot(float revs, long pow)
 {
 	float revs_to_degs = (revs * 360 - OFFSET);
 
-	displayCenteredBigTextLine(4, "Rotating Left");
-
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, -100, revs_to_degs, pow);
 
-	while(getMotorEncoder(motorC) < revs_to_degs) {}
-	eraseDisplay();
+	while(getMotorEncoder(motorC) < revs_to_degs) {
+		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
+		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
+		displayCenteredTextLine(6, "cur %f", revs_to_degs);
+		}
+		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
+		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
+		displayCenteredTextLine(6, "cur %f", revs_to_degs);
 }
 
 /*
@@ -95,13 +100,17 @@ void encoded_rpivot(float revs, long pow)
 {
 	float revs_to_degs = (revs * 360 - OFFSET);
 
-	displayCenteredBigTextLine(4, "Rotating Right");
-
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, 100, revs_to_degs, pow);
 
-	while(getMotorEncoder(motorB) < revs_to_degs) {}
-	eraseDisplay();
+	while(getMotorEncoder(motorC) > -revs_to_degs) {
+				displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
+		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
+		displayCenteredTextLine(6, "cur %f", revs_to_degs);
+		}
+		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
+		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
+		displayCenteredTextLine(6, "cur %f", revs_to_degs);
 }
 //=======================================================================
 
@@ -111,12 +120,12 @@ bool path_corrected = true;
 	Method for path correction, called linear backoff. If the color is wrong,
 	then correct yourself by sampling your surroundings 3 times.
 */
-void linear_backoff(bool direction)
+bool linear_backoff(bool direction)
 {
 	bool skip_correction = true;
 	float backoff_val    = 0.1;
 
-	int pow       = 15;
+	int pow       = 30;
 	int samples   = 0;
 	int n_samples = 3;
 
@@ -127,11 +136,12 @@ void linear_backoff(bool direction)
 
 		// sample color.
 		curr_color = getColorReflected(Colour);
+		//curr_color = SensorValue[Colour];
 		samples++;
 
 		if(curr_color < thres_bg || thres_gw < curr_color)
 		{
-			path_corrected = true;
+			displayBigTextLine(4, "l sol %d", curr_color);
 			skip_correction = false;
 			break;
 		}
@@ -142,7 +152,47 @@ void linear_backoff(bool direction)
 	{
 		if(!direction) turnRight(backoff_val * (samples + 1), rotations, pow);
 		else           turnLeft( backoff_val * (samples + 1), rotations, pow);
+
+		return false;
 	}
+
+	return true;
+}
+
+bool initial_check()
+{
+	int deg = 90;
+
+	reset_mencoder();
+	setMotorSyncEncoder(motorB, motorC, 0, deg, 10);
+	eraseDisplay();
+
+	while(getMotorEncoder(motorB) < deg - 3 || getMotorEncoder(motorC) < deg - 3)
+	{
+		//curr_color = SensorValue[Colour];
+		curr_color = getColorReflected(Colour);
+			displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
+		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
+		displayCenteredTextLine(6, "cur %f", deg);
+		}
+		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
+		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
+		displayCenteredTextLine(6, "cur %f", deg);
+
+	if(curr_color < thres_bg || curr_color > thres_gw)
+	{
+		displayBigTextLine(4, "sol %d", curr_color);
+		reset_mencoder();
+		return true;
+	}
+
+	reset_mencoder();
+
+	setMotorSyncEncoder(motorB, motorC, 0, deg, -DEFAULT_SPD);
+
+	while(getMotorEncoder(motorB) > -deg) {}
+
+	return false;
 }
 
 /*
@@ -150,16 +200,15 @@ void linear_backoff(bool direction)
 */
 void path_correction()
 {
-	curr_color = getColorReflected(Colour);
+	while(!initial_check()){
+		// use simple correction algorithm.
+		bool corrected = linear_backoff(go_left);
+		go_left = !go_left; // toggle.
 
-	if(thres_bg < curr_color && curr_color < thres_gw)
-	{
-		path_corrected = false;
-
-		while(path_corrected == false){
-			// use simple correction algorithm.
-			linear_backoff(go_left);
-			go_left = !go_left; // toggle.
+		if(corrected)
+		{
+			path_corrected = true;
+			break;
 		}
 	}
 }
@@ -171,13 +220,8 @@ void path_correction()
 */
 void initial_step()
 {
-	displayCenteredBigTextLine(4, "Starting in 5 secs");
-	sleep(5000);
-
-	eraseDisplay();
-
-	encoded_mforward(0.62, 50);// hardwired example.
-	//encoded_mforward(0.65, 50);
+	//encoded_mforward(0.62, 50);// hardwired example.
+	encoded_mforward(0.65, DEFAULT_SPD);
 }
 
 /*
@@ -191,27 +235,47 @@ void run_phase1()
 	bool on_dotted_line = true;
 
 	// filter first couple of readings
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
 
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	/*
+curr_color = SensorValue[Colour];
+curr_color = SensorValue[Colour];
+curr_color = SensorValue[Colour];
+curr_color = SensorValue[Colour];
+curr_color = SensorValue[Colour];
+curr_color = SensorValue[Colour];*/
 	while (black_count < 15)
 	{
-		if(!on_black)
+		curr_color = getColorReflected(Colour);
+		//curr_color = sensorValue[Colour];
+
+		if(thres_l_bl < curr_color && curr_color < thres_h_bl)
+		//if(curr_color == 1)
 		{
-				on_black = true;
-				//displayCenteredBigTextLine(4, "%d", ++black_count);
-				playTone(700, 10);
+			if(!on_black)
+			{
+					on_black = true;
+					//displayCenteredBigTextLine(4, "%d", ++black_count);
+					++black_count;
+					playTone(700, 10);
 
-		} else on_black = false;
+			} else if(on_black) continue;
+		}
 
-		if(thres_bg < curr_color && curr_color < thres_gw)
+		if(thres_bg < curr_color && curr_color < thres_gw){
+		//if(curr_color == 7)	{
+			setMotorSync(motorB, motorC, 0, 0);
+			displayCenteredBigTextLine(4, "%f", curr_color);
 			path_correction();
 
+			on_black = false;
+		}
+
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
-		sleep(130);
 	}
 
 	reset_motors();
@@ -239,22 +303,19 @@ void run_phase2()
 */
 task main()
 {
-	short rot_pow = 20;
-
 	// initial movement from start tile to black line
 	initial_step();
 
 	// first right rotation
-	// encoded_rpivot(0.55585028, rot_pow);+
-	encoded_lpivot(REV_90, rot_pow);
-	encoded_rpivot(REV_90, rot_pow);
+	encoded_rpivot(REV_90, ROT_POW);
+
 	//turnRight(REV_360/4,rotations,rot_pow);
 
 	// move along black line and count 15 black dots
-	//run_phase1();
+	run_phase1();
 
 	// rotate 90 degrees again
-	//encoded_rpivot(REV_90, rot_pow); // TODO: needs to be configured for our environment
+	encoded_rpivot(REV_90, ROT_POW); // TODO: needs to be configured for our environment
 
 	//run_phase2();
 
