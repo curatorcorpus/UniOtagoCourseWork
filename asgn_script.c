@@ -30,14 +30,15 @@
 #define SAMPLES     2         	 // the maximum samples we can obtain.
 #define ROT_POW     27           // if rot pow is too small, the encoder is not sensitive enough to detect change
 
-bool go_left = false; // bool for path correction.
+bool go_left = false;            // bool for path correction.
+bool path_corrected = true;      // bool for cases when path is corrected.
 
-long curr_color = 0;  // obtaining current color.
-long thres_l_bl   = 9; // threshold for identifying black.
-long thres_h_bl   = 11;
+long curr_color = 0;             // obtaining current color.
+long thres_l_bl   = 9;           // threshold for identifying black.
+long thres_h_bl   = 11;          // threshold for identifying black. 
 
-long thres_bg = 28;
-long thres_gw = 46;
+long thres_bg = 28;              // default values with 28 Def_spd, 26 - 27 i think.
+long thres_gw = 46;              // default values with 28 Def_spd, 44 - 46 i think.
 //=======================================================================
 
 //==================== Mobility Operations ==============================
@@ -115,7 +116,6 @@ void encoded_rpivot(float revs, long pow)
 //=======================================================================
 
 //==================== Path Correction ==================================
-bool path_corrected = true;
 /*
 	Method for path correction, called linear backoff. If the color is wrong,
 	then correct yourself by sampling your surroundings 3 times.
@@ -227,27 +227,19 @@ void initial_step()
 /*
 	Method used to move along the black dotted line and count them.
 */
-void run_phase1()
+void move_along_bw_tiles()
 {
 	int black_count = 0;
-
 	bool on_black = false;
-	bool on_dotted_line = true;
+	//bool on_dotted_line = true;
 
 	// filter first couple of readings
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
+	curr_color = getColorReflected(Colour);
 
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	curr_color = getColorReflected(Colour);
-	/*
-curr_color = SensorValue[Colour];
-curr_color = SensorValue[Colour];
-curr_color = SensorValue[Colour];
-curr_color = SensorValue[Colour];
-curr_color = SensorValue[Colour];
-curr_color = SensorValue[Colour];*/
 	while (black_count < 15)
 	{
 		curr_color = getColorReflected(Colour);
@@ -276,10 +268,11 @@ curr_color = SensorValue[Colour];*/
 		}
 
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
+		
+		// insert sleep/delay to slow down path correction -> i think.
 	}
 
 	reset_motors();
-	//eraseDisplay();
 }
 
 /*
@@ -312,7 +305,7 @@ task main()
 	//turnRight(REV_360/4,rotations,rot_pow);
 
 	// move along black line and count 15 black dots
-	run_phase1();
+	move_along_bw_tiles();
 
 	// rotate 90 degrees again
 	encoded_rpivot(REV_90, ROT_POW); // TODO: needs to be configured for our environment
