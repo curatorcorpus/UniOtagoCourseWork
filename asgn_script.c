@@ -30,6 +30,7 @@
 #define SAMPLES     2         	 // the maximum samples we can obtain.
 #define ROT_POW     27           // if rot pow is too small, the encoder is not sensitive enough to detect change
 
+
 bool go_left = false;            // bool for path correction.
 bool path_corrected = true;      // bool for cases when path is corrected.
 
