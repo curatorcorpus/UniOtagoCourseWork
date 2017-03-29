@@ -138,9 +138,9 @@ bool linear_backoff(bool direction)
 
 		// sample color.
 		curr_color = getColorReflected(Colour);
-		//curr_color = SensorValue[Colour];
 		samples++;
 
+		// if a non-grey color was found, then break out of linear backoff.
 		if(curr_color < thres_bg || thres_gw < curr_color)
 		{
 			displayBigTextLine(4, "l sol %d", curr_color);
@@ -169,6 +169,7 @@ bool initial_check()
 	setMotorSyncEncoder(motorB, motorC, 0, deg, 10);
 	eraseDisplay();
 
+	// move forward and check color.
 	while(getMotorEncoder(motorB) < deg - 4 || getMotorEncoder(motorC) < deg - 4)
 	{
 		curr_color = getColorReflected(Colour);
@@ -180,6 +181,7 @@ bool initial_check()
 		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
 		displayCenteredTextLine(6, "cur %f", deg);
 
+	// if the final color is black or white, then continue on the same path.
 	if(curr_color < thres_bg || curr_color > thres_gw)
 	{
 		displayBigTextLine(4, "sol %d", curr_color);
@@ -188,9 +190,9 @@ bool initial_check()
 	}
 
 	reset_mencoder();
-
 	setMotorSyncEncoder(motorB, motorC, 0, deg, -DEFAULT_SPD);
 
+	// otherwise, backtrace steps for initial check and perform linear backoff.
 	while(getMotorEncoder(motorB) > -deg) {}
 
 	return false;
@@ -213,9 +215,7 @@ void path_correction()
 		}
 	}
 }
-//=======================================================================
 
-//==================== Phases ===========================================
 /*
 	Method used to travel forward from the starting tile 'S'.
 */
@@ -224,7 +224,9 @@ void initial_step()
 	//encoded_mforward(0.62, 50);// hardwired example.
 	encoded_mforward(0.65, DEFAULT_SPD);
 }
+//=======================================================================
 
+//==================== Phases ===========================================
 /*
 	Method used to move along the black dotted line and count them.
 */
@@ -294,16 +296,16 @@ void move_along_bw_tiles()
 /*
 	Method used to count the 7 grey squares + move to finishing tile 'F'.
 */
-void run_phase2()
+void find_tower()
 {
-int distances[10];
- /* rotate left  90 */
+ int distances[10];
+ int lowestValue = 0;
+ int lowestKey = 0;
+	
+ // position robot 90 degs left.
  turnLeft(REV_90, rotations, 30);
 
-
-/*
- Incrementally pivot and store the sensor Value at each increment
- */
+ // Incrementally pivot and store the distance value at each increment in cm.
  for(int i = 0; i < 10; i++){
    turnRight(REV_360/20, rotations, 30);
    sleep(50);
@@ -312,11 +314,8 @@ int distances[10];
    displayCenteredBigTextLine(6, "Key: %d", i );
    sleep(200);
  }
-
-int lowestValue = 0;
- int lowestKey = 0;
-
-/* Iterate through array, checking for lowestDistance */
+	
+ // find lowest distance
  for(int i = 0; i < 10; i++){
    if(i == 0){
      lowestKey = i;
@@ -328,7 +327,7 @@ int lowestValue = 0;
    }
  }
 
- lowestKey++;
+lowestKey++;
 eraseDisplay();
 displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
 
@@ -344,7 +343,7 @@ float turnTo = (REV_360/2 / 10.00) * (10.00 - lowestKey);
  */
  turnLeft(turnTo , rotations, 30);
 
-/* This will stop just before the tower */
+ // This will stop just before the tower
  encoded_mforward(lowestValue/40, 30);
 }
 //=======================================================================
@@ -355,20 +354,22 @@ float turnTo = (REV_360/2 / 10.00) * (10.00 - lowestKey);
 */
 task main()
 {
-	// initial movement from start tile to black line
+	// initial movement from start tile to black line.
 	initial_step();
 
-	// first right rotation
+	// first right rotation - aline yourself with black and white tiled line.
 	encoded_rpivot(REV_90, ROT_POW);
 
-	// move along black line and count 15 black dots
+	// move along black line and count 15 black tiles.
 	move_along_bw_tiles();
 
-	// rotate 90 degrees again
-	encoded_rpivot(REV_90, ROT_POW); // TODO: needs to be configured for our environment
-
+	// rotate 90 degrees and try position yourself toward tower.
+	encoded_rpivot(REV_90, ROT_POW);
+	
+	// move closer to assumed position of tower.
 	encoded_mforward(6, 60);
-
-	run_phase2();
+	
+	// use ultrasonic sonar to find distance from tower.
+	find_tower();
 }
 //=======================================================================
