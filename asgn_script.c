@@ -1,6 +1,6 @@
 #pragma config(Sensor, S2,     Touch,          sensorEV3_Touch)
 #pragma config(Sensor, S3,     Colour,         sensorEV3_Color, modeEV3Color_Color)
-#pragma config(Sensor, S4,     Sonar,          sensorEV3_Ultrasonic)
+#pragma config(Sensor, S4,     sonar4,         sensorEV3_Ultrasonic)
 #pragma config(Motor,  motorA,           ,             tmotorEV3_Large, openLoop)
 #pragma config(Motor,  motorB,          left,          tmotorEV3_Large, PIDControl, driveLeft, encoder)
 #pragma config(Motor,  motorC,          right,         tmotorEV3_Large, PIDControl, driveRight, encoder)
@@ -231,8 +231,9 @@ void initial_step()
 void move_along_bw_tiles()
 {
 	int black_count = 0;
-	bool on_black = false;
-	//bool on_dotted_line = true;
+
+	bool passed_black = false;
+	bool tgl_black = false;
 
 	// filter first couple of readings
 	curr_color = getColorReflected(Colour);
@@ -244,17 +245,19 @@ void move_along_bw_tiles()
 	while (black_count < 15)
 	{
 		curr_color = getColorReflected(Colour);
-		//curr_color = sensorValue[Colour];
 
 		if(thres_l_bl < curr_color && curr_color < thres_h_bl)
 		{
-			if(!on_black)
+			//tgl_black = true;
+
+			if(!tgl_black)
 			{
-					on_black = true;
+					tgl_black = true;
 					++black_count;
 					playTone(700, 15);
 
-			} else if(on_black) continue;
+			} else if(tgl_black) continue;
+
 		}
 
 		if(thres_bg < curr_color && curr_color < thres_gw){
@@ -262,17 +265,22 @@ void move_along_bw_tiles()
 			displayCenteredBigTextLine(4, "%f", curr_color);
 			path_correction();
 
-			if(thres_l_bl < curr_color && curr_color < thres_h_bl)
-			{
-				if(!on_black)
-				{
-					on_black = true;
-					++black_count;
-					playTone(700, 15);
+			tgl_black = false;
+			//passed_black = false;
 
-				} else on_black = false;
-			}
+			//if(thres_l_bl < curr_color && curr_color < thres_h_bl)
 		}
+		/*
+		if(tgl_black)
+		{
+			continue;
+			if(!passed_black)
+			{
+				passed_black = true;
+				++black_count;
+				playTone(700, 15);
+			}
+		} */
 
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
 
@@ -288,13 +296,56 @@ void move_along_bw_tiles()
 */
 void run_phase2()
 {
-	/*
-	while(true)
-	{
-		// move forward
-		displayCenteredBigTextLine(4, "Bumper: %d", poll_whiskers());
-	}
-	*/
+int distances[10];
+ /* rotate left  90 */
+ turnLeft(REV_90, rotations, 30);
+
+
+/*
+ Incrementally pivot and store the sensor Value at each increment
+ */
+ for(int i = 0; i < 10; i++){
+   turnRight(REV_360/20, rotations, 30);
+   sleep(50);
+   distances[i] = SensorValue[sonar4];
+   displayCenteredBigTextLine(4, "Distance: %d", distances[i]);
+   displayCenteredBigTextLine(6, "Key: %d", i );
+   sleep(200);
+ }
+
+int lowestValue = 0;
+ int lowestKey = 0;
+
+/* Iterate through array, checking for lowestDistance */
+ for(int i = 0; i < 10; i++){
+   if(i == 0){
+     lowestKey = i;
+     lowestValue = distances[i];
+   }
+   else if( distances[i] < lowestValue){
+     lowestKey = i;
+     lowestValue = distances[i];
+   }
+ }
+
+ lowestKey++;
+eraseDisplay();
+displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
+
+float turnTo = (REV_360/2 / 10.00) * (10.00 - lowestKey);
+ /*
+ Specifications of Robot:
+ Diameter of Rotation circle: 12.3 cm
+ Diameter of Wheel: 5.655 cm
+ Circumference of Rotation Circle: 38.64158964 cm
+ Circumference of Wheel: 17.76570646 cm
+ Revs in Rotation Circle: 2.175066313 revs (wheels)
+ Revs in 90 degree rotation: 0.5437665781 revs (wheels)
+ */
+ turnLeft(turnTo , rotations, 30);
+
+/* This will stop just before the tower */
+ encoded_mforward(lowestValue/40, 30);
 }
 //=======================================================================
 
@@ -316,7 +367,8 @@ task main()
 	// rotate 90 degrees again
 	encoded_rpivot(REV_90, ROT_POW); // TODO: needs to be configured for our environment
 
+	encoded_mforward(6, 60);
 
-	encoded_mforward(3, ROT_POW);
+	run_phase2();
 }
 //=======================================================================
