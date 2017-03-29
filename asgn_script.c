@@ -35,10 +35,10 @@ bool path_corrected = true;      // bool for cases when path is corrected.
 
 long curr_color = 0;             // obtaining current color.
 long thres_l_bl   = 9;           // threshold for identifying black.
-long thres_h_bl   = 11;          // threshold for identifying black. 
+long thres_h_bl   = 12;          // threshold for identifying black.
 
 long thres_bg = 28;              // default values with 28 Def_spd, 26 - 27 i think.
-long thres_gw = 46;              // default values with 28 Def_spd, 44 - 46 i think.
+long thres_gw = 43;              // default values with 28 Def_spd, 44 - 46 i think.
 //=======================================================================
 
 //==================== Mobility Operations ==============================
@@ -59,6 +59,8 @@ void reset_mencoder()
 {
 	resetMotorEncoder(motorB);
 	resetMotorEncoder(motorC);
+
+	setMotorSyncEncoder(motorB, motorC, 0, 0, 0);
 }
 
 /*
@@ -167,9 +169,8 @@ bool initial_check()
 	setMotorSyncEncoder(motorB, motorC, 0, deg, 10);
 	eraseDisplay();
 
-	while(getMotorEncoder(motorB) < deg - 3 || getMotorEncoder(motorC) < deg - 3)
+	while(getMotorEncoder(motorB) < deg - 4 || getMotorEncoder(motorC) < deg - 4)
 	{
-		//curr_color = SensorValue[Colour];
 		curr_color = getColorReflected(Colour);
 			displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
 		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
@@ -246,32 +247,39 @@ void move_along_bw_tiles()
 		//curr_color = sensorValue[Colour];
 
 		if(thres_l_bl < curr_color && curr_color < thres_h_bl)
-		//if(curr_color == 1)
 		{
 			if(!on_black)
 			{
 					on_black = true;
-					//displayCenteredBigTextLine(4, "%d", ++black_count);
 					++black_count;
-					playTone(700, 10);
+					playTone(700, 15);
 
 			} else if(on_black) continue;
 		}
 
 		if(thres_bg < curr_color && curr_color < thres_gw){
-		//if(curr_color == 7)	{
 			setMotorSync(motorB, motorC, 0, 0);
 			displayCenteredBigTextLine(4, "%f", curr_color);
 			path_correction();
 
-			on_black = false;
+			if(thres_l_bl < curr_color && curr_color < thres_h_bl)
+			{
+				if(!on_black)
+				{
+					on_black = true;
+					++black_count;
+					playTone(700, 15);
+
+				} else on_black = false;
+			}
 		}
 
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
-		
+
 		// insert sleep/delay to slow down path correction -> i think.
 	}
 
+	reset_mencoder();
 	reset_motors();
 }
 
@@ -302,15 +310,13 @@ task main()
 	// first right rotation
 	encoded_rpivot(REV_90, ROT_POW);
 
-	//turnRight(REV_360/4,rotations,rot_pow);
-
 	// move along black line and count 15 black dots
 	move_along_bw_tiles();
 
 	// rotate 90 degrees again
 	encoded_rpivot(REV_90, ROT_POW); // TODO: needs to be configured for our environment
 
-	//run_phase2();
 
+	encoded_mforward(3, ROT_POW);
 }
 //=======================================================================
