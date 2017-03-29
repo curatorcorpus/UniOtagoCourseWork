@@ -47,25 +47,24 @@ void encoded_rpivot(float revs, long pow){
 
 task main()
 {
-  bool foundTower = false;
   int distances[10];
 
   /* rotate left  90 */
-  encoded_lpivot(REV_90, 30);
+  turnLeft(REV_90, rotations, 30);
 
   /* 
   Incrementally pivot and store the sensor Value at each increment
   */
   for(int i = 0; i <= 10; i++){
-    encoded_rpivot(REV_180/10, 30);
-    int[i] = SensorValue[sonar4];
+    turnRight(REV_180/10, rotations, 30);
+    distances[i] = SensorValue[sonar4];
   }
 
   int lowestValue = 0;
   int lowestKey = 0; 
 
   /* Iterate through array, checking for lowestDistance */
-  for(int i = 0 i < 10; i++){
+  for(int i = 0; i < 10; i++){
     if(i == 0){
       lowestValue = distances[i];
     }
@@ -83,10 +82,10 @@ task main()
   Revs in Rotation Circle: 2.175066313 revs (wheels)
   Revs in 90 degree rotation: 0.5437665781 revs (wheels)
   */
-  encoded_lpivot(REV_180/10*(10 -lowestKey), 30);
+  turnLeft(REV_180/10*(10 - lowestKey), rotations, 30);
   
   /* This will stop just before the tower */
-  encoded_mforward(lowestDistance/40, 30);
+  encoded_mforward(lowestValue/40, 30);
 
   }
 }
