@@ -297,7 +297,7 @@ void move_along_bw_tiles()
 /*
 	Method used to count the 7 grey squares + move to finishing tile 'F'.
 */
-void find_tower()
+/*void find_tower()
 {
  int distances[10];
  int lowestValue = 0;
@@ -333,20 +333,70 @@ eraseDisplay();
 displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
 
 float turnTo = (REV_360/2 / 10.00) * (10.00 - lowestKey);
- /*
- Specifications of Robot:
- Diameter of Rotation circle: 12.3 cm
- Diameter of Wheel: 5.655 cm
- Circumference of Rotation Circle: 38.64158964 cm
- Circumference of Wheel: 17.76570646 cm
- Revs in Rotation Circle: 2.175066313 revs (wheels)
- Revs in 90 degree rotation: 0.5437665781 revs (wheels)
- */
  turnLeft(turnTo , rotations, 30);
 
  // This will stop just before the tower
  encoded_mforward(lowestValue/40, 30);
+}*/
+
+void find_tower(int scans)
+{
+	int distances[20];
+	int lowestValue = 0;
+	int lowestKey = 0;
+
+	// position robot 90 degs left.
+	turnLeft(REV_90, rotations, 30);
+
+	// Incrementally pivot and store the distance value at each increment in cm.
+	for(int i = 0; i < scans; i++){
+		turnRight(REV_360/(scans*2), rotations, 30);
+		sleep(50);
+		distances[i] = SensorValue[sonar4];
+		displayCenteredBigTextLine(5, "Distance: %d", distances[i]);
+		displayCenteredBigTextLine(7, "Key: %d", i );
+		sleep(100);
+	}
+
+	// find lowest distance
+	for(int i = 0; i < scans; i++){
+		if(i == 0){
+			lowestKey = i;
+			lowestValue = distances[i];
+		}
+		else if( distances[i] < lowestValue){
+			lowestKey = i;
+			lowestValue = distances[i];
+		}
+	}
+
+	lowestKey++;
+	eraseDisplay();
+	displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
+
+	float turnTo = (REV_360/2 / scans) * (scans - lowestKey -0.5);
+	/*
+	Specifications of Robot:
+	Diameter of Rotation circle: 12.3 cm
+	Diameter of Wheel: 5.655 cm
+	Circumference of Rotation Circle: 38.64158964 cm
+	Circumference of Wheel: 17.76570646 cm
+	Revs in Rotation Circle: 2.175066313 revs (wheels)
+	Revs in 90 degree rotation: 0.5437665781 revs (wheels)
+	*/
+	turnLeft(turnTo, rotations, 30);
+
+	// This will stop just before the tower
+	encoded_mforward(lowestValue/18-0.5, 30);
 }
+
+void push_tower(){
+	encoded_mforward(1, 30);
+	if(SensorValue[Touch] > 0){
+		playTone(200, 20);
+	}
+}
+	
 //=======================================================================
 
 //==================== MAIN =============================================
@@ -371,6 +421,8 @@ task main()
 	encoded_mforward(6, 60);
 	
 	// use ultrasonic sonar to find distance from tower.
-	find_tower();
+	find_tower(20);
+	find_tower(10);
+	push_tower();
 }
 //=======================================================================
