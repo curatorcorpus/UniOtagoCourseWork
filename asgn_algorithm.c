@@ -85,14 +85,7 @@ void encoded_lpivot(float revs, long pow)
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, -100, revs_to_degs, pow);
 
-	while(getMotorEncoder(motorC) < revs_to_degs) {
-		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
-		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
-		displayCenteredTextLine(6, "cur %f", revs_to_degs);
-	}
-	displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
-	displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
-	displayCenteredTextLine(6, "cur %f", revs_to_degs);
+	while(getMotorEncoder(motorC) < revs_to_degs) {}
 }
 
 /*
@@ -105,14 +98,7 @@ void encoded_rpivot(float revs, long pow)
 	reset_mencoder();
 	setMotorSyncEncoder(motorB, motorC, 100, revs_to_degs, pow);
 
-	while(getMotorEncoder(motorC) > -revs_to_degs) {
-		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
-		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
-		displayCenteredTextLine(6, "cur %f", revs_to_degs);
-	}
-	displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
-	displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
-	displayCenteredTextLine(6, "cur %f", revs_to_degs);
+	while(getMotorEncoder(motorC) > -revs_to_degs) {}
 }
 //=======================================================================
 
@@ -172,14 +158,7 @@ bool initial_check()
 	while(getMotorEncoder(motorB) < deg - 4 || getMotorEncoder(motorC) < deg - 4)
 	{
 		curr_color = getColorReflected(Colour);
-		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
-		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
-		displayCenteredTextLine(6, "cur %f", deg);
 	}
-	displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
-	displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
-	displayCenteredTextLine(6, "cur %f", deg);
-
 	// if the final color is black or white, then continue on the same path.
 	if(curr_color < thres_bg || curr_color > thres_gw)
 	{
@@ -285,23 +264,20 @@ void follow_bw_tiles()
 /*
 Method used to count the 7 grey squares + move to finishing tile 'F'.
 */
-void find_tower(int scans, int turn_pow)
+void find_tower(int scans, int turn_pow, bool n)
 {
 	int distances[20];
 	int lowestValue = 0;
 	int lowestKey = 0;
 
 	// position robot 90 degs left.
-	turnLeft(REV_90, rotations, turn_pow);
+	turnLeft(REV_90/3*2, rotations, turn_pow);
 
 	// Incrementally pivot and store the distance value at each increment in cm.
 	for(int i = 0; i < scans; i++){
-		turnRight(REV_360/(scans*2), rotations, turn_pow);
-		sleep(50);
+		turnRight(REV_360/(scans*3), rotations, turn_pow);
+		if(n) sleep(50);
 		distances[i] = SensorValue[sonar4];
-		displayCenteredBigTextLine(5, "Distance: %d", distances[i]);
-		displayCenteredBigTextLine(7, "Key: %d", i );
-		sleep(100);
 	}
 
 	// find lowest distance
@@ -322,11 +298,11 @@ void find_tower(int scans, int turn_pow)
 	displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
 
 	// find angle of lowest distance
-	float turnTo = (REV_360/2 / scans) * (scans - lowestKey -0.5);
+	float turnTo = (REV_360/3  / scans) * (scans - lowestKey -0.5);
 	turnLeft(turnTo, rotations, turn_pow);
 
 	// This will stop just before the tower
-	encoded_mforward(lowestValue/18-0.5, 100);
+	encoded_mforward(lowestValue/17.76-0.5, 100);
 }
 
 /*
@@ -357,12 +333,12 @@ task main()
 
 	// move closer to assumed position of tower.
   encoded_mforward(7, 100);
-
+ 
 	// use ultrasonic sonar to find distance from tower.
-	find_tower(20, 30);
+	find_tower(12, 30, true);
 	
 	// once closer to the tower, check distance from tower again.
-	find_tower(10, 100);
+	find_tower(10, 100, false);
 
 	// push the tower off finishing tile.
 	push_tower();
