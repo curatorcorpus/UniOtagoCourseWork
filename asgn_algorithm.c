@@ -8,15 +8,13 @@
 
 //=================== Basic Mathematics =================================
 /*
-	Specifications of Robot:
-
-		Diameter of Rotation circle: 12.3 cm
-		Diameter of Wheel: 5.655 cm
-		Circumference of Rotation Circle: 38.64158964 cm
-		Circumference of Wheel: 17.76570646 cm
-		Revs in Rotation Circle: 2.175066313 revs (wheels)
-		Revs in 90 degree rotation: 0.5437665781 revs (wheels)
-
+Specifications of Robot:
+Diameter of Rotation circle: 12.3 cm
+Diameter of Wheel: 5.655 cm
+Circumference of Rotation Circle: 38.64158964 cm
+Circumference of Wheel: 17.76570646 cm
+Revs in Rotation Circle: 2.175066313 revs (wheels)
+Revs in 90 degree rotation: 0.5437665781 revs (wheels)
 */
 //=======================================================================
 
@@ -44,7 +42,7 @@ long thres_gw = 43;              // default values with 28 Def_spd, 44 - 46 i th
 
 //==================== Mobility Operations ==============================
 /*
-	Method used to reset motor pow back to zero.
+Method used to reset motor pow back to zero.
 */
 void reset_motors()
 {
@@ -54,7 +52,7 @@ void reset_motors()
 }
 
 /*
-	Method used to reset the motor encoder (turn) values.
+Method used to reset the motor encoder (turn) values.
 */
 void reset_mencoder()
 {
@@ -65,7 +63,7 @@ void reset_mencoder()
 }
 
 /*
-	Method used to tell both wheels to turn certain revs.
+Method used to tell both wheels to turn certain revs.
 */
 void encoded_mforward(float revs, long pow)
 {
@@ -78,7 +76,7 @@ void encoded_mforward(float revs, long pow)
 }
 
 /*
-	Method for pivot left given a rev and pow.
+Method for pivot left given a rev and pow.
 */
 void encoded_lpivot(float revs, long pow)
 {
@@ -91,14 +89,14 @@ void encoded_lpivot(float revs, long pow)
 		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
 		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
 		displayCenteredTextLine(6, "cur %f", revs_to_degs);
-		}
-		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
-		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
-		displayCenteredTextLine(6, "cur %f", revs_to_degs);
+	}
+	displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
+	displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
+	displayCenteredTextLine(6, "cur %f", revs_to_degs);
 }
 
 /*
-	Method for pivoting right given a rev and pow.
+Method for pivoting right given a rev and pow.
 */
 void encoded_rpivot(float revs, long pow)
 {
@@ -108,20 +106,20 @@ void encoded_rpivot(float revs, long pow)
 	setMotorSyncEncoder(motorB, motorC, 100, revs_to_degs, pow);
 
 	while(getMotorEncoder(motorC) > -revs_to_degs) {
-				displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
-		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
-		displayCenteredTextLine(6, "cur %f", revs_to_degs);
-		}
 		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
 		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
 		displayCenteredTextLine(6, "cur %f", revs_to_degs);
+	}
+	displayCenteredTextLine(2, "right %f", getMotorEncoder(motorB));
+	displayCenteredTextLine(4, "left %f", getMotorEncoder(motorC));
+	displayCenteredTextLine(6, "cur %f", revs_to_degs);
 }
 //=======================================================================
 
 //==================== Path Correction ==================================
 /*
-	Method for path correction, called linear backoff. If the color is wrong,
-	then correct yourself by sampling your surroundings 3 times.
+Method for path correction, called linear backoff. If the color is wrong,
+then correct yourself by sampling your surroundings 3 times.
 */
 bool linear_backoff(bool direction)
 {
@@ -174,13 +172,13 @@ bool initial_check()
 	while(getMotorEncoder(motorB) < deg - 4 || getMotorEncoder(motorC) < deg - 4)
 	{
 		curr_color = getColorReflected(Colour);
-			displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
-		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
-		displayCenteredTextLine(6, "cur %f", deg);
-		}
 		displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
 		displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
 		displayCenteredTextLine(6, "cur %f", deg);
+	}
+	displayCenteredTextLine(2, "right %f", getMotorEncoder(motorC));
+	displayCenteredTextLine(4, "left %f", getMotorEncoder(motorB));
+	displayCenteredTextLine(6, "cur %f", deg);
 
 	// if the final color is black or white, then continue on the same path.
 	if(curr_color < thres_bg || curr_color > thres_gw)
@@ -200,7 +198,7 @@ bool initial_check()
 }
 
 /*
-	Method for path correction between two lines.
+Method for path correction between two lines.
 */
 void path_correction()
 {
@@ -218,7 +216,7 @@ void path_correction()
 }
 
 /*
-	Method used to travel forward from the starting tile 'S'.
+Method used to travel forward from the starting tile 'S'.
 */
 void initial_step()
 {
@@ -229,9 +227,9 @@ void initial_step()
 
 //==================== Phases ===========================================
 /*
-	Method used to move along the black dotted line and count them.
+Method used to move along the black dotted line and count them.
 */
-void move_along_bw_tiles()
+void follow_bw_tiles()
 {
 	int black_count = 0;
 
@@ -249,42 +247,32 @@ void move_along_bw_tiles()
 	{
 		curr_color = getColorReflected(Colour);
 
+		// check if color is black.
 		if(thres_l_bl < curr_color && curr_color < thres_h_bl)
 		{
-			//tgl_black = true;
 
 			if(!tgl_black)
 			{
-					tgl_black = true;
-					++black_count;
-					playTone(700, 15);
+				tgl_black = true;
+				++black_count;
+				playTone(700, 15);
 
-			} else if(tgl_black) continue;
-
+			}
 		}
-
+		
+		// check if color is grey.
 		if(thres_bg < curr_color && curr_color < thres_gw){
 			setMotorSync(motorB, motorC, 0, 0);
 			displayCenteredBigTextLine(4, "%f", curr_color);
 			path_correction();
-
-			tgl_black = false;
-			//passed_black = false;
-
-			//if(thres_l_bl < curr_color && curr_color < thres_h_bl)
 		}
-		/*
-		if(tgl_black)
+		
+		// check if color is white.
+		if(curr_color >= thres_gw)
 		{
-			continue;
-			if(!passed_black)
-			{
-				passed_black = true;
-				++black_count;
-				playTone(700, 15);
-			}
-		} */
-
+			tgl_black = false;
+		}
+		
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
 
 		// insert sleep/delay to slow down path correction -> i think.
@@ -295,61 +283,20 @@ void move_along_bw_tiles()
 }
 
 /*
-	Method used to count the 7 grey squares + move to finishing tile 'F'.
+Method used to count the 7 grey squares + move to finishing tile 'F'.
 */
-/*void find_tower()
-{
- int distances[10];
- int lowestValue = 0;
- int lowestKey = 0;
-	
- // position robot 90 degs left.
- turnLeft(REV_90, rotations, 30);
-
- // Incrementally pivot and store the distance value at each increment in cm.
- for(int i = 0; i < 10; i++){
-   turnRight(REV_360/20, rotations, 30);
-   sleep(50);
-   distances[i] = SensorValue[sonar4];
-   displayCenteredBigTextLine(4, "Distance: %d", distances[i]);
-   displayCenteredBigTextLine(6, "Key: %d", i );
-   sleep(200);
- }
-	
- // find lowest distance
- for(int i = 0; i < 10; i++){
-   if(i == 0){
-     lowestKey = i;
-     lowestValue = distances[i];
-   }
-   else if( distances[i] < lowestValue){
-     lowestKey = i;
-     lowestValue = distances[i];
-   }
- }
-
-lowestKey++;
-eraseDisplay();
-displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
-
-float turnTo = (REV_360/2 / 10.00) * (10.00 - lowestKey);
- turnLeft(turnTo , rotations, 30);
-
- // This will stop just before the tower
- encoded_mforward(lowestValue/40, 30);
-}*/
-
-void find_tower(int scans)
+void find_tower(int scans, int turn_pow)
 {
 	int distances[20];
 	int lowestValue = 0;
 	int lowestKey = 0;
+
 	// position robot 90 degs left.
-	turnLeft(REV_90, rotations, 30);
+	turnLeft(REV_90, rotations, turn_pow);
 
 	// Incrementally pivot and store the distance value at each increment in cm.
 	for(int i = 0; i < scans; i++){
-		turnRight(REV_360/(scans*2), rotations, 30);
+		turnRight(REV_360/(scans*2), rotations, turn_pow);
 		sleep(50);
 		distances[i] = SensorValue[sonar4];
 		displayCenteredBigTextLine(5, "Distance: %d", distances[i]);
@@ -369,42 +316,30 @@ void find_tower(int scans)
 		}
 	}
 
+	// notify
 	lowestKey++;
 	eraseDisplay();
 	displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
 
+	// find angle of lowest distance
 	float turnTo = (REV_360/2 / scans) * (scans - lowestKey -0.5);
-	/*
-	Specifications of Robot:
-	Diameter of Rotation circle: 12.3 cm
-	Diameter of Wheel: 5.655 cm
-	Circumference of Rotation Circle: 38.64158964 cm
-	Circumference of Wheel: 17.76570646 cm
-	Revs in Rotation Circle: 2.175066313 revs (wheels)
-	Revs in 90 degree rotation: 0.5437665781 revs (wheels)
-	*/
-	turnLeft(turnTo, rotations, 30);
+	turnLeft(turnTo, rotations, turn_pow);
 
 	// This will stop just before the tower
-	encoded_mforward(lowestValue/18-0.5, 40);
+	encoded_mforward(lowestValue/18-0.5, 100);
 }
 
+/*
+	assumes after first and second tower search, it is near tower.
+*/
 void push_tower(){
-	bool firstTime = true;
-	encoded_mforward(2, 30);
-	while(true){
-		if(SensorValue[Touch] > 0 && firstTime){
-			playTone(700, 15);
-			firstTime = false;
-		}
-	}
+	encoded_mforward(3, 100);
 }
-	
 //=======================================================================
 
 //==================== MAIN =============================================
 /*
-	main task.
+main task.
 */
 task main()
 {
@@ -414,18 +349,26 @@ task main()
 	// first right rotation - aline yourself with black and white tiled line.
 	encoded_rpivot(REV_90, ROT_POW);
 
-	// move along black line and count 15 black tiles.
-	move_along_bw_tiles();
+	// follow black line and count 15 black tiles.
+  follow_bw_tiles();
 
 	// rotate 90 degrees and try position yourself toward tower.
 	encoded_rpivot(REV_90, ROT_POW);
-	
+
 	// move closer to assumed position of tower.
-	encoded_mforward(7, 60);
-	
+  encoded_mforward(7, 100);
+
 	// use ultrasonic sonar to find distance from tower.
-	find_tower(20);
-	find_tower(10);
+	find_tower(20, 30);
+	
+	// once closer to the tower, check distance from tower again.
+	find_tower(10, 100);
+
+	// push the tower off finishing tile.
 	push_tower();
+	
+	// signal end of course.
+	playTone(700, 15);
+	sleep(100);
 }
 //=======================================================================
