@@ -238,20 +238,20 @@ void follow_bw_tiles()
 
 			}
 		}
-		
+
 		// check if color is grey.
 		if(thres_bg < curr_color && curr_color < thres_gw){
 			setMotorSync(motorB, motorC, 0, 0);
 			displayCenteredBigTextLine(4, "%f", curr_color);
 			path_correction();
 		}
-		
+
 		// check if color is white.
 		if(curr_color >= thres_gw)
 		{
 			tgl_black = false;
 		}
-		
+
 		if(path_corrected) setMotorSync(motorB, motorC, 0, DEFAULT_SPD);
 
 		// insert sleep/delay to slow down path correction -> i think.
@@ -262,21 +262,25 @@ void follow_bw_tiles()
 }
 
 /*
-Method used to count the 7 grey squares + move to finishing tile 'F'.
+Method used to find the tower and push it off the "F" tile.
 */
-void find_tower(int scans, int turn_pow, bool n)
+void find_tower(int scans, int turn_pow, bool sleep_toggle, int scan_modifier) //scan_modifier 3 means 120-degree-scan, 2 means 180-degree-scan
 {
 	int distances[20];
 	int lowestValue = 0;
 	int lowestKey = 0;
 
-	// position robot 90 degs left.
-	turnLeft(REV_90/3*2, rotations, turn_pow);
+	// position robot 60 or 90 degrees left.
+	if(scan_modifier == 3){
+		turnLeft(REV_90/3*2, rotations, turn_pow);
+	}else{
+		turnLeft(REV_90, rotations, turn_pow);
+	}
 
 	// Incrementally pivot and store the distance value at each increment in cm.
 	for(int i = 0; i < scans; i++){
-		turnRight(REV_360/(scans*3), rotations, turn_pow);
-		if(n) sleep(50);
+		turnRight(REV_360/(scans*scan_modifier), rotations, turn_pow);
+		if(sleep_toggle) sleep(50);
 		distances[i] = SensorValue[sonar4];
 	}
 
@@ -291,26 +295,24 @@ void find_tower(int scans, int turn_pow, bool n)
 			lowestValue = distances[i];
 		}
 	}
-
-	// notify
 	lowestKey++;
-	eraseDisplay();
-	displayCenteredBigTextLine(4, "lowestValue %f", lowestValue);
 
 	// find angle of lowest distance
-	float turnTo = (REV_360/3  / scans) * (scans - lowestKey -0.5);
+	float turnTo = (REV_360/scan_modifier / scans) * (scans - lowestKey -0.5);
 	turnLeft(turnTo, rotations, turn_pow);
 
-	// This will stop just before the tower
-	encoded_mforward(lowestValue/17.76-0.5, 100);
+	// This will stop just before the tower, 17.76 is the circumference of wheel, and 0.8 is the offset
+	encoded_mforward(lowestValue/17.76-0.8, 100); 
 }
 
 /*
-	assumes after first and second tower search, it is near tower.
+	assumes after first and second tower search, it is near tower and facing it.
 */
 void push_tower(){
 	encoded_mforward(3, 100);
 }
+
+
 //=======================================================================
 
 //==================== MAIN =============================================
@@ -326,23 +328,23 @@ task main()
 	encoded_rpivot(REV_90, ROT_POW);
 
 	// follow black line and count 15 black tiles.
-  follow_bw_tiles();
+  	follow_bw_tiles();
 
 	// rotate 90 degrees and try position yourself toward tower.
 	encoded_rpivot(REV_90, ROT_POW);
 
 	// move closer to assumed position of tower.
-  encoded_mforward(7, 100);
- 
+	encoded_mforward(7, 100);
+
 	// use ultrasonic sonar to find distance from tower.
-	find_tower(12, 30, true);
-	
+	find_tower(12, 30, true, 3);
+
 	// once closer to the tower, check distance from tower again.
-	find_tower(10, 100, false);
+	find_tower(10, 100, true, 2);
 
 	// push the tower off finishing tile.
 	push_tower();
-	
+
 	// signal end of course.
 	playTone(700, 15);
 	sleep(100);
