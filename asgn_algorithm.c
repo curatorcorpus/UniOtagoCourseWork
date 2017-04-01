@@ -344,7 +344,6 @@ void find_tower(int scans)
 	int distances[20];
 	int lowestValue = 0;
 	int lowestKey = 0;
-
 	// position robot 90 degs left.
 	turnLeft(REV_90, rotations, 30);
 
@@ -387,13 +386,17 @@ void find_tower(int scans)
 	turnLeft(turnTo, rotations, 30);
 
 	// This will stop just before the tower
-	encoded_mforward(lowestValue/18-0.5, 30);
+	encoded_mforward(lowestValue/18-0.5, 40);
 }
 
 void push_tower(){
-	encoded_mforward(1, 30);
-	if(SensorValue[Touch] > 0){
-		playTone(200, 20);
+	bool firstTime = true;
+	encoded_mforward(2, 30);
+	while(true){
+		if(SensorValue[Touch] > 0 && firstTime){
+			playTone(700, 15);
+			firstTime = false;
+		}
 	}
 }
 	
@@ -418,7 +421,7 @@ task main()
 	encoded_rpivot(REV_90, ROT_POW);
 	
 	// move closer to assumed position of tower.
-	encoded_mforward(6, 60);
+	encoded_mforward(7, 60);
 	
 	// use ultrasonic sonar to find distance from tower.
 	find_tower(20);
