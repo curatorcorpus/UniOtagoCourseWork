@@ -340,7 +340,7 @@ task main()
 	find_tower(12, 30, true, 3);
 
 	// once closer to the tower, check distance from tower again.
-	find_tower(10, 100, true, 2);
+	find_tower(10, 30, true, 2);
 
 	// push the tower off finishing tile.
 	push_tower();
