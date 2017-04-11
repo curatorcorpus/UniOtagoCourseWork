@@ -54,7 +54,6 @@ void Group::render(Camera* camera){
         meshes[0]->render(camera);
         
     }
-    
 }
 
 void Group::setupShaders(){
@@ -64,7 +63,7 @@ void Group::setupShaders(){
         Material* mat = getMaterial(matIndex);
         Shader* shader = NULL;
         if(!mat->shaderIsInitialized()){
-            MTLShader* mtlshader = new MTLShader( "mtlShader");
+            MTLShader* mtlshader = new MTLShader( "../res/shaders/mtlShader");
             mtlshader->setDiffuse(mat->getDiffuseColour());
             mtlshader->setAmbient(mat->getAmientColour());
             mtlshader->setSpecular(mat->getSpecularColour());

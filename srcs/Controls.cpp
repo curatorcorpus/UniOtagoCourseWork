@@ -13,7 +13,7 @@ using namespace glm;
 
 Controls::Controls(Camera* cam){
 	m_camera = cam;
-	keyspeed = 3.0f; // 3 units / second
+	keyspeed = 5.0f; // 3 units / second
 	mouseSpeed = 0.005f;
 	
 	horizontalAngle = 3.14f;
@@ -63,6 +63,7 @@ void Controls::update(){
 	glm::vec3 up = glm::cross( right, direction );
 
 	// Move forward
+	/*
 	if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS){
 		position += direction * deltaTime * keyspeed;
 	}
@@ -78,7 +79,25 @@ void Controls::update(){
 	if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS){
 		position -= right * deltaTime * keyspeed;
 	}
+	*/
 
+	// Move with aswd game controls
+	// Move forward
+	if (glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS){
+		position += direction * deltaTime * keyspeed;
+	}
+	// Move backward
+	if (glfwGetKey( window, GLFW_KEY_S ) == GLFW_PRESS){
+		position -= direction * deltaTime * keyspeed;
+	}
+	// Strafe right
+	if (glfwGetKey( window, GLFW_KEY_D ) == GLFW_PRESS){
+		position += right * deltaTime * keyspeed;
+	}
+	// Strafe left
+	if (glfwGetKey( window, GLFW_KEY_A ) == GLFW_PRESS){
+		position -= right * deltaTime * keyspeed;
+	}
 	
 	m_camera->setLookAt(position,position+direction,up );
 	// For the next frame, the "last time" will be "now"

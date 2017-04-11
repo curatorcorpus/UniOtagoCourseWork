@@ -1,5 +1,5 @@
 /*
- * renderApp.cpp
+ * RasterEngine.cpp
  *
  * by Stefanie Zollmann
  *
@@ -11,14 +11,11 @@
 // Include standard headers
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include <string>
 #include <vector>
 
-// Include GLEW
 #include <GL/glew.h>
-
-
-// Include GLFW
 #include <glfw3.h>
 GLFWwindow* window;
 
@@ -28,6 +25,7 @@ GLFWwindow* window;
 #include <glm/gtc/matrix_transform.hpp>
 using namespace glm;
 
+#include <CMDParser.h>
 #include <Shader.hpp>
 #include <Texture.hpp>
 #include <Object.hpp>
@@ -73,7 +71,26 @@ bool initWindow(std::string windowName){
 
 int main( int argc, char *argv[] )
 {
+    std::string obj_name = "";
     
+    // Terminal Argument Parser
+    CMDParser parser("...");
+
+    parser.addOpt("o", 1 , "obj", "specifies obj file to be rendered");
+
+    parser.init(argc, argv);
+
+    // handle arguments
+    if(parser.isOptSet("o")) {
+        // res models path must be changed if the models directory changes.
+        obj_name = "../res/models/" + parser.getOptsString("o")[0];
+    }
+
+    // if there is no model specified
+    if(obj_name == "") {
+        return EXIT_SUCCESS;
+    }
+
     initWindow("Render Engine");
     glfwMakeContextCurrent(window);
     
@@ -95,14 +112,14 @@ int main( int argc, char *argv[] )
     glfwPollEvents();
     glfwSetCursorPos(window, 1024/2, 768/2);
     
-    glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
+    //glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
     glEnable(GL_DEPTH_TEST);              // Enable depth test
     glDepthFunc(GL_LESS);                 // Accept fragment if it closer to the camera than the former ones
     
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
-    
-    
+
     //create a Vertex Array Object and set it as the current one
     //we will not go into detail here. but this can be used to optimise the performance by storing all of the state needed to supply vertex data
     GLuint VertexArrayID;
@@ -113,9 +130,35 @@ int main( int argc, char *argv[] )
      * Create Scene
      * With a object and texture loaded from loader
      */
-    
-    Scene* scene = new Scene();
-    
+
+    std::vector<glm::vec3> out_vert;
+    std::vector<glm::vec2> out_uvs;
+    std::vector<glm::vec3> out_normals;
+
+    bool res = loadOBJ(obj_name.c_str(), out_vert, out_uvs, out_normals);
+
+    if(!res) {
+        std::cout << "model didn't successfully load" << std::endl;
+    }
+
+    Scene *scene = new Scene();
+    Group *group = new Group();
+    Material *mat = new Material();
+    Shader *shader = new Shader("../res/shaders/mtlShader");
+
+    mat->setShader(shader);
+    group->setShader(shader);
+
+    Mesh *mesh = new Mesh();
+
+    mesh->setShader(shader);
+    mesh->setVertices(out_vert);
+    mesh->setUVs(out_uvs);
+    mesh->setNormals(out_normals);
+
+    group->addMesh(mesh);
+
+
     // Read our .obj files - this is hard coded for testing - you can pass obj file names as arguments instead to make the code more flexible
     /*
     if(argc==1){
@@ -149,8 +192,11 @@ int main( int argc, char *argv[] )
     }
     */
     
+
+
     Camera* camera = new Camera();
     camera->setPosition(glm::vec3(0,100,200)); //set camera to show the models
+
     Controls* myControls = new Controls(camera);
     myControls->setSpeed(30);
     
@@ -158,12 +204,13 @@ int main( int argc, char *argv[] )
     while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS && glfwWindowShouldClose(window) == 0 ){// Clear the screen
         // Clear the screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Also clear the depth buffer!!!
-  /*      
+        
         // update camera controls with mouse input
         myControls->update();
-*/        // takes care of all the rendering automatically
-        scene->render(camera);
-
+        
+        // takes care of all the rendering automatically
+        group->render(camera);
+        //mesh->render(camera);
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();

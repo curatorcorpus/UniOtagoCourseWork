@@ -15,7 +15,8 @@ void main(){
 	
 	// Material properties
 	//TODO: compute light model here
-    color.rgb = diffuseColor.rgb;
-    color.a = 1.0;
+    //color.rgb = diffuseColor.rgb;
+    //color.a = 1.0;
     
+	color = vec4(0.2, 0.05, 0.05, 0.5);
 }

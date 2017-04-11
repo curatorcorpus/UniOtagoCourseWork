@@ -68,6 +68,7 @@ add_definitions(
 # OpenGL Skeleton
 add_executable(RasterEngine
 
+	srcs/CMDParser.cpp
 	srcs/Shader.cpp
 	srcs/Texture.cpp
 	srcs/Texture.cpp
