@@ -99,26 +99,42 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
 
         Material *newMat = new Material();
 
+        // extract material info if material exists.
         if(scene->mMaterials[i] != NULL){
 
-        	// color variable for materials
-            aiColor3D color (0.f,0.f,0.f);
+        	// variables for materials
+            aiColor3D color      (0.0f, 0.0f, 0.0f);
+            aiColor3D ambient    (0.0f, 0.0f, 0.0f);
+            aiColor3D specular   (0.0f, 0.0f, 0.0f);
+            aiColor3D transparent(0.0f, 0.0f, 0.0f);
+
+            float opacity      = 0.0f;
+            float shininess    = 0.0f;
+
 
             // set diffuse color.
             scene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color);
             newMat->setDiffuseColour(glm::vec3(color[0], color[1], color[2]));        
 
             // set ambient color.
-            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_AMBIENT, color);
-            newMat->setAmbientColour(glm::vec3(color[0], color[2], color[3]));
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_AMBIENT, ambient);
+            newMat->setAmbientColour(glm::vec3(ambient[0], ambient[2], ambient[3]));
 
             // set specular color.
-            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, color);
-            newMat->setSpecularColour(glm::vec3(color[0], color[1], color[2]));
-
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, specular);
+            newMat->setSpecularColour(glm::vec3(specular[0], specular[1], specular[2]));
+            
             // set transparency of materials.
-            /*scene->mMaterials[i]-Get(AI_MATKEY_COLOR_TRANSPARENT, color);
-            newMat->setOpacity();*/
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_TRANSPARENT, transparent);
+            newMat->setTransparentColour(glm::vec3(transparent[0], transparent[1], transparent[2]));
+
+            // set shininess.
+            scene->mMaterials[i]->Get(AI_MATKEY_SHININESS, shininess);
+            newMat->setShininess(shininess);
+
+            // set opacity of material
+            scene->mMaterials[i]->Get(AI_MATKEY_OPACITY, opacity);
+            newMat->setOpacity(opacity);
         }
 
         outputmesh->addMaterial(newMat);

@@ -26,13 +26,17 @@
         m_colorSpecular = specC;
     }
     
+    void Material::setTransparentColour(glm::vec3 transparency) {
+        m_colorTransparency = transparency;     
+    }
+
     void Material::setOpacity(float opacity){
         m_opacity = opacity;
     }
     void Material::setShininess(float shininess){
         m_shininess = shininess;
     }
-    
+
     //getter
     glm::vec3 Material::getDiffuseColour(){
         return m_colorDiffuse;
@@ -44,11 +48,18 @@
         return m_colorSpecular;
     }
     
+    glm::vec3 Material::getTransparentColour() {
+        return m_colorTransparency;
+    }
+
     float Material::getOpacity(){
         return m_opacity;
     };
     
-    
+    float Material::getShininess() {
+        return m_shininess;
+    }
+
 	void Material::setShader(Shader* shader){
 		m_shader = shader;
 		

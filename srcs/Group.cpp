@@ -67,10 +67,13 @@ void Group::setupShaders(){
 
             MTLShader *mtlshader = new MTLShader( "../res/shaders/mtlShader");
 
+            // set material parameters.
             mtlshader->setDiffuse(mat->getDiffuseColour());
             mtlshader->setAmbient(mat->getAmientColour());
             mtlshader->setSpecular(mat->getSpecularColour());
+            mtlshader->setTransparent(mat->getTransparentColour());            
             mtlshader->setOpacity(mat->getOpacity());
+            mtlshader->setShininess(mat->getShininess());
             mat->setShader(mtlshader);
 
             if(mat->getTextureName() != "") {

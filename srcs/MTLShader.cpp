@@ -28,7 +28,7 @@ MTLShader::~MTLShader(){
 }
 
 void MTLShader::setUpShaderParameters(){
-	m_diffuseColor = glm::vec4(1.0);
+	m_diffuseColor       = glm::vec4(1.0);
     GLint diffusecolorID = glGetUniformLocation(programID, "diffuseColor");
     glProgramUniform4fv(programID,diffusecolorID,1, &m_diffuseColor[0]);
 
@@ -37,44 +37,57 @@ void MTLShader::setUpShaderParameters(){
 
 void MTLShader::setTexture(Texture* texture){
     m_texture = texture;
-    // Get a handle for our "myTextureSampler" uniform
-	
 }
 
 
 void MTLShader::setLightPos(glm::vec3 lightPos){
-    
     m_lightPos= lightPos;
-	
 }
 
 void MTLShader::setDiffuse(glm::vec3 diffuse){
     
-    m_diffuseColor= glm::vec4(diffuse[0],diffuse[1],diffuse[2],1.0);;
+    m_diffuseColor       = glm::vec4(diffuse[0],diffuse[1],diffuse[2], 1.0);;
     GLint diffusecolorID = glGetUniformLocation(programID, "diffuseColor");
     glProgramUniform4fv(programID,diffusecolorID,1, &m_diffuseColor[0]);
 }
+
 void MTLShader::setAmbient(glm::vec3 ambient){
     
-    m_ambientColor= glm::vec4(ambient[0],ambient[1],ambient[2],1.0);
-	
-}
-void MTLShader::setSpecular(glm::vec3 specular){
-    
-    m_specularColor= glm::vec4(specular[0],specular[1],specular[2],1.0);
-	
+    m_ambientColor   = glm::vec4(ambient[0],ambient[1],ambient[2], 1.0);
+    GLint ambient_id = glGetUniformLocation(programID, "ambient_color");
+    glProgramUniform4fv(programID, ambient_id, 1, &m_ambientColor[0]);	
 }
 
-void MTLShader::setOpacity(float opacity){
+void MTLShader::setSpecular(glm::vec3 specular){
     
-    m_opacity= opacity;
-	
+    m_specularColor   = glm::vec4(specular[0],specular[1],specular[2], 1.0);
+    GLint specular_id = glGetUniformLocation(programID, "specular_color");
+	glProgramUniform4fv(programID, specular_id, 1, &m_specularColor[0]);
+}
+
+void MTLShader::setTransparent(glm::vec3 transparent) {
+
+    m_transparentColor   = glm::vec4(transparent[0], transparent[1], transparent[2], 1.0);
+    GLint transparent_id = glGetUniformLocation(programID, "transparent_color");
+    glProgramUniform4fv(programID, transparent_id, 1, &m_transparentColor[0]);
+}
+
+void MTLShader::setOpacity(const float opacity){
+    
+    m_opacity        = opacity;
+	GLint opacity_id = glGetUniformLocation(programID, "opacity");
+    glProgramUniform1f(programID, opacity_id, m_opacity);
+}
+
+void MTLShader::setShininess(const float shininess) {
+    m_shininess     = shininess;
+    GLint shine_id = glGetUniformLocation(programID, "shininess");
+    glProgramUniform1f(programID, shine_id, m_shininess);
 }
 
 void MTLShader::setRenderMode(float renderMode){
     
     m_renderMode= renderMode;
- 
 }
 
 

@@ -26,6 +26,7 @@ class Material{
         void setDiffuseColour(glm::vec3 diffC);
         void setAmbientColour(glm::vec3 ambC);
         void setSpecularColour(glm::vec3 specC);
+        void setTransparentColour(glm::vec3 transparency);
         void setOpacity(float opacity);
         void setShininess(float shininess);
         
@@ -33,7 +34,9 @@ class Material{
         glm::vec3 getDiffuseColour();
         glm::vec3 getAmientColour();
         glm::vec3 getSpecularColour();
+        glm::vec3 getTransparentColour();
         float getOpacity();
+        float getShininess();
 
         void setShader(Shader* shader);
         Shader*  getShader();
@@ -45,10 +48,10 @@ class Material{
     private:
         //texture
         std::string m_textureName;
-        //diffuse color
         glm::vec3 m_colorDiffuse;
         glm::vec3 m_colorAmbient;
         glm::vec3 m_colorSpecular;
+        glm::vec3 m_colorTransparency;
         float m_opacity;
         float m_shininess;
 		Shader* m_shader; //each material has a reference to a shader for reusing them

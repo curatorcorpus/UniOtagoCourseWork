@@ -13,7 +13,7 @@ out vec3 vertex_normal;
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
 
-void main(){
+void main() {
 
 	// define normals
 	vertex_normal = normalize(vec3(MVP * vec4(vertexNormal_modelspace, 0.0)));
