@@ -59,11 +59,9 @@ void Group::setupShaders(){
 
 	for(int i = 0; i < meshes.size(); i++) {
 
-		int matIndex = 0; // TODO: get the correct material index from obj file
-
-        Material *mat    = getMaterial(matIndex);
+        Material *mat    = getMaterial(meshes[i]->getMatIndex()); // selects corresponding material for mesh.
         Shader   *shader = NULL;
-
+        std::cout << meshes[i]->getMatIndex() << std::endl;
         if(!mat->shaderIsInitialized()) {
 
             MTLShader *mtlshader = new MTLShader( "../res/shaders/mtlShader");
