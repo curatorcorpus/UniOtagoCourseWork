@@ -1,22 +1,23 @@
 #version 330 core
 
 // Interpolated values from the vertex shaders
-// e.g.
-//in vec2 UV;
-
+in vec4 vertex_pos;
+in vec2 vertex_uv;
+in vec3 vertex_normal;
 
 // Ouput data
-out vec4 color;
+out vec4 output;
 
 // Values that stay constant for the whole mesh.
 uniform vec4 diffuseColor;
 
 void main(){
 	
-	// Material properties
-	//TODO: compute light model here
-    //color.rgb = diffuseColor.rgb;
-    //color.a = 1.0;
-    
-	color = vec4(0.2, 0.05, 0.05, 0.5);
+	vec4 color;
+
+	// add diffuse material
+    color = diffuseColor;
+    //TODO: compute light model here
+
+	output = color;
 }

@@ -26,19 +26,12 @@ GLFWwindow* window;
 using namespace glm;
 
 #include <CMDParser.h>
-#include <Shader.hpp>
 #include <Texture.hpp>
-#include <Object.hpp>
-#include <ColorShader.hpp>
 #include <Scene.hpp>
 #include <Triangle.hpp>
-#include <BasicMaterialShader.hpp>
-#include <Mesh.hpp>
 #include <Controls.hpp>
 #include <Group.hpp>
 #include <Objloader.hpp>
-
-
 
 bool initWindow(std::string windowName){
     
@@ -146,7 +139,7 @@ int main( int argc, char *argv[] )
 
     // add grouped meshes to scene
     scene->addObject(person);
-    
+
     // setup camera.
     Camera* camera = new Camera();
     camera->setPosition(glm::vec3(0,100,200)); //set camera to show the models

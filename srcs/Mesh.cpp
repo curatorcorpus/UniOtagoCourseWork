@@ -22,8 +22,8 @@ void Mesh::setVertices(std::vector<float> verts){
 }
 void Mesh::setVertices(std::vector<glm::vec3> verts){
     m_vertices.clear();
-	m_vertices.resize(verts.size());
-	std::copy(verts.begin(), verts.end(), m_vertices.begin());
+	  m_vertices.resize(verts.size());
+	  std::copy(verts.begin(), verts.end(), m_vertices.begin());
 	
     // Load it into a VBO
     glGenBuffers(1, &m_vertexBufferID);
@@ -48,11 +48,10 @@ void Mesh::setUVs(std::vector<float> uvs){
     for(int i=0; i<uvs.size()/2;i++){
         m_uvs.push_back(glm::vec2(uvs[i*2+0],uvs[i*2+1]));
     }
+
     glGenBuffers(1, &m_uvBufferID);
     glBindBuffer(GL_ARRAY_BUFFER, m_uvBufferID);
     glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(glm::vec2), &m_uvs[0], GL_STATIC_DRAW);
-    
-    
 }
 
 

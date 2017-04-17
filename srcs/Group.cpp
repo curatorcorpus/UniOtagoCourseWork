@@ -61,7 +61,8 @@ void Group::setupShaders(){
 
         Material *mat    = getMaterial(meshes[i]->getMatIndex()); // selects corresponding material for mesh.
         Shader   *shader = NULL;
-        std::cout << meshes[i]->getMatIndex() << std::endl;
+
+        // if material has no shader.
         if(!mat->shaderIsInitialized()) {
 
             MTLShader *mtlshader = new MTLShader( "../res/shaders/mtlShader");
@@ -80,7 +81,7 @@ void Group::setupShaders(){
 
             shader = mtlshader;
 
-            std::cout << "[Debug::Group] Creating new shaders" << std::endl;
+            std::cout << "[Debug::Group] Creating new shader" << std::endl;
         } else {
             shader = mat->getShader();
             std::cout << "[Debug::Group] Binding an existing shaders." << std::endl;
