@@ -126,73 +126,32 @@ int main( int argc, char *argv[] )
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
     
-    // create scene objects and related render objects.
+    // create scene objects
     Scene *scene = new Scene();
-    Group *group = new Group();
 
-/*
-    std::vector<glm::vec3> out_vert;
-    std::vector<glm::vec2> out_uvs;
-    std::vector<glm::vec3> out_normals;
-*/
-    //bool res = loadOBJ(obj_name.c_str(), out_vert, out_uvs, out_normals);
-    bool res = loadOBJMTL(obj_name.c_str(), group);
+    // create grouped mesh objects.
+    Group *person = new Group();
 
+    // load obj models and materials.
+    bool res = loadOBJMTL(obj_name.c_str(), person);
+
+    // check if models successfully loaded.
     if(!res) {
         std::cout << "model didn't successfully load" << std::endl;
+        return EXIT_FAILURE;
     }
 
-    // setup up shader for each mesh.
-    group->init();
+    // setup up shader for each grouped meshes.
+    person->init();
 
-    // add objects to scene
-    scene->addObject(group);
-/*
-    Mesh *mesh = new Mesh();
-
-    mesh->setShader(shader);
-    mesh->setVertices(out_vert);
-    mesh->setUVs(out_uvs);
-    mesh->setNormals(out_normals);
-
-    group->addMesh(mesh);*/
-
-    // Read our .obj files - this is hard coded for testing - you can pass obj file names as arguments instead to make the code more flexible
-    /*
-    if(argc==1){
-        // if nothing specified we load default objects
-        // person obj
-        Group* person = new Group();
-        bool res = loadOBJMTL("person.obj", person);
-        person->init();
-        
-        //earth obj
-        Group* sphere = new Group();
-        res = loadOBJMTL("earthobj.obj", sphere);
-        sphere->init();
-        
-        //add objects to the scene
-        scene->addObject(person);
-        scene->addObject(sphere);
-        
-    }
-    else{
-        
-        for (int a = 1; a < argc; ++a) {
-            Group* objGroup = new Group();
-            bool res = loadOBJMTL(argv[a], objGroup);
-            if(res){
-                objGroup->init();
-                //add objects to the scene
-                scene->addObject(objGroup);
-            }
-        }
-    }
-    */
-
+    // add grouped meshes to scene
+    scene->addObject(person);
+    
+    // setup camera.
     Camera* camera = new Camera();
     camera->setPosition(glm::vec3(0,100,200)); //set camera to show the models
 
+    // setup inputs manager.
     Controls* myControls = new Controls(camera);
     myControls->setSpeed(30);
     
@@ -204,7 +163,7 @@ int main( int argc, char *argv[] )
         // update camera controls with mouse input
         myControls->update();
         
-        // takes care of all the rendering automatically
+        // render scene.
         scene->render(camera);
 
         // Swap buffers

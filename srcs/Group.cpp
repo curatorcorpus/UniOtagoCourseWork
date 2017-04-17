@@ -34,13 +34,12 @@ int Group::getNumMeshes(){
 
 }
 void Group::setRenderMode(float rendermode){
-    for (int i=0;i<materials.size();i++)
-        {
-            MTLShader* shader = static_cast<MTLShader*>(materials[i]->getShader());
-            if(shader!=NULL)
-                shader->setRenderMode(rendermode);
-        }
+    for (int i = 0; i < materials.size(); i++) {
     
+        MTLShader* shader = static_cast<MTLShader*>(materials[i]->getShader());
+        if(shader!=NULL)
+            shader->setRenderMode(rendermode);
+    }
 }
 
 void Group::init(){
@@ -67,7 +66,7 @@ void Group::setupShaders(){
 
         if(!mat->shaderIsInitialized()) {
 
-            MTLShader* mtlshader = new MTLShader( "../res/shaders/mtlShader");
+            MTLShader *mtlshader = new MTLShader( "../res/shaders/mtlShader");
 
             mtlshader->setDiffuse(mat->getDiffuseColour());
             mtlshader->setAmbient(mat->getAmientColour());
@@ -82,9 +81,11 @@ void Group::setupShaders(){
             }
 
             shader = mtlshader;
+
+            std::cout << "[Debug::Group] Creating new shaders" << std::endl;
         } else {
             shader = mat->getShader();
-            std::cout << "[Debug::Group] Binding an existing shader." << std::endl;
+            std::cout << "[Debug::Group] Binding an existing shaders." << std::endl;
         }
 
         meshes[i]->setShader(shader);

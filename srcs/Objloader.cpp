@@ -47,14 +47,14 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
         
         aiMesh* mesh = scene->mMeshes[meshindex++];
         
-        //indexed_vertices.reserve(mesh->mNumVertices);
+        indexed_vertices.reserve(mesh->mNumVertices);
         for(unsigned int i = 0; i < mesh->mNumVertices; i++){
             aiVector3D pos = mesh->mVertices[i];
             indexed_vertices.push_back(glm::vec3(pos.x, pos.y, pos.z));
         }
         
         // Fill vertices texture coordinates
-        //indexed_uvs.reserve(mesh->mNumVertices);
+        indexed_uvs.reserve(mesh->mNumVertices);
         for(unsigned int i = 0; i < mesh->mNumVertices; i++){
             if(mesh->mTextureCoords[0] != NULL){
                 aiVector3D UVW = mesh->mTextureCoords[0][i]; // Assume only 1 set of UV coords; AssImp supports 8 UV sets.
@@ -63,14 +63,14 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
         }
         
         // Fill vertices normals
-        //indexed_normals.reserve(mesh->mNumVertices);
+        indexed_normals.reserve(mesh->mNumVertices);
         for(unsigned int i = 0; i < mesh->mNumVertices; i++){
             aiVector3D n = mesh->mNormals[i];
             indexed_normals.push_back(glm::vec3(n.x, n.y, n.z));
         }
         
         // Fill face indices
-        //indices.reserve(3*mesh->mNumFaces);
+        indices.reserve(3*mesh->mNumFaces);
         for (unsigned int i = 0; i < mesh->mNumFaces; i++){
             // Assume the model has only triangles.
             indices.push_back(mesh->mFaces[i].mIndices[0]);
@@ -92,31 +92,42 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
         std::cout << "[Debug::OBJMTL Loader] Finished loading a mesh" << std::endl;
    }
     
-    //TODO: make sure to load all materials - at the moment we load only one material - use scene->mNumMaterials to access all materials
-    //TODO: make sure to get all material parameters, at the moment we only set the diffuse color. Add ambient, specular, transparency as well
     //TODO: use scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE,0, &texpath, NULL,NULL, NULL,NULL,NULL) == AI_SUCCESS) to access texture path
+
+   	// add all related materials - path in obj file to mtl needs to be changed or be in same directory as models. [with current impl]
     for(int i = 0; i < scene->mNumMaterials; i++) {
 
-        Material* newMat = new Material();
+        Material *newMat = new Material();
 
         if(scene->mMaterials[i] != NULL){
-            
-            aiColor3D color (0.f,0.f,0.f);
-            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE,color);
-            newMat->setDiffuseColour(glm::vec3(color[0],color[1],color[2]));
-            
-        }
-        outputmesh->addMaterial(newMat);
 
+        	// color variable for materials
+            aiColor3D color (0.f,0.f,0.f);
+
+            // set diffuse color.
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+            newMat->setDiffuseColour(glm::vec3(color[0], color[1], color[2]));        
+
+            // set ambient color.
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_AMBIENT, color);
+            newMat->setAmbientColour(glm::vec3(color[0], color[2], color[3]));
+
+            // set specular color.
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, color);
+            newMat->setSpecularColour(glm::vec3(color[0], color[1], color[2]));
+
+            // set transparency of materials.
+            /*scene->mMaterials[i]-Get(AI_MATKEY_COLOR_TRANSPARENT, color);
+            newMat->setOpacity();*/
+        }
+
+        outputmesh->addMaterial(newMat);
       	std::cout << "[Debug::OBJMTL Loader] Finished Loading a material." << std::endl;
     }
     
     std::cout << "[Debug::OBJMTL Loader] Finished Loading obj and mtl." << std::endl;
-
     // The "scene" pointer will be deleted automatically by "importer"
-    
     return true;
-    
 }
 
 bool loadOBJ(

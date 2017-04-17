@@ -1,6 +1,6 @@
 # Blender v2.54 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib male02_dds.mtl
+mtllib ../res/materials/male02_dds.mtl
 o mesh1.002_mesh1-geometry
 v 4.649472 159.854965 5.793066
 v 1.662002 157.904083 5.834653
