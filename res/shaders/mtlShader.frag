@@ -32,6 +32,5 @@ void main() {
 
     //TODO: compute light model here
 
-	output = (color * intensity * opacity * shininess) + 
-			  ambient_color + transparent_color;
+	output = (color + ambient_color + transparent_color) * intensity * opacity * shininess;
 }

@@ -107,10 +107,10 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
             aiColor3D ambient    (0.0f, 0.0f, 0.0f);
             aiColor3D specular   (0.0f, 0.0f, 0.0f);
             aiColor3D transparent(0.0f, 0.0f, 0.0f);
+            aiString  texture_diffuse;
 
             float opacity      = 0.0f;
             float shininess    = 0.0f;
-
 
             // set diffuse color.
             scene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color);
@@ -123,7 +123,7 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
             // set specular color.
             scene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, specular);
             newMat->setSpecularColour(glm::vec3(specular[0], specular[1], specular[2]));
-            
+
             // set transparency of materials.
             scene->mMaterials[i]->Get(AI_MATKEY_COLOR_TRANSPARENT, transparent);
             newMat->setTransparentColour(glm::vec3(transparent[0], transparent[1], transparent[2]));
@@ -135,6 +135,8 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
             // set opacity of material
             scene->mMaterials[i]->Get(AI_MATKEY_OPACITY, opacity);
             newMat->setOpacity(opacity);
+
+            // set texture mapping from materials
         }
 
         outputmesh->addMaterial(newMat);
