@@ -83,7 +83,7 @@ int main( int argc, char *argv[] )
     // handle arguments
     if(parser.isOptSet("o")) {
         // res models path must be changed if the models directory changes.
-        obj_name = "../res/models/" + parser.getOptsString("o")[0];
+        obj_name = "../res/models/" + parser.getOptsString("o")[0] + ".obj";
     }
 
     // if there is no model specified
@@ -107,13 +107,13 @@ int main( int argc, char *argv[] )
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);          // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);          // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  // Hide the mouse and enable unlimited mouvement
-    
+
     // Set the mouse at the center of the screen
     glfwPollEvents();
     glfwSetCursorPos(window, 1024/2, 768/2);
     
-    //glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
+    //glClearColor(1.0f, 1.0f, 1.0f, 0.0f); white background
     glEnable(GL_DEPTH_TEST);              // Enable depth test
     glDepthFunc(GL_LESS);                 // Accept fragment if it closer to the camera than the former ones
     
@@ -126,29 +126,28 @@ int main( int argc, char *argv[] )
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
     
-    /*
-     * Create Scene
-     * With a object and texture loaded from loader
-     */
+    // create scene objects and related render objects.
+    Scene *scene = new Scene();
+    Group *group = new Group();
 
+/*
     std::vector<glm::vec3> out_vert;
     std::vector<glm::vec2> out_uvs;
     std::vector<glm::vec3> out_normals;
-
-    bool res = loadOBJ(obj_name.c_str(), out_vert, out_uvs, out_normals);
+*/
+    //bool res = loadOBJ(obj_name.c_str(), out_vert, out_uvs, out_normals);
+    bool res = loadOBJMTL(obj_name.c_str(), group);
 
     if(!res) {
         std::cout << "model didn't successfully load" << std::endl;
     }
 
-    Scene *scene = new Scene();
-    Group *group = new Group();
-    Material *mat = new Material();
-    Shader *shader = new Shader("../res/shaders/mtlShader");
+    // setup up shader for each mesh.
+    group->init();
 
-    mat->setShader(shader);
-    group->setShader(shader);
-
+    // add objects to scene
+    scene->addObject(group);
+/*
     Mesh *mesh = new Mesh();
 
     mesh->setShader(shader);
@@ -156,8 +155,7 @@ int main( int argc, char *argv[] )
     mesh->setUVs(out_uvs);
     mesh->setNormals(out_normals);
 
-    group->addMesh(mesh);
-
+    group->addMesh(mesh);*/
 
     // Read our .obj files - this is hard coded for testing - you can pass obj file names as arguments instead to make the code more flexible
     /*
@@ -191,8 +189,6 @@ int main( int argc, char *argv[] )
         }
     }
     */
-    
-
 
     Camera* camera = new Camera();
     camera->setPosition(glm::vec3(0,100,200)); //set camera to show the models
@@ -209,8 +205,8 @@ int main( int argc, char *argv[] )
         myControls->update();
         
         // takes care of all the rendering automatically
-        group->render(camera);
-        //mesh->render(camera);
+        scene->render(camera);
+
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();

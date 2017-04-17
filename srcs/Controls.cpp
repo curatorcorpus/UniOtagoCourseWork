@@ -17,11 +17,8 @@ Controls::Controls(Camera* cam){
 	mouseSpeed = 0.005f;
 	
 	horizontalAngle = 3.14f;
-	verticalAngle = 0.0f;
-	
+	verticalAngle = 0.0f;	
 }
-
-
 
 void Controls::update(){
 
@@ -61,25 +58,6 @@ void Controls::update(){
 	
 	// Up vector
 	glm::vec3 up = glm::cross( right, direction );
-
-	// Move forward
-	/*
-	if (glfwGetKey( window, GLFW_KEY_UP ) == GLFW_PRESS){
-		position += direction * deltaTime * keyspeed;
-	}
-	// Move backward
-	if (glfwGetKey( window, GLFW_KEY_DOWN ) == GLFW_PRESS){
-		position -= direction * deltaTime * keyspeed;
-	}
-	// Strafe right
-	if (glfwGetKey( window, GLFW_KEY_RIGHT ) == GLFW_PRESS){
-		position += right * deltaTime * keyspeed;
-	}
-	// Strafe left
-	if (glfwGetKey( window, GLFW_KEY_LEFT ) == GLFW_PRESS){
-		position -= right * deltaTime * keyspeed;
-	}
-	*/
 
 	// Move with aswd game controls
 	// Move forward

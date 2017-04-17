@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include "Group.hpp"
 
 
@@ -48,38 +48,45 @@ void Group::init(){
     
 }
 void Group::render(Camera* camera){
-   //TODO: Make sure all meshes are rendered - at the moment only the first one is rendered
-    if(meshes.size()>0){
-		meshes[0]->bindShaders();
-        meshes[0]->render(camera);
-        
+
+    for(int i = 0; i < meshes.size(); i++) {
+
+		meshes[i]->bindShaders();
+        meshes[i]->render(camera);
     }
 }
 
 void Group::setupShaders(){
-	//TODO: Do this for all meshes
-	if(meshes.size()>0){
+
+	for(int i = 0; i < meshes.size(); i++) {
+
 		int matIndex = 0; // TODO: get the correct material index from obj file
-        Material* mat = getMaterial(matIndex);
-        Shader* shader = NULL;
-        if(!mat->shaderIsInitialized()){
+
+        Material *mat    = getMaterial(matIndex);
+        Shader   *shader = NULL;
+
+        if(!mat->shaderIsInitialized()) {
+
             MTLShader* mtlshader = new MTLShader( "../res/shaders/mtlShader");
+
             mtlshader->setDiffuse(mat->getDiffuseColour());
             mtlshader->setAmbient(mat->getAmientColour());
             mtlshader->setSpecular(mat->getSpecularColour());
             mtlshader->setOpacity(mat->getOpacity());
             mat->setShader(mtlshader);
-            if(mat->getTextureName()!=""){
+
+            if(mat->getTextureName() != "") {
+
                 Texture* texture = new Texture(mat->getTextureName());
                 mtlshader->setTexture(texture);
             }
 
             shader = mtlshader;
-        }
-        else {
+        } else {
             shader = mat->getShader();
+            std::cout << "[Debug::Group] Binding an existing shader." << std::endl;
         }
-        meshes[0]->setShader(shader);
-        
+
+        meshes[i]->setShader(shader);
     }
 }

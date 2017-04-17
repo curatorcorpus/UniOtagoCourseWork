@@ -23,6 +23,8 @@
 // we will use the more complex version for obj file and mtl file loading - assimp will handle everything for us
 bool loadOBJMTL(const char * path, Group* outputmesh){
     
+    printf("[Debug::OBJMTL Loader] Loading OBJ Model File %s...\n", path);
+
     Assimp::Importer importer;
     
     const aiScene* scene = importer.ReadFile(path, 0/*aiProcess_JoinIdenticalVertices | aiProcess_SortByPType*/);
@@ -34,77 +36,83 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
     
     // store the first child a geometry
     //TODO: Do this for all child meshes - at the moment only the first mesh is processed
-    if(scene->mNumMeshes>0){
-        int meshindex = 0;
+    int meshindex = 0;
+
+    while(meshindex < scene->mNumMeshes) {
+
         std::vector<unsigned short> indices;
         std::vector<glm::vec3> indexed_vertices;
         std::vector<glm::vec2> indexed_uvs;
         std::vector<glm::vec3> indexed_normals;
         
-        aiMesh* mesh = scene->mMeshes[meshindex];
+        aiMesh* mesh = scene->mMeshes[meshindex++];
         
-        indexed_vertices.reserve(mesh->mNumVertices);
-        for(unsigned int i=0; i<mesh->mNumVertices; i++){
+        //indexed_vertices.reserve(mesh->mNumVertices);
+        for(unsigned int i = 0; i < mesh->mNumVertices; i++){
             aiVector3D pos = mesh->mVertices[i];
             indexed_vertices.push_back(glm::vec3(pos.x, pos.y, pos.z));
         }
         
         // Fill vertices texture coordinates
-        indexed_uvs.reserve(mesh->mNumVertices);
-        for(unsigned int i=0; i<mesh->mNumVertices; i++){
-            if(mesh->mTextureCoords[0]!=NULL){
+        //indexed_uvs.reserve(mesh->mNumVertices);
+        for(unsigned int i = 0; i < mesh->mNumVertices; i++){
+            if(mesh->mTextureCoords[0] != NULL){
                 aiVector3D UVW = mesh->mTextureCoords[0][i]; // Assume only 1 set of UV coords; AssImp supports 8 UV sets.
                 indexed_uvs.push_back(glm::vec2(UVW.x, UVW.y));
             }
         }
         
         // Fill vertices normals
-        indexed_normals.reserve(mesh->mNumVertices);
-        for(unsigned int i=0; i<mesh->mNumVertices; i++){
+        //indexed_normals.reserve(mesh->mNumVertices);
+        for(unsigned int i = 0; i < mesh->mNumVertices; i++){
             aiVector3D n = mesh->mNormals[i];
             indexed_normals.push_back(glm::vec3(n.x, n.y, n.z));
         }
         
-        
         // Fill face indices
-        indices.reserve(3*mesh->mNumFaces);
-        for (unsigned int i=0; i<mesh->mNumFaces; i++){
+        //indices.reserve(3*mesh->mNumFaces);
+        for (unsigned int i = 0; i < mesh->mNumFaces; i++){
             // Assume the model has only triangles.
             indices.push_back(mesh->mFaces[i].mIndices[0]);
             indices.push_back(mesh->mFaces[i].mIndices[1]);
             indices.push_back(mesh->mFaces[i].mIndices[2]);
         }
         
-        
         //create geom
         Mesh* myGeom = new Mesh();
+
         myGeom->setVertices(indexed_vertices);
         myGeom->setUVs(indexed_uvs);
         myGeom->setNormals(indexed_normals);
         myGeom->setIndices(indices);
-        // use the correct material index later on for accessing the right material from the material vector
-        myGeom->setMatIndex(mesh->mMaterialIndex);
-        
+        myGeom->setMatIndex(mesh->mMaterialIndex); // use the correct material index later on for accessing the right material from the material vector
+
         outputmesh->addMesh(myGeom);
-        
-        
-    }
+
+        std::cout << "[Debug::OBJMTL Loader] Finished loading a mesh" << std::endl;
+   }
     
     //TODO: make sure to load all materials - at the moment we load only one material - use scene->mNumMaterials to access all materials
     //TODO: make sure to get all material parameters, at the moment we only set the diffuse color. Add ambient, specular, transparency as well
     //TODO: use scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE,0, &texpath, NULL,NULL, NULL,NULL,NULL) == AI_SUCCESS) to access texture path
-    if(scene->mNumMaterials >0){
+    for(int i = 0; i < scene->mNumMaterials; i++) {
+
         Material* newMat = new Material();
-        if(scene->mMaterials[0]!=NULL){
+
+        if(scene->mMaterials[i] != NULL){
             
             aiColor3D color (0.f,0.f,0.f);
-            scene->mMaterials[0]->Get(AI_MATKEY_COLOR_DIFFUSE,color);
+            scene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE,color);
             newMat->setDiffuseColour(glm::vec3(color[0],color[1],color[2]));
             
         }
         outputmesh->addMaterial(newMat);
+
+      	std::cout << "[Debug::OBJMTL Loader] Finished Loading a material." << std::endl;
     }
     
+    std::cout << "[Debug::OBJMTL Loader] Finished Loading obj and mtl." << std::endl;
+
     // The "scene" pointer will be deleted automatically by "importer"
     
     return true;
@@ -123,34 +131,6 @@ bool loadOBJ(
 	std::vector<glm::vec3> temp_vertices; 
 	std::vector<glm::vec2> temp_uvs;
 	std::vector<glm::vec3> temp_normals;
-/*
-	std::stirngline_header;
-
-	// open file
-	std::fstream file_stream(path);
-
-	while(std::getlline(fstream, line), file_stream) {
-
-		std::istringstream sstream(line);
-		sstream >>line_header;
-
-		if(line_header == "v") {
-
-		}
-
-		else if(line_header == "vt") {
-
-		}
-
-		else if(line_header == "vn") {
-
-		}
-
-		else if(line_header == "f") {
-
-		}
-	}
-*/
 	
 	FILE * file = fopen(path, "r");
 	if( file == NULL ){

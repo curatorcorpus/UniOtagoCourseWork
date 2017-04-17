@@ -87,7 +87,7 @@ void Mesh::render(Camera* camera){
   // Build the model matrix -get from object
   glm::mat4 modelMatrix = this->getTransform();
   glm::mat4 MVP = camera->getViewProjectionMatrix() * modelMatrix;
-	  glm::mat4 viewMatrix = camera->getViewMatrix();
+	glm::mat4 viewMatrix = camera->getViewMatrix();
 	
     // Send our transformation to the currently bound shader,
     // in the "MVP" uniform
