@@ -7,23 +7,28 @@ import java.util.Random;
 * creatures chromosome and the agent function that maps creature percepts to
 * actions.  
 *
-* @author  
+* @author  Jung-Woo (Noel) Park.
 * @version 1.0
 * @since   2017-04-05 
 */
 public class MyCreature extends Creature {
 
+    private static final int CHROMO_SIZE = 20;
+    
+    private float[] chromosome;
+    
     // Random number generator
     private Random rand = new Random();
-
-    /* Empty constructor - might be a good idea here to put the code that 
-     initialises the chromosome to some random state   */
 
     /**
      * Initial constructor.
      */
-    public MyCreature() {
+    public MyCreature() {   
+        chromosome = new float[CHROMO_SIZE];
         
+        for(int i = 0; i < chromosome.length; i++) {
+            chromosome[i] = rand.nextFloat();
+        }
     }
     
     /**
@@ -34,6 +39,11 @@ public class MyCreature extends Creature {
      *                      need to produce every turn.
      */
     public MyCreature(int numPercepts, int numActions) {
+        chromosome = new float[CHROMO_SIZE];
+        
+        for(int i = 0; i < chromosome.length; i++) {
+            chromosome[i] = rand.nextFloat();
+        }
     }
 
     /* This function must be overridden by MyCreature, because it implements
@@ -50,32 +60,63 @@ public class MyCreature extends Creature {
     */
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) {
+        
+        final int OFFSET      = 9; // number of neighbourhoods + OFFSETs for creature, and food percepts.
+        final int RND_MOV_IDX = 10;
+        
+        // default actions would be determined by phenotypes of individuals.
+        float actions[] = new float[numExpectedActions];
+        float totalPerceptVal = 0.0f;
+        float totalFood       = 0.0f;
+        
+        int perceptIdx   = 0;
+        
+        while(perceptIdx < OFFSET) {
+            float output = 0.0f;
+            
+            int pcptMonsters  = percepts[perceptIdx];
+            int pcptCreatures = percepts[perceptIdx + OFFSET];
+            int pcptFood      = percepts[perceptIdx + OFFSET * 2];
+            
+            output += -chromosome[perceptIdx] * pcptMonsters;
+            output += chromosome[perceptIdx + OFFSET] * (pcptCreatures + pcptFood); // extra offset to access food location.
+
+            // accumulate total percepts
+            totalPerceptVal += pcptMonsters;
+            totalFood       += pcptFood;
+            
+            // record action and iterate to next percept value.
+            actions[perceptIdx++] = output;
+        }
+
+        //actions[RND_MOV_IDX - 1] = chromosome[CHROMO_SIZE - 2] * totalFood;
+        
+        // if there are no actions to take because no mons or creatures or food.
+        // take a random move according to weight of chromosome.
+        /*if(totalPerceptVal != 0) {
+            actions[RND_MOV_IDX] = chromosome[CHROMO_SIZE - 1] * (1 / totalPerceptVal);
+        }*/
 
         String info = "";
-        
-        for(int i : percepts) {
+        for(float i : chromosome) {
             info += i + " ";
         }
-        System.out.println("percepts " + info);
-        // This is where your chromosome gives rise to the model that maps
-        // percepts to actions.  This function governs your creature's behaviour.
-        // You need to figure out what model you want to use, and how you're going
-        // to encode its parameters in a chromosome.
-
-        // expected number of actions from percepts.
-        float actions[] = new float[numExpectedActions];
-        
-        for(int i=0;i<numExpectedActions;i++) {
-           actions[i] = rand.nextFloat();
-        } 
-        
+        System.out.println("chromosome " + info);
         info = "";
-        
         for(float i : actions) {
             info += i + " ";
         }
         System.out.println("actions " + info);
+        System.out.println();
+        
         return actions;
     }
 
+    public float[] getChromosome() {
+        return chromosome;
+    }
+    
+    public void setChromosome(float[] chromosome) {
+        this.chromosome = chromosome;
+    }
 }

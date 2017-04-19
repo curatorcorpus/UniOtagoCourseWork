@@ -23,8 +23,50 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 500;
+    private final int numGenerations = 600;
+    
+    private void breed() {
+        
+    }
+    
+    private void crossOver() {
+        
+    }
+    
+    /**
+     * Prints out population status of generation.
+     */
+    private void showStatus(MyCreature[] old_population, int numCreatures) {
+       // Here is how you can get information about old creatures and how
+       // well they did in the simulation
+       float avgLifeTime = 0f;
+       int nSurvivors = 0;
 
+       for(MyCreature creature : old_population) {
+           
+          boolean dead   = creature.isDead();
+          int     energy = creature.getEnergy();
+
+          if(dead) {
+             avgLifeTime += (float) creature.timeOfDeath();
+             
+          } else {
+              
+             nSurvivors++;
+             avgLifeTime += (float) numTurns;
+          }
+       }
+
+       // Right now the information is used to print some stats...but you should
+       // use this information to access creatures fitness.  It's up to you how
+       // you define your fitness function.  You should add a print out or
+       // some visual display of average fitness over generations.
+       avgLifeTime /= (float) numCreatures;
+       System.out.println("Simulation stats:");
+       System.out.println("  Survivors    : " + nSurvivors + " out of " + numCreatures);
+       System.out.println("  Avg life time: " + avgLifeTime + " turns");
+    }
+    
     /**
      * Constructor for Simulation World.
      * 
@@ -54,6 +96,12 @@ public class MyWorld extends World {
        Returns: An array of MyCreature objects - the World will expect numCreatures
                 elements in that array     
     */  
+    /**
+     * 
+     * 
+     * @param numCreatures
+     * @return 
+     */
     @Override
     public MyCreature[] firstGeneration(int numCreatures) {
     
@@ -65,7 +113,7 @@ public class MyWorld extends World {
         // a population of your creatures
         MyCreature[] population = new MyCreature[numCreatures];
       
-        for(int i=0; i<numCreatures; i++) {
+        for(int i = 0; i < numCreatures; i++) {
             population[i] = new MyCreature(numPercepts, numActions);     
         }
       
@@ -92,64 +140,38 @@ public class MyWorld extends World {
              elements in that array.  This is the new population that will be
              use for the next simulation.  
     */  
+    
+    /**
+     * 
+     * 
+     * @param old_population_btc
+     * @param numCreatures
+     * @return 
+     */
     @Override
     public MyCreature[] nextGeneration(Creature[] old_population_btc, int numCreatures) {
       // Typcast old_population of Creatures to array of MyCreatures
        MyCreature[] old_population = (MyCreature[]) old_population_btc;
+
+       showStatus(old_population, numCreatures);
+       
        // Create a new array for the new population
        MyCreature[] new_population = new MyCreature[numCreatures];
-
-       // Here is how you can get information about old creatures and how
-       // well they did in the simulation
-       float avgLifeTime=0f;
-       int nSurvivors = 0;
-       for(MyCreature creature : old_population) {
-          // The energy of the creature.  This is zero if creature starved to
-          // death, non-negative oterhwise.  If this number is zero, but the 
-          // creature is dead, then this number gives the enrgy of the creature
-          // at the time of death.
-          int energy = creature.getEnergy();
-
-          // This querry can tell you if the creature died during simulation
-          // or not.  
-          boolean dead = creature.isDead();
-
-          if(dead) {
-             // If the creature died during simulation, you can determine
-             // its time of death (in turns)
-             int timeOfDeath = creature.timeOfDeath();
-             avgLifeTime += (float) timeOfDeath;
-          } else {
-             nSurvivors++;
-             avgLifeTime += (float) numTurns;
-          }
-       }
-
-       // Right now the information is used to print some stats...but you should
-       // use this information to access creatures fitness.  It's up to you how
-       // you define your fitness function.  You should add a print out or
-       // some visual display of average fitness over generations.
-       avgLifeTime /= (float) numCreatures;
-       System.out.println("Simulation stats:");
-       System.out.println("  Survivors    : " + nSurvivors + " out of " + numCreatures);
-       System.out.println("  Avg life time: " + avgLifeTime + " turns");
-
-
+       
        // Having some way of measuring the fitness, you should implement a proper
        // parent selection method here and create a set of new creatures.  You need
        // to create numCreatures of the new creatures.  If you'd like to have
        // some elitism, you can use old creatures in the next generation.  This
        // example code uses all the creatures from the old generation in the
        // new generation.
-       for(int i=0;i<numCreatures; i++) {
+       for(int i = 0; i < numCreatures; i++) {
           new_population[i] = old_population[i];
        }
-
 
        // Return new population of cratures.
        return new_population;
     }
-
+    
     /**
      * Main Method.
      * 
@@ -157,17 +179,16 @@ public class MyWorld extends World {
      */
     public static void main(String[] args) {
 
-       boolean repeatableMode = false;
+       boolean repeatableMode = true;
        
-       int gridSize = 5;
+       int gridSize = 50;
        int perceptFormat = 2;
        int windowWidth =  2456;
        int windowHeight = 1440;
 
        // Instantiate MyWorld object.  The rest of the application is driven
        // from the window that will be displayed.
-       MyWorld sim = new MyWorld(gridSize, windowWidth, windowHeight, 
-                                                        repeatableMode, 
+       new MyWorld(gridSize, windowWidth, windowHeight, repeatableMode, 
                                                         perceptFormat);
     }
   
