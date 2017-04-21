@@ -23,14 +23,73 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 600;
+    private final int numGenerations = 100;
     
-    private void breed() {
+    private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
         
+        MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
+        MyCreature[] newGeneration = new MyCreature[numCreatures];
+        MyCreature fittestCreature = null;
+        
+        int fitness = 0;
+        int eliteCreatureIdx = 0;
+        
+        // find fittest creature for breeding.
+        for(int i = 0; i < numCreatures; i++) {
+            int energy = oldPopulation[i].getEnergy();
+            
+           // if(!oldPopulation[i].isDead()) {
+                if(energy > fitness) {
+                    fitness = energy;
+                    fittestCreature = oldPopulation[i];
+                    eliteCreatureIdx = i;
+                }
+            //}
+        }      
+        
+        if(fittestCreature == null) {
+            System.out.println("coudlnt find elite creature");
+        }
+
+        float[] eliteChromosomes = fittestCreature.getChromosome();
+        
+        // cross over breeding.
+        for(int i = 0; i < numCreatures; i++) {
+            
+            if(i == eliteCreatureIdx) {
+                newGeneration[eliteCreatureIdx] = fittestCreature;
+                continue;
+            }
+            
+            float[] newGenes = crossOver(eliteChromosomes, 
+                                         oldPopulation[i].getChromosome());
+                
+            newGeneration[i] = new MyCreature(newGenes);
+        }
+        
+        return newGeneration;
     }
     
-    private void crossOver() {
+    private float[] crossOver(float[] dominChrom, float[] altChrom) {
         
+        Random ran = new Random();
+        
+        float[] offspring = new float[dominChrom.length];
+        
+        int xoverPoint = ran.nextInt(dominChrom.length);
+        int i = 0;
+
+        while(i < dominChrom.length) {
+            if(i < xoverPoint) {
+                offspring[i] = dominChrom[i];
+            } else {
+                offspring[i] = altChrom[i]; 
+            }
+            
+            i++;
+        }
+        
+        return offspring;
     }
     
     /**
@@ -44,8 +103,7 @@ public class MyWorld extends World {
 
        for(MyCreature creature : old_population) {
            
-          boolean dead   = creature.isDead();
-          int     energy = creature.getEnergy();
+          boolean dead = creature.isDead();
 
           if(dead) {
              avgLifeTime += (float) creature.timeOfDeath();
@@ -116,7 +174,7 @@ public class MyWorld extends World {
         for(int i = 0; i < numCreatures; i++) {
             population[i] = new MyCreature(numPercepts, numActions);     
         }
-      
+
         return population;
     }
 
@@ -152,21 +210,11 @@ public class MyWorld extends World {
     public MyCreature[] nextGeneration(Creature[] old_population_btc, int numCreatures) {
       // Typcast old_population of Creatures to array of MyCreatures
        MyCreature[] old_population = (MyCreature[]) old_population_btc;
-
+       
        showStatus(old_population, numCreatures);
        
        // Create a new array for the new population
-       MyCreature[] new_population = new MyCreature[numCreatures];
-       
-       // Having some way of measuring the fitness, you should implement a proper
-       // parent selection method here and create a set of new creatures.  You need
-       // to create numCreatures of the new creatures.  If you'd like to have
-       // some elitism, you can use old creatures in the next generation.  This
-       // example code uses all the creatures from the old generation in the
-       // new generation.
-       for(int i = 0; i < numCreatures; i++) {
-          new_population[i] = old_population[i];
-       }
+       MyCreature[] new_population = breed(old_population_btc, numCreatures);
 
        // Return new population of cratures.
        return new_population;
@@ -181,7 +229,7 @@ public class MyWorld extends World {
 
        boolean repeatableMode = true;
        
-       int gridSize = 50;
+       int gridSize = 60;
        int perceptFormat = 2;
        int windowWidth =  2456;
        int windowHeight = 1440;

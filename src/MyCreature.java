@@ -1,6 +1,8 @@
 import cosc343.assig2.Creature;
 
 import java.util.Random;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
 * The MyCreate extends the cosc343 assignment 2 Creature.  Here you implement
@@ -13,13 +15,17 @@ import java.util.Random;
 */
 public class MyCreature extends Creature {
 
-    private static final int CHROMO_SIZE = 20;
+    private static final int CHROMO_SIZE = 11;
+    private static final int OFFSET = 9; // number of neighbourhoods + OFFSETs for creature, and food percepts.
+    
+    private int prevAction = 0;
+    private List<Integer> prevFoodZones = null;
     
     private float[] chromosome;
     
     // Random number generator
     private Random rand = new Random();
-
+    
     /**
      * Initial constructor.
      */
@@ -29,6 +35,10 @@ public class MyCreature extends Creature {
         for(int i = 0; i < chromosome.length; i++) {
             chromosome[i] = rand.nextFloat();
         }
+    }
+    
+    public MyCreature(float[] chromosome) {
+        this.chromosome = chromosome;
     }
     
     /**
@@ -61,53 +71,148 @@ public class MyCreature extends Creature {
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) {
         
-        final int OFFSET      = 9; // number of neighbourhoods + OFFSETs for creature, and food percepts.
-        final int RND_MOV_IDX = 10;
+        // zones
+        List<Integer> dangerZones = new ArrayList<>();
+        List<Integer> friendlyZones = new ArrayList<>();
+        List<Integer> foodZones   = new ArrayList<>();
+        List<Integer> foodQuality = new ArrayList<>();
         
         // default actions would be determined by phenotypes of individuals.
         float actions[] = new float[numExpectedActions];
-        float totalPerceptVal = 0.0f;
-        float totalFood       = 0.0f;
         
-        int perceptIdx   = 0;
-        
+        int perceptIdx = 0;
+
+        // sense all locations.
         while(perceptIdx < OFFSET) {
-            float output = 0.0f;
             
+            // obtain neighbourhood information
             int pcptMonsters  = percepts[perceptIdx];
             int pcptCreatures = percepts[perceptIdx + OFFSET];
             int pcptFood      = percepts[perceptIdx + OFFSET * 2];
             
-            output += -chromosome[perceptIdx] * pcptMonsters;
-            output += chromosome[perceptIdx + OFFSET] * (pcptCreatures + pcptFood); // extra offset to access food location.
-
-            // accumulate total percepts
-            totalPerceptVal += pcptMonsters;
-            totalFood       += pcptFood;
+            // find locations of danger
+            if(pcptMonsters == 1) {
+                dangerZones.add(perceptIdx);
+            }
             
-            // record action and iterate to next percept value.
-            actions[perceptIdx++] = output;
+            // find location of friendly zones (other creatures)
+            if(pcptCreatures == 1) {
+                friendlyZones.add(perceptIdx);
+            }
+            
+            // find locations of energy sources (food)
+            if(pcptFood == 1 || pcptFood == 2) {
+                friendlyZones.add(perceptIdx);
+                foodZones.add(perceptIdx);
+                //foodQuality.add(perceptIdx, pcptFood);
+            }
+            
+            perceptIdx++;
         }
 
-        //actions[RND_MOV_IDX - 1] = chromosome[CHROMO_SIZE - 2] * totalFood;
+        boolean isDangerZonesEmpty   = dangerZones.isEmpty();
+        boolean isFriendlyZonesEmtpy = friendlyZones.isEmpty();
+        boolean isFoodZonesEmpty     = foodZones.isEmpty();
         
-        // if there are no actions to take because no mons or creatures or food.
-        // take a random move according to weight of chromosome.
-        /*if(totalPerceptVal != 0) {
-            actions[RND_MOV_IDX] = chromosome[CHROMO_SIZE - 1] * (1 / totalPerceptVal);
-        }*/
+        // if there are nearby entities, react.
+        if(!isFriendlyZonesEmtpy || !isDangerZonesEmpty) {
+        
+            // determines locations.
+            List<Integer> undangerousZones = determineUndangerZones(dangerZones);
+            
+            /*
+            String info = "";
+            for(int i : dangerZones) info += i + " ";
+            System.out.println("dangerZones " + info);
+            
+            info = "";
+            for(int i : friendZones) info += i + " ";
+            System.out.println("friendZones " + info);            
+            
+            info = "";
+            for(int i : foodZones) info += i + " ";
+            System.out.println("foodZones " + info);            
+            
+            info = "";
+            for(int i : undangerousZones) info += i + " ";
+            System.out.println("UndangerousZones " + info);
+            
+            info = "";
+            for(int i : neighbourZones) info += i + " ";
+            System.out.println("neighbourZones " + info);            
 
-        String info = "";
-        for(float i : chromosome) {
-            info += i + " ";
+            info = "";
+            for(int i : energyZones) info += i + " ";
+            System.out.println("energyZones " + info);                
+            System.out.println();
+            */
+            
+            // if there are only monster around then use undangerous zones.
+            if(!isDangerZonesEmpty && isFriendlyZonesEmtpy) {
+                
+                for(int loc : undangerousZones) {
+                    actions[loc] = chromosome[loc];
+                }
+            } 
+            
+            // if there are friendly zones but no dangerous zones, just use friendly zones.
+            else if(isDangerZonesEmpty && !isFriendlyZonesEmtpy) {
+                
+                for(int loc : friendlyZones) {
+                    actions[loc] = chromosome[loc];
+                }
+                
+                // also have chance to make random move because we are in no danger.
+                actions[OFFSET + 1] = chromosome[OFFSET + 1];  
+            }
+            
+            // both zones are not empty, then just use friendly zones.
+            else if(!isDangerZonesEmpty && !isFriendlyZonesEmtpy) {
+                
+                for(int loc : friendlyZones) {
+                    actions[loc] = chromosome[loc];
+                }
+                
+                // also have chance to make random move because we are in no danger.
+                actions[OFFSET + 1] = chromosome[OFFSET + 1];                
+            }
+            
+            // if foodzones are not empty
+            if(!isFoodZonesEmpty) {
+                
+                // if prev move as same as index of a food source, then eat.                
+                if(prevFoodZones != null) {
+                    if(prevFoodZones.contains(prevAction)) {
+                        actions[OFFSET] = chromosome[OFFSET];
+                    }
+                }
+                
+                prevFoodZones = foodZones;
+            }
+            
+            // otherwise does random move.
+        } else {
+            actions[OFFSET + 1] = chromosome[OFFSET + 1];
         }
-        System.out.println("chromosome " + info);
-        info = "";
-        for(float i : actions) {
-            info += i + " ";
+        
+        int act = 0;
+        int maxMoveIdx = 0;
+        float maxMove = 0.0f;
+        
+        // determine action
+        while(act < actions.length) {
+            
+            float determinedAction = actions[act];
+            
+            if(determinedAction > maxMove) {
+                maxMove = determinedAction;
+                maxMoveIdx = act;
+            }
+            
+            act++;
         }
-        System.out.println("actions " + info);
-        System.out.println();
+        
+        prevAction = maxMoveIdx;
         
         return actions;
     }
@@ -118,5 +223,22 @@ public class MyCreature extends Creature {
     
     public void setChromosome(float[] chromosome) {
         this.chromosome = chromosome;
+    }
+    
+    private List<Integer> determineUndangerZones(List<Integer> dangerZones) {
+        List<Integer> availableZones = new ArrayList<>();
+        
+        int i = 0;
+        
+        while(i < OFFSET) {
+            // if the location is considered a danger zone, then skip.
+            if(!dangerZones.contains(i)) {
+                availableZones.add(i);
+            }
+            
+            i++;
+        }
+        
+        return availableZones;
     }
 }
