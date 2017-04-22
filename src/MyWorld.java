@@ -1,6 +1,7 @@
 import cosc343.assig2.World;
 import cosc343.assig2.Creature;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.io.File;
@@ -9,6 +10,7 @@ import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Stack;
+
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.ChartRenderingInfo;
@@ -44,14 +46,14 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 200;
+    private final int numGenerations = 140;
     
-    private int genCounter = 200;
+    private int genCounter = numGenerations;
     
     private int prevSurvivors = 0;
     private MyCreature[] prevOldGen = null;
     private double[] averageFitnessPerGen = new double[numGenerations];
-        private int avgFitIdx = 0;
+    private int avgFitIdx = 0;
         
     private double determineFitness(MyCreature creature) {
 
@@ -182,8 +184,9 @@ public class MyWorld extends World {
         }
         
         */
+
+        averageFitnessPerGen[avgFitIdx++] = avgFitness/numCreatures; 
         
-        averageFitnessPerGen[avgFitIdx++] = (double) (avgFitness/numCreatures);        
         return newGeneration;
     }
     
@@ -216,11 +219,20 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        // have 11 / 1000 chance of mutation.
-        int mutateGene = rand.nextInt(10000);    
+        // high mutation rate 
+        int mutationRate = 395;
         
-        if(mutateGene < offspring.length) {
-            offspring[mutateGene] = rand.nextFloat();
+        // have 11 / 1000 chance of mutation.
+        int mutateGene = rand.nextInt(mutationRate);    
+        int altMutGene = rand.nextInt(mutationRate);
+        
+        if(mutateGene < offspring.length && altMutGene < offspring.length) {
+          // offspring[mutateGene] = rand.nextFloat();
+          float copy = offspring[mutateGene];
+          
+          offspring[mutateGene] = offspring[altMutGene];
+          offspring[altMutGene] = copy;
+          System.out.println("mutation has occurred");
         } 
     }
     
@@ -232,7 +244,6 @@ public class MyWorld extends World {
        // well they did in the simulation
        float avgLifeTime = 0f;
        int nSurvivors = 0;
-       int avgEnergy = 0;
        
        for(MyCreature creature : old_population) {
            
@@ -244,18 +255,13 @@ public class MyWorld extends World {
              nSurvivors++;
              avgLifeTime += (float) numTurns;
           }
-          
-          avgEnergy += creature.getEnergy();
        }
 
-       // Right now the information is used to print some stats...but you should
-       // use this information to access creatures fitness.  It's up to you how
-       // you define your fitness function.  You should add a print out or
-       // some visual display of average fitness over generations.
        avgLifeTime /= (float) numCreatures;
-       avgEnergy /=  numCreatures;
+       
+       // display status.
        System.out.println("Simulation stats:");
-       System.out.println("  Fitness      : " + avgEnergy );
+       System.out.println("  Fitness      : " + averageFitnessPerGen[avgFitIdx - 1]);
        System.out.println("  Survivors    : " + nSurvivors + " out of " + numCreatures);
        System.out.println("  Avg life time: " + avgLifeTime + " turns");
        
@@ -347,30 +353,38 @@ public class MyWorld extends World {
     public MyCreature[] nextGeneration(Creature[] old_population_btc, int numCreatures) {
         // Typcast old_population of Creatures to array of MyCreatures
         MyCreature[] old_population = (MyCreature[]) old_population_btc;
-        MyCreature[] new_population = null;
+        MyCreature[] new_population = breed(old_population_btc, numCreatures); // Create a new array for the new population
         
-        int survivors = showStatus(old_population, numCreatures);
+        showStatus(old_population, numCreatures);
        
-        /*
-        if(prevSurvivors < survivors) {
-            // Create a new array for the new population
-            new_population = breed(old_population_btc, numCreatures);
-
-            prevSurvivors = survivors;
-            prevOldGen = old_population;
-            
-        } else {
-            new_population = prevOldGen;
-        }*/
-       
-        genCounter--;
+        --genCounter;
         
         if(genCounter == 0) {
            
-            JFreeChart jfreechart = ChartFactory.createScatterPlot(
-            "Fitness Scatter", "Generations", "Fitness", samplexydataset2(),
-            PlotOrientation.VERTICAL, true, true, false);
+            // aggregate fitness data into data set.
+            XYSeriesCollection fitnessDataSet = new XYSeriesCollection();
+            XYSeries dataSet = new XYSeries("Fitness");
+        
+            for (int i = 0; i < numGenerations; i++) {
+                dataSet.add(i, averageFitnessPerGen[i]);
+            }
+        
+            fitnessDataSet.addSeries(dataSet);
+            
+            // create chart.
+            JFreeChart jfreechart = ChartFactory.createScatterPlot("Fitness Scatter", 
+                                                                   "Generations", 
+                                                                   "Fitness", 
+                                                                   fitnessDataSet,
+                                                                   PlotOrientation.VERTICAL, 
+                                                                   true, 
+                                                                   true, 
+                                                                   false);
+            
+            // define shape of plots.
             Shape cross = ShapeUtilities.createDiagonalCross(3, 1);
+            
+            // setup chart.
             XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
             xyPlot.setDomainCrosshairVisible(true);
             xyPlot.setRangeCrosshairVisible(true);
@@ -378,40 +392,29 @@ public class MyWorld extends World {
             renderer.setSeriesShape(0, cross);
             renderer.setSeriesPaint(0, Color.red);
        
-            jfreechart.getRenderingHints().put
-            (RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            // enable AA.
+            jfreechart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, 
+                                               RenderingHints.VALUE_ANTIALIAS_ON);
 
             // create and display a frame...
             ChartFrame frame = new ChartFrame("COSC 343 Assignment", jfreechart);
+            frame.setPreferredSize(new Dimension(2450, 1440));
             frame.pack();
             frame.setVisible(true);
             
+            
+            // save
             try {
                 ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
                 File file = new File("FitnessChart.png");
                 ChartUtilities.saveChartAsPNG(file, jfreechart, 2450, 1440, info);
                 
             } catch(Exception e) {
-                
+                System.err.println("Chart couldn't be saved properly.");
             }
         }
         
-        return breed(old_population_btc, numCreatures);
-    }
-    
-    private XYSeriesCollection samplexydataset2() {
-        
-        XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
-        XYSeries series = new XYSeries("Fitness");
-        
-        for (int i = 0; i < numGenerations - 1; i++) {
-                series.add(i, averageFitnessPerGen[i]);
-                System.out.println(averageFitnessPerGen[i]);
-        }
-        
-        xySeriesCollection.addSeries(series);
-        
-        return xySeriesCollection;
+        return new_population;
     }
     
     /**

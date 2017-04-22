@@ -14,13 +14,21 @@ import java.util.ArrayList;
 * @since   2017-04-05 
 */
 public class MyCreature extends Creature {
-
-    private static final int CHROMO_SIZE = 20;
+    
+    private static final int CHROMO_SIZE = 21;
     private static final int OFFSET = 9; // number of neighbourhoods + OFFSETs for creature, and food percepts.
     
     private int prevAction = 0;
     private List<Integer> prevFoodZones = null;
     
+    /**
+     * Data field that encodes chromosomes.
+     * Indicies 0 - 8:  encodes parameters related to danger zones.
+     * Indicies 9 - 17: encodes parameters related to friendly zones.
+     * Indicies 18:     encodes parameter related to eating food.
+     * Indicies 19:     encodes parameter related to random move.
+     * Indicies 20:     encodes parameter related to prioritizing food or avoid monsters.
+     */
     private float[] chromosome;
     
     // Random number generator
@@ -70,25 +78,17 @@ public class MyCreature extends Creature {
     */
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) {
-        /*System.out.println("energy " + this.getEnergy());
-        System.out.println("getting well " + this.getWellSoon());  
-        System.out.println("state " + this.getState());
-        System.out.println("is sick " + this.isSick());
-        System.out.println("is dead " + this.isDead());
-        System.out.println("TOD " + this.timeOfDeath());
-        */
         // zones
         List<Integer> dangerZones = new ArrayList<>();
         List<Integer> friendlyZones = new ArrayList<>();
         List<Integer> foodZones   = new ArrayList<>();
         
-        int[] foodQuality = new int[9];
+        int[] foodQuality = new int[OFFSET];
         
         // default actions would be determined by phenotypes of individuals.
         float actions[] = new float[numExpectedActions];
         
         int perceptIdx = 0;
-
         // sense all locations.
         while(perceptIdx < OFFSET) {
             
@@ -101,13 +101,10 @@ public class MyCreature extends Creature {
             if(pcptMonsters == 1) {
                 dangerZones.add(perceptIdx);
             }
-            
             // find location of friendly zones (other creatures)
             if(pcptCreatures == 1) {
                 friendlyZones.add(perceptIdx);
-            }
-            
-            
+            }   
             // find locations of energy sources (food)
             if(pcptFood == 1 || pcptFood == 2) {
                 friendlyZones.add(perceptIdx);
@@ -130,7 +127,6 @@ public class MyCreature extends Creature {
             
             // if there are only monster around then use undangerous zones.
             if(!isDangerZonesEmpty && isFriendlyZonesEmtpy) {
-                
                 for(int loc : undangerousZones) {
                     actions[loc] = chromosome[loc];
                 }
@@ -147,9 +143,16 @@ public class MyCreature extends Creature {
             // both zones are not empty, then just use friendly zones.
             else if(!isDangerZonesEmpty && !isFriendlyZonesEmtpy) {
                 
-                for(int loc : friendlyZones) {
-                    actions[loc] = chromosome[loc + OFFSET];
-                }               
+                // 0.6 threshold has slight bias towards eating food over avoiding monsters.
+                if(chromosome[OFFSET*2+2] < 0.6) {
+                    for(int loc : friendlyZones) {
+                        actions[loc] = chromosome[loc + OFFSET];
+                    }     
+                } else {
+                     for(int loc : undangerousZones) {
+                        actions[loc] = chromosome[loc + OFFSET];
+                    }                      
+                }
             }
             
             // if foodzones are not empty
