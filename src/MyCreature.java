@@ -15,7 +15,7 @@ import java.util.ArrayList;
 */
 public class MyCreature extends Creature {
     
-    private static final int CHROMO_SIZE = 21;
+    private static final int CHROMO_SIZE = 22;
     private static final int OFFSET = 9; // number of neighbourhoods + OFFSETs for creature, and food percepts.
     
     private int prevAction = 0;
@@ -28,6 +28,7 @@ public class MyCreature extends Creature {
      * Indicies 18:     encodes parameter related to eating food.
      * Indicies 19:     encodes parameter related to random move.
      * Indicies 20:     encodes parameter related to prioritizing food or avoid monsters.
+     * Indicies 21:     encodes parameter related to eat or do another move.
      */
     private float[] chromosome;
     
@@ -144,7 +145,7 @@ public class MyCreature extends Creature {
             else if(!isDangerZonesEmpty && !isFriendlyZonesEmtpy) {
                 
                 // 0.6 threshold has slight bias towards eating food over avoiding monsters.
-                if(chromosome[OFFSET*2+2] < 0.6) {
+                /*if(chromosome[OFFSET*2+2] < 0.5) {
                     for(int loc : friendlyZones) {
                         actions[loc] = chromosome[loc + OFFSET];
                     }     
@@ -152,22 +153,38 @@ public class MyCreature extends Creature {
                      for(int loc : undangerousZones) {
                         actions[loc] = chromosome[loc + OFFSET];
                     }                      
+                }*/
+                /*int bestMove = -1;
+                
+                for(int i = 0; i < undangerousZones.size(); i++) {
+                    for(int loc : friendlyZones) {
+                        if(undangerousZones.get(i) == loc) {
+                            bestMove = undangerousZones.get(i);
+                        }
+                    }
                 }
+                if(bestMove != -1)  {
+                    actions[bestMove] = chromosome[bestMove];
+                } else {*/
+                    if(chromosome[OFFSET*2+2] < 0.6) {
+                        for(int loc : friendlyZones) {
+                            actions[loc] = chromosome[loc + OFFSET];
+                        }     
+                    } else {
+                        for(int loc : undangerousZones) {
+                           actions[loc] = chromosome[loc];
+                       }                      
+                   }
+                //}
+                
             }
             
             // if foodzones are not empty
             if(!isFoodZonesEmpty) {
-                /*
-                // set ripe food as priority.
-                for(int i = 0; i < foodQuality.length; i++) {
-                    if(foodQuality[i] == 2) {
-                        actions[i] = chromosome[i];
-                    }
-                }*/
                 
                 // if prev move as same as index of a food source, then eat.                
                 if(prevFoodZones != null) {
-                    if(prevFoodZones.contains(prevAction)) {
+                    if(prevFoodZones.contains(prevAction) && chromosome[OFFSET*2+3] < 0.7) {
                         actions[OFFSET] = chromosome[OFFSET*2];
                     }
                 }
@@ -175,9 +192,7 @@ public class MyCreature extends Creature {
             }
             
             // otherwise does random move.
-        } else {
-            actions[OFFSET + 1] = chromosome[OFFSET*2 + 1];
-        }
+        } 
         
         int act = 0;
         int maxMoveIdx = 0;
