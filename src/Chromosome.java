@@ -21,17 +21,8 @@ import java.util.Random;
  *  NE     = 6.
  *  SW     = 7.
  *  SE     = 8.
- * 
- *  North_Wt = 0.
- *  South_Wt = 1.
- *  East_Wt  = 2.
- *  WestWt   = 3.
- *  CenterWt = 4.
- *  NW_Wt    = 5.
- *  NE_Wt    = 6.
- *  SW_Wt    = 7.
- *  SE_Wt    = 8.
  *
+ * Action Sensitivity Indices.
  *  Eat_Wt     = 0.
  *  Wait_Wt    = 1.
  *  Forward_Wt = 2.
@@ -45,18 +36,12 @@ public class Chromosome {
     private static final int NUM_DIRECITONS  = 9;
     private static final int NUM_ACTIONS     = 6;
     private static final int NUM_ENTITY_TYPE = 3;
-    
+
     /**
      * Direction Awareness Traits.
      */
     private int[] directionIntel;
-    
-    /**
-     * Direciton Sensitivity Traits - used when multiple movements 
-     * have to be made.
-     */
-    private float[] direcitonSensitivity;
-    
+   
     /**
      * Action Sensitivity Traits.
      */
@@ -65,7 +50,7 @@ public class Chromosome {
     /**
      * Prey/Predator/Friend Awareness Traits.
      */
-    private float[] ppfSensitivity;
+    private float[] fffSensitivity;
     
     private boolean debug = true;
     
@@ -74,24 +59,18 @@ public class Chromosome {
         Random rand = new Random();
         
         // initialize traits.
-        directionIntel       = new int[NUM_DIRECITONS];
-        direcitonSensitivity = new float[NUM_DIRECITONS];
-        actionSensitivity    = new float[NUM_ACTIONS];
+        directionIntel    = new int[NUM_DIRECITONS];
+        actionSensitivity = new float[NUM_ACTIONS];
+        fffSensitivity    = new float[NUM_ENTITY_TYPE]; 
         
         int i = 0;
         while(i < NUM_DIRECITONS) {
-            float dirSensitivity     = rand.nextFloat();
             int   estimateLocationIdx = rand.nextInt(NUM_DIRECITONS);
             
             // if num is not locked, then we can use it for chromosome.
             if(!lockNum.contains(estimateLocationIdx)) {
                 lockNum.add(estimateLocationIdx); // lock num.
-                directionIntel[i] = estimateLocationIdx;
-                
-                // also assign corresponding weight.
-                direcitonSensitivity[i] = dirSensitivity;
-                
-                i++;
+                directionIntel[i++] = estimateLocationIdx;
             } else {
                 continue;
             }
@@ -106,8 +85,8 @@ public class Chromosome {
         if(debug) {
             String info = "";
             for(int geneIdx = 0; geneIdx < NUM_DIRECITONS; geneIdx++) {
-                info +=  "G" + geneIdx + ":"  + directionIntel[geneIdx] + ",W:" +
-                                          direcitonSensitivity[geneIdx] + " ";
+                info +=  "G" + geneIdx + ": "  + directionIntel[geneIdx];// + ",W:" +
+                                          //direcitonSensitivity[geneIdx] + " ";
             }
             System.out.println("[DEBUG]: Chromosome: " + info);
             
@@ -122,7 +101,7 @@ public class Chromosome {
         // initialize ppf sensitivity genes.
         i = 0;
         while(i < NUM_ENTITY_TYPE) {
-            ppfSensitivity[i] = rand.nextFloat();
+            fffSensitivity[i++] = rand.nextFloat();
         }
     }
     
@@ -218,7 +197,11 @@ public class Chromosome {
         return perceptLoc;
     }
     
-    public float getDirectionalSens(int dirIdx) {
-        return direcitonSensitivity[dirIdx];
+    public float getActionSens(int actIdx) {
+        return actionSensitivity[actIdx];
+    }
+    
+    public float getFFFVal(int idx) {
+        return fffSensitivity[idx];
     }
 }

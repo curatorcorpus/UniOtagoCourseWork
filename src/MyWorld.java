@@ -61,8 +61,8 @@ public class MyWorld extends World {
         double fitness = 0;
         
         avgEnergy += creature.getEnergy();
-        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
-        
+        //fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        fitness =  numTurns - creature.timeOfDeath();
         return fitness;
     }
     
@@ -303,7 +303,7 @@ public class MyWorld extends World {
      */
     public static void main(String[] args) {
 
-       boolean repeatableMode = true;
+       boolean repeatableMode = false;
        
        int gridSize = 50;
        int perceptFormat = 2;
