@@ -45,7 +45,7 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 200;
+    private final int numGenerations = 500;
     
     private int genCounter = numGenerations;
     
@@ -58,10 +58,7 @@ public class MyWorld extends World {
     private int avgEnergy = 0;   
     
     private double determineFitness(MyCreature creature) {
-        int state = 0;
         double fitness = 0;
-        
-        if(!creature.isDead()) state = 1;
         
         avgEnergy += creature.getEnergy();
         fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
@@ -70,216 +67,8 @@ public class MyWorld extends World {
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
-        
-        MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
-        MyCreature[] newGeneration = new MyCreature[numCreatures];
-        MyCreature fittestCreature = null;
-        
-        List<MyCreature> aboveAverageCreatures = new ArrayList<>();
-        List<MyCreature> belowAverageCreatures = new ArrayList<>();
-        List<MyCreature> sortedAverages        = new ArrayList<>();
-        
-        double avgFitness = 0;
-        
-        double maxFitness = 0;
-        int fittestCreatureIdx = 0;
-        
-        // find fittest creature for breeding.
-        for(int i = 0; i < numCreatures; i++) {
-            MyCreature currentCreature = oldPopulation[i];
-            
-            double fitness = determineFitness(currentCreature);
-            
-            currentCreature.setFitness(fitness);
-            
-            avgFitness += fitness;
-
-            if(fitness > previousFitnessAvg) {      
-            
-                if(fitness > maxFitness) {
-                    maxFitness = fitness;
-                    fittestCreature = oldPopulation[i];
-                    fittestCreatureIdx = i;
-                }
-            
-                aboveAverageCreatures.add(currentCreature);
-            } else {
-                belowAverageCreatures.add(currentCreature);
-            }
-        }
-        if(aboveAverageCreatures.size() > 1) {
-            Collections.sort(aboveAverageCreatures, new Comparator<MyCreature>() {
-
-                @Override
-                public int compare(MyCreature o1, MyCreature o2) {
-                    return -((Double) o1.getFitness()).compareTo(((Double) o2.getFitness()));
-                }
-
-            });
-        }
-        if(belowAverageCreatures.size() > 1) {
-            Collections.sort(belowAverageCreatures, new Comparator<MyCreature>() {
-
-                @Override
-                public int compare(MyCreature o1, MyCreature o2) {
-                    return -((Double) o1.getFitness()).compareTo(((Double) o2.getFitness()));
-                }
-
-            });
-        }
-        sortedAverages.addAll(aboveAverageCreatures);
-        sortedAverages.addAll(belowAverageCreatures);        
-        if(belowAverageCreatures.size() > 1) {
-            Collections.sort(sortedAverages, new Comparator<MyCreature>() {
-
-                @Override
-                public int compare(MyCreature o1, MyCreature o2) {
-                    return -((Double) o1.getFitness()).compareTo(((Double) o2.getFitness()));
-                }
-
-            });
-        }
-        
-        for(MyCreature c : aboveAverageCreatures) {
-           System.out.print(c.getFitness());
-            System.out.print(" " + c.getEnergy());
-            System.out.println(" " + c.timeOfDeath());
-        }
-        for(MyCreature c : belowAverageCreatures) {
-            System.out.print(c.getFitness());
-            System.out.print(" " + c.getEnergy());
-            System.out.println(" " + c.timeOfDeath());
-        }
-        
-        
-        if(fittestCreature == null) {
-            System.err.println("couldn't find elite creature");
-            return null;
-        }
-        
-        int newGenIdx = 0;
-        
-        // add all creatures that above average fitness to new population
-        for(MyCreature c : aboveAverageCreatures) {
-            newGeneration[newGenIdx++] = c;
-        }
-
-        int currentCreatureIdx = 0;
-        while (newGenIdx < numCreatures) {
-            
-            MyCreature currentParent = sortedAverages.get(currentCreatureIdx++);
-            System.out.println("fitness " + currentParent.getFitness());
-            
-            // make ordered fit creatures breed with rest of group.
-            for(int i = currentCreatureIdx + 1; newGenIdx < numCreatures && i < aboveAverageCreatures.size(); i++) {
-
-                MyCreature mate = aboveAverageCreatures.get(i);
-
-                float[] newGenes = generalCrossOver(currentParent.getChromosome(), 
-                                                    mate.getChromosome());
-                newGeneration[newGenIdx++] = new MyCreature(newGenes); 
-                
-                if(newGenIdx < numCreatures) {
-                    newGenes = inverseGeneralCrossOver(currentParent.getChromosome(), 
-                                                        mate.getChromosome());
-                    newGeneration[newGenIdx++] = new MyCreature(newGenes); 
-                }
-            }
-            
-            currentCreatureIdx++;
-        }
-
-        /*
-        for(int i = 0; newGenIdx < numCreatures; i++) {
-            if(i != fittestCreatureIdx) {
-                
-                MyCreature partner = oldPopulation[i];
-                
-                if(!aboveAverageCreatures.contains(partner)) {
-                    float[] newGenes = generalCrossOver(fittestChromosome, 
-                                                 partner.getChromosome());
-                    newGeneration[newGenIdx++] = new MyCreature(newGenes); 
-                } else {
-                    float[] newGenes = generalCrossOver(fittestChromosome, 
-                                                 partner.getChromosome());
-                    newGeneration[newGenIdx++] = new MyCreature(newGenes);                     
-                }    
-            } 
-        }*/
-
-        averageFitnessPerGen[avgFitIdx++] = avgFitness/numCreatures; 
-        previousFitnessAvg = avgFitness/numCreatures;
-        
-        return newGeneration;
-    }
-    
-    private float[] eliteCrossOver(float[] dominChrom, float[] altChrom) {
-        
-        Random ran = new Random();
-        
-        float[] offspring = new float[dominChrom.length];
-        
-        int xoverPoint = ran.nextInt(dominChrom.length);
-        int i = 0;
-        /*
-        while(i < dominChrom.length) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        } */
-        
-        xoverPoint = ran.nextInt(9);
-        while(i < 9) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-
-        xoverPoint = ran.nextInt(18) + 9;
-        while(i < 18) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        xoverPoint = ran.nextInt(2) + 9 * 2;
-        while(i < 20) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        xoverPoint = ran.nextInt(2) + 9 * 2 + 2;
-        while(i < dominChrom.length) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        // mutate a gene.
-        //mutate(offspring);
-        
-        return offspring;
+ 
+        return null;
     }
     
     private float[] simpleCrossOver(float[] dominChrom, float[] altChrom) {
@@ -292,29 +81,6 @@ public class MyWorld extends World {
         int i = 0;
         
         while(i < dominChrom.length) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-   
-        
-        return offspring;
-    }
-    
-    private float[] inverseSimpleCrossOver(float[] dominChrom, float[] altChrom) {
-        
-        Random ran = new Random();
-        
-        float[] offspring = new float[dominChrom.length];
-        
-        int xoverPoint = ran.nextInt(dominChrom.length);
-        int i = 0;
-        
-        while(i < dominChrom.length) {
             if(i > xoverPoint) {
                 offspring[i] = dominChrom[i];
             } else {
@@ -324,101 +90,6 @@ public class MyWorld extends World {
             i++;
         }
    
-        
-        return offspring;
-    }    
-           
-    private float[] generalCrossOver(float[] dominChrom, float[] altChrom) {
-        
-        Random ran = new Random();
-        
-        float[] offspring = new float[dominChrom.length];
-        
-        int xoverPoint = ran.nextInt(dominChrom.length);
-        int i = 0;
-        
-        xoverPoint = ran.nextInt(9);
-        while(i < 9) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        xoverPoint = ran.nextInt(18) + 9;
-        while(i < 18) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        xoverPoint = ran.nextInt(4) + 9 * 2;
-        while(i < dominChrom.length) {
-            if(i < xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        // mutate a gene.
-        mutate(offspring);
-        
-        return offspring;
-    }
-    
-    private float[] inverseGeneralCrossOver(float[] dominChrom, float[] altChrom) {
-        
-        Random ran = new Random();
-        
-        float[] offspring = new float[dominChrom.length];
-        
-        int xoverPoint = ran.nextInt(dominChrom.length);
-        int i = 0;
-        
-        xoverPoint = ran.nextInt(9);
-        while(i < 9) {
-            if(i > xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        xoverPoint = ran.nextInt(18) + 9;
-        while(i < 18) {
-            if(i > xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        xoverPoint = ran.nextInt(4) + 9 * 2;
-        while(i < dominChrom.length) {
-            if(i > xoverPoint) {
-                offspring[i] = dominChrom[i];
-            } else {
-                offspring[i] = altChrom[i];
-            }
-            
-            i++;
-        }
-        
-        // mutate a gene.
         //mutate(offspring);
         
         return offspring;
@@ -429,7 +100,7 @@ public class MyWorld extends World {
         Random rand = new Random();
         
         // high mutation rate 
-        int mutationRate = 10000;
+        int mutationRate = 2500;
         
         // have 11 / 1000 chance of mutation.
         int mutateGene = rand.nextInt(mutationRate);    
