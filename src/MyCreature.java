@@ -21,6 +21,8 @@ public class MyCreature extends Creature {
     private int prevAction = 0;
     private List<Integer> prevFoodZones = null;
     
+    private double currentFitness = 0.0;
+    
     /**
      * Data field that encodes chromosomes.
      * Indicies 0 - 8:  encodes parameters related to danger zones.
@@ -121,7 +123,7 @@ public class MyCreature extends Creature {
         boolean isFoodZonesEmpty     = foodZones.isEmpty();
         
         // if there are nearby entities, react.
-        if(!isFriendlyZonesEmtpy || !isDangerZonesEmpty) {
+        /*if(!isFriendlyZonesEmtpy || !isDangerZonesEmpty) {
         
             // determines locations.
             List<Integer> undangerousZones = determineUndangerZones(dangerZones);
@@ -154,18 +156,7 @@ public class MyCreature extends Creature {
                         actions[loc] = chromosome[loc + OFFSET];
                     }                      
                 }*/
-                /*int bestMove = -1;
-                
-                for(int i = 0; i < undangerousZones.size(); i++) {
-                    for(int loc : friendlyZones) {
-                        if(undangerousZones.get(i) == loc) {
-                            bestMove = undangerousZones.get(i);
-                        }
-                    }
-                }
-                if(bestMove != -1)  {
-                    actions[bestMove] = chromosome[bestMove];
-                } else {*/
+/*
                     if(chromosome[OFFSET*2+2] < 0.6) {
                         for(int loc : friendlyZones) {
                             actions[loc] = chromosome[loc + OFFSET];
@@ -184,14 +175,60 @@ public class MyCreature extends Creature {
                 
                 // if prev move as same as index of a food source, then eat.                
                 if(prevFoodZones != null) {
-                    if(prevFoodZones.contains(prevAction) && chromosome[OFFSET*2+3] < 0.7) {
-                        actions[OFFSET] = chromosome[OFFSET*2];
+                    if(prevFoodZones.contains(prevAction) && chromosome[OFFSET*2+3] < 0.5) {
+                        actions[OFFSET] = chromosome[CHROMO_SIZE - 1];
                     }
                 }
                 prevFoodZones = foodZones;
+            }*/
+
+    // if there are nearby entities, react.
+        if(!isFriendlyZonesEmtpy || !isDangerZonesEmpty) {
+        
+            // determines locations.
+            List<Integer> undangerousZones = determineUndangerZones(dangerZones);
+            
+            // if there are only monster around then use undangerous zones.
+            if(!isDangerZonesEmpty && isFriendlyZonesEmtpy) {
+                for(int loc : undangerousZones) {
+                    actions[loc] = chromosome[loc] * 
+                                   chromosome[loc + OFFSET];
+                }
+            } 
+            
+            // if there are friendly zones but no dangerous zones, just use friendly zones.
+            else if(isDangerZonesEmpty && !isFriendlyZonesEmtpy) {
+                for(int loc : friendlyZones) {
+                    actions[loc] = chromosome[loc] * 
+                                   chromosome[loc + OFFSET];
+                }
             }
             
+            // both zones are not empty, then just use friendly zones.
+            else if(!isDangerZonesEmpty && !isFriendlyZonesEmtpy) {
+                for(int loc : friendlyZones) {
+                    actions[loc] = chromosome[loc] * 
+                                   chromosome[loc + OFFSET];
+                }                
+            }
+            
+            // if foodzones are not empty
+            if(!isFoodZonesEmpty) {
+                if(prevFoodZones != null) {
+                    if(prevFoodZones.contains(prevAction)) {
+                        actions[OFFSET] = chromosome[OFFSET * 2] * 
+                                          chromosome[OFFSET * 2 + 1];
+                    }
+
+                }
+                
+                prevFoodZones = foodZones;
+            }
+
             // otherwise does random move.
+            
+            actions[OFFSET + 1] = chromosome[OFFSET * 2 + 2] * 
+                                  chromosome[OFFSET * 2 + 3];
         } 
         
         int act = 0;
@@ -222,6 +259,14 @@ public class MyCreature extends Creature {
     
     public void setChromosome(float[] chromosome) {
         this.chromosome = chromosome;
+    }
+    
+    public double getFitness() {
+        return currentFitness;
+    }
+    
+    public void setFitness(double currentFitness) {
+        this.currentFitness = currentFitness;
     }
     
     private List<Integer> determineUndangerZones(List<Integer> dangerZones) {
