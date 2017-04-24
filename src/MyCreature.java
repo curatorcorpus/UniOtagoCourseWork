@@ -32,7 +32,7 @@ public class MyCreature extends Creature {
      *                      need to produce every turn.
      */
     public MyCreature(int numPercepts, int numActions) {
-        this.chromosome = chromosome;
+        this.chromosome = new Chromosome();
     }
 
     /* This function must be overridden by MyCreature, because it implements
