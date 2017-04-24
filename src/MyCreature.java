@@ -3,6 +3,8 @@ import cosc343.assig2.Creature;
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 * The MyCreate extends the cosc343 assignment 2 Creature.  Here you implement
@@ -14,9 +16,7 @@ import java.util.ArrayList;
 * @since   2017-04-05 
 */
 public class MyCreature extends Creature {
-    
-    private static final boolean DEBUG = true; 
-    
+   
     private Chromosome chromosome;
     
     private double currentFitness = 0.0;
@@ -49,8 +49,58 @@ public class MyCreature extends Creature {
     */
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) {
-        // default actions would be determined by phenotypes of individuals.
+        
+        Map<Integer, Float> actionMapping = new HashMap<>();
+        List<Integer>       sensory       = new ArrayList<>();
+        
+        // default actions would be determined by genotypes of individuals.
         float actions[] = new float[numExpectedActions];
+        
+        boolean monsterNearby  = false;
+        boolean creatureNearby = false;
+        boolean foodNearby     = false;
+        
+        int perceptSections = percepts.length / 3;
+        int perceptOffset   = 9;
+        
+        for(int i = 0; i < perceptSections; i++) {
+            
+            int sensingMons = percepts[i];
+            int sensingCrea = percepts[i + perceptOffset];
+            int sensingFood = percepts[i + perceptOffset * 2];
+            
+            // add sensory information
+            sensory.add(sensingMons);
+            sensory.add(sensingCrea);
+            sensory.add(sensingFood);
+            
+            // deduce sensory information
+            if(sensingMons == 1) monsterNearby  = true;
+            if(sensingCrea == 1) creatureNearby = true;
+            if(sensingFood == 1) foodNearby     = true;
+        }
+        
+        for(int location : sensory) {
+            
+            float dirGenSens = chromosome.getDirectionalSens(location);            
+            int dirVal = chromosome.getDirectionVal(location);
+           
+            String direction      = chromosome.getDirectionString(dirVal);
+            int inverseDir        = chromosome.getInverseDirection(direction);
+            int inversePerceptDir = chromosome.dirValToPerceptLoc(inverseDir);
+            
+            if(monsterNearby) {
+                
+            }
+            if(creatureNearby) {
+                
+            }
+            if(foodNearby) {
+                
+            }
+            
+            actions[location] = dirGenSens;
+        }
         
         return actions;
     }

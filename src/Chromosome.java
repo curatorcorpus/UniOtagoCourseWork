@@ -11,7 +11,7 @@ import java.util.Random;
 
 /**
  * Data field that encodes chromosomes.
- * Indicies:
+ * Value:
  *  North  = 0.
  *  South  = 1.
  *  East   = 2.
@@ -42,8 +42,9 @@ import java.util.Random;
  */
 public class Chromosome {
     
-    private static final int NUM_DIRECITONS = 9;
-    private static final int NUM_ACTIONS    = 6;
+    private static final int NUM_DIRECITONS  = 9;
+    private static final int NUM_ACTIONS     = 6;
+    private static final int NUM_ENTITY_TYPE = 3;
     
     /**
      * Direction Awareness Traits.
@@ -57,9 +58,14 @@ public class Chromosome {
     private float[] direcitonSensitivity;
     
     /**
-     * Aciton Sensitivity Traits.
+     * Action Sensitivity Traits.
      */
     private float[] actionSensitivity;
+    
+    /**
+     * Prey/Predator/Friend Awareness Traits.
+     */
+    private float[] ppfSensitivity;
     
     private boolean debug = true;
     
@@ -73,7 +79,6 @@ public class Chromosome {
         actionSensitivity    = new float[NUM_ACTIONS];
         
         int i = 0;
-        
         while(i < NUM_DIRECITONS) {
             float dirSensitivity     = rand.nextFloat();
             int   estimateLocationIdx = rand.nextInt(NUM_DIRECITONS);
@@ -113,5 +118,107 @@ public class Chromosome {
             System.out.println("[DEBUG]: ChromoAct: " + info);
             System.out.println();
         }
+        
+        // initialize ppf sensitivity genes.
+        i = 0;
+        while(i < NUM_ENTITY_TYPE) {
+            ppfSensitivity[i] = rand.nextFloat();
+        }
+    }
+    
+    public int getDirectionVal(int perceptLoc) {
+        return directionIntel[perceptLoc];
+    }
+
+    public String getDirectionString(int dirVal) {
+        
+        String direction = "";
+        
+        switch(dirVal) {
+        case 0:
+            direction = "N";
+            break;
+        case 1:   
+            direction = "S";                
+            break;
+        case 2:
+            direction = "E";                
+            break;
+        case 3:   
+            direction = "W";                
+            break;
+        case 4:
+            direction = "C";                
+            break;
+        case 5:   
+            direction = "NW";                
+            break;
+        case 6:
+            direction = "NE";                
+            break;
+        case 7:   
+            direction = "SW";                
+            break;
+        case 8:
+            direction = "SE";                
+            break;    
+        }
+        
+        return direction;
+    }    
+    
+    public int getInverseDirection(String dir) {
+        int direction = 0;
+        
+        switch(dir) {
+        case "N":
+            direction = 0;
+            break;
+        case "S":   
+            direction = 1;                
+            break;
+        case "E":
+            direction = 2;                
+            break;
+        case "W":   
+            direction = 3;                
+            break;
+        case "C":
+            direction = 4;                
+            break;
+        case "NW":   
+            direction = 5;                
+            break;
+        case "NE":
+            direction = 6;                
+            break;
+        case "SW":   
+            direction = 7;                
+            break;
+        case "SE":
+            direction = 8;                
+            break;    
+        }        
+        
+        return direction;
+    }
+    
+    public int dirValToPerceptLoc(int dirVal) {
+        int perceptLoc = -1;
+        
+        for(int i = 0; i < directionIntel.length; i++) {
+            int chromoDirVal = directionIntel[i];
+            
+            if(chromoDirVal == dirVal) {
+                perceptLoc = i;
+                break;
+            }
+        }
+        
+        return perceptLoc;
+    }
+    
+    public float getDirectionalSens(int dirIdx) {
+        return direcitonSensitivity[dirIdx];
     }
 }
