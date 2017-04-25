@@ -22,15 +22,6 @@ public class MyCreature extends Creature {
     private static final float THREAT_THRES = 0.33f;
     private static final float FOOD_THRES   = 0.66f;
     
-    private static final int EAT_PCT = 9;
-    private static final int RND_PCT = 10;
-    
-    private static final int EAT_WT  = 0;
-    private static final int WAIT_WT = 1;
-    private static final int FWD_WT  = 2;
-    private static final int BCK_WT  = 3;
-    private static final int RND_WT  = 4;
-    
     private Chromosome chromosome;
 
     private double currentFitness = 0.0;
@@ -46,7 +37,7 @@ public class MyCreature extends Creature {
      *                      need to produce every turn.
      */
     public MyCreature(int numPercepts, int numActions) {
-        this.chromosome = new Chromosome();
+        this.chromosome = new Chromosome(numPercepts, numActions);
     }
 
     /** Data field that encodes chromosomes.
@@ -60,17 +51,6 @@ public class MyCreature extends Creature {
      *  NE     = 6.
      *  SW     = 7.
      *  SE     = 8.
-     * 
-     * Direction Weight Indices.
-     *  North_Wt = 0.
-     *  South_Wt = 1.
-     *  East_Wt  = 2.
-     *  WestWt   = 3.
-     *  CenterWt = 4.
-     *  NW_Wt    = 5.
-     *  NE_Wt    = 6.
-     *  SW_Wt    = 7.
-     *  SE_Wt    = 8.
      */
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) {
@@ -105,7 +85,6 @@ public class MyCreature extends Creature {
         }
         
         for(int location : sensory) {
-                    
             // determine fffs.
             if(monsterNearby) {
                 int fffStatusM = determineFFFReaction(chromosome.getFFFVal(0));
@@ -121,7 +100,7 @@ public class MyCreature extends Creature {
             } 
             // if all else fails, then we can walk randomly.
             else {
-                actions[location] = chromosome.getActionSens(RND_WT);
+                actions[location] = chromosome.getActionSens(chromosome.RND_WT);
             }
         }
         
@@ -143,83 +122,130 @@ public class MyCreature extends Creature {
      * @return 
      */
     private float[] fffValToActions(float[] actions, int fffValStatus, int perceptLoc) {
-        List<Float>         actionWeights = new ArrayList<>();
-        Map<Float, Integer> actionMapping = new HashMap<>();          
-        
-        int dirVal = chromosome.getDirectionVal(perceptLoc);
-
-        String direction      = chromosome.getDirectionString(dirVal);
-        int inverseDir        = chromosome.getInverseDirection(direction);
-        int inversePerceptDir = chromosome.dirValToPerceptLoc(inverseDir);  
+        Map<Float, Integer> multiActionMapping = new HashMap<>();          
+        List<Float> actionWeights              = new ArrayList<>();
         
         // weight variables
         float eatWt  = 0.0f,
               waitWt = 0.0f,
               fwdWt  = 0.0f,
               bckWt  = 0.0f,
+              lftWt  = 0.0f,
+              rghtWt = 0.0f,
+              tlWt   = 0.0f,
+              trWt   = 0.0f,
+              blWt   = 0.0f,
+              brWt   = 0.0f,
               rndWt  = 0.0f;
-        
         
         // foe
         if(fffValStatus == -1) {
             
-            bckWt = chromosome.getActionSens(BCK_WT);
-            actions[inversePerceptDir] = chromosome.getActionSens(BCK_WT);
+            bckWt = chromosome.getActionSens(Chromosome.BCK_WT); // can move away
+            blWt  = chromosome.getActionSens(Chromosome.BL_WT);  // can move away left.
+            brWt  = chromosome.getActionSens(Chromosome.BR_WT);  // can move away right.
+            
+            actionWeights.add(bckWt);
+            actionWeights.add(blWt);
+            actionWeights.add(brWt);
+            
+            multiActionMapping.put(bckWt, Chromosome.BCK_WT);
+            multiActionMapping.put(blWt, Chromosome.BL_WT);
+            multiActionMapping.put(brWt, Chromosome.BR_WT);            
         }
         
         // friend
         else if(fffValStatus == 0) {
             
-            fwdWt  = chromosome.getActionSens(FWD_WT);
-            waitWt = chromosome.getActionSens(WAIT_WT);
+            fwdWt  = chromosome.getActionSens(Chromosome.FWD_WT);  // can move towards.
+            bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
+            lftWt  = chromosome.getActionSens(Chromosome.LFT_WT);  // can move left.
+            rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
+            tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
+            trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
+            blWt   = chromosome.getActionSens(Chromosome.BL_WT);   // can move away left.
+            brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
+            waitWt = chromosome.getActionSens(Chromosome.WAIT_WT); // can wait.
+            rndWt  = chromosome.getActionSens(Chromosome.RND_WT);  // can move randomly.
             
             actionWeights.add(fwdWt);
+            actionWeights.add(bckWt);
+            actionWeights.add(lftWt);
+            actionWeights.add(rghtWt);
+            actionWeights.add(tlWt);
+            actionWeights.add(trWt);
+            actionWeights.add(blWt);
+            actionWeights.add(brWt);
             actionWeights.add(waitWt);
+            actionWeights.add(rndWt);
             
-            actionMapping.put(fwdWt,  FWD_WT);  // can move foward.
-            actionMapping.put(waitWt, WAIT_WT); // can wait.
+            multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);
+            multiActionMapping.put(bckWt,  Chromosome.WAIT_WT);
+            multiActionMapping.put(lftWt,  Chromosome.LFT_WT);
+            multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
+            multiActionMapping.put(tlWt,   Chromosome.TL_WT);
+            multiActionMapping.put(trWt,   Chromosome.TR_WT);
+            multiActionMapping.put(blWt,   Chromosome.BL_WT);
+            multiActionMapping.put(brWt,   Chromosome.BR_WT);
+            multiActionMapping.put(waitWt, Chromosome.WAIT_WT);
+            multiActionMapping.put(rndWt,  Chromosome.RND_WT);
         }
         
         else if(fffValStatus == 1) {
+                       
+            eatWt  = chromosome.getActionSens(Chromosome.EAT_WT);  // can eat.
+            fwdWt  = chromosome.getActionSens(Chromosome.FWD_WT);  // can move towards.
+            bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
+            lftWt  = chromosome.getActionSens(Chromosome.LFT_WT);  // can move left.
+            rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
+            tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
+            trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
+            blWt   = chromosome.getActionSens(Chromosome.BL_WT);   // can move away left.
+            brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
+            waitWt = chromosome.getActionSens(Chromosome.WAIT_WT); // can wait.
+            rndWt  = chromosome.getActionSens(Chromosome.RND_WT);  // can move randomly.
             
-            fwdWt  = chromosome.getActionSens(FWD_WT);
-            waitWt = chromosome.getActionSens(WAIT_WT);            
-            eatWt  = chromosome.getActionSens(EAT_WT); 
+            actionWeights.add(eatWt);            
+            actionWeights.add(fwdWt);/*
+            actionWeights.add(bckWt);
+            actionWeights.add(lftWt);
+            actionWeights.add(rghtWt);
+            actionWeights.add(tlWt);
+            actionWeights.add(trWt);
+            actionWeights.add(blWt);
+            actionWeights.add(brWt);
+            actionWeights.add(waitWt);*/
+            //actionWeights.add(rndWt);
             
-            actionWeights.add(fwdWt);
-            actionWeights.add(waitWt);
-            actionWeights.add(eatWt);
-            
-            actionMapping.put(fwdWt,  FWD_WT);   // can move foward.
-            actionMapping.put(waitWt, WAIT_WT);  // can wait.
-            actionMapping.put(eatWt,  EAT_WT);   // can eat.
+            multiActionMapping.put(eatWt,  Chromosome.EAT_WT);            
+            multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);/*
+            multiActionMapping.put(bckWt,  Chromosome.WAIT_WT);
+            multiActionMapping.put(lftWt,  Chromosome.LFT_WT);
+            multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
+            multiActionMapping.put(tlWt,   Chromosome.TL_WT);
+            multiActionMapping.put(trWt,   Chromosome.TR_WT);
+            multiActionMapping.put(blWt,   Chromosome.BL_WT);
+            multiActionMapping.put(brWt,   Chromosome.BR_WT);*/
+            multiActionMapping.put(waitWt, Chromosome.WAIT_WT);
+            //multiActionMapping.put(rndWt,  Chromosome.RND_WT);
             
             // food is ripe.
             if(perceptLoc == 2) {
                 
             }
         }
-        
-        // if action mapping size is greater than 1, then there are multiple options. 
-        if(actionMapping.size() > 1) {
-            Collections.sort(actionWeights);
-            
-            float maxWeight = Collections.max(actionWeights);
-            
-            int action = actionMapping.get(maxWeight);
-            
-            // TODO: configure more actions options, eat ripe fruit, MOVE ALL directions, impl wait.
-            if(action == EAT_PCT) actions[EAT_PCT] = eatWt;
-            if(action == WAIT_WT) actions[WAIT_WT] = waitWt;
-            if(action == FWD_WT)  actions[FWD_WT]  = fwdWt;
-            if(action == BCK_WT)  actions[BCK_WT]  = bckWt;
-            if(action == RND_WT)  actions[RND_WT]  = rndWt;
-            //if(action == 0)
-                
-            return actions;
-        }
-        
+
+        Collections.sort(actionWeights);
+
+        float maxWeight = Collections.max(actionWeights);
+
+        int action  = multiActionMapping.get(maxWeight);
+        int pcptLoc = chromosome.getActionMapToPcptLocIdx(action);
+
+        actions[pcptLoc] = maxWeight;
+
         return actions;
+
     }
     
     private int determineFFFReaction(float fffVal) {

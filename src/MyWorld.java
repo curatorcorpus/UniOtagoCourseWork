@@ -5,10 +5,11 @@ import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.io.File;
-
-import java.util.*;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -45,10 +46,7 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 500;
-    
-    private int genCounter = numGenerations;
-    
+    private final int numGenerations = 150;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
@@ -61,63 +59,126 @@ public class MyWorld extends World {
         double fitness = 0;
         
         avgEnergy += creature.getEnergy();
-        //fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
-        fitness =  numTurns - creature.timeOfDeath();
+        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        //fitness =  numTurns - creature.timeOfDeath();
         return fitness;
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
- 
-        return null;
+        
+        MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
+        MyCreature[] newGeneration = new MyCreature[numCreatures];
+        
+        double avgFitness = 0.0;
+        
+        // obtain previous fitness
+        for(int i = 0; i < numCreatures; i++) {
+            
+            MyCreature currCreature = oldPopulation[i];
+            double currfitness = determineFitness(currCreature);
+            currCreature.setFitness(currfitness);
+            
+            avgFitness += currfitness;
+        }
+        
+        averageFitnessPerGen[avgFitIdx] = avgFitness/numCreatures;
+        
+        // display status.
+        showStatus(oldPopulation, numCreatures);
+        
+        int newGen = 0;
+        while(newGen < numCreatures) {
+           newGeneration[newGen++] = tournamentSelection(oldPopulation);
+        }
+        
+        return newGeneration;
     }
     
-    private float[] simpleCrossOver(float[] dominChrom, float[] altChrom) {
+    private MyCreature tournamentSelection(MyCreature[] oldPopulation) {
+        Random rand = new Random();
         
-        Random ran = new Random();
+        int left  = 0;
+        int right = 0;
         
-        float[] offspring = new float[dominChrom.length];
+        do {
+           left  = rand.nextInt(oldPopulation.length);
+           right = rand.nextInt(oldPopulation.length);
+           
+           //System.out.println("l " + left + "r " + right);
+           
+        } while((right - left) < 2);
+
+        List<MyCreature> oldPopSubset = new ArrayList<>();
         
-        int xoverPoint = ran.nextInt(dominChrom.length);
+        while(left < right) {
+            oldPopSubset.add(oldPopulation[left++]);
+        }
+        
+        // sort array by energy
+        Collections.sort(oldPopSubset, (a, b) -> ((Double) a.getFitness()).
+                                                 compareTo(((Double) b.getFitness())));
+        
+        MyCreature parent1 = oldPopSubset.get(oldPopSubset.size() - 1);
+        MyCreature parent2 = oldPopSubset.get(oldPopSubset.size() - 2);
+        
+        Chromosome newChromo = crossOver(parent1.getChromosome(),
+                                         parent2.getChromosome());
+        
+        return new MyCreature(newChromo);
+    }
+    
+    /**
+     * 
+     * 
+     * @param male
+     * @param female
+     * @return 
+     */
+    private Chromosome crossOver(Chromosome firstBest, Chromosome scndBest) {
+        int[]   directionIntelP1 = firstBest.getDirectionIntel(), 
+                directionIntelP2 = scndBest.getDirectionIntel();
+        
+        float[] actionSensitivityP1 = firstBest.getActionSensGenes(),
+                actionSensitivityP2 = scndBest.getActionSensGenes();
+        
+        float[] fffSensitivityP1 = firstBest.getFFFSensGenes(), 
+                fffSensitivityP2 = scndBest.getFFFSensGenes();
+     
+        Chromosome newGenes = new Chromosome();
+        
+        newGenes.setDirectionIntel(directionIntelP1);                        // always get best parent's direction awareness genes.
+        newGenes.setDirectionToPcptMap(firstBest.getDirectionToPcptMap());   // always get best parent's direction to percept mapping.
+        newGenes.setActionSensGenes(onePointCrossOver(actionSensitivityP1, 
+                                                      actionSensitivityP2)); // cross over action sensitivity genes.
+        newGenes.setFFFSensGenes(onePointCrossOver(fffSensitivityP1, 
+                                                   fffSensitivityP2));       // cross over fff sensitivity genes.
+        
+        return newGenes;
+    }
+    
+    public float[] onePointCrossOver(float[] genes1, float[] genes2) {
+        Random rand = new Random();
+        float[] newSubTraits = new float[genes1.length];
+        
+        int xoverPoint = rand.nextInt(genes1.length);
         int i = 0;
-        
-        while(i < dominChrom.length) {
-            if(i > xoverPoint) {
-                offspring[i] = dominChrom[i];
+        while(i < genes1.length) {
+            if(i < xoverPoint) {
+                newSubTraits[i] = genes1[i];
             } else {
-                offspring[i] = altChrom[i];
+                newSubTraits[i] = genes2[i];
             }
             
             i++;
         }
-   
-        //mutate(offspring);
         
-        return offspring;
-    }
-        
-    private void mutate(float[] offspring) {
-        
-        Random rand = new Random();
-        
-        // high mutation rate 
-        int mutationRate = 2500;
-        
-        // have 11 / 1000 chance of mutation.
-        int mutateGene = rand.nextInt(mutationRate);    
-        
-        if(mutateGene < offspring.length) {
-          offspring[mutateGene] = rand.nextFloat();
-
-          System.out.println("mutation has occurred");
-        } 
+        return newSubTraits;
     }
     
     /**
      * Prints out population status of generation.
      */
     private int showStatus(MyCreature[] old_population, int numCreatures) {
-       // Here is how you can get information about old creatures and how
-       // well they did in the simulation
        float avgLifeTime = 0f;
        int nSurvivors = 0;
        
@@ -137,7 +198,7 @@ public class MyWorld extends World {
        
        // display status.
        System.out.println("Simulation stats:");
-       System.out.println("  Fitness      : " + averageFitnessPerGen[avgFitIdx - 1]);
+       System.out.println("  Fitness      : " + averageFitnessPerGen[avgFitIdx++]);
        System.out.println("  Survivors    : " + nSurvivors + " out of " + numCreatures);
        System.out.println("  Avg life time: " + avgLifeTime + " turns");
        
@@ -153,7 +214,7 @@ public class MyWorld extends World {
      * @param repeatableMode - if set true every sim in each generation starts from the same state.
      */
     public MyWorld(int gridSize, int windowWidth, int windowHeight, boolean repeatableMode,
-                   int perceptFormat) {
+                                                                    int perceptFormat) {
         
         super(gridSize, windowWidth,  windowHeight, repeatableMode, perceptFormat);
 
@@ -162,17 +223,6 @@ public class MyWorld extends World {
         this.setNumGenerations(numGenerations);
     }
  
-    /* The MyWorld class must override this function, which is
-       used to fetch a population of creatures at the beginning of the
-       first simulation.  This is the place where you need to  generate
-       a set of creatures with random behaviours.
-
-       Input: numCreatures - this variable will tell you how many creatures
-                             the world is expecting
-
-       Returns: An array of MyCreature objects - the World will expect numCreatures
-                elements in that array     
-    */  
     /**
      * 
      * 
@@ -197,27 +247,6 @@ public class MyWorld extends World {
         return population;
     }
 
-    /* The MyWorld class must override this function, which is
-       used to fetch the next generation of the creatures.  This World will
-       proivde you with the old_generation of creatures, from which you can
-       extract information relating to how they did in the previous simulation...
-       and use them as parents for the new generation.
-
-       Input: old_population_btc - the generation of old creatures before type casting. 
-                                The World doesn't know about MyCreature type, only
-                                its parent type Creature, so you will have to
-                                typecast to MyCreatures.  These creatures 
-                                have been simulated over and their state
-                                can be queried to compute their fitness
-              numCreatures - the number of elements in the old_population_btc
-                             array
-
-
-    Returns: An array of MyCreature objects - the World will expect numCreatures
-             elements in that array.  This is the new population that will be
-             use for the next simulation.  
-    */  
-    
     /**
      * 
      * 
@@ -231,10 +260,8 @@ public class MyWorld extends World {
         // Typcast old_population of Creatures to array of MyCreatures
         MyCreature[] old_population = (MyCreature[]) old_population_btc;
         MyCreature[] new_population = breed(old_population_btc, numCreatures); // Create a new array for the new population
-       
-        showStatus(old_population, numCreatures);
         
-        if(--genCounter == 0) {
+        if(avgFitIdx == numGenerations) {
            
             // aggregate fitness data into data set.
             XYSeriesCollection fitnessDataSet = new XYSeriesCollection();
