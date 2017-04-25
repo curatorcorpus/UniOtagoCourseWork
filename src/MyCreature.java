@@ -236,13 +236,13 @@ public class MyCreature extends Creature {
         int fffStatus = -1;
         
         // GA determines if this entity is a threat (predator)
-        if(fffVal < THREAT_THRES) { 
+        if(fffVal > THREAT_THRES) { 
             // if fffVal is lower than threat threshold, then consider this entity as a threat.
             // GA algorithm confirms threat threshold condition, we can assume friendly.
             fffStatus = 0;    
             
             // GA determine if this entity is food
-            if(THREAT_THRES <= fffVal && fffVal < FOOD_THRES) {
+            if(fffVal > FOOD_THRES) {
                 fffStatus = 1;
             }
         }
