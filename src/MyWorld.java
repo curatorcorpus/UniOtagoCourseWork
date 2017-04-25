@@ -87,7 +87,7 @@ public class MyWorld extends World {
                 System.out.println(maxFitness);
             }
             
-            if(currFitness > previousAvgFit + 10) {
+            if(currFitness > previousAvgFit - 12) {
                
                 aboveAvg.add(currCreature);
             }
@@ -168,8 +168,9 @@ public class MyWorld extends World {
         newGenes.setDirectionToPcptMap(firstBest.getDirectionToPcptMap());   // always get best parent's direction to percept mapping.
         newGenes.setActionSensGenes(onePointCrossOver(actionSensitivityP1, 
                                                       actionSensitivityP2)); // cross over action sensitivity genes.
-        newGenes.setFFFSensGenes(onePointCrossOver(fffSensitivityP1, 
-                                                   fffSensitivityP2));       // cross over fff sensitivity genes.
+                                                       newGenes.setFFFSensGenes(firstBest.getFFFSensGenes());
+//newGenes.setFFFSensGenes(onePointCrossOver(fffSensitivityP1, 
+          //                                         fffSensitivityP2));       // cross over fff sensitivity genes.
         
         return newGenes;
     }
