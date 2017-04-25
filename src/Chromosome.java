@@ -39,17 +39,17 @@ public class Chromosome {
     public static final int EAT_ACT = 9;
     public static final int RND_ACT = 10;
     
-    public static final int EAT_WT  = 0;
-    public static final int WAIT_WT = 1;
-    public static final int FWD_WT  = 2;
-    public static final int BCK_WT  = 3;
-    public static final int LFT_WT  = 4;
-    public static final int RGT_WT  = 5;
-    public static final int TL_WT   = 6;
-    public static final int TR_WT   = 7;
-    public static final int BL_WT   = 8;
-    public static final int BR_WT   = 9;
-    public static final int RND_WT  = 10;
+    public static final int EAT_WT = 0;
+    public static final int C_WT   = 1;
+    public static final int N_WT   = 2;
+    public static final int S_WT   = 3;
+    public static final int W_WT   = 4;
+    public static final int E_WT   = 5;
+    public static final int NW_WT  = 6;
+    public static final int NE_WT  = 7;
+    public static final int SW_WT  = 8;
+    public static final int SE_WT  = 9;
+    public static final int RND_WT = 10;
     
     public static final int N  = 0;
     public static final int S  = 1;  
@@ -307,35 +307,32 @@ public class Chromosome {
             case EAT_WT:
                 return EAT_ACT;
             
-            case WAIT_WT:
+            case C_WT:
                 return directionMapping.get(C);
             
-            case FWD_WT:
+            case N_WT:
                 return directionMapping.get(N);
             
-            case BCK_WT:
+            case S_WT:
                 return directionMapping.get(S);
             
-            case LFT_WT:
+            case W_WT:
                 return directionMapping.get(W);
             
-            case RGT_WT:
+            case E_WT:
                 return directionMapping.get(E);
                 
-            case TL_WT:
+            case NW_WT:
                 return directionMapping.get(NW);
                 
-            case TR_WT:
+            case NE_WT:
                 return directionMapping.get(NE);
                 
-            case BL_WT:
+            case SW_WT:
                 return directionMapping.get(SW);
                 
-            case BR_WT: 
+            case SE_WT: 
                 return directionMapping.get(SE);
-                
-            case RND_WT:
-                return RND_ACT;
                 
             default:
                 return RND_ACT;

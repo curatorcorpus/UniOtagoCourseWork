@@ -86,11 +86,10 @@ public class MyWorld extends World {
                 maxFitness = currFitness;
                 System.out.println(maxFitness);
             }
-            
-            if(currFitness > previousAvgFit - 12) {
-               
+            /*
+            if(currFitness > previousAvgFit + 12) {
                 aboveAvg.add(currCreature);
-            }
+            }*/
             
             avgFitness += currFitness;
         }
@@ -102,10 +101,10 @@ public class MyWorld extends World {
         showStatus(oldPopulation, numCreatures);
 
         int newGen = 0;
-        for(MyCreature c : aboveAvg) {
+        /*for(MyCreature c : aboveAvg) {
             newGeneration[newGen++] = c;
         }
-        
+        */
         while(newGen < numCreatures) {
            newGeneration[newGen++] = tournamentSelection(oldPopulation);
         }
@@ -124,7 +123,7 @@ public class MyWorld extends World {
         do {
            left  = rand.nextInt(oldPopulation.length);
            right = rand.nextInt(oldPopulation.length);
-        } while((right - left) < 2);
+        } while((right - left) < 24);
 
         List<MyCreature> oldPopSubset = new ArrayList<>();
         
@@ -191,7 +190,7 @@ public class MyWorld extends World {
             i++;
         }
         
-        //mutateWeights(newSubTraits);
+        mutateWeights(newSubTraits);
         
         return newSubTraits;
     }
@@ -200,7 +199,7 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutate = rand.nextInt(18500);
+        int mutate = rand.nextInt(4000);
         
         if(mutate < subTraits.length) {
             System.out.println("mutated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");

@@ -90,15 +90,15 @@ public class MyCreature extends Creature {
                 int fffStatusM = determineFFFReaction(chromosome.getFFFVal(0));
                 actions = fffValToActions(actions, fffStatusM, location);
             }
-            if(creatureNearby) {
+            else if(creatureNearby) {
                 int fffStatusC = determineFFFReaction(chromosome.getFFFVal(1));
                 actions = fffValToActions(actions, fffStatusC, location);                
             }
-            if(foodNearby) {
+            else if(foodNearby) {
                 int fffStatusF = determineFFFReaction(chromosome.getFFFVal(2));
                 actions = fffValToActions(actions, fffStatusF, location);                
             } 
-            // if all else fails, then we can walk randomly.
+            // if all else fails, then we  walk randomly.
             else {
                 actions[Chromosome.RND_ACT] = chromosome.getActionSens(chromosome.RND_WT);
             }
@@ -125,107 +125,325 @@ public class MyCreature extends Creature {
         Map<Float, Integer> multiActionMapping = new HashMap<>();          
         List<Float> actionWeights              = new ArrayList<>();
         
+        int relativePosition = chromosome.getDirectionVal(perceptLoc);
+        
         // weight variables
         float eatWt  = 0.0f,
-              waitWt = 0.0f,
-              fwdWt  = 0.0f,
-              bckWt  = 0.0f,
-              lftWt  = 0.0f,
-              rghtWt = 0.0f,
-              tlWt   = 0.0f,
-              trWt   = 0.0f,
-              blWt   = 0.0f,
-              brWt   = 0.0f;
+              cWt = 0.0f,
+              nWt  = 0.0f,
+              sWt  = 0.0f,
+              wWt  = 0.0f,
+              eWt = 0.0f,
+              nwWt   = 0.0f,
+              neWt   = 0.0f,
+              swWt   = 0.0f,
+              seWt   = 0.0f;
+        
+        nWt  = chromosome.getActionSens(Chromosome.N_WT);  // move towards.
+        sWt  = chromosome.getActionSens(Chromosome.S_WT);  // move away.
+        wWt  = chromosome.getActionSens(Chromosome.W_WT);  // move left.
+        eWt  = chromosome.getActionSens(Chromosome.E_WT);  // move right.
+        cWt  = chromosome.getActionSens(Chromosome.C_WT);  // move
+        nwWt = chromosome.getActionSens(Chromosome.NW_WT); // move top left.
+        neWt = chromosome.getActionSens(Chromosome.NE_WT); // move top right.
+        swWt = chromosome.getActionSens(Chromosome.SW_WT); // move away left.
+        seWt = chromosome.getActionSens(Chromosome.SE_WT); // move away right.
         
         // foe
         if(fffValStatus == -1) {
-            
-            bckWt = chromosome.getActionSens(Chromosome.BCK_WT); // can move away
-            blWt  = chromosome.getActionSens(Chromosome.BL_WT);  // can move away left.
-            brWt  = chromosome.getActionSens(Chromosome.BR_WT);  // can move away right.
-            
-            actionWeights.add(bckWt);
-            actionWeights.add(blWt);
-            actionWeights.add(brWt);
-            
-            multiActionMapping.put(bckWt, Chromosome.BCK_WT);
-            multiActionMapping.put(blWt, Chromosome.BL_WT);
-            multiActionMapping.put(brWt, Chromosome.BR_WT);            
+            if(relativePosition == Chromosome.N) { 
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(sWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT); 
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);                
+            }
+            else if(relativePosition == Chromosome.S) { 
+                actionWeights.add(nWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);             
+            } 
+            else if(relativePosition == Chromosome.E) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(swWt);
+
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);             
+            }
+            else if(relativePosition == Chromosome.W) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(eWt);
+                actionWeights.add(neWt);
+                actionWeights.add(seWt);
+
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);               
+            }    
+            else if(relativePosition == Chromosome.NW) { 
+                actionWeights.add(sWt);
+                actionWeights.add(eWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);               
+            }
+            else if(relativePosition == Chromosome.NE) { 
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);               
+            }    
+            else if(relativePosition == Chromosome.SW) { 
+                actionWeights.add(nWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(seWt);
+
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);               
+            }
+            else if(relativePosition == Chromosome.SE) { 
+                actionWeights.add(nWt);
+                actionWeights.add(wWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);              
+            }    
         }
         
         // friend
         else if(fffValStatus == 0) {
-            
-            fwdWt  = chromosome.getActionSens(Chromosome.FWD_WT);  // can move towards.
-            //bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
-            lftWt  = chromosome.getActionSens(Chromosome.LFT_WT);  // can move left.
-            //rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
-            tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
-            //trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
-            blWt   = chromosome.getActionSens(Chromosome.BL_WT);   // can move away left.
-            //brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
-            
-            actionWeights.add(fwdWt);
-           // actionWeights.add(bckWt);
-            actionWeights.add(lftWt);
-            //actionWeights.add(rghtWt);
-            //actionWeights.add(tlWt);
-            //actionWeights.add(trWt);
-            actionWeights.add(blWt);
-            //actionWeights.add(brWt);
-            
-            multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);
-            //multiActionMapping.put(bckWt,  Chromosome.WAIT_WT);
-            multiActionMapping.put(lftWt,  Chromosome.LFT_WT);
-            //multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
-            //multiActionMapping.put(tlWt,   Chromosome.TL_WT);
-            //multiActionMapping.put(trWt,   Chromosome.TR_WT);
-            multiActionMapping.put(blWt,   Chromosome.BL_WT);
-            //multiActionMapping.put(brWt,   Chromosome.BR_WT);
+            if(relativePosition == Chromosome.N) { 
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);
+            }
+            else if(relativePosition == Chromosome.S) { 
+                actionWeights.add(nWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);               
+            } 
+            else if(relativePosition == Chromosome.E) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);            
+            }
+            else if(relativePosition == Chromosome.W) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);               
+            }    
+            else if(relativePosition == Chromosome.NW) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);             
+            }
+            else if(relativePosition == Chromosome.NE) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(swWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);             
+            }    
+            else if(relativePosition == Chromosome.SW) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(seWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(seWt, Chromosome.SE_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);              
+            }
+            else if(relativePosition == Chromosome.SE) { 
+                actionWeights.add(nWt);
+                actionWeights.add(sWt);
+                actionWeights.add(wWt);
+                actionWeights.add(eWt);
+                actionWeights.add(nwWt);
+                actionWeights.add(neWt);
+                actionWeights.add(swWt);
+                actionWeights.add(cWt);
+                
+                multiActionMapping.put(nWt,  Chromosome.N_WT);
+                multiActionMapping.put(sWt,  Chromosome.S_WT);
+                multiActionMapping.put(wWt,  Chromosome.W_WT);
+                multiActionMapping.put(eWt,  Chromosome.E_WT);
+                multiActionMapping.put(nwWt, Chromosome.NW_WT);
+                multiActionMapping.put(neWt, Chromosome.NE_WT);
+                multiActionMapping.put(swWt, Chromosome.SW_WT);
+                multiActionMapping.put(cWt,  Chromosome.C_WT);              
+            }   
         }
         
         else if(fffValStatus == 1) {
-                       
-            eatWt  = chromosome.getActionSens(Chromosome.EAT_WT);  // can eat.
-            fwdWt  = chromosome.getActionSens(Chromosome.FWD_WT);  // can move towards.
-            //bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
-            lftWt  = chromosome.getActionSens(Chromosome.LFT_WT);  // can move left.
-            //rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
-            //tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
-            //trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
-            blWt   = chromosome.getActionSens(Chromosome.BL_WT);   // can move away left.
-            //brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
-                      
-            actionWeights.add(fwdWt);
-            actionWeights.add(bckWt);
-            actionWeights.add(lftWt);
-            //actionWeights.add(rghtWt);
-            //actionWeights.add(tlWt);
-            //actionWeights.add(trWt);
-            actionWeights.add(blWt);
-            //actionWeights.add(brWt);
-                        
-            multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);
-            //multiActionMapping.put(bckWt,  Chromosome.BCK_WT);
-            multiActionMapping.put(lftWt,  Chromosome.LFT_WT);
-            //multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
-            //multiActionMapping.put(tlWt,   Chromosome.TL_WT);
-            //multiActionMapping.put(trWt,   Chromosome.TR_WT);
-            multiActionMapping.put(blWt,   Chromosome.BL_WT);
-            //multiActionMapping.put(brWt,   Chromosome.BR_WT);
             
-            actions[Chromosome.EAT_ACT] = eatWt;
+            float actionWeight = 0.0f;
+            
+            if(relativePosition == Chromosome.N) actionWeight  = nWt;
+            if(relativePosition == Chromosome.S) actionWeight  = sWt;
+            if(relativePosition == Chromosome.W) actionWeight  = wWt;
+            if(relativePosition == Chromosome.E) actionWeight  = eWt;
+            if(relativePosition == Chromosome.NW) actionWeight = nwWt;
+            if(relativePosition == Chromosome.NE) actionWeight = neWt;
+            if(relativePosition == Chromosome.SW) actionWeight = swWt;
+            if(relativePosition == Chromosome.SE) actionWeight = seWt;
+            
+            actions[perceptLoc] = actionWeight;
+            
+            if(relativePosition == Chromosome.C) {
+                actions[Chromosome.EAT_ACT] = eatWt;
+            }  
         }
+        
+        if(actionWeights.size() > 1) {
+            Collections.sort(actionWeights);
 
-        Collections.sort(actionWeights);
+            float maxWeight = Collections.max(actionWeights);
 
-        float maxWeight = Collections.max(actionWeights);
+            int action  = multiActionMapping.get(maxWeight);
+            int pcptLoc = chromosome.getActionMapToPcptLocIdx(action);
 
-        int action  = multiActionMapping.get(maxWeight);
-        int pcptLoc = chromosome.getActionMapToPcptLocIdx(action);
-
-        actions[pcptLoc] = maxWeight;
-
+            actions[pcptLoc] = maxWeight;
+        }
+        
         return actions;
 
     }
@@ -238,7 +456,7 @@ public class MyCreature extends Creature {
         // GA determines if this entity is a threat (predator)
         if(fffVal > THREAT_THRES) { 
             // if fffVal is lower than threat threshold, then consider this entity as a threat.
-            // GA algorithm confirms threat threshold condition, we can assume friendly.
+            // GA algorithm confirms threat threshold condition, we  assume friendly.
             fffStatus = 0;    
             
             // GA determine if this entity is food
