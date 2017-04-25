@@ -100,7 +100,7 @@ public class MyCreature extends Creature {
             } 
             // if all else fails, then we can walk randomly.
             else {
-                actions[location] = chromosome.getActionSens(chromosome.RND_WT);
+                actions[Chromosome.RND_ACT] = chromosome.getActionSens(chromosome.RND_WT);
             }
         }
         
@@ -135,8 +135,7 @@ public class MyCreature extends Creature {
               tlWt   = 0.0f,
               trWt   = 0.0f,
               blWt   = 0.0f,
-              brWt   = 0.0f,
-              rndWt  = 0.0f;
+              brWt   = 0.0f;
         
         // foe
         if(fffValStatus == -1) {
@@ -158,81 +157,64 @@ public class MyCreature extends Creature {
         else if(fffValStatus == 0) {
             
             fwdWt  = chromosome.getActionSens(Chromosome.FWD_WT);  // can move towards.
-            bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
+            //bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
             lftWt  = chromosome.getActionSens(Chromosome.LFT_WT);  // can move left.
-            rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
+            //rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
             tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
-            trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
+            //trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
             blWt   = chromosome.getActionSens(Chromosome.BL_WT);   // can move away left.
-            brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
-            waitWt = chromosome.getActionSens(Chromosome.WAIT_WT); // can wait.
-            rndWt  = chromosome.getActionSens(Chromosome.RND_WT);  // can move randomly.
+            //brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
             
             actionWeights.add(fwdWt);
-            actionWeights.add(bckWt);
+           // actionWeights.add(bckWt);
             actionWeights.add(lftWt);
-            actionWeights.add(rghtWt);
-            actionWeights.add(tlWt);
-            actionWeights.add(trWt);
+            //actionWeights.add(rghtWt);
+            //actionWeights.add(tlWt);
+            //actionWeights.add(trWt);
             actionWeights.add(blWt);
-            actionWeights.add(brWt);
-            actionWeights.add(waitWt);
-            actionWeights.add(rndWt);
+            //actionWeights.add(brWt);
             
             multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);
-            multiActionMapping.put(bckWt,  Chromosome.WAIT_WT);
+            //multiActionMapping.put(bckWt,  Chromosome.WAIT_WT);
             multiActionMapping.put(lftWt,  Chromosome.LFT_WT);
-            multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
-            multiActionMapping.put(tlWt,   Chromosome.TL_WT);
-            multiActionMapping.put(trWt,   Chromosome.TR_WT);
+            //multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
+            //multiActionMapping.put(tlWt,   Chromosome.TL_WT);
+            //multiActionMapping.put(trWt,   Chromosome.TR_WT);
             multiActionMapping.put(blWt,   Chromosome.BL_WT);
-            multiActionMapping.put(brWt,   Chromosome.BR_WT);
-            multiActionMapping.put(waitWt, Chromosome.WAIT_WT);
-            multiActionMapping.put(rndWt,  Chromosome.RND_WT);
+            //multiActionMapping.put(brWt,   Chromosome.BR_WT);
         }
         
         else if(fffValStatus == 1) {
                        
             eatWt  = chromosome.getActionSens(Chromosome.EAT_WT);  // can eat.
             fwdWt  = chromosome.getActionSens(Chromosome.FWD_WT);  // can move towards.
-            bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
+            //bckWt  = chromosome.getActionSens(Chromosome.BCK_WT);  // can move away.
             lftWt  = chromosome.getActionSens(Chromosome.LFT_WT);  // can move left.
-            rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
-            tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
-            trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
+            //rghtWt = chromosome.getActionSens(Chromosome.RGT_WT);  // can move right.
+            //tlWt   = chromosome.getActionSens(Chromosome.TL_WT);   // can move top left.
+            //trWt   = chromosome.getActionSens(Chromosome.TR_WT);   // can move top right.
             blWt   = chromosome.getActionSens(Chromosome.BL_WT);   // can move away left.
-            brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
-            waitWt = chromosome.getActionSens(Chromosome.WAIT_WT); // can wait.
-            rndWt  = chromosome.getActionSens(Chromosome.RND_WT);  // can move randomly.
-            
-            actionWeights.add(eatWt);            
-            actionWeights.add(fwdWt);/*
+            //brWt   = chromosome.getActionSens(Chromosome.BR_WT);   // can move away right.
+                      
+            actionWeights.add(fwdWt);
             actionWeights.add(bckWt);
             actionWeights.add(lftWt);
-            actionWeights.add(rghtWt);
-            actionWeights.add(tlWt);
-            actionWeights.add(trWt);
+            //actionWeights.add(rghtWt);
+            //actionWeights.add(tlWt);
+            //actionWeights.add(trWt);
             actionWeights.add(blWt);
-            actionWeights.add(brWt);
-            actionWeights.add(waitWt);*/
-            //actionWeights.add(rndWt);
-            
-            multiActionMapping.put(eatWt,  Chromosome.EAT_WT);            
-            multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);/*
-            multiActionMapping.put(bckWt,  Chromosome.WAIT_WT);
+            //actionWeights.add(brWt);
+                        
+            multiActionMapping.put(fwdWt,  Chromosome.FWD_WT);
+            //multiActionMapping.put(bckWt,  Chromosome.BCK_WT);
             multiActionMapping.put(lftWt,  Chromosome.LFT_WT);
-            multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
-            multiActionMapping.put(tlWt,   Chromosome.TL_WT);
-            multiActionMapping.put(trWt,   Chromosome.TR_WT);
+            //multiActionMapping.put(rghtWt, Chromosome.RGT_WT);
+            //multiActionMapping.put(tlWt,   Chromosome.TL_WT);
+            //multiActionMapping.put(trWt,   Chromosome.TR_WT);
             multiActionMapping.put(blWt,   Chromosome.BL_WT);
-            multiActionMapping.put(brWt,   Chromosome.BR_WT);*/
-            multiActionMapping.put(waitWt, Chromosome.WAIT_WT);
-            //multiActionMapping.put(rndWt,  Chromosome.RND_WT);
+            //multiActionMapping.put(brWt,   Chromosome.BR_WT);
             
-            // food is ripe.
-            if(perceptLoc == 2) {
-                
-            }
+            actions[Chromosome.EAT_ACT] = eatWt;
         }
 
         Collections.sort(actionWeights);

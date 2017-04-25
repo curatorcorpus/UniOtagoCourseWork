@@ -83,7 +83,7 @@ public class Chromosome {
      */
     private float[] fffSensitivity;
     
-    private boolean debug = true;
+    private boolean debug = false;
     
     public Chromosome() {}
     
@@ -166,6 +166,23 @@ public class Chromosome {
     
     public void setDirectionIntel(int[] directionIntel) {
         this.directionIntel = directionIntel;
+    }
+    
+    public void redoDirectionToPcptMapping() {
+        int dir = 0;
+        // initialize direction mapping for efficiency. Maps directions back to percept values. (Naive Search).
+        while(dir < NUM_DIRECITONS) {
+            
+            // for all percept locations.
+            for(int pcpt = 0; pcpt < NUM_DIRECITONS; pcpt++) {
+                
+                // if direction is at the pcpt gene location.
+                if(dir == directionIntel[pcpt]) {
+                    directionMapping.put(dir++, pcpt);
+                    break;
+                }
+            }
+        }
     }
     
     public Map<Integer, Integer> getDirectionToPcptMap() {
@@ -331,5 +348,12 @@ public class Chromosome {
     
     public float getFFFVal(int idx) {
         return fffSensitivity[idx];
+    }
+    
+    @Override
+    public String toString() {
+        return "Chromosome{" + "directionIntel=" + Arrays.toString(directionIntel) +
+               ", actionSensitivity=" + Arrays.toString(actionSensitivity) + 
+               ", fffSensitivity=" + Arrays.toString(fffSensitivity) + '}';
     }
 }

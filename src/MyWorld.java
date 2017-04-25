@@ -46,7 +46,7 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 150;
+    private final int numGenerations = 300;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
@@ -55,41 +55,65 @@ public class MyWorld extends World {
     private int avgFitIdx = 0;
     private int avgEnergy = 0;   
     
+    private MyCreature currentFittestCreature;
+    double previousAvgFit = 0.0;
+    
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
         
         avgEnergy += creature.getEnergy();
         fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
-        //fitness =  numTurns - creature.timeOfDeath();
         return fitness;
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
-        
+        List<MyCreature> aboveAvg = new ArrayList<>();
         MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
         MyCreature[] newGeneration = new MyCreature[numCreatures];
         
         double avgFitness = 0.0;
+        double maxFitness = 0.0;
         
         // obtain previous fitness
         for(int i = 0; i < numCreatures; i++) {
             
             MyCreature currCreature = oldPopulation[i];
-            double currfitness = determineFitness(currCreature);
-            currCreature.setFitness(currfitness);
+            double currFitness = determineFitness(currCreature);
+            currCreature.setFitness(currFitness);
             
-            avgFitness += currfitness;
+            if(maxFitness < currFitness) {
+                currentFittestCreature = currCreature;
+                maxFitness = currFitness;
+                System.out.println(maxFitness);
+            }
+            
+            if(currFitness > previousAvgFit - 12) {
+               
+                aboveAvg.add(currCreature);
+            }
+            
+            avgFitness += currFitness;
         }
-        
+
+                System.out.println("above avg " + aboveAvg.size());
         averageFitnessPerGen[avgFitIdx] = avgFitness/numCreatures;
         
         // display status.
         showStatus(oldPopulation, numCreatures);
-        
+
         int newGen = 0;
+        for(MyCreature c : aboveAvg) {
+            /*if(newGen > 51) {
+                break;
+            }*/
+            newGeneration[newGen++] = c;
+        }
+        
         while(newGen < numCreatures) {
            newGeneration[newGen++] = tournamentSelection(oldPopulation);
         }
+        
+        previousAvgFit = avgFitness/numCreatures;
         
         return newGeneration;
     }
@@ -103,9 +127,6 @@ public class MyWorld extends World {
         do {
            left  = rand.nextInt(oldPopulation.length);
            right = rand.nextInt(oldPopulation.length);
-           
-           //System.out.println("l " + left + "r " + right);
-           
         } while((right - left) < 2);
 
         List<MyCreature> oldPopSubset = new ArrayList<>();
@@ -145,8 +166,8 @@ public class MyWorld extends World {
                 fffSensitivityP2 = scndBest.getFFFSensGenes();
      
         Chromosome newGenes = new Chromosome();
-        
-        newGenes.setDirectionIntel(directionIntelP1);                        // always get best parent's direction awareness genes.
+   
+        newGenes.setDirectionIntel(directionIntelP1);               // always get best parent's direction awareness genes.
         newGenes.setDirectionToPcptMap(firstBest.getDirectionToPcptMap());   // always get best parent's direction to percept mapping.
         newGenes.setActionSensGenes(onePointCrossOver(actionSensitivityP1, 
                                                       actionSensitivityP2)); // cross over action sensitivity genes.
@@ -172,7 +193,28 @@ public class MyWorld extends World {
             i++;
         }
         
+        mutateWeights(newSubTraits);
+        
         return newSubTraits;
+    }
+    
+    private float[] mutateWeights(float[] subTraits) {
+        
+        Random rand = new Random();
+        
+        int mutate = rand.nextInt(1000);
+        
+        if(mutate < subTraits.length) {
+            subTraits[mutate] = rand.nextFloat();
+        }
+
+        mutate = rand.nextInt(1000);
+        
+        if(mutate < subTraits.length) {
+            subTraits[mutate] = rand.nextFloat();
+        }
+
+        return subTraits;
     }
     
     /**
@@ -318,6 +360,10 @@ public class MyWorld extends World {
             } catch(Exception e) {
                 System.err.println("Chart couldn't be saved properly.");
             }
+            System.out.println();
+            System.out.println("Best Solution:");
+            System.out.println("Best Fitness: " + currentFittestCreature.getFitness());
+            System.out.println(currentFittestCreature.getChromosome());
         }
         
         return new_population;
