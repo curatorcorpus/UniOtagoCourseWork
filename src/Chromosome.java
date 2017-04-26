@@ -81,7 +81,7 @@ public class Chromosome {
     /**
      * Prey/Predator/Friend Awareness Traits.
      */
-    private float[] fffSensitivity;
+    private int[] fffSensitivity;
     
     private boolean debug = false;
     
@@ -97,7 +97,7 @@ public class Chromosome {
         // initialize traits.
         directionIntel    = new int[NUM_DIRECITONS];
         actionSensitivity = new float[NUM_ACTIONS];
-        fffSensitivity    = new float[NUM_ENTITY_TYPE]; 
+        fffSensitivity    = new int[NUM_ENTITY_TYPE]; 
         
         // initialize direction awareness traits. Maps percepts to directions.
         int i = 0;
@@ -133,6 +133,12 @@ public class Chromosome {
             }
         }
         
+        // initialize ppf sensitivity genes.
+        i = 0;
+        while(i < NUM_ENTITY_TYPE) {
+            fffSensitivity[i++] = rand.nextInt(3);
+        }
+        
         if(debug) {
             String info = "";
             for(int geneIdx = 0; geneIdx < NUM_DIRECITONS; geneIdx++) {
@@ -152,12 +158,6 @@ public class Chromosome {
             }
             System.out.println("[DEBUG]: ChromoAct: " + info);
             System.out.println();
-        }
-        
-        // initialize ppf sensitivity genes.
-        i = 0;
-        while(i < NUM_ENTITY_TYPE) {
-            fffSensitivity[i++] = rand.nextFloat();
         }
     }
     public int[] getDirectionIntel() {
@@ -201,11 +201,11 @@ public class Chromosome {
         this.actionSensitivity = actionSensitivity;
     }
     
-    public float[] getFFFSensGenes() {
+    public int[] getFFFSensGenes() {
         return fffSensitivity;
     }
     
-    public void setFFFSensGenes(float[] fffSensitivity) {
+    public void setFFFSensGenes(int[] fffSensitivity) {
         this.fffSensitivity = fffSensitivity;
     }
     
@@ -249,43 +249,7 @@ public class Chromosome {
         
         return direction;
     }    
-    
-    public int getInverseDirection(String dir) {
-        int direction = 0;
-        
-        switch(dir) {
-        case "N":
-            direction = 0;
-            break;
-        case "S":   
-            direction = 1;                
-            break;
-        case "E":
-            direction = 2;                
-            break;
-        case "W":   
-            direction = 3;                
-            break;
-        case "C":
-            direction = 4;                
-            break;
-        case "NW":   
-            direction = 5;                
-            break;
-        case "NE":
-            direction = 6;                
-            break;
-        case "SW":   
-            direction = 7;                
-            break;
-        case "SE":
-            direction = 8;                
-            break;    
-        }        
-        
-        return direction;
-    }
-    
+
     public int dirValToPerceptLoc(int dirVal) {
         int perceptLoc = -1;
         
@@ -339,11 +303,37 @@ public class Chromosome {
         }
     }
     
+    public float getDirToActWeights(int relativeDir) {
+        
+        switch(relativeDir) {
+            case N:
+                return actionSensitivity[N_WT];          
+            case S:
+                return actionSensitivity[S_WT];                
+            case W:
+                return actionSensitivity[W_WT];            
+            case E:
+                return actionSensitivity[E_WT];            
+            case NW:
+                return actionSensitivity[NW_WT];            
+            case NE:
+                return actionSensitivity[NE_WT];           
+            case SW:
+                return actionSensitivity[SW_WT];            
+            case SE:
+                return actionSensitivity[SE_WT];            
+            case C:
+                return actionSensitivity[EAT_WT];                
+            default:
+                return actionSensitivity[RND_WT];
+        }
+    }
+    
     public float getActionSens(int actIdx) {
         return actionSensitivity[actIdx];
     }
     
-    public float getFFFVal(int idx) {
+    public int getFFFVal(int idx) {
         return fffSensitivity[idx];
     }
     

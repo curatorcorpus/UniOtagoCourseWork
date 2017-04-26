@@ -41,7 +41,7 @@ public class MyWorld extends World {
     /**
      * The number of turns in each simulation.
      */
-    private final int numTurns = 100;
+    private final int numTurns = 200;
     
     /**
      * The number of generations the genetic algorithm will iterate through.
@@ -62,7 +62,8 @@ public class MyWorld extends World {
         double fitness = 0;
         
         avgEnergy += creature.getEnergy();
-        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        //fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        fitness = numTurns - creature.timeOfDeath();
         return fitness;
     }
     
@@ -86,10 +87,6 @@ public class MyWorld extends World {
                 maxFitness = currFitness;
                 System.out.println(maxFitness);
             }
-            /*
-            if(currFitness > previousAvgFit + 12) {
-                aboveAvg.add(currCreature);
-            }*/
             
             avgFitness += currFitness;
         }
@@ -99,12 +96,8 @@ public class MyWorld extends World {
         
         // display status.
         showStatus(oldPopulation, numCreatures);
-
+        
         int newGen = 0;
-        /*for(MyCreature c : aboveAvg) {
-            newGeneration[newGen++] = c;
-        }
-        */
         while(newGen < numCreatures) {
            newGeneration[newGen++] = tournamentSelection(oldPopulation);
         }
@@ -123,7 +116,7 @@ public class MyWorld extends World {
         do {
            left  = rand.nextInt(oldPopulation.length);
            right = rand.nextInt(oldPopulation.length);
-        } while((right - left) < 24);
+        } while((right - left) < 2);
 
         List<MyCreature> oldPopSubset = new ArrayList<>();
         
@@ -158,19 +151,34 @@ public class MyWorld extends World {
         float[] actionSensitivityP1 = firstBest.getActionSensGenes(),
                 actionSensitivityP2 = scndBest.getActionSensGenes();
         
-        float[] fffSensitivityP1 = firstBest.getFFFSensGenes(), 
+        int[] fffSensitivityP1 = firstBest.getFFFSensGenes(), 
                 fffSensitivityP2 = scndBest.getFFFSensGenes();
      
+        Random rand = new Random();
+   
+        int parentSelector = rand.nextInt(2);
+        
+        Chromosome domanintChromo;
+        
+        if(parentSelector == 0) {
+            domanintChromo = firstBest;
+        } else {
+            domanintChromo = scndBest;
+        }
+        
         Chromosome newGenes = new Chromosome();
    
-        newGenes.setDirectionIntel(directionIntelP1);               // always get best parent's direction awareness genes.
-        newGenes.setDirectionToPcptMap(firstBest.getDirectionToPcptMap());   // always get best parent's direction to percept mapping.
+        //newGenes.setDirectionIntel(directionIntelP1);               // always get best parent's direction awareness genes.
+        newGenes.setDirectionIntel(dirMutation(directionIntelP1));
+        newGenes.setDirectionToPcptMap(domanintChromo.getDirectionToPcptMap());   // always get best parent's direction to percept mapping.
         newGenes.setActionSensGenes(onePointCrossOver(actionSensitivityP1, 
                                                       actionSensitivityP2)); // cross over action sensitivity genes.
-                                                       newGenes.setFFFSensGenes(firstBest.getFFFSensGenes());
-//newGenes.setFFFSensGenes(onePointCrossOver(fffSensitivityP1, 
+        newGenes.setFFFSensGenes(domanintChromo.getFFFSensGenes());
+       // newGenes.setFFFSensGenes(onePointCrossOver(fffSensitivityP1, 
           //                                         fffSensitivityP2));       // cross over fff sensitivity genes.
         
+        newGenes.redoDirectionToPcptMapping();
+                                                   
         return newGenes;
     }
     
@@ -190,29 +198,80 @@ public class MyWorld extends World {
             i++;
         }
         
-        mutateWeights(newSubTraits);
+        //mutateWeights(newSubTraits);
         
         return newSubTraits;
+    }
+    
+    public int[] dirMutation(int[] dirGenes) {
+        
+        Random rand = new Random();
+        
+        int mutationRate = rand.nextInt(dirGenes.length);
+        
+        if(mutationRate < dirGenes.length) {
+        
+
+            int idx1 = rand.nextInt(dirGenes.length);
+            int idx2 = rand.nextInt(dirGenes.length);
+            
+            int copy = dirGenes[idx1];
+            
+            dirGenes[idx1] = dirGenes[idx2];
+            dirGenes[idx2] = copy;
+
+        }
+        
+        return dirGenes;
     }
     
     private float[] mutateWeights(float[] subTraits) {
         
         Random rand = new Random();
         
-        int mutate = rand.nextInt(4000);
+        int mutate = rand.nextInt(500);
         
         if(mutate < subTraits.length) {
-            System.out.println("mutated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            subTraits[mutate] = rand.nextFloat();
+            
+            System.out.println("mutated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");            
+            
+            int i = 0;
+            while(i < subTraits.length) {
+                
+                mutate = rand.nextInt();
+                if(mutate < subTraits.length)
+                    subTraits[i] = rand.nextFloat();
+                
+                i++;
+            }
         }
-/*
-        mutate = rand.nextInt(1000);
-        
-        if(mutate < subTraits.length) {
-            subTraits[mutate] = rand.nextFloat();
-        }
-*/
+
         return subTraits;
+    }
+    
+    public int[] mutateFFFValues(int[] fffGenes) {
+ 
+        Random rand = new Random();
+        
+        int mutationRate = rand.nextInt(1000);
+        
+        if(mutationRate < fffGenes.length) {
+        
+            int i = 0;
+            while(i < fffGenes.length) {
+            int idx1 = rand.nextInt(fffGenes.length);
+            int idx2 = rand.nextInt(fffGenes.length);
+            
+            int copy = fffGenes[idx1];
+            
+            fffGenes[idx1] = fffGenes[idx2];
+            fffGenes[idx2] = copy;
+            
+            i++;
+        }
+        }
+        
+        return fffGenes;
     }
     
     /**
@@ -336,8 +395,8 @@ public class MyWorld extends World {
        
             // set domain and range.
             NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-            range.setRange(0, 100);
-            range.setTickUnit(new NumberTickUnit(5.0));
+            range.setRange(0, numTurns * 2);
+            range.setTickUnit(new NumberTickUnit(10.0));
             
             // enable AA.
             jfreechart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, 
@@ -360,6 +419,7 @@ public class MyWorld extends World {
             }
             System.out.println();
             System.out.println("Best Solution:");
+            System.out.println(currentFittestCreature.getEnergy());
             System.out.println("Best Fitness: " + currentFittestCreature.getFitness());
             System.out.println(currentFittestCreature.getChromosome());
         }
