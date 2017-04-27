@@ -6,7 +6,7 @@ in vec2 vertex_uv;
 in vec3 vertex_normal;
 
 // Ouput data
-out vec4 output;
+out vec4 result;
 
 // Values that stay constant for the whole mesh.
 uniform vec4 diffuseColor;
@@ -18,7 +18,7 @@ uniform float shininess;
 
 void main() {
 	
-	// setup color rener variables.
+	// setup color render variables.
 	float intensity;
 	vec4 color;
 	vec3 light_direct;
@@ -32,5 +32,5 @@ void main() {
 
     //TODO: compute light model here
 
-	output = (color + ambient_color + transparent_color) * intensity * opacity * shininess;
+	result = (color + ambient_color + transparent_color) * intensity * opacity * shininess;
 }

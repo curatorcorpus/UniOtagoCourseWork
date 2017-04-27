@@ -15,10 +15,7 @@
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 #include "Group.hpp"
-
 #include "Objloader.hpp"
-
-
 
 // we will use the more complex version for obj file and mtl file loading - assimp will handle everything for us
 bool loadOBJMTL(const char * path, Group* outputmesh){
