@@ -102,7 +102,7 @@ public class Chromosome {
         // initialize direction awareness traits. Maps percepts to directions.
         int i = 0;
         while(i < NUM_DIRECITONS) {
-            int estimateLocationIdx = rand.nextInt(NUM_DIRECITONS);
+            int estimateLocationIdx = rand.nextInt(NUM_DIRECITONS);            
             
             // if num is not locked, then we can use it for chromosome.
             if(!lockNum.contains(estimateLocationIdx)) {
@@ -133,10 +133,21 @@ public class Chromosome {
             }
         }
         
+        lockNum.clear();
+        
         // initialize ppf sensitivity genes.
         i = 0;
         while(i < NUM_ENTITY_TYPE) {
-            fffSensitivity[i++] = rand.nextInt(3);
+            
+            int estimateLocationIdx = rand.nextInt(NUM_ENTITY_TYPE);            
+            
+            // if num is not locked, then we can use it for chromosome.
+            if(!lockNum.contains(estimateLocationIdx)) {
+                lockNum.add(estimateLocationIdx); // lock num.
+                fffSensitivity[i++] = estimateLocationIdx;
+            } else {
+                continue;
+            }
         }
         
         if(debug) {
@@ -166,9 +177,12 @@ public class Chromosome {
     
     public void setDirectionIntel(int[] directionIntel) {
         this.directionIntel = directionIntel;
+        redoDirectionToPcptMapping();
     }
     
     public void redoDirectionToPcptMapping() {
+        this.directionMapping = new HashMap<>();
+        
         int dir = 0;
         // initialize direction mapping for efficiency. Maps directions back to percept values. (Naive Search).
         while(dir < NUM_DIRECITONS) {

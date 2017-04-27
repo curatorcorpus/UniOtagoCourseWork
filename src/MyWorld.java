@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -38,15 +39,32 @@ import org.jfree.util.ShapeUtilities;
 */
 public class MyWorld extends World {
 
+    public static class ParentCouple {
+        private MyCreature parent1, parent2;
+        
+        public ParentCouple(MyCreature parent1, MyCreature parent2) {
+            this.parent1 = parent1;
+            this.parent2 = parent2;
+        }
+        
+        public MyCreature getParent1() {
+            return this.parent1;
+        }
+        
+        public MyCreature getParent2() {
+            return this.parent2;
+        }
+    }
+    
     /**
      * The number of turns in each simulation.
      */
-    private final int numTurns = 200;
+    private final int numTurns = 300;
     
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 300;
+    private final int numGenerations = 1000;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
@@ -62,17 +80,16 @@ public class MyWorld extends World {
         double fitness = 0;
         
         avgEnergy += creature.getEnergy();
-        //fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
-        fitness = numTurns - creature.timeOfDeath();
+        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
         return fitness;
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
-        List<MyCreature> aboveAvg = new ArrayList<>();
+        List<MyCreature> survivors = new ArrayList<>();
         MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
         MyCreature[] newGeneration = new MyCreature[numCreatures];
         
-        double avgFitness = 0.0;
+        double totalFitness = 0.0;
         double maxFitness = 0.0;
         
         // obtain previous fitness
@@ -85,29 +102,62 @@ public class MyWorld extends World {
             if(maxFitness < currFitness) {
                 currentFittestCreature = currCreature;
                 maxFitness = currFitness;
-                System.out.println(maxFitness);
             }
             
-            avgFitness += currFitness;
+            if(!currCreature.isDead()) {
+                survivors.add(currCreature);
+            }
+            
+            totalFitness += currFitness;
         }
 
-                System.out.println("above avg " + aboveAvg.size());
-        averageFitnessPerGen[avgFitIdx] = avgFitness/numCreatures;
+        averageFitnessPerGen[avgFitIdx] = totalFitness/numCreatures;
         
         // display status.
         showStatus(oldPopulation, numCreatures);
-        
+
         int newGen = 0;
+        /*for(int i = 0; i < survivors.size(); i++) {
+            newGeneration[newGen++] = survivors.get(i);
+        }*/
+        
         while(newGen < numCreatures) {
-           newGeneration[newGen++] = tournamentSelection(oldPopulation);
+           
+            // select parents
+            ParentCouple parents = tournamentSelection(oldPopulation);
+            
+            // crossover
+            Chromosome newChromo = crossOver(parents.getParent1().getChromosome(),
+                                             parents.getParent2().getChromosome());
+            
+            newGeneration[newGen++] = new MyCreature(newChromo);
         }
         
-        previousAvgFit = avgFitness/numCreatures;
+        previousAvgFit = totalFitness/numCreatures;
         
         return newGeneration;
     }
     
-    private MyCreature tournamentSelection(MyCreature[] oldPopulation) {
+    private MyCreature rouletteWheelSelection(MyCreature[] oldPopulation, int totalFitSum) {
+        System.out.println("Total Sum: " + totalFitSum);
+        
+        Random rand = new Random();
+        
+        float spinNum = rand.nextFloat();
+        int selection = -1;
+        
+        for(int i = oldPopulation.length - 1; i > 0; i--) {
+            System.out.println(oldPopulation[i].getFitness()/totalFitSum);
+            if(oldPopulation[i].getFitness() >= spinNum) {
+                selection = i;
+                break;
+            }
+        }
+        
+        return oldPopulation[selection];
+    }
+    
+    private ParentCouple tournamentSelection(MyCreature[] oldPopulation) {
         Random rand = new Random();
         
         int left  = 0;
@@ -130,11 +180,8 @@ public class MyWorld extends World {
         
         MyCreature parent1 = oldPopSubset.get(oldPopSubset.size() - 1);
         MyCreature parent2 = oldPopSubset.get(oldPopSubset.size() - 2);
-        
-        Chromosome newChromo = crossOver(parent1.getChromosome(),
-                                         parent2.getChromosome());
-        
-        return new MyCreature(newChromo);
+              
+        return new ParentCouple(parent1, parent2);
     }
     
     /**
@@ -145,8 +192,8 @@ public class MyWorld extends World {
      * @return 
      */
     private Chromosome crossOver(Chromosome firstBest, Chromosome scndBest) {
-        int[]   directionIntelP1 = firstBest.getDirectionIntel(), 
-                directionIntelP2 = scndBest.getDirectionIntel();
+        int[]   dirIntelP1 = firstBest.getDirectionIntel(), 
+                dirIntelP2 = scndBest.getDirectionIntel();
         
         float[] actionSensitivityP1 = firstBest.getActionSensGenes(),
                 actionSensitivityP2 = scndBest.getActionSensGenes();
@@ -154,51 +201,111 @@ public class MyWorld extends World {
         int[] fffSensitivityP1 = firstBest.getFFFSensGenes(), 
                 fffSensitivityP2 = scndBest.getFFFSensGenes();
      
-        Random rand = new Random();
-   
-        int parentSelector = rand.nextInt(2);
+        Chromosome newGenes = new Chromosome();
+
+        newGenes.setDirectionIntel(orderOneCrossOver(dirIntelP1, dirIntelP2));
+        newGenes.setActionSensGenes(onePointCrossOver(actionSensitivityP1,
+                                                      actionSensitivityP2));
+        newGenes.setFFFSensGenes(orderOneCrossOver(fffSensitivityP1,
+                                                   fffSensitivityP2));
         
-        Chromosome domanintChromo;
+        newGenes.setDirectionIntel(dirMutation(newGenes.getDirectionIntel()));
+        newGenes.setActionSensGenes(mutateWeights(newGenes.getActionSensGenes()));
+        newGenes.setFFFSensGenes(dirMutation(newGenes.getFFFSensGenes()));
         
-        if(parentSelector == 0) {
-            domanintChromo = firstBest;
-        } else {
-            domanintChromo = scndBest;
+        return newGenes;
+    }
+    
+    public int[] orderOneCrossOver(int[] dirGene1, int[] dirGene2) {
+        List<Integer> intLocks = new ArrayList<>();
+        List<Integer> intLockIndices = new ArrayList<>();
+        
+        int left  = 0;
+        int right = 0;/*
+                System.out.println();
+                System.out.println("GENE 1");
+                
+                for(int j = 0; j < dirGene1.length; j++) {
+            System.out.print(dirGene1[j] + " ");
+        }        System.out.println();
+                    System.out.println("GENE 2");    
+                for(int j = 0; j < dirGene2.length; j++) {
+            System.out.print(dirGene2[j] + " ");
+        }        System.out.println();
+*/
+        int[] newDirGenes = new int[dirGene1.length];
+        
+        do {
+           left  = rand.nextInt(dirGene1.length);
+           right = rand.nextInt(dirGene1.length);
+        } while((right - left) <= 0); // make sure number is not range of randomly choosen numbers are not less than 1.
+        
+        int i = left;
+        while(i < right) {
+            newDirGenes[i] = dirGene1[i];
+            intLocks.add(dirGene1[i]);
+            intLockIndices.add(i++);
         }
         
-        Chromosome newGenes = new Chromosome();
-   
-        //newGenes.setDirectionIntel(directionIntelP1);               // always get best parent's direction awareness genes.
-        newGenes.setDirectionIntel(dirMutation(directionIntelP1));
-        newGenes.setDirectionToPcptMap(domanintChromo.getDirectionToPcptMap());   // always get best parent's direction to percept mapping.
-        newGenes.setActionSensGenes(onePointCrossOver(actionSensitivityP1, 
-                                                      actionSensitivityP2)); // cross over action sensitivity genes.
-        newGenes.setFFFSensGenes(domanintChromo.getFFFSensGenes());
-       // newGenes.setFFFSensGenes(onePointCrossOver(fffSensitivityP1, 
-          //                                         fffSensitivityP2));       // cross over fff sensitivity genes.
+        int[] remainders = new int[dirGene1.length - intLocks.size()];
         
-        newGenes.redoDirectionToPcptMapping();
-                                                   
-        return newGenes;
+        // process indicies.
+        int remainderIdx = 0;
+        for(int remains = 0; remains < dirGene1.length; remains++) {
+            if(!intLockIndices.contains(remains)) {
+                remainders[remainderIdx++] = remains;
+            }
+        }/*
+                        System.out.println("REMAINDERS INDICES: ");
+                        for(int j = 0; j < remainders.length; j++) {
+            System.out.print(remainders[j] + " ");
+        }        System.out.println();*/
+        i = 0;
+        int z = 0;
+        while(i < dirGene1.length) {
+            if(!intLocks.contains(dirGene2[i])) {
+                newDirGenes[remainders[z++]] = dirGene2[i];
+                            //System.out.print(dirGene2[i-1] + " ");
+            } 
+            
+            i++;
+        }/*
+        System.out.println("outcome");
+        for(int j = 0; j < newDirGenes.length; j++) {
+            System.out.print(newDirGenes[j] + " ");
+        }
+        System.out.println();*/
+        
+        return newDirGenes;
     }
     
     public float[] onePointCrossOver(float[] genes1, float[] genes2) {
         Random rand = new Random();
+        
         float[] newSubTraits = new float[genes1.length];
         
-        int xoverPoint = rand.nextInt(genes1.length);
+        int left  = 0;
+        int right = 0;
+        
+        do {
+           left  = rand.nextInt(genes1.length);
+           right = rand.nextInt(genes1.length);
+        } while((right - left) <= 0);
+        
+
         int i = 0;
         while(i < genes1.length) {
-            if(i < xoverPoint) {
+            if(i < left) {
                 newSubTraits[i] = genes1[i];
-            } else {
+            } else if( i < right) {
                 newSubTraits[i] = genes2[i];
+            } else {
+                newSubTraits[i] = genes1[i]; 
             }
-            
             i++;
         }
         
-        //mutateWeights(newSubTraits);
+        mutateWeights(newSubTraits);
         
         return newSubTraits;
     }
@@ -207,7 +314,7 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutationRate = rand.nextInt(dirGenes.length);
+        int mutationRate = rand.nextInt(6500);
         
         if(mutationRate < dirGenes.length) {
         
@@ -229,49 +336,13 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutate = rand.nextInt(500);
+        int mutate = rand.nextInt(4000);
         
         if(mutate < subTraits.length) {
-            
-            System.out.println("mutated!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");            
-            
-            int i = 0;
-            while(i < subTraits.length) {
-                
-                mutate = rand.nextInt();
-                if(mutate < subTraits.length)
-                    subTraits[i] = rand.nextFloat();
-                
-                i++;
-            }
+            subTraits[mutate] = rand.nextFloat();
         }
 
         return subTraits;
-    }
-    
-    public int[] mutateFFFValues(int[] fffGenes) {
- 
-        Random rand = new Random();
-        
-        int mutationRate = rand.nextInt(1000);
-        
-        if(mutationRate < fffGenes.length) {
-        
-            int i = 0;
-            while(i < fffGenes.length) {
-            int idx1 = rand.nextInt(fffGenes.length);
-            int idx2 = rand.nextInt(fffGenes.length);
-            
-            int copy = fffGenes[idx1];
-            
-            fffGenes[idx1] = fffGenes[idx2];
-            fffGenes[idx2] = copy;
-            
-            i++;
-        }
-        }
-        
-        return fffGenes;
     }
     
     /**
@@ -395,7 +466,7 @@ public class MyWorld extends World {
        
             // set domain and range.
             NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-            range.setRange(0, numTurns * 2);
+            range.setRange(0, numTurns);
             range.setTickUnit(new NumberTickUnit(10.0));
             
             // enable AA.

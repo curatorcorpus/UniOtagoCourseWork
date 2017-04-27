@@ -167,10 +167,11 @@ public class MyCreature extends Creature {
         neutralZones  = zonesIntel.neutralZones;
         resourceZones = zonesIntel.resourceZones;
 
-        if(neutralZones.size() == 0 && 
-           dangerZones.size() == 0 &&
-           resourceZones.size() == 0) {
-            
+        if(dangerZones.isEmpty() && resourceZones.isEmpty()) {
+            for(int relativeDir : resourceZones) {
+                    actions[chromosome.dirValToPerceptLoc(relativeDir)] = 
+                            chromosome.getDirToActWeights(relativeDir);         
+            }
             actions[Chromosome.RND_ACT] = chromosome.getActionSens(Chromosome.RND_WT);        
         } else {
             for(int relativeDir : neutralZones) {                     
@@ -186,8 +187,15 @@ public class MyCreature extends Creature {
             for(int relativeDir : outcomes) {
                 
                 if(relativeDir == Chromosome.C) {
-                    actions[Chromosome.EAT_ACT] = 
-                            chromosome.getActionSens(Chromosome.EAT_WT);
+                    
+                    if(chromosome.dirValToPerceptLoc(relativeDir) == 1) {
+                        actions[chromosome.dirValToPerceptLoc(relativeDir)] = 
+                                chromosome.getActionSens(Chromosome.C_WT);
+                    } else {
+                        actions[Chromosome.EAT_ACT] = 
+                                chromosome.getActionSens(Chromosome.EAT_WT);     
+                    }
+                   
                 } else {
                     actions[chromosome.dirValToPerceptLoc(relativeDir)] = 
                             chromosome.getDirToActWeights(relativeDir);
@@ -215,43 +223,43 @@ public class MyCreature extends Creature {
             case -1:
                 if(relativePosition == Chromosome.N) {
                     zoneIntel.addToDZ(Chromosome.N);
-                    //zoneIntel.addToDZ(Chromosome.NW);
-                    //zoneIntel.addToDZ(Chromosome.NE);
+                    zoneIntel.addToDZ(Chromosome.NW);
+                    zoneIntel.addToDZ(Chromosome.NE);
                 }
                 else if(relativePosition == Chromosome.S) {
                     zoneIntel.addToDZ(Chromosome.S);
-                    //zoneIntel.addToDZ(Chromosome.SW);
-                    //zoneIntel.addToDZ(Chromosome.SE);
+                    zoneIntel.addToDZ(Chromosome.SW);
+                    zoneIntel.addToDZ(Chromosome.SE);
                 }
                 else if(relativePosition == Chromosome.E) {
                     zoneIntel.addToDZ(Chromosome.E);
-                    //zoneIntel.addToDZ(Chromosome.NE);
-                    //zoneIntel.addToDZ(Chromosome.SE);
+                    zoneIntel.addToDZ(Chromosome.NE);
+                    zoneIntel.addToDZ(Chromosome.SE);
                 }
                 else if(relativePosition == Chromosome.W) {
                     zoneIntel.addToDZ(Chromosome.W);
-                    //zoneIntel.addToDZ(Chromosome.NW);
-                    //zoneIntel.addToDZ(Chromosome.SW);
+                    zoneIntel.addToDZ(Chromosome.NW);
+                    zoneIntel.addToDZ(Chromosome.SW);
                 }
                 else if(relativePosition == Chromosome.NW) {
                     zoneIntel.addToDZ(Chromosome.NW);
-                    //zoneIntel.addToDZ(Chromosome.N);
-                    //zoneIntel.addToDZ(Chromosome.W);
+                    zoneIntel.addToDZ(Chromosome.N);
+                    zoneIntel.addToDZ(Chromosome.W);
                 }
                 else if(relativePosition == Chromosome.NE) {
                     zoneIntel.addToDZ(Chromosome.NE);
-                    //zoneIntel.addToDZ(Chromosome.N);
-                    //zoneIntel.addToDZ(Chromosome.E);
+                    zoneIntel.addToDZ(Chromosome.N);
+                    zoneIntel.addToDZ(Chromosome.E);
                 }
                 else if(relativePosition == Chromosome.SW) {
                     zoneIntel.addToDZ(Chromosome.SW);
-                    //zoneIntel.addToDZ(Chromosome.S);
-                    //zoneIntel.addToDZ(Chromosome.W);
+                    zoneIntel.addToDZ(Chromosome.S);
+                    zoneIntel.addToDZ(Chromosome.W);
                 }
                 else if(relativePosition == Chromosome.SE) {
                     zoneIntel.addToDZ(Chromosome.SE);
-                    //zoneIntel.addToDZ(Chromosome.S);
-                    //zoneIntel.addToDZ(Chromosome.E);
+                    zoneIntel.addToDZ(Chromosome.S);
+                    zoneIntel.addToDZ(Chromosome.E);
                 }   break;
             case 0:
                 zoneIntel.removeFromNZ(relativePosition); // just remove area occupied by other entity.
