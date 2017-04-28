@@ -39,196 +39,167 @@ public class Chromosome {
     public static final int EAT_ACT = 9;
     public static final int RND_ACT = 10;
     
-    public static final int TOWARDS = 0;
-    public static final int AWAY    = 1;
+    public static final int AWAY    = 0;
+    public static final int TOWARDS = 1;
     public static final int EAT     = 2;
     public static final int WAIT    = 3;
     public static final int RND     = 4;
     
-    public static final int N  = 0;
-    public static final int S  = 1;  
-    public static final int E  = 2;
-    public static final int W  = 3;  
-    public static final int C  = 4;    
-    public static final int NW = 5;
-    public static final int NE = 6;   
-    public static final int SW = 7;
-    public static final int SE = 8;   
-    
     public static final int NUM_ACTIONS     = 5;
-    public static final int NUM_DIRECITONS  = 9;
-    public static final int NUM_ENTITY_TYPE = 3;
+    public static final int NUM_ENTITY_TYPE = 4;
 
-    private Map<Integer, Integer> directionMapping;
-    
-    /**
-     * Direction Awareness Traits. Maps percept location index to 
-     * what the creature thinks the directions are.
-     */
-    private int[]   directionIntel;
-    private int[]   fffSensitivity;    
-    private float[] actionSensitivity;
-    
-    private boolean debug = false;
+    private int[]   fffSensitivityZone1; 
+    private int[]   fffSensitivityZone2;    
+    private int[]   fffSensitivityZone3;    
+    private float[] zone1ActionSensitivity;
+    private float[] zone2ActionSensitivity;
+    private float[] zone3ActionSensitivity;
     
     public Chromosome() {}
     
     public Chromosome(int numPercepts, int numActions) {
         List<Integer> lockNum = new ArrayList<>(); 
         Random rand = new Random();
-        
-        // efficiency mapping.
-        directionMapping  = new HashMap<>();
-        
+
         // initialize traits.
-        directionIntel    = new int[NUM_DIRECITONS];
-        actionSensitivity = new float[NUM_ACTIONS];
-        fffSensitivity    = new int[NUM_ENTITY_TYPE]; 
-        
-        // initialize direction awareness traits. Maps percepts to directions.
-        int i = 0;
-        while(i < NUM_DIRECITONS) {
-            int estimateLocationIdx = rand.nextInt(NUM_DIRECITONS);            
-            
-            // if num is not locked, then we can use it for chromosome.
-            if(!lockNum.contains(estimateLocationIdx)) {
-                lockNum.add(estimateLocationIdx); // lock num.
-                directionIntel[i++] = estimateLocationIdx;
-            } else {
-                continue;
-            }
-        }
+        zone1ActionSensitivity = new float[NUM_ACTIONS];
+        zone2ActionSensitivity = new float[NUM_ACTIONS];
+        zone3ActionSensitivity = new float[NUM_ACTIONS];
+        fffSensitivityZone1    = new int[NUM_ENTITY_TYPE]; 
+        fffSensitivityZone2    = new int[NUM_ENTITY_TYPE]; 
+        fffSensitivityZone3    = new int[NUM_ENTITY_TYPE]; 
         
         // initialize action sensitivity genes.
         for(int idx = 0; idx < NUM_ACTIONS; idx++) {
-           actionSensitivity[idx++] = rand.nextFloat();
+           zone1ActionSensitivity[idx]   = rand.nextFloat();
+           zone2ActionSensitivity[idx]   = rand.nextFloat();
+           zone3ActionSensitivity[idx++] = rand.nextFloat();
         }
         
-        int dir = 0;
-        // initialize direction mapping for efficiency. Maps directions back to percept values. (Naive Search).
-        while(dir < NUM_DIRECITONS) {
-            
-            // for all percept locations.
-            for(int pcpt = 0; pcpt < NUM_DIRECITONS; pcpt++) {
-                
-                // if direction is at the pcpt gene location.
-                if(dir == directionIntel[pcpt]) {
-                    directionMapping.put(dir++, pcpt);
-                    break;
-                }
-            }
-        }
-        
-        lockNum.clear();
-        
-        // initialize ppf sensitivity genes.
-        i = 0;
+        // initialize fff sensitivity genes.
+        int i = 0;
         while(i < NUM_ENTITY_TYPE) {
-            
             int estimateLocationIdx = rand.nextInt(NUM_ENTITY_TYPE);            
             
             // if num is not locked, then we can use it for chromosome.
             if(!lockNum.contains(estimateLocationIdx)) {
                 lockNum.add(estimateLocationIdx); // lock num.
-                fffSensitivity[i++] = estimateLocationIdx;
+                fffSensitivityZone1[i++] = estimateLocationIdx;
             } else {
                 continue;
             }
         }
         
-        if(debug) {
-            String info = "";
-            for(int geneIdx = 0; geneIdx < NUM_DIRECITONS; geneIdx++) {
-                info +=  "G" + geneIdx + ":"  + directionIntel[geneIdx] + " ";
-            }
-            System.out.println("[DEBUG]: Chromosome: " + info);
-            
-            info = "";
-            for(int pcpt = 0; pcpt < NUM_DIRECITONS; pcpt++) {
-                info +=  "Dir:" + pcpt + " PcptL: " + directionMapping.get(pcpt) + " ";
-            } 
-            System.out.println("[DEBUG]: ChromoDPMap: " + info);
-            
-            info = "";
-            for(int geneIdx = 0; geneIdx < NUM_ACTIONS; geneIdx++) {
-                info +=  "G" + geneIdx + ":W:" + actionSensitivity[geneIdx] + " ";
-            }
-            System.out.println("[DEBUG]: ChromoAct: " + info);
-            System.out.println();
-        }
-    }
-    public int[] getDirectionIntel() {
-        return directionIntel;
-    }
-    
-    public void setDirectionIntel(int[] directionIntel) {
-        this.directionIntel = directionIntel;
-        redoDirectionToPcptMapping();
-    }
-    
-    public void redoDirectionToPcptMapping() {
-        this.directionMapping = new HashMap<>();
+        lockNum.clear();
         
-        int dir = 0;
-        // initialize direction mapping for efficiency. Maps directions back to percept values. (Naive Search).
-        while(dir < NUM_DIRECITONS) {
+        i = 0;
+        while(i < NUM_ENTITY_TYPE) {
+            int estimateLocationIdx = rand.nextInt(NUM_ENTITY_TYPE);            
             
-            // for all percept locations.
-            for(int pcpt = 0; pcpt < NUM_DIRECITONS; pcpt++) {
-                
-                // if direction is at the pcpt gene location.
-                if(dir == directionIntel[pcpt]) {
-                    directionMapping.put(dir++, pcpt);
-                    break;
-                }
+            // if num is not locked, then we can use it for chromosome.
+            if(!lockNum.contains(estimateLocationIdx)) {
+                lockNum.add(estimateLocationIdx); // lock num.
+                fffSensitivityZone2[i++] = estimateLocationIdx;
+            } else {
+                continue;
             }
-        }
-    }
-    
-    public Map<Integer, Integer> getDirectionToPcptMap() {
-        return directionMapping;
-    }
-    
-    public void setDirectionToPcptMap(Map<Integer, Integer> directionMapping) {
-        this.directionMapping = directionMapping;
-    }
-    
-    public float[] getActionSensGenes() {
-        return actionSensitivity;
-    }
-    
-    public void setActionSensGenes(float[] actionSensitivity) {
-        this.actionSensitivity = actionSensitivity;
-    }
-    
-    public int[] getFFFSensGenes() {
-        return fffSensitivity;
-    }
-    
-    public void setFFFSensGenes(int[] fffSensitivity) {
-        this.fffSensitivity = fffSensitivity;
-    }
-    
-    public int getDirectionVal(int perceptLoc) {
-        return directionIntel[perceptLoc];
-    } 
+        }        
 
-    public int dirValToPerceptIdx(int dir) {
-        return directionMapping.get(dir);
+        lockNum.clear();        
+        
+        i = 0;
+        while(i < NUM_ENTITY_TYPE) {
+            int estimateLocationIdx = rand.nextInt(NUM_ENTITY_TYPE);            
+            
+            // if num is not locked, then we can use it for chromosome.
+            if(!lockNum.contains(estimateLocationIdx)) {
+                lockNum.add(estimateLocationIdx); // lock num.
+                fffSensitivityZone3[i++] = estimateLocationIdx;
+            } else {
+                continue;
+            }
+        }        
     }
     
-    public float getActionSens(int action) {
-        return actionSensitivity[action];
+    public float[] getZone1ActSens() {
+        return this.zone1ActionSensitivity;
     }
     
-    public int getFFFVal(int idx) {
-        return fffSensitivity[idx];
+    public float[] getZone2ActSens() {
+        return this.zone2ActionSensitivity;
     }
+    
+    public float[] getZone3ActSens() {
+        return this.zone3ActionSensitivity;
+    }  
+    
+    public void setZone1ActSens(float[] zone1ActionSensitivity) {
+        this.zone1ActionSensitivity = zone1ActionSensitivity;
+    }
+    
+    public void setZone2ActSens(float[] zone2ActionSensitivity) {
+        this.zone2ActionSensitivity = zone2ActionSensitivity;
+    }
+    
+    public void setZone3ActSens(float[] zone3ActionSensitivity) {
+        this.zone3ActionSensitivity = zone3ActionSensitivity;
+    }        
+    
+    public float getZone1ActSensVal(int idx) {
+        return this.zone1ActionSensitivity[idx];
+    }
+    
+    public float getZone2ActSensVal(int idx) {
+        return this.zone2ActionSensitivity[idx];
+    }
+    
+    public float getZone3ActSensVal(int idx) {
+        return this.zone3ActionSensitivity[idx];
+    }      
+    
+    public int[] getFFFSensGenesZone1() {
+        return fffSensitivityZone1;
+    }
+    
+    public void setFFFSensGenesZone1(int[] fffSensitivity) {
+        this.fffSensitivityZone1 = fffSensitivity;
+    }
+    
+    public int getFFFValZone1(int idx) {
+        return fffSensitivityZone1[idx];
+    }
+    
+   public int[] getFFFSensGenesZone2() {
+        return fffSensitivityZone2;
+    }
+    
+    public void setFFFSensGenesZone2(int[] fffSensitivity) {
+        this.fffSensitivityZone2 = fffSensitivity;
+    }
+    
+    public int getFFFValZone2(int idx) {
+        return fffSensitivityZone2[idx];
+    }
+
+   public int[] getFFFSensGenesZone3() {
+        return fffSensitivityZone3;
+    }
+    
+    public void setFFFSensGenesZone3(int[] fffSensitivity) {
+        this.fffSensitivityZone3 = fffSensitivity;
+    }
+    
+    public int getFFFValZone3(int idx) {
+        return fffSensitivityZone3[idx];
+    }    
     
     @Override
     public String toString() {
-        return "Chromosome{" + "directionIntel=" + Arrays.toString(directionIntel) +
-               ", actionSensitivity=" + Arrays.toString(actionSensitivity) + 
-               ", fffSensitivity=" + Arrays.toString(fffSensitivity) + '}';
+        return "Chromosome{" + "fffSensitivityZone1=" + Arrays.toString(fffSensitivityZone1) + 
+                               "\n fffSensitivityZone2=" + Arrays.toString(fffSensitivityZone2) + 
+                               "\n fffSensitivityZone3=" + Arrays.toString(fffSensitivityZone3) +
+                               "\n zone1ActionSensitivity=" + Arrays.toString(zone1ActionSensitivity) + 
+                               "\n zone2ActionSensitivity=" + Arrays.toString(zone2ActionSensitivity) + 
+                               "\n zone3ActionSensitivity=" + Arrays.toString(zone3ActionSensitivity) + '}';
     }
 }

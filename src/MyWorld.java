@@ -169,111 +169,62 @@ public class MyWorld extends World {
      * @return 
      */
     private Chromosome crossOver(Chromosome firstBest, Chromosome scndBest) {
-        int[]   dirIntelP1 = firstBest.getDirectionIntel(), 
-                dirIntelP2 = scndBest.getDirectionIntel();
-        
-        float[] actionSensitivityP1 = firstBest.getActionSensGenes(),
-                actionSensitivityP2 = scndBest.getActionSensGenes();
-        
-        int[] fffSensitivityP1 = firstBest.getFFFSensGenes(), 
-                fffSensitivityP2 = scndBest.getFFFSensGenes();
-     
-        Chromosome newGenes = new Chromosome();
 
-        newGenes.setDirectionIntel(dirMutation(
-                                    orderOneCrossOver(dirIntelP1, dirIntelP2)));
+        float[] zone1ActSensP1 = firstBest.getZone1ActSens(),
+                zone1ActSensP2 = scndBest.getZone1ActSens();
         
-        newGenes.setActionSensGenes(mutateWeights(
-                                        onePointCrossOver(actionSensitivityP1,
-                                                          actionSensitivityP2)));
-        newGenes.setFFFSensGenes(fffMutation(
+        float[] zone2ActSensP1 = firstBest.getZone2ActSens(),
+                zone2ActSensP2 = scndBest.getZone2ActSens();
+        
+        float[] zone3ActSensP1 = firstBest.getZone3ActSens(),
+                zone3ActSensP2 = scndBest.getZone3ActSens();        
+        
+        int[] fffSensitivityZone1P1 = firstBest.getFFFSensGenesZone1(), 
+              fffSensitivityZone1P2 = scndBest.getFFFSensGenesZone1();
+        
+        int[] fffSensitivityZone2P1 = firstBest.getFFFSensGenesZone2(), 
+              fffSensitivityZone2P2 = scndBest.getFFFSensGenesZone2();
+        
+        int[] fffSensitivityZone3P1 = firstBest.getFFFSensGenesZone3(), 
+              fffSensitivityZone3P2 = scndBest.getFFFSensGenesZone3();      
+        
+        Chromosome newGenes = new Chromosome();
+        
+        newGenes.setZone1ActSens(mutateWeights(
+                                        onePointCrossOver(zone1ActSensP1,
+                                                          zone1ActSensP2)));
+
+        newGenes.setZone2ActSens(mutateWeights(
+                                        onePointCrossOver(zone2ActSensP1,
+                                                          zone2ActSensP2)));
+        newGenes.setZone3ActSens(mutateWeights(
+                                        onePointCrossOver(zone3ActSensP1,
+                                                          zone3ActSensP2)));
+        newGenes.setFFFSensGenesZone1(fffMutation(
                                     orderOneCrossOverFFF(
-                                                fffSensitivityP1,
-                                                fffSensitivityP2)));
+                                                fffSensitivityZone1P1,
+                                                fffSensitivityZone1P2), 7000));
+        
+        newGenes.setFFFSensGenesZone2(fffMutation(
+                                    orderOneCrossOverFFF(
+                                                fffSensitivityZone2P1,
+                                                fffSensitivityZone2P2),4000));
+        
+        newGenes.setFFFSensGenesZone3(fffMutation(
+                                    orderOneCrossOverFFF(
+                                                fffSensitivityZone3P1,
+                                                fffSensitivityZone3P2), 7000));
         
         return newGenes;
     }
-    
-    public int[] orderOneCrossOver(int[] dirGene1, int[] dirGene2) {
-        List<Integer> intLocks = new ArrayList<>();
-        List<Integer> intLockIndices = new ArrayList<>();
-        
-        int left  = 0;
-        int right = 0;/*
-                System.out.println();
-                System.out.println("GENE 1");
-                
-                for(int j = 0; j < dirGene1.length; j++) {
-            System.out.print(dirGene1[j] + " ");
-        }        System.out.println();
-                    System.out.println("GENE 2");    
-                for(int j = 0; j < dirGene2.length; j++) {
-            System.out.print(dirGene2[j] + " ");
-        }        System.out.println();
-*/
-        int[] newDirGenes = new int[dirGene1.length];
-        
-        do {
-           left  = rand.nextInt(dirGene1.length);
-           right = rand.nextInt(dirGene1.length);
-        } while((right - left) <= 0); // make sure number is not range of randomly choosen numbers are not less than 1.
-        
-        int i = left;
-        while(i < right) {
-            newDirGenes[i] = dirGene1[i];
-            intLocks.add(dirGene1[i]);
-            intLockIndices.add(i++);
-        }
-        
-        int[] remainders = new int[dirGene1.length - intLocks.size()];
-        
-        // process indicies.
-        int remainderIdx = 0;
-        for(int remains = 0; remains < dirGene1.length; remains++) {
-            if(!intLockIndices.contains(remains)) {
-                remainders[remainderIdx++] = remains;
-            }
-        }/*
-                        System.out.println("REMAINDERS INDICES: ");
-                        for(int j = 0; j < remainders.length; j++) {
-            System.out.print(remainders[j] + " ");
-        }        System.out.println();*/
-        i = 0;
-        int z = 0;
-        while(i < dirGene1.length) {
-            if(!intLocks.contains(dirGene2[i])) {
-                newDirGenes[remainders[z++]] = dirGene2[i];
-                            //System.out.print(dirGene2[i-1] + " ");
-            } 
-            
-            i++;
-        }/*
-        System.out.println("outcome");
-        for(int j = 0; j < newDirGenes.length; j++) {
-            System.out.print(newDirGenes[j] + " ");
-        }
-        System.out.println();*/
-        
-        return newDirGenes;
-    }
-    
+   
     public int[] orderOneCrossOverFFF(int[] dirGene1, int[] dirGene2) {
         List<Integer> intLocks = new ArrayList<>();
         List<Integer> intLockIndices = new ArrayList<>();
         
         int left  = 1;
-        int right = 2;/*
-                System.out.println();
-                System.out.println("GENE 1");
-                
-                for(int j = 0; j < dirGene1.length; j++) {
-            System.out.print(dirGene1[j] + " ");
-        }        System.out.println();
-                    System.out.println("GENE 2");    
-                for(int j = 0; j < dirGene2.length; j++) {
-            System.out.print(dirGene2[j] + " ");
-        }        System.out.println();
-*/
+        int right = 2;
+        
         int[] newDirGenes = new int[dirGene1.length];
         /*
         do {
@@ -296,11 +247,8 @@ public class MyWorld extends World {
             if(!intLockIndices.contains(remains)) {
                 remainders[remainderIdx++] = remains;
             }
-        }/*
-                        System.out.println("REMAINDERS INDICES: ");
-                        for(int j = 0; j < remainders.length; j++) {
-            System.out.print(remainders[j] + " ");
-        }        System.out.println();*/
+        }
+        
         i = 0;
         int z = 0;
         while(i < dirGene1.length) {
@@ -310,12 +258,7 @@ public class MyWorld extends World {
             } 
             
             i++;
-        }/*
-        System.out.println("outcome");
-        for(int j = 0; j < newDirGenes.length; j++) {
-            System.out.print(newDirGenes[j] + " ");
         }
-        System.out.println();*/
         
         return newDirGenes;
     }
@@ -327,7 +270,7 @@ public class MyWorld extends World {
         
         int left  = 0;
         int right = 0;
-        /*
+        
         do {
            left  = rand.nextInt(genes1.length);
            right = rand.nextInt(genes1.length);
@@ -344,48 +287,17 @@ public class MyWorld extends World {
             }
             i++;
         }
-        */
-        left = rand.nextInt(genes1.length);
-        int i = 0;
-        
-        while(i < genes1.length) {
-            if(i < left) {
-                newSubTraits[i] = genes1[i];
-            } else {
-                newSubTraits[i] = genes1[i]; 
-            }
-            i++;
-        }
         
         mutateWeights(newSubTraits);
         
         return newSubTraits;
     }
     
-    public int[] dirMutation(int[] dirGenes) {
-        
-        Random rand = new Random();
-        
-        int mutationRate = rand.nextInt(7000);
-        
-        if(mutationRate < dirGenes.length) {
-            int idx1 = rand.nextInt(dirGenes.length);
-            int idx2 = rand.nextInt(dirGenes.length);
-            
-            int copy = dirGenes[idx1];
-            
-            dirGenes[idx1] = dirGenes[idx2];
-            dirGenes[idx2] = copy;
-        }
-        
-        return dirGenes;
-    }
-    
     private float[] mutateWeights(float[] subTraits) {
         
         Random rand = new Random();
         
-        int mutate = rand.nextInt(6000);
+        int mutate = rand.nextInt(5000);
         
         if(mutate < subTraits.length) {
             subTraits[mutate] = rand.nextFloat();
@@ -394,11 +306,11 @@ public class MyWorld extends World {
         return subTraits;
     }    
     
-    public int[] fffMutation(int[] fffGenes) {
+    public int[] fffMutation(int[] fffGenes, int alpha) {
         
         Random rand = new Random();
         
-        int mutationRate = rand.nextInt(10000);
+        int mutationRate = rand.nextInt(alpha);
         
         if(mutationRate < fffGenes.length) {
         

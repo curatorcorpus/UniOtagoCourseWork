@@ -1,15 +1,5 @@
 import cosc343.assig2.Creature;
 
-import java.util.Random;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 /**
 * The MyCreate extends the cosc343 assignment 2 Creature.  Here you implement
 * creatures chromosome and the agent function that maps creature percepts to
@@ -24,6 +14,10 @@ public class MyCreature extends Creature {
     private static final int THREAT_THRES  = 0;
     private static final int NEUTRAL_THRES = 1;
     private static final int FOOD_THRES    = 2;
+    
+    private static final int ENTITY0 = 0;
+    private static final int ENTITY1 = 0;
+    private static final int ENTITY2 = 0;
     
     private Chromosome chromosome;
 
@@ -81,16 +75,43 @@ public class MyCreature extends Creature {
             
             // determine fffs.
             if(monsterNearby) {
-                int fffStatusM = chromosome.getFFFVal(0);
-                actions = fffValToActions(actions, fffStatusM, i, sensingMons);
+                int fffStatusM;
+                        
+                if(i < 3) {    
+                    fffStatusM = chromosome.getFFFValZone1(ENTITY0);
+                } else if(3 <= i && i < 6) {     
+                    fffStatusM = chromosome.getFFFValZone2(ENTITY0);
+                } else {
+                    fffStatusM = chromosome.getFFFValZone3(ENTITY0);
+                }
+                    
+                actions = fffValToActions(actions, fffStatusM, i, sensingMons, perceptSections);
             }
             if(creatureNearby) {
-                int fffStatusC = chromosome.getFFFVal(1);
-                actions = fffValToActions(actions, fffStatusC, i, sensingCrea);                
+                int fffStatusM;
+                        
+                if(i < 3) {    
+                    fffStatusM = chromosome.getFFFValZone1(ENTITY1);
+                } else if(3 <= i && i < 6) {     
+                    fffStatusM = chromosome.getFFFValZone2(ENTITY1);
+                } else {
+                    fffStatusM = chromosome.getFFFValZone3(ENTITY1);
+                }
+                    
+                actions = fffValToActions(actions, fffStatusM, i, sensingCrea, perceptSections);              
             }
             if(foodNearby) {
-                int fffStatusF = chromosome.getFFFVal(2);
-                actions = fffValToActions(actions, fffStatusF, i, sensingFood);                
+                int fffStatusM;
+                        
+                if(i < 3) {    
+                    fffStatusM = chromosome.getFFFValZone1(ENTITY2);
+                } else if(3 <= i && i < 6) {     
+                    fffStatusM = chromosome.getFFFValZone2(ENTITY2);
+                } else {
+                    fffStatusM = chromosome.getFFFValZone3(ENTITY2);
+                }
+                    
+                actions = fffValToActions(actions, fffStatusM, i, sensingFood, perceptSections);               
             } 
         }
         
@@ -105,82 +126,82 @@ public class MyCreature extends Creature {
      * 
      * @return 
      */
-    private float[] fffValToActions(float[] actions, int fffValStatus, int perceptLoc, int perceptVal) {
-        
-        int relativePosition = chromosome.getDirectionVal(perceptLoc);
-        
-        // foe
-        switch (fffValStatus) {
-            case THREAT_THRES:
-                actions[perceptLoc] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                
-                if(relativePosition == Chromosome.N) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.NE)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.NW)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                }
-                else if(relativePosition == Chromosome.S) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.SE)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.SW)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);                   
-                }
-                else if(relativePosition == Chromosome.E) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.NE)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.SE)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);                 
-                }
-                else if(relativePosition == Chromosome.W) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.NW)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.SW)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);                  
-                }
-                else if(relativePosition == Chromosome.NW) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.N)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.W)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);             
-                }
-                else if(relativePosition == Chromosome.NE) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.N)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.E)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);                 
-                }
-                else if(relativePosition == Chromosome.SW) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.S)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.W)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);                  
-                }
-                else if(relativePosition == Chromosome.SE) {
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.S)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);
-                    actions[chromosome.dirValToPerceptIdx(Chromosome.E)] -= 
-                            chromosome.getActionSens(Chromosome.AWAY);              
-                }
-                break;
-                
-            case NEUTRAL_THRES:
-                actions[perceptLoc] += 
-                            chromosome.getActionSens(Chromosome.TOWARDS);
-                actions[Chromosome.RND_ACT] += 
-                            chromosome.getActionSens(Chromosome.RND);
-                break;
-                
-            case FOOD_THRES:
-                actions[perceptLoc] += 
-                            chromosome.getActionSens(Chromosome.TOWARDS);
-                if(perceptVal == 1) {
-                    actions[perceptLoc] += chromosome.getActionSens(Chromosome.WAIT);
-                } else {
-                    actions[Chromosome.EAT_ACT] += chromosome.getActionSens(Chromosome.EAT);
-                }
-                break; 
+    private float[] fffValToActions(float[] actions, int fffValStatus, int perceptLoc,
+                                                                       int perceptVal,
+                                                                       int perceptSections) {
+
+        if(perceptLoc < 3) {            
+            switch (fffValStatus) {
+                case THREAT_THRES:
+                    actions[perceptLoc] -= 
+                                chromosome.getZone1ActSensVal(Chromosome.AWAY);
+                    break;
+
+                case NEUTRAL_THRES:
+                    actions[perceptLoc] += 
+                                chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                    actions[Chromosome.RND_ACT] += 
+                                chromosome.getZone1ActSensVal(Chromosome.RND);
+                    break;
+
+                case FOOD_THRES:
+                    actions[perceptLoc] += 
+                                chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                    if(perceptVal == 1) {
+                        actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.WAIT);
+                    } else {
+                        actions[Chromosome.EAT_ACT] += chromosome.getZone1ActSensVal(Chromosome.EAT);
+                    }
+                    break; 
+            }
+        } else if(3 <= perceptLoc && perceptLoc < 6) {           
+            switch (fffValStatus) {
+                case THREAT_THRES:
+                    actions[perceptLoc] -= 
+                                chromosome.getZone2ActSensVal(Chromosome.AWAY);
+                    break;
+
+                case NEUTRAL_THRES:
+                    actions[perceptLoc] += 
+                                chromosome.getZone2ActSensVal(Chromosome.TOWARDS);
+                    actions[Chromosome.RND_ACT] += 
+                                chromosome.getZone2ActSensVal(Chromosome.RND);
+                    break;
+
+                case FOOD_THRES:
+                    actions[perceptLoc] += 
+                                chromosome.getZone2ActSensVal(Chromosome.TOWARDS);
+                    if(perceptVal == 1) {
+                        actions[perceptLoc] += chromosome.getZone2ActSensVal(Chromosome.WAIT);
+                    } else {
+                        actions[Chromosome.EAT_ACT] += chromosome.getZone2ActSensVal(Chromosome.EAT);
+                    }
+                    break; 
+            }            
+        } else {
+            switch (fffValStatus) {
+                case THREAT_THRES:
+                    actions[perceptLoc] -= 
+                                chromosome.getZone3ActSensVal(Chromosome.AWAY);
+                    break;
+
+                case NEUTRAL_THRES:
+                    actions[perceptLoc] += 
+                                chromosome.getZone3ActSensVal(Chromosome.TOWARDS);
+                    actions[Chromosome.RND_ACT] += 
+                                chromosome.getZone3ActSensVal(Chromosome.RND);
+                    break;
+
+                case FOOD_THRES:
+                    actions[perceptLoc] += 
+                                chromosome.getZone3ActSensVal(Chromosome.TOWARDS);
+                    if(perceptVal == 1) {
+                        actions[perceptLoc] += chromosome.getZone3ActSensVal(Chromosome.WAIT);
+                    } else {
+                        actions[Chromosome.EAT_ACT] += chromosome.getZone3ActSensVal(Chromosome.EAT);
+                    }
+                    break; 
+            }
         }
         
         return actions;
