@@ -78,15 +78,19 @@ public class MyWorld extends World {
     
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
+        Chromosome chromo = creature.getChromosome();
         
         avgEnergy += creature.getEnergy();
-       fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        fitness = creature.getEnergy() * 
+                ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
         
-       return fitness;
+        return fitness;
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
 
+        List<MyCreature> survivors = new ArrayList();
+        
         MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
         MyCreature[] newGeneration = new MyCreature[numCreatures];
         
@@ -105,6 +109,10 @@ public class MyWorld extends World {
                 maxFitness = currFitness;
             }
             
+            if(!currCreature.isDead()) {
+                survivors.add(currCreature);
+            }
+            
             totalFitness += currFitness;
         }
 
@@ -114,8 +122,10 @@ public class MyWorld extends World {
         showStatus(oldPopulation, numCreatures);
 
         int newGen = 0;
-        
-        //newGeneration[newGen++] = currentFittestCreature;
+        /*while(newGen < survivors.size()) {
+            newGeneration[newGen] = survivors.get(newGen);
+            newGen++;
+        }*/
         
         while(newGen < numCreatures) {
            
@@ -171,22 +181,10 @@ public class MyWorld extends World {
     private Chromosome crossOver(Chromosome firstBest, Chromosome scndBest) {
 
         float[] zone1ActSensP1 = firstBest.getZone1ActSens(),
-                zone1ActSensP2 = scndBest.getZone1ActSens();
-        
-        float[] zone2ActSensP1 = firstBest.getZone2ActSens(),
-                zone2ActSensP2 = scndBest.getZone2ActSens();
-        
-        float[] zone3ActSensP1 = firstBest.getZone3ActSens(),
-                zone3ActSensP2 = scndBest.getZone3ActSens();        
+                zone1ActSensP2 = scndBest.getZone1ActSens();      
         
         int[] fffSensitivityZone1P1 = firstBest.getFFFSensGenesZone1(), 
-              fffSensitivityZone1P2 = scndBest.getFFFSensGenesZone1();
-        
-        int[] fffSensitivityZone2P1 = firstBest.getFFFSensGenesZone2(), 
-              fffSensitivityZone2P2 = scndBest.getFFFSensGenesZone2();
-        
-        int[] fffSensitivityZone3P1 = firstBest.getFFFSensGenesZone3(), 
-              fffSensitivityZone3P2 = scndBest.getFFFSensGenesZone3();      
+              fffSensitivityZone1P2 = scndBest.getFFFSensGenesZone1();    
         
         Chromosome newGenes = new Chromosome();
         
@@ -194,26 +192,10 @@ public class MyWorld extends World {
                                         onePointCrossOver(zone1ActSensP1,
                                                           zone1ActSensP2)));
 
-        newGenes.setZone2ActSens(mutateWeights(
-                                        onePointCrossOver(zone2ActSensP1,
-                                                          zone2ActSensP2)));
-        newGenes.setZone3ActSens(mutateWeights(
-                                        onePointCrossOver(zone3ActSensP1,
-                                                          zone3ActSensP2)));
         newGenes.setFFFSensGenesZone1(fffMutation(
                                     orderOneCrossOverFFF(
                                                 fffSensitivityZone1P1,
-                                                fffSensitivityZone1P2), 7000));
-        
-        newGenes.setFFFSensGenesZone2(fffMutation(
-                                    orderOneCrossOverFFF(
-                                                fffSensitivityZone2P1,
-                                                fffSensitivityZone2P2),4000));
-        
-        newGenes.setFFFSensGenesZone3(fffMutation(
-                                    orderOneCrossOverFFF(
-                                                fffSensitivityZone3P1,
-                                                fffSensitivityZone3P2), 7000));
+                                                fffSensitivityZone1P2), 8700));
         
         return newGenes;
     }
@@ -297,7 +279,7 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutate = rand.nextInt(5000);
+        int mutate = rand.nextInt(6000);
         
         if(mutate < subTraits.length) {
             subTraits[mutate] = rand.nextFloat();
@@ -307,14 +289,13 @@ public class MyWorld extends World {
     }    
     
     public int[] fffMutation(int[] fffGenes, int alpha) {
-        
         Random rand = new Random();
         
         int mutationRate = rand.nextInt(alpha);
         
         if(mutationRate < fffGenes.length) {
         
-
+        System.out.println("mutated");
             int idx1 = rand.nextInt(fffGenes.length);
             int idx2 = rand.nextInt(fffGenes.length);
             
