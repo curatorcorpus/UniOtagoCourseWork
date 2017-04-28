@@ -21,7 +21,7 @@ import java.util.Set;
 */
 public class MyCreature extends Creature {
     
-    private static class HashSetImpl extends HashSet<Integer> {
+    private class HashSetImpl extends HashSet<Integer> {
 
         public HashSetImpl() {
         }
@@ -38,7 +38,7 @@ public class MyCreature extends Creature {
         }
     }
     
-    private static class ZoneSet<Integer> {
+    private class ZoneSet<Integer> {
         private Set<Integer> dangerZones;
         private Set<Integer> neutralZones;
         private Set<Integer> resourceZones;
@@ -81,8 +81,6 @@ public class MyCreature extends Creature {
         }
     }
     
-    private static final Set<Integer> ZONES = new HashSetImpl();
-    
     private static final int THREAT_THRES = 0;
     private static final int FRIEND_THRES = 1;
     private static final int FOOD_THRES   = 2;
@@ -120,8 +118,8 @@ public class MyCreature extends Creature {
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) {
         Set<Integer> dangerZones, neutralZones, resourceZones;
-        
-        ZoneSet zonesIntel     = new ZoneSet(new HashSet<>(), ZONES, new HashSet<>()); 
+        Set<Integer> zones = new HashSetImpl();
+        ZoneSet zonesIntel     = new ZoneSet(new HashSet<>(), zones, new HashSet<>()); 
         Set<Integer> outcomes  = new HashSet<>();
         
         // default actions would be determined by genotypes of individuals.
@@ -129,6 +127,7 @@ public class MyCreature extends Creature {
    
         int perceptSections = percepts.length / 3;
         int perceptOffset   = 9;
+        int zoneSize = zones.size();
         
         for(int i = 0; i < perceptSections; i++) {
             
@@ -145,8 +144,7 @@ public class MyCreature extends Creature {
             if(sensingCrea == 1) creatureNearby = true;
             if(sensingFood == 1 || sensingFood == 2) foodNearby = true;
             if(monsterNearby && foodNearby) System.out.println("somthing is amist!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //System.out.println(monsterNearby + " " + creatureNearby + " " +foodNearby );
-        
+
             // determine fffs.
             if(monsterNearby) {
                 int fffStatusM = determineFFFReaction(chromosome.getFFFVal(0));
@@ -172,33 +170,22 @@ public class MyCreature extends Creature {
                     actions[chromosome.dirValToPerceptLoc(relativeDir)] = 
                             chromosome.getDirToActWeights(relativeDir);         
             }
-            actions[Chromosome.RND_ACT] = chromosome.getActionSens(Chromosome.RND_WT);        
-        } else {
-            for(int relativeDir : neutralZones) {                     
-                if(!dangerZones.contains(relativeDir)) {
-                    outcomes.add(relativeDir);
-                }
+            if(neutralZones.size() == zoneSize) {
+                actions[Chromosome.RND_ACT] = chromosome.getActionSens(Chromosome.RND_WT);        
             }
+        } else {
             for(int relativeDir : resourceZones) {
                 if(!dangerZones.contains(relativeDir)) {
                     outcomes.add(relativeDir);
                 }            
             }
             for(int relativeDir : outcomes) {
-                
                 if(relativeDir == Chromosome.C) {
-                    
-                    if(chromosome.dirValToPerceptLoc(relativeDir) == 1) {
-                        actions[chromosome.dirValToPerceptLoc(relativeDir)] = 
-                                chromosome.getActionSens(Chromosome.C_WT);
-                    } else {
-                        actions[Chromosome.EAT_ACT] = 
+                    actions[Chromosome.EAT_ACT] = 
                                 chromosome.getActionSens(Chromosome.EAT_WT);     
-                    }
-                   
                 } else {
                     actions[chromosome.dirValToPerceptLoc(relativeDir)] = 
-                            chromosome.getDirToActWeights(relativeDir);
+                                        chromosome.getDirToActWeights(relativeDir);
                 }
             }
         }
@@ -228,8 +215,8 @@ public class MyCreature extends Creature {
                 }
                 else if(relativePosition == Chromosome.S) {
                     zoneIntel.addToDZ(Chromosome.S);
-                    zoneIntel.addToDZ(Chromosome.SW);
-                    zoneIntel.addToDZ(Chromosome.SE);
+                   zoneIntel.addToDZ(Chromosome.SW);
+                   zoneIntel.addToDZ(Chromosome.SE);
                 }
                 else if(relativePosition == Chromosome.E) {
                     zoneIntel.addToDZ(Chromosome.E);
