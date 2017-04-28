@@ -39,17 +39,11 @@ public class Chromosome {
     public static final int EAT_ACT = 9;
     public static final int RND_ACT = 10;
     
-    public static final int EAT_WT = 0;
-    public static final int C_WT   = 1;
-    public static final int N_WT   = 2;
-    public static final int S_WT   = 3;
-    public static final int W_WT   = 4;
-    public static final int E_WT   = 5;
-    public static final int NW_WT  = 6;
-    public static final int NE_WT  = 7;
-    public static final int SW_WT  = 8;
-    public static final int SE_WT  = 9;
-    public static final int RND_WT = 10;
+    public static final int TOWARDS = 0;
+    public static final int AWAY    = 1;
+    public static final int EAT     = 2;
+    public static final int WAIT    = 3;
+    public static final int RND     = 4;
     
     public static final int N  = 0;
     public static final int S  = 1;  
@@ -61,8 +55,8 @@ public class Chromosome {
     public static final int SW = 7;
     public static final int SE = 8;   
     
+    public static final int NUM_ACTIONS     = 5;
     public static final int NUM_DIRECITONS  = 9;
-    public static final int NUM_ACTIONS     = 11;
     public static final int NUM_ENTITY_TYPE = 3;
 
     private Map<Integer, Integer> directionMapping;
@@ -71,17 +65,9 @@ public class Chromosome {
      * Direction Awareness Traits. Maps percept location index to 
      * what the creature thinks the directions are.
      */
-    private int[] directionIntel;
-   
-    /**
-     * Action Sensitivity Traits.
-     */
+    private int[]   directionIntel;
+    private int[]   fffSensitivity;    
     private float[] actionSensitivity;
-    
-    /**
-     * Prey/Predator/Friend Awareness Traits.
-     */
-    private int[] fffSensitivity;
     
     private boolean debug = false;
     
@@ -225,126 +211,14 @@ public class Chromosome {
     
     public int getDirectionVal(int perceptLoc) {
         return directionIntel[perceptLoc];
-    }
+    } 
 
-    public String getDirectionString(int dirVal) {
-        
-        String direction = "";
-        
-        switch(dirVal) {
-        case 0:
-            direction = "N";
-            break;
-        case 1:   
-            direction = "S";                
-            break;
-        case 2:
-            direction = "E";                
-            break;
-        case 3:   
-            direction = "W";                
-            break;
-        case 4:
-            direction = "C";                
-            break;
-        case 5:   
-            direction = "NW";                
-            break;
-        case 6:
-            direction = "NE";                
-            break;
-        case 7:   
-            direction = "SW";                
-            break;
-        case 8:
-            direction = "SE";                
-            break;    
-        }
-        
-        return direction;
-    }    
-
-    public int dirValToPerceptLoc(int dirVal) {
-        int perceptLoc = -1;
-        
-        for(int i = 0; i < directionIntel.length; i++) {
-            int chromoDirVal = directionIntel[i];
-            
-            if(chromoDirVal == dirVal) {
-                perceptLoc = i;
-                break;
-            }
-        }
-        
-        return perceptLoc;
+    public int dirValToPerceptIdx(int dir) {
+        return directionMapping.get(dir);
     }
     
-    public int getActionMapToPcptLocIdx(int maxActionWtIdx) {
-
-        switch(maxActionWtIdx) {
-            case EAT_WT:
-                return EAT_ACT;
-            
-            case C_WT:
-                return directionMapping.get(C);
-            
-            case N_WT:
-                return directionMapping.get(N);
-            
-            case S_WT:
-                return directionMapping.get(S);
-            
-            case W_WT:
-                return directionMapping.get(W);
-            
-            case E_WT:
-                return directionMapping.get(E);
-                
-            case NW_WT:
-                return directionMapping.get(NW);
-                
-            case NE_WT:
-                return directionMapping.get(NE);
-                
-            case SW_WT:
-                return directionMapping.get(SW);
-                
-            case SE_WT: 
-                return directionMapping.get(SE);
-                
-            default:
-                return RND_ACT;
-        }
-    }
-    
-    public float getDirToActWeights(int relativeDir) {
-        
-        switch(relativeDir) {
-            case N:
-                return actionSensitivity[N_WT];          
-            case S:
-                return actionSensitivity[S_WT];                
-            case W:
-                return actionSensitivity[W_WT];            
-            case E:
-                return actionSensitivity[E_WT];            
-            case NW:
-                return actionSensitivity[NW_WT];            
-            case NE:
-                return actionSensitivity[NE_WT];           
-            case SW:
-                return actionSensitivity[SW_WT];            
-            case SE:
-                return actionSensitivity[SE_WT];            
-            case C:
-                return actionSensitivity[EAT_WT];                
-            default:
-                return actionSensitivity[RND_WT];
-        }
-    }
-    
-    public float getActionSens(int actIdx) {
-        return actionSensitivity[actIdx];
+    public float getActionSens(int action) {
+        return actionSensitivity[action];
     }
     
     public int getFFFVal(int idx) {

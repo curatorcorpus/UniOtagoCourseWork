@@ -39,7 +39,7 @@ import org.jfree.util.ShapeUtilities;
 */
 public class MyWorld extends World {
 
-    public static class ParentCouple {
+    public class ParentCouple {
         private MyCreature parent1, parent2;
         
         public ParentCouple(MyCreature parent1, MyCreature parent2) {
@@ -80,12 +80,13 @@ public class MyWorld extends World {
         double fitness = 0;
         
         avgEnergy += creature.getEnergy();
-        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
-        return fitness;
+       fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        
+       return fitness;
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
-        List<MyCreature> survivors = new ArrayList<>();
+
         MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
         MyCreature[] newGeneration = new MyCreature[numCreatures];
         
@@ -104,10 +105,6 @@ public class MyWorld extends World {
                 maxFitness = currFitness;
             }
             
-            if(!currCreature.isDead()) {
-                survivors.add(currCreature);
-            }
-            
             totalFitness += currFitness;
         }
 
@@ -117,9 +114,8 @@ public class MyWorld extends World {
         showStatus(oldPopulation, numCreatures);
 
         int newGen = 0;
-        for(int i = 0; i < survivors.size(); i++) {
-            newGeneration[newGen++] = survivors.get(i);
-        }
+        
+        //newGeneration[newGen++] = currentFittestCreature;
         
         while(newGen < numCreatures) {
            
@@ -191,7 +187,7 @@ public class MyWorld extends World {
                                         onePointCrossOver(actionSensitivityP1,
                                                           actionSensitivityP2)));
         newGenes.setFFFSensGenes(fffMutation(
-                                    orderOneCrossOver(
+                                    orderOneCrossOverFFF(
                                                 fffSensitivityP1,
                                                 fffSensitivityP2)));
         
@@ -261,6 +257,69 @@ public class MyWorld extends World {
         return newDirGenes;
     }
     
+    public int[] orderOneCrossOverFFF(int[] dirGene1, int[] dirGene2) {
+        List<Integer> intLocks = new ArrayList<>();
+        List<Integer> intLockIndices = new ArrayList<>();
+        
+        int left  = 1;
+        int right = 2;/*
+                System.out.println();
+                System.out.println("GENE 1");
+                
+                for(int j = 0; j < dirGene1.length; j++) {
+            System.out.print(dirGene1[j] + " ");
+        }        System.out.println();
+                    System.out.println("GENE 2");    
+                for(int j = 0; j < dirGene2.length; j++) {
+            System.out.print(dirGene2[j] + " ");
+        }        System.out.println();
+*/
+        int[] newDirGenes = new int[dirGene1.length];
+        /*
+        do {
+           left  = rand.nextInt(dirGene1.length);
+           right = rand.nextInt(dirGene1.length);
+        } while((right - left) <= 0); // make sure number is not range of randomly choosen numbers are not less than 1.
+        */
+        int i = left;
+        while(i < right) {
+            newDirGenes[i] = dirGene1[i];
+            intLocks.add(dirGene1[i]);
+            intLockIndices.add(i++);
+        }
+        
+        int[] remainders = new int[dirGene1.length - intLocks.size()];
+        
+        // process indicies.
+        int remainderIdx = 0;
+        for(int remains = 0; remains < dirGene1.length; remains++) {
+            if(!intLockIndices.contains(remains)) {
+                remainders[remainderIdx++] = remains;
+            }
+        }/*
+                        System.out.println("REMAINDERS INDICES: ");
+                        for(int j = 0; j < remainders.length; j++) {
+            System.out.print(remainders[j] + " ");
+        }        System.out.println();*/
+        i = 0;
+        int z = 0;
+        while(i < dirGene1.length) {
+            if(!intLocks.contains(dirGene2[i])) {
+                newDirGenes[remainders[z++]] = dirGene2[i];
+                            //System.out.print(dirGene2[i-1] + " ");
+            } 
+            
+            i++;
+        }/*
+        System.out.println("outcome");
+        for(int j = 0; j < newDirGenes.length; j++) {
+            System.out.print(newDirGenes[j] + " ");
+        }
+        System.out.println();*/
+        
+        return newDirGenes;
+    }
+    
     public float[] onePointCrossOver(float[] genes1, float[] genes2) {
         Random rand = new Random();
         
@@ -272,8 +331,7 @@ public class MyWorld extends World {
         do {
            left  = rand.nextInt(genes1.length);
            right = rand.nextInt(genes1.length);
-        } while((right - left) <= 0);
-        
+        } while((right - left) <= 0);        
 
         int i = 0;
         while(i < genes1.length) {
@@ -287,15 +345,15 @@ public class MyWorld extends World {
             i++;
         }
         */
-        int xoverPoint = rand.nextInt(genes1.length);
+        left = rand.nextInt(genes1.length);
         int i = 0;
+        
         while(i < genes1.length) {
-            if(i < xoverPoint) {
-              newSubTraits[i] = genes1[i];   
+            if(i < left) {
+                newSubTraits[i] = genes1[i];
             } else {
-                newSubTraits[i] = genes2[i];
+                newSubTraits[i] = genes1[i]; 
             }
-            
             i++;
         }
         
@@ -308,11 +366,9 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutationRate = rand.nextInt(4000);
+        int mutationRate = rand.nextInt(7000);
         
         if(mutationRate < dirGenes.length) {
-        
-
             int idx1 = rand.nextInt(dirGenes.length);
             int idx2 = rand.nextInt(dirGenes.length);
             
@@ -320,7 +376,6 @@ public class MyWorld extends World {
             
             dirGenes[idx1] = dirGenes[idx2];
             dirGenes[idx2] = copy;
-
         }
         
         return dirGenes;
@@ -330,7 +385,7 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutate = rand.nextInt(3000);
+        int mutate = rand.nextInt(6000);
         
         if(mutate < subTraits.length) {
             subTraits[mutate] = rand.nextFloat();
@@ -343,7 +398,7 @@ public class MyWorld extends World {
         
         Random rand = new Random();
         
-        int mutationRate = rand.nextInt(9000);
+        int mutationRate = rand.nextInt(10000);
         
         if(mutationRate < fffGenes.length) {
         
@@ -523,7 +578,7 @@ public class MyWorld extends World {
 
        boolean repeatableMode = false;
        
-       int gridSize = 60;
+       int gridSize = 50;
        int perceptFormat = 2;
        int windowWidth =  2456;
        int windowHeight = 1440;
