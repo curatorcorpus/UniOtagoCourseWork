@@ -81,8 +81,7 @@ public class MyWorld extends World {
         Chromosome chromo = creature.getChromosome();
         
         avgEnergy += creature.getEnergy();
-        fitness = creature.getEnergy() * 
-                ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
         
         return fitness;
     }
@@ -121,8 +120,8 @@ public class MyWorld extends World {
         // display status.
         showStatus(oldPopulation, numCreatures);
 
-        int newGen = 0;
-        /*while(newGen < survivors.size()) {
+        int newGen = 0;/*
+        while(newGen < survivors.size()) {
             newGeneration[newGen] = survivors.get(newGen);
             newGen++;
         }*/
@@ -204,16 +203,16 @@ public class MyWorld extends World {
         List<Integer> intLocks = new ArrayList<>();
         List<Integer> intLockIndices = new ArrayList<>();
         
-        int left  = 1;
-        int right = 2;
+        int left  = 0;
+        int right = 0;
         
         int[] newDirGenes = new int[dirGene1.length];
-        /*
+        
         do {
            left  = rand.nextInt(dirGene1.length);
            right = rand.nextInt(dirGene1.length);
         } while((right - left) <= 0); // make sure number is not range of randomly choosen numbers are not less than 1.
-        */
+        
         int i = left;
         while(i < right) {
             newDirGenes[i] = dirGene1[i];
@@ -236,7 +235,6 @@ public class MyWorld extends World {
         while(i < dirGene1.length) {
             if(!intLocks.contains(dirGene2[i])) {
                 newDirGenes[remainders[z++]] = dirGene2[i];
-                            //System.out.print(dirGene2[i-1] + " ");
             } 
             
             i++;
@@ -250,23 +248,16 @@ public class MyWorld extends World {
         
         float[] newSubTraits = new float[genes1.length];
         
-        int left  = 0;
-        int right = 0;
+        int left = rand.nextInt(genes1.length);
         
-        do {
-           left  = rand.nextInt(genes1.length);
-           right = rand.nextInt(genes1.length);
-        } while((right - left) <= 0);        
-
         int i = 0;
         while(i < genes1.length) {
             if(i < left) {
                 newSubTraits[i] = genes1[i];
-            } else if( i < right) {
-                newSubTraits[i] = genes2[i];
             } else {
-                newSubTraits[i] = genes1[i]; 
-            }
+                newSubTraits[i] = genes2[i]; 
+            }            
+            
             i++;
         }
         
@@ -278,12 +269,17 @@ public class MyWorld extends World {
     private float[] mutateWeights(float[] subTraits) {
         
         Random rand = new Random();
-        
-        int mutate = rand.nextInt(6000);
-        
-        if(mutate < subTraits.length) {
-            subTraits[mutate] = rand.nextFloat();
-        }
+ 
+        //if(mutate < subTraits.length) {
+            for(int i = 0; i < subTraits.length; i++) {
+                int mutate = rand.nextInt(40000);
+                
+                if(mutate < subTraits.length) {
+                    System.out.println("mutated");
+                    subTraits[mutate] = rand.nextFloat();
+                }
+            }
+        //}
 
         return subTraits;
     }    
@@ -294,8 +290,6 @@ public class MyWorld extends World {
         int mutationRate = rand.nextInt(alpha);
         
         if(mutationRate < fffGenes.length) {
-        
-        System.out.println("mutated");
             int idx1 = rand.nextInt(fffGenes.length);
             int idx2 = rand.nextInt(fffGenes.length);
             
@@ -303,7 +297,6 @@ public class MyWorld extends World {
             
             fffGenes[idx1] = fffGenes[idx2];
             fffGenes[idx2] = copy;
-
         }
         
         return fffGenes;

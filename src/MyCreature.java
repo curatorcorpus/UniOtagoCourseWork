@@ -37,18 +37,6 @@ public class MyCreature extends Creature {
         this.chromosome = new Chromosome(numPercepts, numActions);
     }
 
-    /** Data field that encodes chromosomes.
-     * Value:
-     *  North  = 0.
-     *  South  = 1.
-     *  East   = 2.
-     *  West   = 3.
-     *  Center = 4.
-     *  NW     = 5.
-     *  NE     = 6.
-     *  SW     = 7.
-     *  SE     = 8.
-     */
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) { 
         // default actions would be determined by genotypes of individuals.
@@ -99,25 +87,21 @@ public class MyCreature extends Creature {
      * 
      * @return 
      */
-    private float[] fffValToActions(float[] actions, int fffValStatus, int perceptLoc,
-                                                                       int perceptVal) {
-         
+    private float[] fffValToActions(float[] actions, int fffValStatus, int perceptLoc, int perceptVal) {
+        System.out.println();
         switch (fffValStatus) {
             case THREAT_THRES:
-                actions[perceptLoc] -= 
-                            chromosome.getZone1ActSensVal(Chromosome.AWAY);
+                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.AWAY);
                 break;
 
             case NEUTRAL_THRES:
-                actions[perceptLoc] += 
-                            chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
-                actions[Chromosome.RND_ACT] += 
-                            chromosome.getZone1ActSensVal(Chromosome.RND);
+                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                actions[Chromosome.RND_ACT] += chromosome.getZone1ActSensVal(Chromosome.RND);
                 break;
 
             case FOOD_THRES:
-                actions[perceptLoc] += 
-                            chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                
                 if(perceptVal == 1) {
                     actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.WAIT);
                 } else {
