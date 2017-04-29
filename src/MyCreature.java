@@ -23,8 +23,15 @@ public class MyCreature extends Creature {
 
     private double currentFitness = 0.0;
     
-    public MyCreature(Chromosome chromosome) {
-        this.chromosome = chromosome;
+    private double noOfEngyGains  = 0.0;
+    private double noOfsickStates = 0.0;
+    
+    private int currentEnergy = 0;
+    private int prevEnergy;
+    
+    public MyCreature(Chromosome chromosome, int numTurns) {
+       this.chromosome = chromosome;     
+       this.prevEnergy = Creature.INIT_ENERGY;
     }
     
     /**
@@ -33,12 +40,17 @@ public class MyCreature extends Creature {
      * @param numActions  - the number of action output vector that creature will 
      *                      need to produce every turn.
      */
-    public MyCreature(int numPercepts, int numActions) {
+    public MyCreature(int numPercepts, int numActions, int numTurns) {
         this.chromosome = new Chromosome(numPercepts, numActions);
+        this.prevEnergy = Creature.INIT_ENERGY;
     }
 
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) { 
+        
+        evaluateSickStates();
+        evaluateEnergyGains();
+
         // default actions would be determined by genotypes of individuals.
         float actions[] = new float[numExpectedActions];
    
@@ -74,9 +86,28 @@ public class MyCreature extends Creature {
                 int fffStatusM = chromosome.getFFFValZone1(ENTITY2);
                 actions = fffValToActions(actions, fffStatusM, i, sensingE3);              
             } 
+            
+            actions[i] += chromosome.getZone1ActSensVal(Chromosome.MOVE);                
         }
         
         return actions;
+    }
+    
+    private void evaluateEnergyGains() {
+        
+        currentEnergy = this.getEnergy();
+        
+        if(currentEnergy > prevEnergy) {
+            noOfEngyGains++;
+        }
+        
+        prevEnergy = currentEnergy;
+    }
+    
+    private void evaluateSickStates() {
+        if(this.isSick()) {
+            noOfsickStates++;
+        }
     }
     
     /**
@@ -88,29 +119,32 @@ public class MyCreature extends Creature {
      * @return 
      */
     private float[] fffValToActions(float[] actions, int fffValStatus, int perceptLoc, int perceptVal) {
-        System.out.println();
+        
         switch (fffValStatus) {
             case THREAT_THRES:
-                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.AWAY);
+                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.AWAY);               
                 break;
 
             case NEUTRAL_THRES:
-                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                actions[perceptLoc] /= chromosome.getZone1ActSensVal(Chromosome.FOLLOW);                
                 actions[Chromosome.RND_ACT] += chromosome.getZone1ActSensVal(Chromosome.RND);
                 break;
 
             case FOOD_THRES:
-                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.LATER);
+                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.WAIT);
                 
-                if(perceptVal == 1) {
-                    actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.WAIT);
-                } else {
+                if(perceptVal == 2) {
                     actions[Chromosome.EAT_ACT] += chromosome.getZone1ActSensVal(Chromosome.EAT);
                 }
                 break; 
             }
         
         return actions;
+    }
+   
+    public double getEngyGainsCt() {
+        return noOfEngyGains;
     }
     
     public Chromosome getChromosome() {

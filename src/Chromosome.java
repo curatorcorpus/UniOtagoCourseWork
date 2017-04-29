@@ -40,12 +40,14 @@ public class Chromosome {
     public static final int RND_ACT = 10;
     
     public static final int AWAY    = 0;
-    public static final int TOWARDS = 1;
-    public static final int EAT     = 2;
-    public static final int WAIT    = 3;
-    public static final int RND     = 4;
+    public static final int MOVE    = 1;
+    public static final int FOLLOW  = 2;
+    public static final int EAT     = 3;
+    public static final int LATER   = 4;
+    public static final int WAIT    = 5;
+    public static final int RND     = 6;
     
-    public static final int NUM_ACTIONS     = 5;
+    public static final int NUM_ACTIONS     = 7;
     public static final int NUM_ENTITY_TYPE = 3;
 
     private int[]   fffSensitivityZone;    

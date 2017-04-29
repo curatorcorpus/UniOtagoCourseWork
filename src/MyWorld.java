@@ -64,7 +64,7 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 150;
+    private final int numGenerations = 300;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
@@ -102,7 +102,6 @@ public class MyWorld extends World {
             MyCreature currCreature = oldPopulation[i];
             double currFitness = determineFitness(currCreature);
             currCreature.setFitness(currFitness);
-            
             if(maxFitness < currFitness) {
                 currentFittestCreature = currCreature;
                 maxFitness = currFitness;
@@ -135,7 +134,7 @@ public class MyWorld extends World {
             Chromosome newChromo = crossOver(parents.getParent1().getChromosome(),
                                              parents.getParent2().getChromosome());
             
-            newGeneration[newGen++] = new MyCreature(newChromo);
+            newGeneration[newGen++] = new MyCreature(newChromo, numTurns);
         }
         
         previousAvgFit = totalFitness/numCreatures;
@@ -272,7 +271,7 @@ public class MyWorld extends World {
  
         //if(mutate < subTraits.length) {
             for(int i = 0; i < subTraits.length; i++) {
-                int mutate = rand.nextInt(40000);
+                int mutate = rand.nextInt(29000);
                 
                 if(mutate < subTraits.length) {
                     System.out.println("mutated");
@@ -368,7 +367,7 @@ public class MyWorld extends World {
         MyCreature[] population = new MyCreature[numCreatures];
       
         for(int i = 0; i < numCreatures; i++) {
-            population[i] = new MyCreature(numPercepts, numActions);     
+            population[i] = new MyCreature(numPercepts, numActions, numTurns);     
         }
 
         return population;
