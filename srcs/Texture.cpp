@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <iostream>
 #include <GL/glew.h>
 
 #include <glfw3.h>
@@ -18,8 +18,9 @@ Texture::Texture(std::string filename){
 
     if(filename.find("dds")!=std::string::npos||filename.find("DDS")!=std::string::npos)
         m_textureID = loadDDS(filename.c_str());
-    else
+    else 
          m_textureID = loadBMP_custom(filename.c_str());
+    
     // Get a handle for our "myTextureSampler" uniform
     // in shader: textureID  = glGetUniformLocation(programID, "myTextureSampler");
     
@@ -149,7 +150,7 @@ GLuint Texture::loadBMP_custom(const char * imagepath){
 #define FOURCC_DXT5 0x35545844 // Equivalent to "DXT5" in ASCII
 
 GLuint Texture::loadDDS(const char * imagepath){
-	
+
 	unsigned char header[124];
 	
 	FILE *fp;

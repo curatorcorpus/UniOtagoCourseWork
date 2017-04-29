@@ -1,6 +1,6 @@
 # Blender v2.78 (sub 0) OBJ File: ''
 # www.blender.org
-mtllib earthobj.mtl
+mtllib ../res/materials/earthobj.mtl
 o Sphere
 v 0.659698 137.786118 49.328049
 v 1.117168 137.074799 47.028194

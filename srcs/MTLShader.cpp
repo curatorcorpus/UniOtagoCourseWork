@@ -42,6 +42,8 @@ void MTLShader::setTexture(Texture* texture){
 
 void MTLShader::setLightPos(glm::vec3 lightPos){
     m_lightPos= lightPos;
+    GLint lightPosId = glGetUniformLocation(programID, "light_pos");
+    glProgramUniform3fv(programID, lightPosId, 1, &m_lightPos[0]);
 }
 
 void MTLShader::setDiffuse(glm::vec3 diffuse){
@@ -97,6 +99,9 @@ void MTLShader::bind(){
     // Bind our texture in Texture Unit 0
     if(m_texture!=NULL){
         m_texture->bindTexture();
+
+        GLint m_TextureID = glGetUniformLocation(programID, "myTextureSampler");
+        glProgramUniform1i(programID, m_TextureID, 0);
         // Set our "myTextureSampler" sampler to user Texture Unit 0 using glUniform1i
 		
     }

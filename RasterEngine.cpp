@@ -109,7 +109,8 @@ int main( int argc, char *argv[] )
     //glClearColor(1.0f, 1.0f, 1.0f, 0.0f); white background
     glEnable(GL_DEPTH_TEST);              // Enable depth test
     glDepthFunc(GL_LESS);                 // Accept fragment if it closer to the camera than the former ones
-    
+    glEnable(GL_MULTISAMPLE);
+
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 

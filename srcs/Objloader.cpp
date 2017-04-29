@@ -107,7 +107,7 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
             aiColor3D ambient    (0.0f, 0.0f, 0.0f);
             aiColor3D specular   (0.0f, 0.0f, 0.0f);
             aiColor3D transparent(0.0f, 0.0f, 0.0f);
-            aiString  texture_diffuse;
+            aiString  texture_diff_path;
 
             float opacity      = 0.0f;
             float shininess    = 0.0f;
@@ -137,6 +137,8 @@ bool loadOBJMTL(const char * path, Group* outputmesh){
             newMat->setOpacity(opacity);
 
             // set texture mapping from materials
+			scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE,0, &texture_diff_path, NULL,NULL, NULL,NULL,NULL) == AI_SUCCESS;
+			newMat->setTextureName(texture_diff_path.C_Str());
         }
 
         outputmesh->addMaterial(newMat);

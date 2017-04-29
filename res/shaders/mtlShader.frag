@@ -16,21 +16,29 @@ uniform vec4 transparent_color;
 uniform float opacity;
 uniform float shininess;
 
+uniform vec3 light_dir;
+
+// obtain texture map.
+uniform sampler2D myTextureSampler;
+
 void main() {
-	
-	// setup color rener variables.
-	float intensity;
-	vec4 color;
-	vec3 light_direct;
 
-	// light settings
-	light_direct = normalize(vec3(1.0, 1.0, 1.0));
-	intensity = max(dot(light_direct, vertex_normal), 0.0);
+	vec4 light_direct = normalize(vec4(light_dir, 1.0) - vertex_pos);
 
-	// add diffuse material
-    color = diffuseColor;
+	float lambertain = max(dot(light_direct, vec4(vertex_normal, 1.0f)), 0.0);
+	float specular = 0.0f;
 
-    //TODO: compute light model here
+	// blinn phong
+	if(lambertain > 0.0) {
+		vec4 view_dir = normalize(-vertex_pos);
+		vec4 half_dir = normalize(light_direct + view_dir);
 
-	output = (color + ambient_color + transparent_color) * intensity * opacity * shininess;
+		float spec_angle = max(dot(half_dir, vec4(vertex_normal, 1.0f)), 0.0f);
+		specular = pow(spec_angle, shininess / 4.0f);
+	}
+
+	vec4 color_linear = ambient_color * texture(myTextureSampler, vertex_uv) + lambertain * diffuseColor + specular_color * specular;
+	vec4 color_gamma_corrected = pow(color_linear, vec4(1.0/2.2));
+
+	output = color_gamma_corrected;
 }

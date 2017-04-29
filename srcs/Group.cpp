@@ -77,6 +77,8 @@ void Group::setupShaders(){
             mat->setShader(mtlshader);
 
             if(mat->getTextureName() != "") {
+                //std::string relative_path = "../res/materials/" + mat->getTextureName();
+                //std::cout << "[Debug::Group] Loading " << relative_path << std::endl;
 
                 Texture* texture = new Texture(mat->getTextureName());
                 mtlshader->setTexture(texture);
