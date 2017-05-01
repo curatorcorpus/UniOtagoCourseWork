@@ -76,7 +76,7 @@ void Group::setupShaders(){
             mtlshader->setTransparent(mat->getTransparentColour());            
             mtlshader->setOpacity(mat->getOpacity());
             mtlshader->setShininess(mat->getShininess());
-            mtlshader->setLightPos(glm::vec3(10, 20, -10));
+            mtlshader->setLightPos(glm::vec3(4, 3, 2));
             //mtlshader->setCamLookAt(g_camera->getLookAt());
             mat->setShader(mtlshader);
 
