@@ -48,6 +48,8 @@ void Group::init(){
 }
 void Group::render(Camera* camera){
 
+    g_camera = camera;
+
     for(int i = 0; i < meshes.size(); i++) {
 
 		meshes[i]->bindShaders();
@@ -74,7 +76,8 @@ void Group::setupShaders(){
             mtlshader->setTransparent(mat->getTransparentColour());            
             mtlshader->setOpacity(mat->getOpacity());
             mtlshader->setShininess(mat->getShininess());
-            mtlshader->setLightPos(glm::vec3(4, 4, 4));
+            mtlshader->setLightPos(glm::vec3(10, 20, -10));
+            //mtlshader->setCamLookAt(g_camera->getLookAt());
             mat->setShader(mtlshader);
 
             if(mat->getTextureName() != "") {

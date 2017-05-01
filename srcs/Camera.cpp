@@ -57,6 +57,10 @@ glm::vec3 Camera::getPosition(){
     
 }
 
+glm::vec3 Camera::getLookAt() {
+    return m_lookat;
+}
+
 //! Set camera orientation
 /*!  Set camera orientation based on vertical and horizontal angle */
 void Camera::setCameraOrientation(float vertAngle, float horzAngle){

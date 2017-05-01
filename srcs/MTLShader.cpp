@@ -55,34 +55,40 @@ void MTLShader::setDiffuse(glm::vec3 diffuse){
 void MTLShader::setAmbient(glm::vec3 ambient){
     
     m_ambientColor   = glm::vec4(ambient[0],ambient[1],ambient[2], 1.0);
-    GLint ambient_id = glGetUniformLocation(programID, "ambient_color");
+    GLint ambient_id = glGetUniformLocation(programID, "ambient_mat_color");
     glProgramUniform4fv(programID, ambient_id, 1, &m_ambientColor[0]);	
 }
 
 void MTLShader::setSpecular(glm::vec3 specular){
     
     m_specularColor   = glm::vec4(specular[0],specular[1],specular[2], 1.0);
-    GLint specular_id = glGetUniformLocation(programID, "specular_color");
+    GLint specular_id = glGetUniformLocation(programID, "specular_mat_color");
 	glProgramUniform4fv(programID, specular_id, 1, &m_specularColor[0]);
 }
 
 void MTLShader::setTransparent(glm::vec3 transparent) {
 
     m_transparentColor   = glm::vec4(transparent[0], transparent[1], transparent[2], 1.0);
-    GLint transparent_id = glGetUniformLocation(programID, "transparent_color");
+    GLint transparent_id = glGetUniformLocation(programID, "transparent_mat_color");
     glProgramUniform4fv(programID, transparent_id, 1, &m_transparentColor[0]);
+}
+
+void MTLShader::setCamLookAt(glm::vec3 cam_look_at) {
+    m_cam_look_at       = glm::vec4(cam_look_at[0], cam_look_at[1], cam_look_at[2], 1.0);
+    GLint cam_lookat_id = glGetUniformLocation(programID, "camera_lookat");
+    glProgramUniform4fv(programID, cam_lookat_id, 1, &m_cam_look_at[0]);
 }
 
 void MTLShader::setOpacity(const float opacity){
     
     m_opacity        = opacity;
-	GLint opacity_id = glGetUniformLocation(programID, "opacity");
+	GLint opacity_id = glGetUniformLocation(programID, "mat_opacity");
     glProgramUniform1f(programID, opacity_id, m_opacity);
 }
 
 void MTLShader::setShininess(const float shininess) {
     m_shininess     = shininess;
-    GLint shine_id = glGetUniformLocation(programID, "shininess");
+    GLint shine_id = glGetUniformLocation(programID, "mat_shininess");
     glProgramUniform1f(programID, shine_id, m_shininess);
 }
 

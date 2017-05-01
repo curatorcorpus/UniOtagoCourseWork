@@ -57,7 +57,7 @@ class Group:  public Object{
         void setupShaders();
     
     private:
-    
+        Camera *g_camera;  
         std::vector<Mesh*> meshes;          //!< all meshes of this group
         std::vector<Material*> materials;   //!< collection of all materials
 

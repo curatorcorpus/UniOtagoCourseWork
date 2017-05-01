@@ -42,6 +42,8 @@ public:
     /*!  Access camera position. Retruns a vec3 */
     glm::vec3 getPosition();
     
+    glm::vec3 getLookAt();
+
     //! Set camera orientation
     /*!  Set camera orientation based on vertical and horizontal angle */
     void setCameraOrientation(float vertAngle, float horzAngle);

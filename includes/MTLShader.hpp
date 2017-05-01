@@ -44,6 +44,7 @@ class MTLShader: public Shader{
         //! setSpecular
         /*! Set the specular color */
         void setSpecular(glm::vec3 specular);
+        void setCamLookAt(glm::vec3 m_cam_look_at);
         void setShininess(float shininess);
         void setTransparent(glm::vec3 transparent);        
         //! setOpacity
@@ -62,6 +63,7 @@ class MTLShader: public Shader{
         glm::vec4 m_ambientColor;   //!<  ambient color of the material
         glm::vec4 m_specularColor;  //!<  specular color of the material
         glm::vec4 m_transparentColor; 
+        glm::vec4 m_cam_look_at;
         float m_renderMode;     //!< render mode
         Texture* m_texture;     //!< texture
         GLuint m_TextureID;     //!< texture id
