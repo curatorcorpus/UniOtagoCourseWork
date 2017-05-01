@@ -23,15 +23,8 @@ public class MyCreature extends Creature {
 
     private double currentFitness = 0.0;
     
-    private double noOfEngyGains  = 0.0;
-    private double noOfsickStates = 0.0;
-    
-    private int currentEnergy = 0;
-    private int prevEnergy;
-    
     public MyCreature(Chromosome chromosome, int numTurns) {
        this.chromosome = chromosome;     
-       this.prevEnergy = Creature.INIT_ENERGY;
     }
     
     /**
@@ -42,14 +35,10 @@ public class MyCreature extends Creature {
      */
     public MyCreature(int numPercepts, int numActions, int numTurns) {
         this.chromosome = new Chromosome(numPercepts, numActions);
-        this.prevEnergy = Creature.INIT_ENERGY;
     }
 
     @Override
     public float[] AgentFunction(int[] percepts, int numPercepts, int numExpectedActions) { 
-        
-        evaluateSickStates();
-        evaluateEnergyGains();
 
         // default actions would be determined by genotypes of individuals.
         float actions[] = new float[numExpectedActions];
@@ -72,42 +61,25 @@ public class MyCreature extends Creature {
             if(sensingE1 == 1) entity1Nearby  = true;
             if(sensingE2 == 1) entity2Nearby = true;
             if(sensingE3 == 1 || sensingE3 == 2) entity3Nearby = true;
+
+            actions[i] += chromosome.getZone1ActSensVal(Chromosome.MOVE);            
             
             // determine fffs.
             if(entity1Nearby) {
-                int fffStatusM = chromosome.getFFFValZone1(ENTITY0);
+                int fffStatusM = chromosome.getFFFValZone(ENTITY0);
                 actions = fffValToActions(actions, fffStatusM, i, sensingE1);
             }
             if(entity2Nearby) {
-                int fffStatusM = chromosome.getFFFValZone1(ENTITY1);
+                int fffStatusM = chromosome.getFFFValZone(ENTITY1);
                 actions = fffValToActions(actions, fffStatusM, i, sensingE2);           
             }
             if(entity3Nearby) {
-                int fffStatusM = chromosome.getFFFValZone1(ENTITY2);
+                int fffStatusM = chromosome.getFFFValZone(ENTITY2);
                 actions = fffValToActions(actions, fffStatusM, i, sensingE3);              
             } 
-            
-            actions[i] += chromosome.getZone1ActSensVal(Chromosome.MOVE);                
         }
         
         return actions;
-    }
-    
-    private void evaluateEnergyGains() {
-        
-        currentEnergy = this.getEnergy();
-        
-        if(currentEnergy > prevEnergy) {
-            noOfEngyGains++;
-        }
-        
-        prevEnergy = currentEnergy;
-    }
-    
-    private void evaluateSickStates() {
-        if(this.isSick()) {
-            noOfsickStates++;
-        }
     }
     
     /**
@@ -122,17 +94,17 @@ public class MyCreature extends Creature {
         
         switch (fffValStatus) {
             case THREAT_THRES:
-                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.AWAY);               
+                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.AWAY);
                 break;
-
+                
             case NEUTRAL_THRES:
-                actions[perceptLoc] /= chromosome.getZone1ActSensVal(Chromosome.FOLLOW);                
-                actions[Chromosome.RND_ACT] += chromosome.getZone1ActSensVal(Chromosome.RND);
-                break;
-
+                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                actions[Chromosome.RND_ACT] += chromosome.getZone1ActSensVal(Chromosome.RND);                  
+                break;        
+                
             case FOOD_THRES:
-                actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.LATER);
-                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.WAIT);
+                actions[perceptLoc] += chromosome.getZone1ActSensVal(Chromosome.TOWARDS);
+                //actions[perceptLoc] -= chromosome.getZone1ActSensVal(Chromosome.WAIT);
                 
                 if(perceptVal == 2) {
                     actions[Chromosome.EAT_ACT] += chromosome.getZone1ActSensVal(Chromosome.EAT);
@@ -143,10 +115,6 @@ public class MyCreature extends Creature {
         return actions;
     }
    
-    public double getEngyGainsCt() {
-        return noOfEngyGains;
-    }
-    
     public Chromosome getChromosome() {
         return this.chromosome;
     }

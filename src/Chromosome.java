@@ -40,10 +40,10 @@ public class Chromosome {
     public static final int RND_ACT = 10;
     
     public static final int AWAY    = 0;
-    public static final int MOVE    = 1;
-    public static final int FOLLOW  = 2;
-    public static final int EAT     = 3;
-    public static final int LATER   = 4;
+    public static final int TOWARDS = 1;
+    public static final int MOVE    = 2;
+    public static final int AVOID   = 3;
+    public static final int EAT     = 4;
     public static final int WAIT    = 5;
     public static final int RND     = 6;
     
@@ -51,7 +51,7 @@ public class Chromosome {
     public static final int NUM_ENTITY_TYPE = 3;
 
     private int[]   fffSensitivityZone;    
-    private float[] zone1ActionSensitivity;
+    private float[] zone1ActionSensitivity;  
     
     public Chromosome() {}
     
@@ -60,12 +60,12 @@ public class Chromosome {
         Random rand = new Random();
 
         // initialize traits.
-        zone1ActionSensitivity = new float[NUM_ACTIONS];
+        zone1ActionSensitivity = new float[NUM_ACTIONS];      
         fffSensitivityZone     = new int[NUM_ENTITY_TYPE]; 
         
         // initialize action sensitivity genes.
         for(int idx = 0; idx < NUM_ACTIONS; idx++) {
-           zone1ActionSensitivity[idx]   = rand.nextFloat();
+            zone1ActionSensitivity[idx] = rand.nextFloat();
         }
         
         // initialize fff sensitivity genes.
@@ -103,13 +103,14 @@ public class Chromosome {
         this.fffSensitivityZone = fffSensitivity;
     }
     
-    public int getFFFValZone1(int idx) {
+    public int getFFFValZone(int idx) {
         return fffSensitivityZone[idx];
     }
     
     @Override
     public String toString() {
         return "Chromosome{" + "fffSensitivityZone1=" + Arrays.toString(fffSensitivityZone) +
-                               "\n zone1ActionSensitivity=" + Arrays.toString(zone1ActionSensitivity) + '}';
+                               "\n zone1ActionSensitivity=" + Arrays.toString(zone1ActionSensitivity) + 
+                               "\n                            Away | Towards | Eat | Random" + '}';
     }
 }

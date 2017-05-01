@@ -64,24 +64,21 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 300;
+    private final int numGenerations = 150;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
     private double previousFitnessAvg = 0.0;
     
     private int avgFitIdx = 0;
-    private int avgEnergy = 0;   
     
     private MyCreature currentFittestCreature;
     double previousAvgFit = 0.0;
     
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
-        Chromosome chromo = creature.getChromosome();
         
-        avgEnergy += creature.getEnergy();
-        fitness = creature.getEnergy() * ((double)((double)numTurns - (double)creature.timeOfDeath()) /(double) numTurns);
+        fitness = creature.getEnergy() * ((double)numTurns - (double)creature.timeOfDeath());// / (double) numTurns;
         
         return fitness;
     }
@@ -119,12 +116,7 @@ public class MyWorld extends World {
         // display status.
         showStatus(oldPopulation, numCreatures);
 
-        int newGen = 0;/*
-        while(newGen < survivors.size()) {
-            newGeneration[newGen] = survivors.get(newGen);
-            newGen++;
-        }*/
-        
+        int newGen = 0;
         while(newGen < numCreatures) {
            
             // select parents
@@ -179,8 +171,8 @@ public class MyWorld extends World {
     private Chromosome crossOver(Chromosome firstBest, Chromosome scndBest) {
 
         float[] zone1ActSensP1 = firstBest.getZone1ActSens(),
-                zone1ActSensP2 = scndBest.getZone1ActSens();      
-        
+                zone1ActSensP2 = scndBest.getZone1ActSens();             
+                
         int[] fffSensitivityZone1P1 = firstBest.getFFFSensGenesZone1(), 
               fffSensitivityZone1P2 = scndBest.getFFFSensGenesZone1();    
         
@@ -193,7 +185,7 @@ public class MyWorld extends World {
         newGenes.setFFFSensGenesZone1(fffMutation(
                                     orderOneCrossOverFFF(
                                                 fffSensitivityZone1P1,
-                                                fffSensitivityZone1P2), 8700));
+                                                fffSensitivityZone1P2), 5000));
         
         return newGenes;
     }
@@ -248,6 +240,7 @@ public class MyWorld extends World {
         float[] newSubTraits = new float[genes1.length];
         
         int left = rand.nextInt(genes1.length);
+        left = genes1.length / 2;
         
         int i = 0;
         while(i < genes1.length) {
@@ -271,7 +264,7 @@ public class MyWorld extends World {
  
         //if(mutate < subTraits.length) {
             for(int i = 0; i < subTraits.length; i++) {
-                int mutate = rand.nextInt(29000);
+                int mutate = rand.nextInt(50000);
                 
                 if(mutate < subTraits.length) {
                     System.out.println("mutated");
@@ -422,8 +415,8 @@ public class MyWorld extends World {
        
             // set domain and range.
             NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-            range.setRange(0, numTurns);
-            range.setTickUnit(new NumberTickUnit(10.0));
+            range.setRange(0, numTurns * 200);
+            range.setTickUnit(new NumberTickUnit(2500.0));
             
             // enable AA.
             jfreechart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, 
