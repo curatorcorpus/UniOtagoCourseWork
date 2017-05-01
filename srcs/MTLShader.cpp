@@ -1,7 +1,7 @@
 
 #include "MTLShader.hpp"
 // complete the setters with the appropriate method for passing information to the shaders
-
+#include <iostream>
 
 MTLShader::MTLShader(){
         
@@ -47,10 +47,9 @@ void MTLShader::setLightPos(glm::vec3 lightPos){
 }
 
 void MTLShader::setDiffuse(glm::vec3 diffuse){
-    
-    m_diffuseColor       = glm::vec4(diffuse[0],diffuse[1],diffuse[2], 1.0);;
-    GLint diffusecolorID = glGetUniformLocation(programID, "diffuseColor");
-    glProgramUniform4fv(programID,diffusecolorID,1, &m_diffuseColor[0]);
+    m_diffuseColor       = glm::vec4(diffuse[0],diffuse[1],diffuse[2], 1.0f);
+    GLint diffuse_colorID = glGetUniformLocation(programID, "diffuse_mat_color");
+    glProgramUniform4fv(programID,diffuse_colorID,1, &m_diffuseColor[0]);
 }
 
 void MTLShader::setAmbient(glm::vec3 ambient){

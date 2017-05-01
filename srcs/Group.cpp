@@ -74,11 +74,12 @@ void Group::setupShaders(){
             mtlshader->setTransparent(mat->getTransparentColour());            
             mtlshader->setOpacity(mat->getOpacity());
             mtlshader->setShininess(mat->getShininess());
+            mtlshader->setLightPos(glm::vec3(4, 4, 4));
             mat->setShader(mtlshader);
 
             if(mat->getTextureName() != "") {
-                //std::string relative_path = "../res/materials/" + mat->getTextureName();
-                //std::cout << "[Debug::Group] Loading " << relative_path << std::endl;
+                std::string relative_path = "../../materials/" + mat->getTextureName();
+                std::cout << "[Debug::Group] Loading " << relative_path << std::endl;
 
                 Texture* texture = new Texture(mat->getTextureName());
                 mtlshader->setTexture(texture);

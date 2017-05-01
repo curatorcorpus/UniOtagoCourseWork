@@ -6,40 +6,32 @@ in vec2 vertex_uv;
 in vec3 vertex_normal;
 
 // Ouput data
-out vec4 result;
+out vec4 color;
 
 // Values that stay constant for the whole mesh.
 uniform vec4 diffuseColor;
+uniform vec4 diffuse_mat_color;
 uniform vec4 ambient_color;
 uniform vec4 specular_color;
 uniform vec4 transparent_color;
 uniform float opacity;
 uniform float shininess;
 
-uniform vec3 light_dir;
+uniform vec3 light_pos;
 
 // obtain texture map.
 uniform sampler2D myTextureSampler;
 
+const vec3 diffuse_light = vec3(1.0, 1.0, 1.0);
+
 void main() {
+	vec3 textures = texture(myTextureSampler, vertex_uv).rgb;
 
-	vec4 light_direct = normalize(vec4(light_dir, 1.0) - vertex_pos);
+	// angle between light and normal
+	float theta = clamp(dot(vertex_normal, light_pos), 0.0, 1.0);
 
-	float lambertain = max(dot(light_direct, vec4(vertex_normal, 1.0f)), 0.0);
-	float specular = 0.0f;
+    // diffuse component     
+    vec3 diff_compo = diffuseColor.rgb * diffuse_mat_color.rgb	 * textures * theta;
 
-	// blinn phong
-	if(lambertain > 0.0) {
-		vec4 view_dir = normalize(-vertex_pos);
-		vec4 half_dir = normalize(light_direct + view_dir);
-
-		float spec_angle = max(dot(half_dir, vec4(vertex_normal, 1.0f)), 0.0f);
-		specular = pow(spec_angle, shininess / 4.0f);
-	}
-
-	vec4 color_linear = ambient_color * texture(myTextureSampler, vertex_uv) + lambertain * diffuseColor + specular_color * specular;
-
-	vec4 color_gamma_corrected = pow(color_linear, vec4(1.0/2.2));
-
-	result = color_gamma_corrected;
+	color = vec4(diff_compo, 1.0);
 }
