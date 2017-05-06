@@ -41,7 +41,7 @@ void main() {
 
 	vec3 reflection = reflect(-light_pos, vertex_normal);
 
-	float theta = clamp(dot(vertex_normal, light_pos), 0.0, mat_shininess);
+	float theta = clamp(dot(vertex_normal, light_pos), 0.0, 1.0);
 	float cos_alpha = clamp(dot(vertex_normal, halfway_dir), 0, 1);
 
     // diffuse component     
