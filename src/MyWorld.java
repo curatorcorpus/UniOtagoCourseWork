@@ -96,7 +96,7 @@ public class MyWorld extends World {
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
         
-        fitness = creature.getEnergy() * ((double)numTurns - (double)creature.timeOfDeath());// / (double) numTurns;
+        fitness = creature.getEnergy() * ((double)numTurns - (double)creature.timeOfDeath());
         
         return fitness;
     }
@@ -121,10 +121,10 @@ public class MyWorld extends World {
                 currentFittestCreature = currCreature;
                 maxFitness = currFitness;
             }
-            /*
+            
             if(!currCreature.isDead()) {
                 survivors.add(currCreature);
-            }*/
+            }
             
             totalFitness += currFitness;
         }
@@ -135,6 +135,10 @@ public class MyWorld extends World {
         showStatus(oldPopulation, numCreatures);
 
         int newGen = 0;
+        /*for(MyCreature s : survivors) {
+            newGeneration[newGen++] = s;
+        }*/
+        
         while(newGen < numCreatures) {
            
             // select parents
@@ -223,10 +227,9 @@ public class MyWorld extends World {
         Random rand = new Random();
  
         for(int i = 0; i < genes.length; i++) {
-            int mutate = rand.nextInt(200000);
+            int mutate = rand.nextInt(100000);
             
             if(mutate < genes.length) {
-            System.out.println("mutated");
                 genes[mutate] = rand.nextFloat();
             }
         }
@@ -356,7 +359,7 @@ public class MyWorld extends World {
             // set domain and range.
             NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
             range.setRange(0, numTurns * 200);
-            range.setTickUnit(new NumberTickUnit(2500.0));
+            range.setTickUnit(new NumberTickUnit(2000.0));
             
             // enable AA.
             jfreechart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, 

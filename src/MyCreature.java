@@ -129,10 +129,10 @@ public class MyCreature extends Creature {
         }
         
         // use softmax to determine outputs for output layer.
-        output = softmaxActivation(output);
-        /*for (int i = 0; i < output.length; i++) {
+        //output = softmaxActivation(output);
+        for (int i = 0; i < output.length; i++) {
             output[i] = sigmoidActivation(output[i]);
-        }*/
+        }
         // the resulting output is interpreted as the probability of performing each action --- return this!
         return output;
     }
