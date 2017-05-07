@@ -74,17 +74,20 @@ public class MyCreature extends Creature {
         
         float maxActivation = output[0];
         
+        // find max
         for (int i = 1; i < output.length; i++) {
             if (output[i] > maxActivation) {
                 maxActivation = output[i];
             }
         }
 
+        // sum all activation
         float sumActivation = 0;
         for (int i = 0; i < output.length; i++) {
             sumActivation += (output[i] = (float) Math.exp(output[i] - maxActivation));
         }
 
+        // determine activation probability distribution
         for (int i = 0; i < output.length; i++) {
             output[i] /= sumActivation;
         }
@@ -99,11 +102,7 @@ public class MyCreature extends Creature {
         
         int weightIdx = 0; // pointer into weight array for the next edge weight
 
-        // first, weight the hidLayerOuput layer's context from the previous iteration
-        // then, add the bias term and pass the (weighted) percepts layer forward 
-        // into the hidden layer output.
-        
-        // first weigh previous output of hidden layer with the weights of bias 
+        // Weighs previous output of hidden layer with the weights of bias 
         // and hidden layer weight. 
         for (int i = 0; i < hiddenLayOuts.length; i++) {
             hiddenLayOuts[i] *= chromosome[weightIdx++];      // context from previous iteration
@@ -114,7 +113,7 @@ public class MyCreature extends Creature {
             }
         }
 
-        // activate the hidden layer using sigmoid activation function
+        // hidden layer activation
         for (int i = 0; i < hiddenLayOuts.length; i++) {
             hiddenLayOuts[i] = tanActivation(hiddenLayOuts[i]);
         }
@@ -129,10 +128,10 @@ public class MyCreature extends Creature {
         }
         
         // use softmax to determine outputs for output layer.
-        //output = softmaxActivation(output);
-        for (int i = 0; i < output.length; i++) {
-            output[i] = sigmoidActivation(output[i]);
-        }
+        output = softmaxActivation(output);
+        /*for (int i = 0; i < output.length; i++) {
+            output[i] = tanActivation(output[i]);
+        }*/
         // the resulting output is interpreted as the probability of performing each action --- return this!
         return output;
     }

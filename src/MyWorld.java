@@ -241,24 +241,23 @@ public class MyWorld extends World {
             }
         }
         
-        offspring1 = mutation(offspring1);
-        offspring2 = mutation(offspring2);
+        offspring1 = gaussMutation(offspring1, 0.01f);
+        offspring2 = gaussMutation(offspring2, 0.01f);
+        
+        /*
+        offspring1 = randomMutation(offspring1, 100000);
+        offspring2 = randomMutation(offspring2, 100000);
+        */
         
         return new Offspring(offspring1, offspring2);
     }
     
-    private float[] gaussianMutation(float[] genes) {
-        Random rand = new Random();
-        
-        return genes;
-    }
-    
-    private float[] mutation(float[] genes) {
+    private float[] randomMutation(float[] genes, int alpha) {
         
         Random rand = new Random();
  
         for(int i = 0; i < genes.length; i++) {
-            int mutate = rand.nextInt(100000);
+            int mutate = rand.nextInt(alpha);
             
             if(mutate < genes.length) {
                 genes[mutate] = rand.nextFloat();
@@ -266,8 +265,64 @@ public class MyWorld extends World {
         }
             
         return genes;
+    }
+
+    private float[] gaussMutation(float[] genes, float alpha) {
+        Random rand = new Random();
+       
+        float min = genes[0];
+        float max = genes[0];
+        
+        // obtain min and max gene values of current genes
+        for(int i = 1; i < genes.length; i++) {
+            min = Math.min(min, genes[i]);
+            max = Math.max(max, genes[i]);
+        }
+        
+        float stdv = (max - min) / 6;
+        stdv = (float) Math.max(0, stdv * Math.exp(gaussianMutation(0, 1)));
+        
+        int divider = (int) (genes.length / alpha);
+       
+        for(int i = 0; i < genes.length; i++) {
+            double mutate = rand.nextInt(divider);
+            
+            if(mutate < genes.length) {
+                genes[i] = gaussianMutation(genes[i], stdv);
+                genes[i] = clamp(genes[i], min, max);
+            }
+        }
+        
+        return genes;
     }    
-   
+
+    private float gaussianMutation(float mean, float stdv) {
+        Random rand = new Random();
+        
+        float x1 = rand.nextFloat();
+        float x2 = rand.nextFloat();
+        
+        if(x1 == 0) x1 = 1;
+        if(x2 == 0) x2 = 1;
+        
+        float y = (float) (Math.sqrt(-2.0f * Math.log(x1)) * Math.cos(2.0f * Math.PI * x2));
+        
+        return y * stdv + mean;
+    }
+    
+    private float clamp(float val, float min, float max) {
+        
+        if(val >= max) {
+            return max;
+        }
+        
+        if(val <= min) {
+            return min;
+        }
+        
+        return val;
+    }
+    
     /**
      * Prints out population status of generation.
      */
