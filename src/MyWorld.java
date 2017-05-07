@@ -143,11 +143,17 @@ public class MyWorld extends World {
            
             // select parents
             ParentCouple parents = tournamentSelection(oldPopulation);
-            
+           /* 
             // crossover
+            float[] offspring = blendCrossOver(parents.getParent1().getChromosome(),
+                                               parents.getParent2().getChromosome(),
+                                               0.5f);
+            
+            newGeneration[newGen++] = new MyCreature(offspring);
+            */
             Offspring offspring = uniformCrossOver(parents.getParent1().getChromosome(),
                                                    parents.getParent2().getChromosome(),
-                                                   0.5f);
+                                                   0.7f);
             
             newGeneration[newGen++] = new MyCreature(offspring.getOffspring1());
             
@@ -188,6 +194,25 @@ public class MyWorld extends World {
         return new ParentCouple(parent1, parent2);
     }
     
+    private float[] blendCrossOver(float[] p1, float[] p2, float alpha) {
+        Random rand = new Random();
+        
+        float[] offspring = new float[p1.length];
+        
+        for(int i = 0; i < p1.length; i++) {
+            float min = Math.min(p1[i], p2[i]);
+            float max = Math.max(p1[i], p2[i]);
+            float diff = max - min;
+            
+            min -= diff * alpha;
+            max += diff * alpha;
+            
+            offspring[i] = min + rand.nextFloat() * 2 * diff;
+        }
+        
+        return offspring;
+    }
+    
     /**
      * 
      * 
@@ -195,7 +220,7 @@ public class MyWorld extends World {
      * @param female
      * @return 
      */
-    public Offspring uniformCrossOver(float[] p1, float[] p2, float alpha) {
+    private Offspring uniformCrossOver(float[] p1, float[] p2, float alpha) {
         Random rand = new Random();
         
         float[] offspring1 = new float[p1.length];
@@ -216,13 +241,19 @@ public class MyWorld extends World {
             }
         }
         
-        offspring1 = mutateWeights(offspring1);
-        offspring2 = mutateWeights(offspring2);
+        offspring1 = mutation(offspring1);
+        offspring2 = mutation(offspring2);
         
         return new Offspring(offspring1, offspring2);
     }
     
-    private float[] mutateWeights(float[] genes) {
+    private float[] gaussianMutation(float[] genes) {
+        Random rand = new Random();
+        
+        return genes;
+    }
+    
+    private float[] mutation(float[] genes) {
         
         Random rand = new Random();
  
