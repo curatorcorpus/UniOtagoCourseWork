@@ -39,7 +39,7 @@ import org.jfree.util.ShapeUtilities;
 */
 public class MyWorld extends World {
 
-    private class ParentCouple {
+    public class ParentCouple {
         private MyCreature parent1, parent2;
         
         public ParentCouple(MyCreature parent1, MyCreature parent2) {
@@ -56,24 +56,6 @@ public class MyWorld extends World {
         }
     }
     
-    private class Offspring {
-        
-        private float[] off1, off2;
-        
-        public Offspring(float[] off1, float[] off2) {
-            this.off1 = off1;
-            this.off2 = off2;
-        }
-        
-        public float[] getOffspring1() {
-            return this.off1;
-        }
-        
-        public float[] getOffspring2() {
-            return this.off2;
-        }
-    }
-    
     /**
      * The number of turns in each simulation.
      */
@@ -82,7 +64,7 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 2000;
+    private final int numGenerations = 150;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
@@ -121,10 +103,10 @@ public class MyWorld extends World {
                 currentFittestCreature = currCreature;
                 maxFitness = currFitness;
             }
-            /*
+            
             if(!currCreature.isDead()) {
                 survivors.add(currCreature);
-            }*/
+            }
             
             totalFitness += currFitness;
         }
@@ -141,15 +123,10 @@ public class MyWorld extends World {
             ParentCouple parents = tournamentSelection(oldPopulation);
             
             // crossover
-            Offspring offspring = uniformCrossOver(parents.getParent1().getChromosome(),
-                                                   parents.getParent2().getChromosome(),
-                                                   0.5f);
+            Chromosome newChromo = crossOver(parents.getParent1().getChromosome(),
+                                             parents.getParent2().getChromosome());
             
-            newGeneration[newGen++] = new MyCreature(offspring.getOffspring1());
-            
-            if(newGen < numCreatures) {
-                newGeneration[newGen++] = new MyCreature(offspring.getOffspring2());
-            }
+            newGeneration[newGen++] = new MyCreature(newChromo, numTurns);
         }
         
         previousAvgFit = totalFitness/numCreatures;
@@ -191,49 +168,132 @@ public class MyWorld extends World {
      * @param female
      * @return 
      */
-    public Offspring uniformCrossOver(float[] p1, float[] p2, float alpha) {
-        Random rand = new Random();
+    private Chromosome crossOver(Chromosome firstBest, Chromosome scndBest) {
+
+        float[] zone1ActSensP1 = firstBest.getZone1ActSens(),
+                zone1ActSensP2 = scndBest.getZone1ActSens();             
+                
+        int[] fffSensitivityZone1P1 = firstBest.getFFFSensGenesZone1(), 
+              fffSensitivityZone1P2 = scndBest.getFFFSensGenesZone1();    
         
-        float[] offspring1 = new float[p1.length];
-        float[] offspring2 = new float[p2.length];
+        Chromosome newGenes = new Chromosome();
         
-        for(int i = 0; i < p1.length; i++) {
-            float probOfSwapping = rand.nextFloat();
-            
-            if(probOfSwapping <= alpha) {
-                
-                offspring1[i] = p2[i];
-                offspring2[i] = p1[i];
-                
-            } else {
-                
-                offspring1[i] = p1[i];
-                offspring2[i] = p2[i];                
+        newGenes.setZone1ActSens(mutateWeights(
+                                        onePointCrossOver(zone1ActSensP1,
+                                                          zone1ActSensP2)));
+
+        newGenes.setFFFSensGenesZone1(fffMutation(
+                                    orderOneCrossOverFFF(
+                                                fffSensitivityZone1P1,
+                                                fffSensitivityZone1P2), 5000));
+        
+        return newGenes;
+    }
+   
+    public int[] orderOneCrossOverFFF(int[] dirGene1, int[] dirGene2) {
+        List<Integer> intLocks = new ArrayList<>();
+        List<Integer> intLockIndices = new ArrayList<>();
+        
+        int left  = 0;
+        int right = 0;
+        
+        int[] newDirGenes = new int[dirGene1.length];
+        
+        do {
+           left  = rand.nextInt(dirGene1.length);
+           right = rand.nextInt(dirGene1.length);
+        } while((right - left) <= 0); // make sure number is not range of randomly choosen numbers are not less than 1.
+        
+        int i = left;
+        while(i < right) {
+            newDirGenes[i] = dirGene1[i];
+            intLocks.add(dirGene1[i]);
+            intLockIndices.add(i++);
+        }
+        
+        int[] remainders = new int[dirGene1.length - intLocks.size()];
+        
+        // process indicies.
+        int remainderIdx = 0;
+        for(int remains = 0; remains < dirGene1.length; remains++) {
+            if(!intLockIndices.contains(remains)) {
+                remainders[remainderIdx++] = remains;
             }
         }
         
-        offspring1 = mutateWeights(offspring1);
-        offspring2 = mutateWeights(offspring2);
+        i = 0;
+        int z = 0;
+        while(i < dirGene1.length) {
+            if(!intLocks.contains(dirGene2[i])) {
+                newDirGenes[remainders[z++]] = dirGene2[i];
+            } 
+            
+            i++;
+        }
         
-        return new Offspring(offspring1, offspring2);
+        return newDirGenes;
     }
     
-    private float[] mutateWeights(float[] genes) {
+    public float[] onePointCrossOver(float[] genes1, float[] genes2) {
+        Random rand = new Random();
+        
+        float[] newSubTraits = new float[genes1.length];
+        
+        int left = rand.nextInt(genes1.length);
+        left = genes1.length / 2;
+        
+        int i = 0;
+        while(i < genes1.length) {
+            if(i < left) {
+                newSubTraits[i] = genes1[i];
+            } else {
+                newSubTraits[i] = genes2[i]; 
+            }            
+            
+            i++;
+        }
+        
+        mutateWeights(newSubTraits);
+        
+        return newSubTraits;
+    }
+    
+    private float[] mutateWeights(float[] subTraits) {
         
         Random rand = new Random();
  
-        for(int i = 0; i < genes.length; i++) {
-            int mutate = rand.nextInt(200000);
-            
-            if(mutate < genes.length) {
-            System.out.println("mutated");
-                genes[mutate] = rand.nextFloat();
+        //if(mutate < subTraits.length) {
+            for(int i = 0; i < subTraits.length; i++) {
+                int mutate = rand.nextInt(50000);
+                
+                if(mutate < subTraits.length) {
+                    System.out.println("mutated");
+                    subTraits[mutate] = rand.nextFloat();
+                }
             }
-        }
-            
-        return genes;
+        //}
+
+        return subTraits;
     }    
-   
+    
+    public int[] fffMutation(int[] fffGenes, int alpha) {
+        Random rand = new Random();
+        
+        int mutationRate = rand.nextInt(alpha);
+        
+        if(mutationRate < fffGenes.length) {
+            int idx1 = rand.nextInt(fffGenes.length);
+            int idx2 = rand.nextInt(fffGenes.length);
+            
+            int copy = fffGenes[idx1];
+            
+            fffGenes[idx1] = fffGenes[idx2];
+            fffGenes[idx2] = copy;
+        }
+        
+        return fffGenes;
+    }
+    
     /**
      * Prints out population status of generation.
      */
@@ -379,8 +439,9 @@ public class MyWorld extends World {
             }
             System.out.println();
             System.out.println("Best Solution:");
+            System.out.println(currentFittestCreature.getEnergy());
             System.out.println("Best Fitness: " + currentFittestCreature.getFitness());
-            System.out.println("Best Chromosome State: " + currentFittestCreature);
+            System.out.println(currentFittestCreature.getChromosome());
         }
         
         return new_population;
