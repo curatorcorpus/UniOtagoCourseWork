@@ -52,7 +52,7 @@ public class MyCreature extends Creature {
         this.hiddenLayOuts = new float[NUM_HID_PERCEPTS]; 
 
         for(int i = 0; i < chromosome.length; i++) {
-            chromosome[i] = rand.nextFloat();
+            chromosome[i] = -0.7f + 1.4f * rand.nextFloat();
         }        
         
         for(int i = 0; i < NUM_HID_PERCEPTS; i++) {
@@ -65,7 +65,7 @@ public class MyCreature extends Creature {
         return (float)((float) 1 / (1 + Math.exp(-hLayerOut)));
     }
     
-    private float tanActivation(float hLayerOut) {
+    private float tanhActivation(float hLayerOut) {
         
         return (float) Math.tanh(hLayerOut);
     }
@@ -115,7 +115,7 @@ public class MyCreature extends Creature {
 
         // hidden layer activation
         for (int i = 0; i < hiddenLayOuts.length; i++) {
-            hiddenLayOuts[i] = tanActivation(hiddenLayOuts[i]);
+            hiddenLayOuts[i] = tanhActivation(hiddenLayOuts[i]);
         }
 
         // now, pass hidden layer outputs to output layer and add the bias term

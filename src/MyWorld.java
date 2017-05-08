@@ -82,7 +82,7 @@ public class MyWorld extends World {
     /**
      * The number of generations the genetic algorithm will iterate through.
      */
-    private final int numGenerations = 2000;
+    private final int numGenerations = 150;
     
     private double[] averageFitnessPerGen = new double[numGenerations];
     
@@ -96,8 +96,9 @@ public class MyWorld extends World {
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
         
-        fitness = creature.getEnergy() * ((double)numTurns - (double)creature.timeOfDeath());
-        
+        //fitness = ;//creature.getEnergy() * (double)creature.timeOfDeath() / (double) numTurns;
+        fitness = creature.isDead() ? creature.timeOfDeath() : numTurns;
+        fitness = creature.getEnergy() * fitness / (double)numTurns;
         return fitness;
     }
     
@@ -135,31 +136,31 @@ public class MyWorld extends World {
         showStatus(oldPopulation, numCreatures);
 
         int newGen = 0;
-        /*for(MyCreature s : survivors) {
+        for(MyCreature s : survivors) {
             newGeneration[newGen++] = s;
-        }*/
+        }
         
         while(newGen < numCreatures) {
            
             // select parents
             ParentCouple parents = tournamentSelection(oldPopulation);
-           /* 
+            
             // crossover
             float[] offspring = blendCrossOver(parents.getParent1().getChromosome(),
                                                parents.getParent2().getChromosome(),
                                                0.5f);
             
             newGeneration[newGen++] = new MyCreature(offspring);
-            */
-            Offspring offspring = uniformCrossOver(parents.getParent1().getChromosome(),
+            
+            /*Offspring offspring = uniformCrossOver(parents.getParent1().getChromosome(),
                                                    parents.getParent2().getChromosome(),
-                                                   0.7f);
+                                                   0.4f);
             
             newGeneration[newGen++] = new MyCreature(offspring.getOffspring1());
             
             if(newGen < numCreatures) {
                 newGeneration[newGen++] = new MyCreature(offspring.getOffspring2());
-            }
+            }*/
         }
         
         previousAvgFit = totalFitness/numCreatures;
@@ -169,29 +170,23 @@ public class MyWorld extends World {
     
     private ParentCouple tournamentSelection(MyCreature[] oldPopulation) {
         Random rand = new Random();
-        
-        int left  = 0;
-        int right = 0;
-        
-        do {
-           left  = rand.nextInt(oldPopulation.length);
-           right = rand.nextInt(oldPopulation.length);
-        } while((right - left) < 2);
 
-        List<MyCreature> oldPopSubset = new ArrayList<>();
+        int K = 10; // tournament size
+        int p1, p2, t;
         
-        while(left < right) {
-            oldPopSubset.add(oldPopulation[left++]);
+        p1 = rand.nextInt(oldPopulation.length);
+        for (int i = 0; i < K; ++i) {
+            t = rand.nextInt(oldPopulation.length);
+            if (oldPopulation[t].getFitness() > oldPopulation[p1].getFitness()) p1 = t;
         }
         
-        // sort array by energy
-        Collections.sort(oldPopSubset, (a, b) -> ((Double) a.getFitness()).
-                                                 compareTo(((Double) b.getFitness())));
+        p2 = rand.nextInt(oldPopulation.length);
+        for (int i = 0; i < K; ++i) {
+            t = rand.nextInt(oldPopulation.length);
+            if (oldPopulation[t].getFitness() > oldPopulation[p2].getFitness()) p2 = t;
+        }
         
-        MyCreature parent1 = oldPopSubset.get(oldPopSubset.size() - 1);
-        MyCreature parent2 = oldPopSubset.get(oldPopSubset.size() - 2);
-              
-        return new ParentCouple(parent1, parent2);
+        return new ParentCouple(oldPopulation[p1], oldPopulation[p2]);
     }
     
     private float[] blendCrossOver(float[] p1, float[] p2, float alpha) {
@@ -269,42 +264,25 @@ public class MyWorld extends World {
 
     private float[] gaussMutation(float[] genes, float alpha) {
         Random rand = new Random();
-       
-        float min = genes[0];
-        float max = genes[0];
-        
-        // obtain min and max gene values of current genes
-        for(int i = 1; i < genes.length; i++) {
-            min = Math.min(min, genes[i]);
-            max = Math.max(max, genes[i]);
+        for (int i = 0; i < genes.length; ++i) {
+            if (rand.nextFloat() < alpha) genes[i] = gaussianMutation(genes[i], 0.05f);
         }
-        
-        float stdv = (max - min) / 6;
-        stdv = (float) Math.max(0, stdv * Math.exp(gaussianMutation(0, 1)));
-        
-        int divider = (int) (genes.length / alpha);
-       
-        for(int i = 0; i < genes.length; i++) {
-            double mutate = rand.nextInt(divider);
-            
-            if(mutate < genes.length) {
-                genes[i] = gaussianMutation(genes[i], stdv);
-                genes[i] = clamp(genes[i], min, max);
-            }
-        }
-        
+         
         return genes;
     }    
 
     private float gaussianMutation(float mean, float stdv) {
         Random rand = new Random();
         
-        float x1 = rand.nextFloat();
-        float x2 = rand.nextFloat();
+        float x1;
+        float x2;
+       
+        do {
+            x1 = rand.nextFloat();
+            x2 = rand.nextFloat();    
+        } while(x1 <= 1e-11);
         
-        if(x1 == 0) x1 = 1;
-        if(x2 == 0) x2 = 1;
-        
+        // box muller transformation
         float y = (float) (Math.sqrt(-2.0f * Math.log(x1)) * Math.cos(2.0f * Math.PI * x2));
         
         return y * stdv + mean;
@@ -444,8 +422,8 @@ public class MyWorld extends World {
        
             // set domain and range.
             NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-            range.setRange(0, numTurns * 200);
-            range.setTickUnit(new NumberTickUnit(2000.0));
+            range.setRange(0, numTurns);
+            range.setTickUnit(new NumberTickUnit(1.0));
             
             // enable AA.
             jfreechart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, 
@@ -484,7 +462,7 @@ public class MyWorld extends World {
 
        boolean repeatableMode = false;
        
-       int gridSize = 50;
+       int gridSize = 150;
        int perceptFormat = 2;
        int windowWidth =  2456;
        int windowHeight = 1440;
