@@ -49,7 +49,7 @@ bool initWindow(std::string windowName){
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
     // Open a window and create its OpenGL context
-    window = glfwCreateWindow( 2540, 1880, windowName.c_str(), NULL, NULL);
+    window = glfwCreateWindow( 1280, 1080, windowName.c_str(), NULL, NULL);
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible.\n" );
         getchar();
@@ -108,8 +108,9 @@ int main( int argc, char *argv[] )
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
     //glClearColor(1.0f, 1.0f, 1.0f, 0.0f); white background
     glEnable(GL_DEPTH_TEST);              // Enable depth test
+    glEnable(GL_BLEND);
     glDepthFunc(GL_LESS);                 // Accept fragment if it closer to the camera than the former ones
-    glEnable(GL_MULTISAMPLE);
+    //glEnable(GL_MULTISAMPLE);
 
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
