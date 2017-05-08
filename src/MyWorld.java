@@ -42,11 +42,11 @@ import org.jfree.util.ShapeUtilities;
 public class MyWorld extends World {
     
     private static final Random RAND       = RandomTool.random;    
-    private static final float BLEND_ALPHA = 0.5f;  // blend crossover alpha value
+    private static final float ALPHA_BLEND = 0.5f;  // blend crossover alpha value
     private static final float STEP_SIZE   = 0.01f; // standard deviation
     private static final int TOURN_SIZE    = 10;    // competitors
     private static final int NUM_TURNS     = 300;   // turn size
-    private static final int NUM_GENS      = 500;   // number of generations
+    private static final int NUM_GENS      = 440;   // number of generations
     
     private MyCreature currentFittestCreature;
     private double[]  averageFitnessPerGen = new double[NUM_GENS];
@@ -139,7 +139,7 @@ public class MyWorld extends World {
             // crossover
             float[] offspring = blendCrossOver(parents.getParent1().getChromosome(),
                                                parents.getParent2().getChromosome(),
-                                               BLEND_ALPHA);
+                                               ALPHA_BLEND);
             
             // mutation
             for(int i = 0; i < offspring.length; i++) {
