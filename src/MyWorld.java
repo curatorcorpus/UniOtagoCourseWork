@@ -1,16 +1,18 @@
 import cosc343.assig2.World;
 import cosc343.assig2.Creature;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+
 import java.io.File;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+
+import util.RandomTool;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
@@ -38,7 +40,21 @@ import org.jfree.util.ShapeUtilities;
 * @since   2017-04-05 
 */
 public class MyWorld extends World {
+    
+    private static final Random RAND       = RandomTool.random;    
+    private static final float BLEND_ALPHA = 0.5f;  // blend crossover alpha value
+    private static final float STEP_SIZE   = 0.03f; // standard deviation
+    private static final int TOURN_SIZE    = 10;    // competitors
+    private static final int NUM_TURNS     = 300;   // turn size
+    private static final int NUM_GENS      = 500;   // number of generations
+    
+    private MyCreature currentFittestCreature;
+    private double[]  averageFitnessPerGen = new double[NUM_GENS];
+    
+    private double previousAvgFit = 0.0;
 
+    private int avgFitIdx = 0;
+    
     private class ParentCouple {
         private MyCreature parent1, parent2;
         
@@ -54,57 +70,23 @@ public class MyWorld extends World {
         public MyCreature getParent2() {
             return this.parent2;
         }
-    }
-    
-    private class Offspring {
-        
-        private float[] off1, off2;
-        
-        public Offspring(float[] off1, float[] off2) {
-            this.off1 = off1;
-            this.off2 = off2;
-        }
-        
-        public float[] getOffspring1() {
-            return this.off1;
-        }
-        
-        public float[] getOffspring2() {
-            return this.off2;
-        }
-    }
-    
-    /**
-     * The number of turns in each simulation.
-     */
-    private final int numTurns = 300;
-    
-    /**
-     * The number of generations the genetic algorithm will iterate through.
-     */
-    private final int numGenerations = 150;
-    
-    private double[] averageFitnessPerGen = new double[numGenerations];
-    
-    private double previousFitnessAvg = 0.0;
-    
-    private int avgFitIdx = 0;
-    
-    private MyCreature currentFittestCreature;
-    double previousAvgFit = 0.0;
+    }    
     
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
         
-        //fitness = ;//creature.getEnergy() * (double)creature.timeOfDeath() / (double) numTurns;
-        fitness = creature.isDead() ? creature.timeOfDeath() : numTurns;
-        fitness = creature.getEnergy() * fitness / (double)numTurns;
+        // take account of death time
+        fitness = creature.isDead() ? creature.timeOfDeath() : NUM_TURNS;
+        
+        // take account of current energy and death time
+        fitness = creature.getEnergy() * fitness / (double)NUM_TURNS;
+        
         return fitness;
     }
     
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
 
-        List<MyCreature> survivors = new ArrayList();
+        List<MyCreature> elitists = new ArrayList();
         
         MyCreature[] oldPopulation = (MyCreature[]) oldPopulationCt;
         MyCreature[] newGeneration = new MyCreature[numCreatures];
@@ -116,30 +98,39 @@ public class MyWorld extends World {
         for(int i = 0; i < numCreatures; i++) {
             
             MyCreature currCreature = oldPopulation[i];
+            
             double currFitness = determineFitness(currCreature);
             currCreature.setFitness(currFitness);
+            
+            // find fittest
             if(maxFitness < currFitness) {
                 currentFittestCreature = currCreature;
                 maxFitness = currFitness;
             }
             
-            if(!currCreature.isDead()) {
-                survivors.add(currCreature);
+            // elitists
+            if(currCreature.getFitness() > previousAvgFit) {
+                elitists.add(currCreature);
             }
             
+            // accumulate fittness total
             totalFitness += currFitness;
         }
 
+        // average fitness
         averageFitnessPerGen[avgFitIdx] = totalFitness/numCreatures;
         
         // display status.
         showStatus(oldPopulation, numCreatures);
 
         int newGen = 0;
-        for(MyCreature s : survivors) {
+        
+        // elitism
+        for(MyCreature s : elitists) {
             newGeneration[newGen++] = s;
         }
         
+        // generated new generation
         while(newGen < numCreatures) {
            
             // select parents
@@ -148,19 +139,15 @@ public class MyWorld extends World {
             // crossover
             float[] offspring = blendCrossOver(parents.getParent1().getChromosome(),
                                                parents.getParent2().getChromosome(),
-                                               0.5f);
+                                               BLEND_ALPHA);
             
+            // mutation
+            for(int i = 0; i < offspring.length; i++) {
+                offspring[i] = gaussianMutation(offspring[i], STEP_SIZE); 
+            }
+            
+            // new offspring
             newGeneration[newGen++] = new MyCreature(offspring);
-            
-            /*Offspring offspring = uniformCrossOver(parents.getParent1().getChromosome(),
-                                                   parents.getParent2().getChromosome(),
-                                                   0.4f);
-            
-            newGeneration[newGen++] = new MyCreature(offspring.getOffspring1());
-            
-            if(newGen < numCreatures) {
-                newGeneration[newGen++] = new MyCreature(offspring.getOffspring2());
-            }*/
         }
         
         previousAvgFit = totalFitness/numCreatures;
@@ -169,29 +156,34 @@ public class MyWorld extends World {
     }
     
     private ParentCouple tournamentSelection(MyCreature[] oldPopulation) {
-        Random rand = new Random();
 
-        int K = 10; // tournament size
-        int p1, p2, t;
+        int p1, p2, competitor;
         
-        p1 = rand.nextInt(oldPopulation.length);
-        for (int i = 0; i < K; ++i) {
-            t = rand.nextInt(oldPopulation.length);
-            if (oldPopulation[t].getFitness() > oldPopulation[p1].getFitness()) p1 = t;
+        // compete for first parent
+        p1 = RAND.nextInt(oldPopulation.length);
+        for (int i = 0; i < TOURN_SIZE; ++i) {
+            competitor = RAND.nextInt(oldPopulation.length);
+            
+            if (oldPopulation[competitor].getFitness() > oldPopulation[p1].getFitness()) {
+                p1 = competitor;
+            }
         }
         
-        p2 = rand.nextInt(oldPopulation.length);
-        for (int i = 0; i < K; ++i) {
-            t = rand.nextInt(oldPopulation.length);
-            if (oldPopulation[t].getFitness() > oldPopulation[p2].getFitness()) p2 = t;
+        // compete for second parent
+        p2 = RAND.nextInt(oldPopulation.length);
+        for (int i = 0; i < TOURN_SIZE; ++i) {
+            competitor = RAND.nextInt(oldPopulation.length);
+            
+            if (oldPopulation[competitor].getFitness() > oldPopulation[p2].getFitness()) {
+                p2 = competitor;
+            }
         }
         
         return new ParentCouple(oldPopulation[p1], oldPopulation[p2]);
     }
     
     private float[] blendCrossOver(float[] p1, float[] p2, float alpha) {
-        Random rand = new Random();
-        
+
         float[] offspring = new float[p1.length];
         
         for(int i = 0; i < p1.length; i++) {
@@ -202,103 +194,26 @@ public class MyWorld extends World {
             min -= diff * alpha;
             max += diff * alpha;
             
-            offspring[i] = min + rand.nextFloat() * 2 * diff;
+            offspring[i] = min + RAND.nextFloat() * 2 * diff;
         }
         
         return offspring;
     }
-    
-    /**
-     * 
-     * 
-     * @param male
-     * @param female
-     * @return 
-     */
-    private Offspring uniformCrossOver(float[] p1, float[] p2, float alpha) {
-        Random rand = new Random();
-        
-        float[] offspring1 = new float[p1.length];
-        float[] offspring2 = new float[p2.length];
-        
-        for(int i = 0; i < p1.length; i++) {
-            float probOfSwapping = rand.nextFloat();
-            
-            if(probOfSwapping <= alpha) {
-                
-                offspring1[i] = p2[i];
-                offspring2[i] = p1[i];
-                
-            } else {
-                
-                offspring1[i] = p1[i];
-                offspring2[i] = p2[i];                
-            }
-        }
-        
-        offspring1 = gaussMutation(offspring1, 0.01f);
-        offspring2 = gaussMutation(offspring2, 0.01f);
-        
-        /*
-        offspring1 = randomMutation(offspring1, 100000);
-        offspring2 = randomMutation(offspring2, 100000);
-        */
-        
-        return new Offspring(offspring1, offspring2);
-    }
-    
-    private float[] randomMutation(float[] genes, int alpha) {
-        
-        Random rand = new Random();
- 
-        for(int i = 0; i < genes.length; i++) {
-            int mutate = rand.nextInt(alpha);
-            
-            if(mutate < genes.length) {
-                genes[mutate] = rand.nextFloat();
-            }
-        }
-            
-        return genes;
-    }
-
-    private float[] gaussMutation(float[] genes, float alpha) {
-        Random rand = new Random();
-        for (int i = 0; i < genes.length; ++i) {
-            if (rand.nextFloat() < alpha) genes[i] = gaussianMutation(genes[i], 0.05f);
-        }
-         
-        return genes;
-    }    
 
     private float gaussianMutation(float mean, float stdv) {
-        Random rand = new Random();
-        
+
         float x1;
         float x2;
        
         do {
-            x1 = rand.nextFloat();
-            x2 = rand.nextFloat();    
+            x1 = RAND.nextFloat();
+            x2 = RAND.nextFloat();    
         } while(x1 <= 1e-11);
         
         // box muller transformation
         float y = (float) (Math.sqrt(-2.0f * Math.log(x1)) * Math.cos(2.0f * Math.PI * x2));
         
         return y * stdv + mean;
-    }
-    
-    private float clamp(float val, float min, float max) {
-        
-        if(val >= max) {
-            return max;
-        }
-        
-        if(val <= min) {
-            return min;
-        }
-        
-        return val;
     }
     
     /**
@@ -316,7 +231,7 @@ public class MyWorld extends World {
              avgLifeTime += (float) creature.timeOfDeath();
           } else {
              nSurvivors++;
-             avgLifeTime += (float) numTurns;
+             avgLifeTime += (float) NUM_TURNS;
           }
        }
 
@@ -345,8 +260,8 @@ public class MyWorld extends World {
         super(gridSize, windowWidth,  windowHeight, repeatableMode, perceptFormat);
 
         // setup simulation environment.
-        this.setNumTurns(numTurns);
-        this.setNumGenerations(numGenerations);
+        this.setNumTurns(NUM_TURNS);
+        this.setNumGenerations(NUM_GENS);
     }
  
     /**
@@ -361,13 +276,10 @@ public class MyWorld extends World {
         int numPercepts = this.expectedNumberofPercepts();
         int numActions = this.expectedNumberofActions();
 
-        // This is just an example code.  You may replace this code with
-        // your own that initialises an array of size numCreatures and creates
-        // a population of your creatures
         MyCreature[] population = new MyCreature[numCreatures];
       
         for(int i = 0; i < numCreatures; i++) {
-            population[i] = new MyCreature(numPercepts, numActions, numTurns);     
+            population[i] = new MyCreature(numPercepts, numActions, NUM_TURNS);     
         }
 
         return population;
@@ -387,13 +299,13 @@ public class MyWorld extends World {
         MyCreature[] old_population = (MyCreature[]) old_population_btc;
         MyCreature[] new_population = breed(old_population_btc, numCreatures); // Create a new array for the new population
         
-        if(avgFitIdx == numGenerations) {
+        if(avgFitIdx == NUM_GENS) {
            
             // aggregate fitness data into data set.
             XYSeriesCollection fitnessDataSet = new XYSeriesCollection();
             XYSeries dataSet = new XYSeries("Fitness");
         
-            for (int i = 0; i < numGenerations; i++) {
+            for (int i = 0; i < NUM_GENS; i++) {
                 dataSet.add(i, averageFitnessPerGen[i]);
             }
         
@@ -422,8 +334,8 @@ public class MyWorld extends World {
        
             // set domain and range.
             NumberAxis range = (NumberAxis) xyPlot.getRangeAxis();
-            range.setRange(0, numTurns);
-            range.setTickUnit(new NumberTickUnit(1.0));
+            range.setRange(0, 100);
+            range.setTickUnit(new NumberTickUnit(2.0));
             
             // enable AA.
             jfreechart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, 
@@ -462,7 +374,7 @@ public class MyWorld extends World {
 
        boolean repeatableMode = false;
        
-       int gridSize = 150;
+       int gridSize = 50;
        int perceptFormat = 2;
        int windowWidth =  2456;
        int windowHeight = 1440;

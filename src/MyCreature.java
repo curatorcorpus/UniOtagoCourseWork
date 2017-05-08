@@ -1,6 +1,9 @@
 import cosc343.assig2.Creature;
+
 import java.util.Arrays;
 import java.util.Random;
+
+import util.RandomTool;
 
 /**
 * The MyCreate extends the cosc343 assignment 2 Creature.  Here you implement
@@ -13,7 +16,9 @@ import java.util.Random;
 */
 public class MyCreature extends Creature {
 
-    private static final int NUM_HID_PERCEPTS = 5;
+    private static final Random RAND      = RandomTool.random;
+    private static final int HID_PERCEPTS = 5;
+    private static final int BIAS         = -1;
     
     private int noInHidWeights;
     private int noOutputWeights;
@@ -25,9 +30,9 @@ public class MyCreature extends Creature {
    
     public MyCreature(float[] chromosome) {
         this.chromosome = chromosome;
-        this.hiddenLayOuts = new float[NUM_HID_PERCEPTS];
+        this.hiddenLayOuts = new float[HID_PERCEPTS];
         
-        for(int i = 0; i < NUM_HID_PERCEPTS; i++) {
+        for(int i = 0; i < HID_PERCEPTS; i++) {
             hiddenLayOuts[i] = 0;
         }
     }
@@ -39,30 +44,23 @@ public class MyCreature extends Creature {
      *                      need to produce every turn.
      */
     public MyCreature(int numPercepts, int numActions, int numTurns) {
-       
-        Random rand = new Random();
         
         // plus 2 for bias weight and hidden layer weight.
-        this.noInHidWeights  = (numPercepts + 2) * NUM_HID_PERCEPTS;
+        this.noInHidWeights  = (numPercepts + 2) * HID_PERCEPTS;
         
         // plus 1 for bias weight
-        this.noOutputWeights = numActions * (NUM_HID_PERCEPTS + 1);
+        this.noOutputWeights = numActions * (HID_PERCEPTS + 1);
         
         this.chromosome = new float[noInHidWeights + noOutputWeights];
-        this.hiddenLayOuts = new float[NUM_HID_PERCEPTS]; 
+        this.hiddenLayOuts = new float[HID_PERCEPTS]; 
 
         for(int i = 0; i < chromosome.length; i++) {
-            chromosome[i] = -0.7f + 1.4f * rand.nextFloat();
+            chromosome[i] = -0.7f + 1.4f * RAND.nextFloat();
         }        
         
-        for(int i = 0; i < NUM_HID_PERCEPTS; i++) {
+        for(int i = 0; i < HID_PERCEPTS; i++) {
             hiddenLayOuts[i] = 0;
         }
-    }
-
-    private float sigmoidActivation(float hLayerOut) {
-        
-        return (float)((float) 1 / (1 + Math.exp(-hLayerOut)));
     }
     
     private float tanhActivation(float hLayerOut) {
@@ -106,7 +104,7 @@ public class MyCreature extends Creature {
         // and hidden layer weight. 
         for (int i = 0; i < hiddenLayOuts.length; i++) {
             hiddenLayOuts[i] *= chromosome[weightIdx++];      // context from previous iteration
-            hiddenLayOuts[i] += chromosome[weightIdx++] * -1; //bias
+            hiddenLayOuts[i] += chromosome[weightIdx++] * BIAS;
 
             for (int j = 0; j < percepts.length; j++) {
                 hiddenLayOuts[i] += chromosome[weightIdx++] * percepts[j];
@@ -120,7 +118,7 @@ public class MyCreature extends Creature {
 
         // now, pass hidden layer outputs to output layer and add the bias term
         for (int i = 0; i < output.length; i++) {
-            output[i] = chromosome[weightIdx++] * -1; // bias
+            output[i] = chromosome[weightIdx++] * BIAS;
 
             for (int j = 0; j < hiddenLayOuts.length; j++) { 
                 output[i] += chromosome[weightIdx++] * hiddenLayOuts[j];
@@ -129,9 +127,7 @@ public class MyCreature extends Creature {
         
         // use softmax to determine outputs for output layer.
         output = softmaxActivation(output);
-        /*for (int i = 0; i < output.length; i++) {
-            output[i] = tanActivation(output[i]);
-        }*/
+        
         // the resulting output is interpreted as the probability of performing each action --- return this!
         return output;
     }
