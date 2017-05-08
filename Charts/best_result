@@ -1,0 +1,3006 @@
+
+
+Generation 1:
+Simulation stats:
+  Fitness      : 1.3675167785234896
+    Survivors    : 0 out of 149
+      Avg life time: 35.744965 turns
+
+Generation 2:
+Simulation stats:
+  Fitness      : 1.7006263982102896
+    Survivors    : 0 out of 149
+      Avg life time: 33.201344 turns
+
+Generation 3:
+Simulation stats:
+  Fitness      : 1.8897091722595074
+    Survivors    : 0 out of 149
+      Avg life time: 31.691275 turns
+
+Generation 4:
+Simulation stats:
+  Fitness      : 1.6944966442953013
+    Survivors    : 0 out of 149
+      Avg life time: 32.44295 turns
+
+Generation 5:
+Simulation stats:
+  Fitness      : 1.996554809843401
+    Survivors    : 0 out of 149
+      Avg life time: 32.44295 turns
+
+Generation 6:
+Simulation stats:
+  Fitness      : 2.241387024608502
+    Survivors    : 0 out of 149
+      Avg life time: 32.395973 turns
+
+Generation 7:
+Simulation stats:
+  Fitness      : 2.091319910514542
+    Survivors    : 0 out of 149
+      Avg life time: 32.05369 turns
+
+Generation 8:
+Simulation stats:
+  Fitness      : 1.813736017897092
+    Survivors    : 0 out of 149
+      Avg life time: 34.986576 turns
+
+Generation 9:
+Simulation stats:
+  Fitness      : 2.312796420581655
+    Survivors    : 0 out of 149
+      Avg life time: 35.026844 turns
+
+Generation 10:
+Simulation stats:
+  Fitness      : 2.497315436241611
+    Survivors    : 0 out of 149
+      Avg life time: 35.18792 turns
+
+Generation 11:
+Simulation stats:
+  Fitness      : 3.1365548098433993
+    Survivors    : 0 out of 149
+      Avg life time: 32.684563 turns
+
+Generation 12:
+Simulation stats:
+  Fitness      : 4.783400447427293
+    Survivors    : 0 out of 149
+      Avg life time: 41.449665 turns
+
+Generation 13:
+Simulation stats:
+  Fitness      : 4.0315883668903805
+    Survivors    : 0 out of 149
+      Avg life time: 41.691277 turns
+
+Generation 14:
+Simulation stats:
+  Fitness      : 8.641476510067113
+    Survivors    : 1 out of 149
+      Avg life time: 41.395973 turns
+
+Generation 15:
+Simulation stats:
+  Fitness      : 5.362684563758391
+    Survivors    : 0 out of 149
+      Avg life time: 38.731544 turns
+
+Generation 16:
+Simulation stats:
+  Fitness      : 9.634809843400449
+    Survivors    : 1 out of 149
+      Avg life time: 48.422817 turns
+
+Generation 17:
+Simulation stats:
+  Fitness      : 11.830559284116333
+    Survivors    : 0 out of 149
+      Avg life time: 53.604027 turns
+
+Generation 18:
+Simulation stats:
+  Fitness      : 15.833512304250558
+    Survivors    : 0 out of 149
+      Avg life time: 61.067116 turns
+
+Generation 19:
+Simulation stats:
+  Fitness      : 14.358836689038025
+    Survivors    : 0 out of 149
+      Avg life time: 59.489933 turns
+
+Generation 20:
+Simulation stats:
+  Fitness      : 14.763579418344518
+    Survivors    : 3 out of 149
+      Avg life time: 62.033558 turns
+
+Generation 21:
+Simulation stats:
+  Fitness      : 16.198299776286355
+    Survivors    : 1 out of 149
+      Avg life time: 62.416107 turns
+
+Generation 22:
+Simulation stats:
+  Fitness      : 14.260492170022369
+    Survivors    : 4 out of 149
+      Avg life time: 63.013424 turns
+
+Generation 23:
+Simulation stats:
+  Fitness      : 13.008053691275169
+    Survivors    : 2 out of 149
+      Avg life time: 60.771812 turns
+
+Generation 24:
+Simulation stats:
+  Fitness      : 15.520492170022374
+    Survivors    : 2 out of 149
+      Avg life time: 66.744965 turns
+
+Generation 25:
+Simulation stats:
+  Fitness      : 14.192617449664432
+    Survivors    : 2 out of 149
+      Avg life time: 63.328857 turns
+
+Generation 26:
+Simulation stats:
+  Fitness      : 16.350693512304257
+    Survivors    : 0 out of 149
+      Avg life time: 75.04027 turns
+
+Generation 27:
+Simulation stats:
+  Fitness      : 18.407785234899322
+    Survivors    : 3 out of 149
+      Avg life time: 74.10738 turns
+
+Generation 28:
+Simulation stats:
+  Fitness      : 17.94550335570471
+    Survivors    : 3 out of 149
+      Avg life time: 66.342285 turns
+
+Generation 29:
+Simulation stats:
+  Fitness      : 12.460313199105142
+    Survivors    : 1 out of 149
+      Avg life time: 63.201344 turns
+
+Generation 30:
+Simulation stats:
+  Fitness      : 15.654407158836696
+    Survivors    : 4 out of 149
+      Avg life time: 74.167786 turns
+
+Generation 31:
+Simulation stats:
+  Fitness      : 12.474228187919465
+    Survivors    : 1 out of 149
+      Avg life time: 65.04698 turns
+
+Generation 32:
+Simulation stats:
+  Fitness      : 16.281610738255026
+    Survivors    : 2 out of 149
+      Avg life time: 67.10067 turns
+
+Generation 33:
+Simulation stats:
+  Fitness      : 16.681879194630877
+    Survivors    : 2 out of 149
+      Avg life time: 66.04027 turns
+
+Generation 34:
+Simulation stats:
+  Fitness      : 17.133422818791946
+    Survivors    : 3 out of 149
+      Avg life time: 66.59061 turns
+
+Generation 35:
+Simulation stats:
+  Fitness      : 14.12210290827741
+    Survivors    : 2 out of 149
+      Avg life time: 67.63758 turns
+
+Generation 36:
+Simulation stats:
+  Fitness      : 12.886487695749436
+    Survivors    : 0 out of 149
+      Avg life time: 61.14765 turns
+
+Generation 37:
+Simulation stats:
+  Fitness      : 13.849932885906039
+    Survivors    : 1 out of 149
+      Avg life time: 58.08725 turns
+
+Generation 38:
+Simulation stats:
+  Fitness      : 17.68255033557048
+    Survivors    : 4 out of 149
+      Avg life time: 74.94631 turns
+
+Generation 39:
+Simulation stats:
+  Fitness      : 20.096689038031318
+    Survivors    : 2 out of 149
+      Avg life time: 74.57718 turns
+
+Generation 40:
+Simulation stats:
+  Fitness      : 15.339552572706934
+    Survivors    : 2 out of 149
+      Avg life time: 72.44966 turns
+
+Generation 41:
+Simulation stats:
+  Fitness      : 15.1297091722595
+    Survivors    : 2 out of 149
+      Avg life time: 69.530205 turns
+
+Generation 42:
+Simulation stats:
+  Fitness      : 15.548411633109618
+    Survivors    : 2 out of 149
+      Avg life time: 64.28859 turns
+
+Generation 43:
+Simulation stats:
+  Fitness      : 18.61006711409396
+    Survivors    : 4 out of 149
+      Avg life time: 72.39597 turns
+
+Generation 44:
+Simulation stats:
+  Fitness      : 16.234988814317674
+    Survivors    : 2 out of 149
+      Avg life time: 70.52349 turns
+
+Generation 45:
+Simulation stats:
+  Fitness      : 20.649977628635344
+    Survivors    : 3 out of 149
+      Avg life time: 70.40939 turns
+
+Generation 46:
+Simulation stats:
+  Fitness      : 18.671096196868003
+    Survivors    : 3 out of 149
+      Avg life time: 66.49664 turns
+
+Generation 47:
+Simulation stats:
+  Fitness      : 19.45230425055929
+    Survivors    : 5 out of 149
+      Avg life time: 75.557045 turns
+
+Generation 48:
+Simulation stats:
+  Fitness      : 21.05337807606264
+    Survivors    : 4 out of 149
+      Avg life time: 69.89933 turns
+
+Generation 49:
+Simulation stats:
+  Fitness      : 21.708277404921695
+    Survivors    : 4 out of 149
+      Avg life time: 71.37584 turns
+
+Generation 50:
+Simulation stats:
+  Fitness      : 17.182371364653246
+    Survivors    : 3 out of 149
+      Avg life time: 70.40269 turns
+
+Generation 51:
+Simulation stats:
+  Fitness      : 16.14666666666667
+    Survivors    : 4 out of 149
+      Avg life time: 75.13423 turns
+
+Generation 52:
+Simulation stats:
+  Fitness      : 16.80438478747204
+    Survivors    : 4 out of 149
+      Avg life time: 67.79195 turns
+
+Generation 53:
+Simulation stats:
+  Fitness      : 18.47337807606264
+    Survivors    : 2 out of 149
+      Avg life time: 73.71141 turns
+
+Generation 54:
+Simulation stats:
+  Fitness      : 21.539910514541386
+    Survivors    : 3 out of 149
+      Avg life time: 69.60403 turns
+
+Generation 55:
+Simulation stats:
+  Fitness      : 18.382774049217005
+    Survivors    : 5 out of 149
+      Avg life time: 77.979866 turns
+
+Generation 56:
+Simulation stats:
+  Fitness      : 17.281834451901567
+    Survivors    : 4 out of 149
+      Avg life time: 71.81208 turns
+
+Generation 57:
+Simulation stats:
+  Fitness      : 16.914899328859065
+    Survivors    : 1 out of 149
+      Avg life time: 66.120804 turns
+
+Generation 58:
+Simulation stats:
+  Fitness      : 13.910782997762869
+    Survivors    : 3 out of 149
+      Avg life time: 67.68456 turns
+
+Generation 59:
+Simulation stats:
+  Fitness      : 16.94814317673378
+    Survivors    : 3 out of 149
+      Avg life time: 71.97315 turns
+
+Generation 60:
+Simulation stats:
+  Fitness      : 18.528008948545857
+    Survivors    : 3 out of 149
+      Avg life time: 72.36242 turns
+
+Generation 61:
+Simulation stats:
+  Fitness      : 21.210514541387024
+    Survivors    : 3 out of 149
+      Avg life time: 69.630875 turns
+
+Generation 62:
+Simulation stats:
+  Fitness      : 22.519910514541387
+    Survivors    : 4 out of 149
+      Avg life time: 71.79866 turns
+
+Generation 63:
+Simulation stats:
+  Fitness      : 21.421968680089485
+    Survivors    : 4 out of 149
+      Avg life time: 70.154366 turns
+
+Generation 64:
+Simulation stats:
+  Fitness      : 15.578523489932882
+    Survivors    : 1 out of 149
+      Avg life time: 63.174496 turns
+
+Generation 65:
+Simulation stats:
+  Fitness      : 28.775078299776286
+    Survivors    : 7 out of 149
+      Avg life time: 76.32215 turns
+
+Generation 66:
+Simulation stats:
+  Fitness      : 14.378434004474277
+    Survivors    : 0 out of 149
+      Avg life time: 63.85235 turns
+
+Generation 67:
+Simulation stats:
+  Fitness      : 16.33194630872483
+    Survivors    : 2 out of 149
+      Avg life time: 62.91275 turns
+
+Generation 68:
+Simulation stats:
+  Fitness      : 19.811901565995527
+    Survivors    : 1 out of 149
+      Avg life time: 69.38926 turns
+
+Generation 69:
+Simulation stats:
+  Fitness      : 25.807337807606263
+    Survivors    : 8 out of 149
+      Avg life time: 74.181206 turns
+
+Generation 70:
+Simulation stats:
+  Fitness      : 18.442192393736025
+    Survivors    : 1 out of 149
+      Avg life time: 73.62416 turns
+
+Generation 71:
+Simulation stats:
+  Fitness      : 22.364026845637586
+    Survivors    : 2 out of 149
+      Avg life time: 66.34899 turns
+
+Generation 72:
+Simulation stats:
+  Fitness      : 21.127516778523493
+    Survivors    : 2 out of 149
+      Avg life time: 73.21477 turns
+
+Generation 73:
+Simulation stats:
+  Fitness      : 18.455838926174494
+    Survivors    : 2 out of 149
+      Avg life time: 70.85235 turns
+
+Generation 74:
+Simulation stats:
+  Fitness      : 23.6847874720358
+    Survivors    : 3 out of 149
+      Avg life time: 69.42282 turns
+
+Generation 75:
+Simulation stats:
+  Fitness      : 17.905413870246093
+    Survivors    : 0 out of 149
+      Avg life time: 65.73826 turns
+
+Generation 76:
+Simulation stats:
+  Fitness      : 17.669306487695742
+    Survivors    : 3 out of 149
+      Avg life time: 75.14094 turns
+
+Generation 77:
+Simulation stats:
+  Fitness      : 18.549038031319906
+    Survivors    : 2 out of 149
+      Avg life time: 70.04027 turns
+
+Generation 78:
+Simulation stats:
+  Fitness      : 20.07217002237136
+    Survivors    : 3 out of 149
+      Avg life time: 69.77853 turns
+
+Generation 79:
+Simulation stats:
+  Fitness      : 19.956778523489927
+    Survivors    : 0 out of 149
+      Avg life time: 65.24161 turns
+
+Generation 80:
+Simulation stats:
+  Fitness      : 16.988724832214757
+    Survivors    : 1 out of 149
+      Avg life time: 60.979866 turns
+
+Generation 81:
+Simulation stats:
+  Fitness      : 15.494496644295301
+    Survivors    : 0 out of 149
+      Avg life time: 60.44295 turns
+
+Generation 82:
+Simulation stats:
+  Fitness      : 20.917673378076056
+    Survivors    : 1 out of 149
+      Avg life time: 68.85235 turns
+
+Generation 83:
+Simulation stats:
+  Fitness      : 27.26671140939596
+    Survivors    : 2 out of 149
+      Avg life time: 70.20134 turns
+
+Generation 84:
+Simulation stats:
+  Fitness      : 24.319239373601782
+    Survivors    : 4 out of 149
+      Avg life time: 69.543625 turns
+
+Generation 85:
+Simulation stats:
+  Fitness      : 19.392259507829976
+    Survivors    : 3 out of 149
+      Avg life time: 62.99329 turns
+
+Generation 86:
+Simulation stats:
+  Fitness      : 16.64178970917226
+    Survivors    : 0 out of 149
+      Avg life time: 68.154366 turns
+
+Generation 87:
+Simulation stats:
+  Fitness      : 17.803176733780752
+    Survivors    : 0 out of 149
+      Avg life time: 69.44966 turns
+
+Generation 88:
+Simulation stats:
+  Fitness      : 24.922953020134226
+    Survivors    : 4 out of 149
+      Avg life time: 74.47651 turns
+
+Generation 89:
+Simulation stats:
+  Fitness      : 23.947382550335576
+    Survivors    : 5 out of 149
+      Avg life time: 74.966446 turns
+
+Generation 90:
+Simulation stats:
+  Fitness      : 20.551812080536912
+    Survivors    : 2 out of 149
+      Avg life time: 68.181206 turns
+
+Generation 91:
+Simulation stats:
+  Fitness      : 22.84604026845638
+    Survivors    : 3 out of 149
+      Avg life time: 73.8859 turns
+
+Generation 92:
+Simulation stats:
+  Fitness      : 25.74765100671142
+    Survivors    : 7 out of 149
+      Avg life time: 78.22147 turns
+
+Generation 93:
+Simulation stats:
+  Fitness      : 28.209127516778512
+    Survivors    : 1 out of 149
+      Avg life time: 72.28859 turns
+
+Generation 94:
+Simulation stats:
+  Fitness      : 22.047919463087254
+    Survivors    : 1 out of 149
+      Avg life time: 69.845634 turns
+
+Generation 95:
+Simulation stats:
+  Fitness      : 28.883579418344514
+    Survivors    : 4 out of 149
+      Avg life time: 78.255035 turns
+
+Generation 96:
+Simulation stats:
+  Fitness      : 22.694809843400446
+    Survivors    : 2 out of 149
+      Avg life time: 71.46309 turns
+
+Generation 97:
+Simulation stats:
+  Fitness      : 23.226666666666667
+    Survivors    : 2 out of 149
+      Avg life time: 71.39597 turns
+
+Generation 98:
+Simulation stats:
+  Fitness      : 23.39185682326622
+    Survivors    : 4 out of 149
+      Avg life time: 69.19463 turns
+
+Generation 99:
+Simulation stats:
+  Fitness      : 25.456017897091716
+    Survivors    : 5 out of 149
+      Avg life time: 78.71141 turns
+
+Generation 100:
+Simulation stats:
+  Fitness      : 25.847964205816552
+    Survivors    : 6 out of 149
+      Avg life time: 79.51007 turns
+
+Generation 101:
+Simulation stats:
+  Fitness      : 25.582192393736015
+    Survivors    : 4 out of 149
+      Avg life time: 70.718124 turns
+
+Generation 102:
+Simulation stats:
+  Fitness      : 31.454004474272935
+    Survivors    : 4 out of 149
+      Avg life time: 70.57718 turns
+
+Generation 103:
+Simulation stats:
+  Fitness      : 25.688053691275165
+    Survivors    : 1 out of 149
+      Avg life time: 74.92618 turns
+
+Generation 104:
+Simulation stats:
+  Fitness      : 36.988635346756155
+    Survivors    : 6 out of 149
+      Avg life time: 74.75839 turns
+
+Generation 105:
+Simulation stats:
+  Fitness      : 27.602102908277402
+    Survivors    : 4 out of 149
+      Avg life time: 74.75168 turns
+
+Generation 106:
+Simulation stats:
+  Fitness      : 31.023803131991055
+    Survivors    : 6 out of 149
+      Avg life time: 83.0604 turns
+
+Generation 107:
+Simulation stats:
+  Fitness      : 35.27418344519016
+    Survivors    : 9 out of 149
+      Avg life time: 81.181206 turns
+
+Generation 108:
+Simulation stats:
+  Fitness      : 36.76205816554809
+    Survivors    : 5 out of 149
+      Avg life time: 77.80537 turns
+
+Generation 109:
+Simulation stats:
+  Fitness      : 35.156912751677865
+    Survivors    : 4 out of 149
+      Avg life time: 84.97315 turns
+
+Generation 110:
+Simulation stats:
+  Fitness      : 36.115480984340046
+    Survivors    : 5 out of 149
+      Avg life time: 77.41611 turns
+
+Generation 111:
+Simulation stats:
+  Fitness      : 30.489351230425047
+    Survivors    : 2 out of 149
+      Avg life time: 73.61074 turns
+
+Generation 112:
+Simulation stats:
+  Fitness      : 30.157628635346757
+    Survivors    : 4 out of 149
+      Avg life time: 83.24832 turns
+
+Generation 113:
+Simulation stats:
+  Fitness      : 31.354765100671145
+    Survivors    : 3 out of 149
+      Avg life time: 76.1745 turns
+
+Generation 114:
+Simulation stats:
+  Fitness      : 34.6475615212528
+    Survivors    : 6 out of 149
+      Avg life time: 77.37584 turns
+
+Generation 115:
+Simulation stats:
+  Fitness      : 32.952885906040265
+    Survivors    : 3 out of 149
+      Avg life time: 70.557045 turns
+
+Generation 116:
+Simulation stats:
+  Fitness      : 37.42304250559284
+    Survivors    : 5 out of 149
+      Avg life time: 74.65101 turns
+
+Generation 117:
+Simulation stats:
+  Fitness      : 38.54228187919463
+    Survivors    : 4 out of 149
+      Avg life time: 80.24832 turns
+
+Generation 118:
+Simulation stats:
+  Fitness      : 35.55167785234895
+    Survivors    : 3 out of 149
+      Avg life time: 74.50336 turns
+
+Generation 119:
+Simulation stats:
+  Fitness      : 36.327472035794194
+    Survivors    : 6 out of 149
+      Avg life time: 77.79195 turns
+
+Generation 120:
+Simulation stats:
+  Fitness      : 41.7290380313199
+    Survivors    : 8 out of 149
+      Avg life time: 82.31544 turns
+
+Generation 121:
+Simulation stats:
+  Fitness      : 40.027382550335574
+    Survivors    : 5 out of 149
+      Avg life time: 83.78523 turns
+
+Generation 122:
+Simulation stats:
+  Fitness      : 28.19427293064877
+    Survivors    : 2 out of 149
+      Avg life time: 74.38255 turns
+
+Generation 123:
+Simulation stats:
+  Fitness      : 35.753109619686825
+    Survivors    : 4 out of 149
+      Avg life time: 74.67114 turns
+
+Generation 124:
+Simulation stats:
+  Fitness      : 43.08908277404924
+    Survivors    : 7 out of 149
+      Avg life time: 84.65101 turns
+
+Generation 125:
+Simulation stats:
+  Fitness      : 32.8228187919463
+    Survivors    : 6 out of 149
+      Avg life time: 78.12752 turns
+
+Generation 126:
+Simulation stats:
+  Fitness      : 38.268501118568246
+    Survivors    : 3 out of 149
+      Avg life time: 81.1745 turns
+
+Generation 127:
+Simulation stats:
+  Fitness      : 37.38612975391501
+    Survivors    : 7 out of 149
+      Avg life time: 80.093956 turns
+
+Generation 128:
+Simulation stats:
+  Fitness      : 41.91619686800896
+    Survivors    : 7 out of 149
+      Avg life time: 79.75839 turns
+
+Generation 129:
+Simulation stats:
+  Fitness      : 38.65982102908277
+    Survivors    : 7 out of 149
+      Avg life time: 85.56376 turns
+
+Generation 130:
+Simulation stats:
+  Fitness      : 34.933780760626405
+    Survivors    : 4 out of 149
+      Avg life time: 75.7047 turns
+
+Generation 131:
+Simulation stats:
+  Fitness      : 38.08912751677853
+    Survivors    : 4 out of 149
+      Avg life time: 75.49664 turns
+
+Generation 132:
+Simulation stats:
+  Fitness      : 47.0675167785235
+    Survivors    : 13 out of 149
+      Avg life time: 90.1141 turns
+
+Generation 133:
+Simulation stats:
+  Fitness      : 41.43172259507831
+    Survivors    : 8 out of 149
+      Avg life time: 82.66443 turns
+
+Generation 134:
+Simulation stats:
+  Fitness      : 34.13297539149889
+    Survivors    : 5 out of 149
+      Avg life time: 77.61745 turns
+
+Generation 135:
+Simulation stats:
+  Fitness      : 33.24362416107382
+    Survivors    : 4 out of 149
+      Avg life time: 80.8255 turns
+
+Generation 136:
+Simulation stats:
+  Fitness      : 39.68322147651007
+    Survivors    : 6 out of 149
+      Avg life time: 88.85906 turns
+
+Generation 137:
+Simulation stats:
+  Fitness      : 48.659239373601785
+    Survivors    : 10 out of 149
+      Avg life time: 91.26174 turns
+
+Generation 138:
+Simulation stats:
+  Fitness      : 31.534809843400463
+    Survivors    : 3 out of 149
+      Avg life time: 77.966446 turns
+
+Generation 139:
+Simulation stats:
+  Fitness      : 40.162371364653254
+    Survivors    : 8 out of 149
+      Avg life time: 93.469795 turns
+
+Generation 140:
+Simulation stats:
+  Fitness      : 30.532751677852367
+    Survivors    : 3 out of 149
+      Avg life time: 73.268456 turns
+
+Generation 141:
+Simulation stats:
+  Fitness      : 34.96089485458614
+    Survivors    : 5 out of 149
+      Avg life time: 70.36242 turns
+
+Generation 142:
+Simulation stats:
+  Fitness      : 36.02612975391499
+    Survivors    : 9 out of 149
+      Avg life time: 81.62416 turns
+
+Generation 143:
+Simulation stats:
+  Fitness      : 36.32800894854584
+    Survivors    : 4 out of 149
+      Avg life time: 78.657715 turns
+
+Generation 144:
+Simulation stats:
+  Fitness      : 37.0593288590604
+    Survivors    : 5 out of 149
+      Avg life time: 82.033554 turns
+
+Generation 145:
+Simulation stats:
+  Fitness      : 31.5013422818792
+    Survivors    : 2 out of 149
+      Avg life time: 81.154366 turns
+
+Generation 146:
+Simulation stats:
+  Fitness      : 28.86196868008948
+    Survivors    : 4 out of 149
+      Avg life time: 82.37584 turns
+
+Generation 147:
+Simulation stats:
+  Fitness      : 34.73565995525728
+    Survivors    : 4 out of 149
+      Avg life time: 78.42953 turns
+
+Generation 148:
+Simulation stats:
+  Fitness      : 30.702147651006705
+    Survivors    : 3 out of 149
+      Avg life time: 75.92618 turns
+
+Generation 149:
+Simulation stats:
+  Fitness      : 24.238478747203587
+    Survivors    : 1 out of 149
+      Avg life time: 69.557045 turns
+
+Generation 150:
+Simulation stats:
+  Fitness      : 36.02013422818791
+    Survivors    : 4 out of 149
+      Avg life time: 73.32215 turns
+
+Generation 151:
+Simulation stats:
+  Fitness      : 34.74550335570471
+    Survivors    : 7 out of 149
+      Avg life time: 81.79195 turns
+
+Generation 152:
+Simulation stats:
+  Fitness      : 32.790111856823266
+    Survivors    : 3 out of 149
+      Avg life time: 74.24161 turns
+
+Generation 153:
+Simulation stats:
+  Fitness      : 34.259552572706916
+    Survivors    : 7 out of 149
+      Avg life time: 85.89933 turns
+
+Generation 154:
+Simulation stats:
+  Fitness      : 36.8502460850112
+    Survivors    : 6 out of 149
+      Avg life time: 77.85235 turns
+
+Generation 155:
+Simulation stats:
+  Fitness      : 38.01525727069352
+    Survivors    : 7 out of 149
+      Avg life time: 84.57718 turns
+
+Generation 156:
+Simulation stats:
+  Fitness      : 30.321789709172247
+    Survivors    : 3 out of 149
+      Avg life time: 75.57047 turns
+
+Generation 157:
+Simulation stats:
+  Fitness      : 26.804697986577192
+    Survivors    : 3 out of 149
+      Avg life time: 76.89262 turns
+
+Generation 158:
+Simulation stats:
+  Fitness      : 36.220134228187916
+    Survivors    : 3 out of 149
+      Avg life time: 82.85906 turns
+
+Generation 159:
+Simulation stats:
+  Fitness      : 36.52854586129756
+    Survivors    : 8 out of 149
+      Avg life time: 85.21477 turns
+
+Generation 160:
+Simulation stats:
+  Fitness      : 40.57127516778523
+    Survivors    : 5 out of 149
+      Avg life time: 84.85906 turns
+
+Generation 161:
+Simulation stats:
+  Fitness      : 28.20286353467562
+    Survivors    : 1 out of 149
+      Avg life time: 70.49664 turns
+
+Generation 162:
+Simulation stats:
+  Fitness      : 36.87293064876958
+    Survivors    : 2 out of 149
+      Avg life time: 80.919464 turns
+
+Generation 163:
+Simulation stats:
+  Fitness      : 29.58156599552572
+    Survivors    : 7 out of 149
+      Avg life time: 80.53691 turns
+
+Generation 164:
+Simulation stats:
+  Fitness      : 30.996689038031334
+    Survivors    : 5 out of 149
+      Avg life time: 81.818794 turns
+
+Generation 165:
+Simulation stats:
+  Fitness      : 39.15776286353466
+    Survivors    : 6 out of 149
+      Avg life time: 88.05369 turns
+
+Generation 166:
+Simulation stats:
+  Fitness      : 33.42259507829978
+    Survivors    : 4 out of 149
+      Avg life time: 79.43624 turns
+
+Generation 167:
+Simulation stats:
+  Fitness      : 42.58013422818793
+    Survivors    : 8 out of 149
+      Avg life time: 76.2953 turns
+
+Generation 168:
+Simulation stats:
+  Fitness      : 33.014496644295306
+    Survivors    : 3 out of 149
+      Avg life time: 75.85906 turns
+
+Generation 169:
+Simulation stats:
+  Fitness      : 32.733467561521245
+    Survivors    : 3 out of 149
+      Avg life time: 79.49664 turns
+
+Generation 170:
+Simulation stats:
+  Fitness      : 28.017494407158836
+    Survivors    : 3 out of 149
+      Avg life time: 71.57718 turns
+
+Generation 171:
+Simulation stats:
+  Fitness      : 28.779597315436252
+    Survivors    : 4 out of 149
+      Avg life time: 72.966446 turns
+
+Generation 172:
+Simulation stats:
+  Fitness      : 33.713736017897105
+    Survivors    : 6 out of 149
+      Avg life time: 77.02685 turns
+
+Generation 173:
+Simulation stats:
+  Fitness      : 31.5834451901566
+    Survivors    : 6 out of 149
+      Avg life time: 75.744965 turns
+
+Generation 174:
+Simulation stats:
+  Fitness      : 42.81275167785236
+    Survivors    : 9 out of 149
+      Avg life time: 87.36242 turns
+
+Generation 175:
+Simulation stats:
+  Fitness      : 35.15816554809843
+    Survivors    : 8 out of 149
+      Avg life time: 84.24832 turns
+
+Generation 176:
+Simulation stats:
+  Fitness      : 37.114988814317684
+    Survivors    : 7 out of 149
+      Avg life time: 82.33557 turns
+
+Generation 177:
+Simulation stats:
+  Fitness      : 37.07418344519015
+    Survivors    : 9 out of 149
+      Avg life time: 82.75168 turns
+
+Generation 178:
+Simulation stats:
+  Fitness      : 39.55395973154362
+    Survivors    : 10 out of 149
+      Avg life time: 87.818794 turns
+
+Generation 179:
+Simulation stats:
+  Fitness      : 39.80040268456376
+    Survivors    : 9 out of 149
+      Avg life time: 85.8859 turns
+
+Generation 180:
+Simulation stats:
+  Fitness      : 31.739373601789694
+    Survivors    : 4 out of 149
+      Avg life time: 83.093956 turns
+
+Generation 181:
+Simulation stats:
+  Fitness      : 46.6446979865772
+    Survivors    : 8 out of 149
+      Avg life time: 85.59061 turns
+
+Generation 182:
+Simulation stats:
+  Fitness      : 32.32425055928413
+    Survivors    : 8 out of 149
+      Avg life time: 84.718124 turns
+
+Generation 183:
+Simulation stats:
+  Fitness      : 38.442505592841165
+    Survivors    : 5 out of 149
+      Avg life time: 85.32215 turns
+
+Generation 184:
+Simulation stats:
+  Fitness      : 28.645682326621937
+    Survivors    : 4 out of 149
+      Avg life time: 77.006714 turns
+
+Generation 185:
+Simulation stats:
+  Fitness      : 33.0771812080537
+    Survivors    : 4 out of 149
+      Avg life time: 80.10067 turns
+
+Generation 186:
+Simulation stats:
+  Fitness      : 34.422102908277395
+    Survivors    : 6 out of 149
+      Avg life time: 80.47651 turns
+
+Generation 187:
+Simulation stats:
+  Fitness      : 27.16724832214765
+    Survivors    : 5 out of 149
+      Avg life time: 75.37584 turns
+
+Generation 188:
+Simulation stats:
+  Fitness      : 30.38859060402683
+    Survivors    : 1 out of 149
+      Avg life time: 82.9396 turns
+
+Generation 189:
+Simulation stats:
+  Fitness      : 31.094720357941817
+    Survivors    : 3 out of 149
+      Avg life time: 75.30202 turns
+
+Generation 190:
+Simulation stats:
+  Fitness      : 41.35780760626397
+    Survivors    : 9 out of 149
+      Avg life time: 86.281876 turns
+
+Generation 191:
+Simulation stats:
+  Fitness      : 33.934944071588355
+    Survivors    : 7 out of 149
+      Avg life time: 88.89933 turns
+
+Generation 192:
+Simulation stats:
+  Fitness      : 34.70590604026847
+    Survivors    : 4 out of 149
+      Avg life time: 78.38926 turns
+
+Generation 193:
+Simulation stats:
+  Fitness      : 39.22031319910514
+    Survivors    : 6 out of 149
+      Avg life time: 82.95302 turns
+
+Generation 194:
+Simulation stats:
+  Fitness      : 36.273199105145416
+    Survivors    : 4 out of 149
+      Avg life time: 73.879196 turns
+
+Generation 195:
+Simulation stats:
+  Fitness      : 33.9061744966443
+    Survivors    : 4 out of 149
+      Avg life time: 78.57047 turns
+
+Generation 196:
+Simulation stats:
+  Fitness      : 35.380581655480974
+    Survivors    : 10 out of 149
+      Avg life time: 79.51007 turns
+
+Generation 197:
+Simulation stats:
+  Fitness      : 28.017986577181215
+    Survivors    : 3 out of 149
+      Avg life time: 77.46309 turns
+
+Generation 198:
+Simulation stats:
+  Fitness      : 34.24809843400447
+    Survivors    : 8 out of 149
+      Avg life time: 78.18792 turns
+
+Generation 199:
+Simulation stats:
+  Fitness      : 28.441923937360194
+    Survivors    : 6 out of 149
+      Avg life time: 80.66443 turns
+
+Generation 200:
+Simulation stats:
+  Fitness      : 41.125592841163304
+    Survivors    : 9 out of 149
+      Avg life time: 84.26174 turns
+
+Generation 201:
+Simulation stats:
+  Fitness      : 32.69042505592841
+    Survivors    : 3 out of 149
+      Avg life time: 76.469795 turns
+
+Generation 202:
+Simulation stats:
+  Fitness      : 29.580044742729303
+    Survivors    : 4 out of 149
+      Avg life time: 79.04027 turns
+
+Generation 203:
+Simulation stats:
+  Fitness      : 38.96559284116333
+    Survivors    : 8 out of 149
+      Avg life time: 83.59731 turns
+
+Generation 204:
+Simulation stats:
+  Fitness      : 33.00465324384789
+    Survivors    : 7 out of 149
+      Avg life time: 88.48322 turns
+
+Generation 205:
+Simulation stats:
+  Fitness      : 38.368277404921706
+    Survivors    : 9 out of 149
+      Avg life time: 81.22819 turns
+
+Generation 206:
+Simulation stats:
+  Fitness      : 40.84299776286352
+    Survivors    : 5 out of 149
+      Avg life time: 83.86577 turns
+
+Generation 207:
+Simulation stats:
+  Fitness      : 33.97874720357943
+    Survivors    : 5 out of 149
+      Avg life time: 77.37584 turns
+
+Generation 208:
+Simulation stats:
+  Fitness      : 35.490693512304226
+    Survivors    : 7 out of 149
+      Avg life time: 81.71141 turns
+
+Generation 209:
+Simulation stats:
+  Fitness      : 44.29082774049218
+    Survivors    : 8 out of 149
+      Avg life time: 83.8255 turns
+
+Generation 210:
+Simulation stats:
+  Fitness      : 39.670514541387
+    Survivors    : 9 out of 149
+      Avg life time: 89.22147 turns
+
+Generation 211:
+Simulation stats:
+  Fitness      : 40.954720357941824
+    Survivors    : 10 out of 149
+      Avg life time: 85.1141 turns
+
+Generation 212:
+Simulation stats:
+  Fitness      : 42.72201342281879
+    Survivors    : 12 out of 149
+      Avg life time: 92.40269 turns
+
+Generation 213:
+Simulation stats:
+  Fitness      : 36.60465324384787
+    Survivors    : 5 out of 149
+      Avg life time: 83.845634 turns
+
+Generation 214:
+Simulation stats:
+  Fitness      : 45.30375838926174
+    Survivors    : 6 out of 149
+      Avg life time: 87.18792 turns
+
+Generation 215:
+Simulation stats:
+  Fitness      : 39.86366890380312
+    Survivors    : 8 out of 149
+      Avg life time: 94.48322 turns
+
+Generation 216:
+Simulation stats:
+  Fitness      : 41.90944071588367
+    Survivors    : 9 out of 149
+      Avg life time: 85.40939 turns
+
+Generation 217:
+Simulation stats:
+  Fitness      : 47.1497091722595
+    Survivors    : 13 out of 149
+      Avg life time: 89.85906 turns
+
+Generation 218:
+Simulation stats:
+  Fitness      : 39.183579418344536
+    Survivors    : 9 out of 149
+      Avg life time: 83.73826 turns
+
+Generation 219:
+Simulation stats:
+  Fitness      : 35.22442953020135
+    Survivors    : 10 out of 149
+      Avg life time: 90.979866 turns
+
+Generation 220:
+Simulation stats:
+  Fitness      : 43.06756152125281
+    Survivors    : 10 out of 149
+      Avg life time: 92.51678 turns
+
+Generation 221:
+Simulation stats:
+  Fitness      : 40.70174496644296
+    Survivors    : 7 out of 149
+      Avg life time: 87.080536 turns
+
+Generation 222:
+Simulation stats:
+  Fitness      : 47.93046979865775
+    Survivors    : 11 out of 149
+      Avg life time: 92.30202 turns
+
+Generation 223:
+Simulation stats:
+  Fitness      : 37.213557046979844
+    Survivors    : 8 out of 149
+      Avg life time: 95.28859 turns
+
+Generation 224:
+Simulation stats:
+  Fitness      : 40.28129753914988
+    Survivors    : 6 out of 149
+      Avg life time: 85.95973 turns
+
+Generation 225:
+Simulation stats:
+  Fitness      : 35.8801789709172
+    Survivors    : 6 out of 149
+      Avg life time: 88.79866 turns
+
+Generation 226:
+Simulation stats:
+  Fitness      : 37.621610738255036
+    Survivors    : 6 out of 149
+      Avg life time: 89.98658 turns
+
+Generation 227:
+Simulation stats:
+  Fitness      : 42.6724384787472
+    Survivors    : 8 out of 149
+      Avg life time: 84.89262 turns
+
+Generation 228:
+Simulation stats:
+  Fitness      : 46.25883668903802
+    Survivors    : 12 out of 149
+      Avg life time: 95.8859 turns
+
+Generation 229:
+Simulation stats:
+  Fitness      : 41.59091722595077
+    Survivors    : 6 out of 149
+      Avg life time: 90.342285 turns
+
+Generation 230:
+Simulation stats:
+  Fitness      : 32.99494407158841
+    Survivors    : 8 out of 149
+      Avg life time: 85.79866 turns
+
+Generation 231:
+Simulation stats:
+  Fitness      : 35.81816554809844
+    Survivors    : 6 out of 149
+      Avg life time: 85.080536 turns
+
+Generation 232:
+Simulation stats:
+  Fitness      : 40.55624161073824
+    Survivors    : 12 out of 149
+      Avg life time: 88.89262 turns
+
+Generation 233:
+Simulation stats:
+  Fitness      : 41.049530201342286
+    Survivors    : 8 out of 149
+      Avg life time: 95.77181 turns
+
+Generation 234:
+Simulation stats:
+  Fitness      : 46.21261744966442
+    Survivors    : 13 out of 149
+      Avg life time: 89.255035 turns
+
+Generation 235:
+Simulation stats:
+  Fitness      : 53.24778523489934
+    Survivors    : 14 out of 149
+      Avg life time: 93.89262 turns
+
+Generation 236:
+Simulation stats:
+  Fitness      : 39.33369127516781
+    Survivors    : 6 out of 149
+      Avg life time: 89.71141 turns
+
+Generation 237:
+Simulation stats:
+  Fitness      : 44.014138702460826
+    Survivors    : 11 out of 149
+      Avg life time: 100.20134 turns
+
+Generation 238:
+Simulation stats:
+  Fitness      : 39.88961968680092
+    Survivors    : 11 out of 149
+      Avg life time: 91.59061 turns
+
+Generation 239:
+Simulation stats:
+  Fitness      : 45.46026845637583
+    Survivors    : 10 out of 149
+      Avg life time: 96.530205 turns
+
+Generation 240:
+Simulation stats:
+  Fitness      : 44.9329306487696
+    Survivors    : 4 out of 149
+      Avg life time: 89.32886 turns
+
+Generation 241:
+Simulation stats:
+  Fitness      : 46.50129753914989
+    Survivors    : 7 out of 149
+      Avg life time: 87.42953 turns
+
+Generation 242:
+Simulation stats:
+  Fitness      : 38.35825503355704
+    Survivors    : 9 out of 149
+      Avg life time: 94.46309 turns
+
+Generation 243:
+Simulation stats:
+  Fitness      : 47.4351677852349
+    Survivors    : 11 out of 149
+      Avg life time: 90.05369 turns
+
+Generation 244:
+Simulation stats:
+  Fitness      : 43.35816554809844
+    Survivors    : 6 out of 149
+      Avg life time: 89.442955 turns
+
+Generation 245:
+Simulation stats:
+  Fitness      : 41.888366890380325
+    Survivors    : 8 out of 149
+      Avg life time: 87.456375 turns
+
+Generation 246:
+Simulation stats:
+  Fitness      : 36.599105145413866
+    Survivors    : 7 out of 149
+      Avg life time: 93.21477 turns
+
+Generation 247:
+Simulation stats:
+  Fitness      : 47.47597315436241
+    Survivors    : 10 out of 149
+      Avg life time: 91.1745 turns
+
+Generation 248:
+Simulation stats:
+  Fitness      : 38.42590604026845
+    Survivors    : 6 out of 149
+      Avg life time: 87.80537 turns
+
+Generation 249:
+Simulation stats:
+  Fitness      : 36.978970917225936
+    Survivors    : 7 out of 149
+      Avg life time: 87.65101 turns
+
+Generation 250:
+Simulation stats:
+  Fitness      : 36.16295302013424
+    Survivors    : 4 out of 149
+      Avg life time: 84.52349 turns
+
+Generation 251:
+Simulation stats:
+  Fitness      : 33.426845637583895
+    Survivors    : 4 out of 149
+      Avg life time: 79.83893 turns
+
+Generation 252:
+Simulation stats:
+  Fitness      : 45.43906040268459
+    Survivors    : 6 out of 149
+      Avg life time: 84.37584 turns
+
+Generation 253:
+Simulation stats:
+  Fitness      : 49.26384787472035
+    Survivors    : 6 out of 149
+      Avg life time: 85.006714 turns
+
+Generation 254:
+Simulation stats:
+  Fitness      : 49.71208053691275
+    Survivors    : 10 out of 149
+      Avg life time: 87.02685 turns
+
+Generation 255:
+Simulation stats:
+  Fitness      : 41.32246085011186
+    Survivors    : 5 out of 149
+      Avg life time: 77.39597 turns
+
+Generation 256:
+Simulation stats:
+  Fitness      : 54.58818791946312
+    Survivors    : 12 out of 149
+      Avg life time: 91.355705 turns
+
+Generation 257:
+Simulation stats:
+  Fitness      : 40.429261744966446
+    Survivors    : 6 out of 149
+      Avg life time: 84.71141 turns
+
+Generation 258:
+Simulation stats:
+  Fitness      : 33.060894854586145
+    Survivors    : 6 out of 149
+      Avg life time: 89.04698 turns
+
+Generation 259:
+Simulation stats:
+  Fitness      : 44.59767337807606
+    Survivors    : 10 out of 149
+      Avg life time: 95.20134 turns
+
+Generation 260:
+Simulation stats:
+  Fitness      : 37.85664429530202
+    Survivors    : 6 out of 149
+      Avg life time: 92.020134 turns
+
+Generation 261:
+Simulation stats:
+  Fitness      : 38.33011185682325
+    Survivors    : 6 out of 149
+      Avg life time: 77.95302 turns
+
+Generation 262:
+Simulation stats:
+  Fitness      : 46.09816554809844
+    Survivors    : 9 out of 149
+      Avg life time: 89.37584 turns
+
+Generation 263:
+Simulation stats:
+  Fitness      : 49.87020134228187
+    Survivors    : 10 out of 149
+      Avg life time: 84.8255 turns
+
+Generation 264:
+Simulation stats:
+  Fitness      : 33.02147651006712
+    Survivors    : 4 out of 149
+      Avg life time: 80.07382 turns
+
+Generation 265:
+Simulation stats:
+  Fitness      : 40.796733780760626
+    Survivors    : 7 out of 149
+      Avg life time: 81.154366 turns
+
+Generation 266:
+Simulation stats:
+  Fitness      : 51.26192393736017
+    Survivors    : 12 out of 149
+      Avg life time: 93.36242 turns
+
+Generation 267:
+Simulation stats:
+  Fitness      : 48.795973154362414
+    Survivors    : 11 out of 149
+      Avg life time: 95.66443 turns
+
+Generation 268:
+Simulation stats:
+  Fitness      : 39.23288590604029
+    Survivors    : 8 out of 149
+      Avg life time: 91.91275 turns
+
+Generation 269:
+Simulation stats:
+  Fitness      : 37.42255033557046
+    Survivors    : 9 out of 149
+      Avg life time: 76.47651 turns
+
+Generation 270:
+Simulation stats:
+  Fitness      : 53.27856823266218
+    Survivors    : 15 out of 149
+      Avg life time: 93.557045 turns
+
+Generation 271:
+Simulation stats:
+  Fitness      : 40.03910514541388
+    Survivors    : 5 out of 149
+      Avg life time: 84.79195 turns
+
+Generation 272:
+Simulation stats:
+  Fitness      : 40.74295302013423
+    Survivors    : 6 out of 149
+      Avg life time: 83.49664 turns
+
+Generation 273:
+Simulation stats:
+  Fitness      : 37.72438478747203
+    Survivors    : 6 out of 149
+      Avg life time: 82.630875 turns
+
+Generation 274:
+Simulation stats:
+  Fitness      : 40.72098434004474
+    Survivors    : 8 out of 149
+      Avg life time: 81.167786 turns
+
+Generation 275:
+Simulation stats:
+  Fitness      : 32.25516778523489
+    Survivors    : 5 out of 149
+      Avg life time: 85.8255 turns
+
+Generation 276:
+Simulation stats:
+  Fitness      : 37.69825503355707
+    Survivors    : 5 out of 149
+      Avg life time: 88.657715 turns
+
+Generation 277:
+Simulation stats:
+  Fitness      : 35.934899328859046
+    Survivors    : 8 out of 149
+      Avg life time: 90.30872 turns
+
+Generation 278:
+Simulation stats:
+  Fitness      : 38.16729306487696
+    Survivors    : 4 out of 149
+      Avg life time: 88.7651 turns
+
+Generation 279:
+Simulation stats:
+  Fitness      : 44.74926174496644
+    Survivors    : 8 out of 149
+      Avg life time: 90.993286 turns
+
+Generation 280:
+Simulation stats:
+  Fitness      : 38.07033557046981
+    Survivors    : 7 out of 149
+      Avg life time: 87.40939 turns
+
+Generation 281:
+Simulation stats:
+  Fitness      : 42.76425055928409
+    Survivors    : 5 out of 149
+      Avg life time: 87.87248 turns
+
+Generation 282:
+Simulation stats:
+  Fitness      : 22.83856823266219
+    Survivors    : 5 out of 149
+      Avg life time: 86.57718 turns
+
+Generation 283:
+Simulation stats:
+  Fitness      : 37.17932885906042
+    Survivors    : 7 out of 149
+      Avg life time: 86.154366 turns
+
+Generation 284:
+Simulation stats:
+  Fitness      : 41.70434004474275
+    Survivors    : 8 out of 149
+      Avg life time: 85.093956 turns
+
+Generation 285:
+Simulation stats:
+  Fitness      : 49.123937360178985
+    Survivors    : 9 out of 149
+      Avg life time: 91.13423 turns
+
+Generation 286:
+Simulation stats:
+  Fitness      : 35.63454138702461
+    Survivors    : 5 out of 149
+      Avg life time: 84.0604 turns
+
+Generation 287:
+Simulation stats:
+  Fitness      : 44.85445190156599
+    Survivors    : 11 out of 149
+      Avg life time: 92.79195 turns
+
+Generation 288:
+Simulation stats:
+  Fitness      : 43.03185682326622
+    Survivors    : 10 out of 149
+      Avg life time: 95.97315 turns
+
+Generation 289:
+Simulation stats:
+  Fitness      : 44.43454138702461
+    Survivors    : 10 out of 149
+      Avg life time: 91.68456 turns
+
+Generation 290:
+Simulation stats:
+  Fitness      : 38.13427293064877
+    Survivors    : 7 out of 149
+      Avg life time: 89.033554 turns
+
+Generation 291:
+Simulation stats:
+  Fitness      : 48.29199105145413
+    Survivors    : 8 out of 149
+      Avg life time: 94.38926 turns
+
+Generation 292:
+Simulation stats:
+  Fitness      : 44.5309619686801
+    Survivors    : 8 out of 149
+      Avg life time: 91.66443 turns
+
+Generation 293:
+Simulation stats:
+  Fitness      : 39.41472035794184
+    Survivors    : 6 out of 149
+      Avg life time: 87.34899 turns
+
+Generation 294:
+Simulation stats:
+  Fitness      : 49.01543624161074
+    Survivors    : 10 out of 149
+      Avg life time: 96.456375 turns
+
+Generation 295:
+Simulation stats:
+  Fitness      : 45.36362416107384
+    Survivors    : 11 out of 149
+      Avg life time: 90.932884 turns
+
+Generation 296:
+Simulation stats:
+  Fitness      : 47.1909172259508
+    Survivors    : 7 out of 149
+      Avg life time: 96.12752 turns
+
+Generation 297:
+Simulation stats:
+  Fitness      : 43.58501118568234
+    Survivors    : 7 out of 149
+      Avg life time: 89.66443 turns
+
+Generation 298:
+Simulation stats:
+  Fitness      : 44.30286353467562
+    Survivors    : 9 out of 149
+      Avg life time: 86.993286 turns
+
+Generation 299:
+Simulation stats:
+  Fitness      : 45.06492170022373
+    Survivors    : 9 out of 149
+      Avg life time: 85.60403 turns
+
+Generation 300:
+Simulation stats:
+  Fitness      : 44.69829977628638
+    Survivors    : 8 out of 149
+      Avg life time: 97.87248 turns
+
+Generation 301:
+Simulation stats:
+  Fitness      : 40.217807606263996
+    Survivors    : 8 out of 149
+      Avg life time: 77.48322 turns
+
+Generation 302:
+Simulation stats:
+  Fitness      : 45.288053691275195
+    Survivors    : 5 out of 149
+      Avg life time: 84.67785 turns
+
+Generation 303:
+Simulation stats:
+  Fitness      : 43.96434004474271
+    Survivors    : 8 out of 149
+      Avg life time: 79.97315 turns
+
+Generation 304:
+Simulation stats:
+  Fitness      : 42.23583892617451
+    Survivors    : 7 out of 149
+      Avg life time: 88.818794 turns
+
+Generation 305:
+Simulation stats:
+  Fitness      : 45.51387024608502
+    Survivors    : 10 out of 149
+      Avg life time: 98.08725 turns
+
+Generation 306:
+Simulation stats:
+  Fitness      : 48.19297539149889
+    Survivors    : 15 out of 149
+      Avg life time: 101.906044 turns
+
+Generation 307:
+Simulation stats:
+  Fitness      : 28.02644295302015
+    Survivors    : 7 out of 149
+      Avg life time: 84.20805 turns
+
+Generation 308:
+Simulation stats:
+  Fitness      : 41.01619686800896
+    Survivors    : 9 out of 149
+      Avg life time: 92.80537 turns
+
+Generation 309:
+Simulation stats:
+  Fitness      : 44.041655480984346
+    Survivors    : 10 out of 149
+      Avg life time: 93.818794 turns
+
+Generation 310:
+Simulation stats:
+  Fitness      : 51.38008948545861
+    Survivors    : 11 out of 149
+      Avg life time: 95.02685 turns
+
+Generation 311:
+Simulation stats:
+  Fitness      : 40.207293064876964
+    Survivors    : 10 out of 149
+      Avg life time: 87.40939 turns
+
+Generation 312:
+Simulation stats:
+  Fitness      : 36.700715883668906
+    Survivors    : 7 out of 149
+      Avg life time: 85.65101 turns
+
+Generation 313:
+Simulation stats:
+  Fitness      : 42.99046979865773
+    Survivors    : 8 out of 149
+      Avg life time: 92.2349 turns
+
+Generation 314:
+Simulation stats:
+  Fitness      : 49.20912751677853
+    Survivors    : 11 out of 149
+      Avg life time: 98.04698 turns
+
+Generation 315:
+Simulation stats:
+  Fitness      : 43.52948545861297
+    Survivors    : 8 out of 149
+      Avg life time: 97.718124 turns
+
+Generation 316:
+Simulation stats:
+  Fitness      : 37.881521252796425
+    Survivors    : 13 out of 149
+      Avg life time: 88.58389 turns
+
+Generation 317:
+Simulation stats:
+  Fitness      : 48.33055928411632
+    Survivors    : 11 out of 149
+      Avg life time: 87.92618 turns
+
+Generation 318:
+Simulation stats:
+  Fitness      : 47.90563758389261
+    Survivors    : 6 out of 149
+      Avg life time: 87.845634 turns
+
+Generation 319:
+Simulation stats:
+  Fitness      : 34.09570469798658
+    Survivors    : 7 out of 149
+      Avg life time: 86.68456 turns
+
+Generation 320:
+Simulation stats:
+  Fitness      : 37.83838926174498
+    Survivors    : 13 out of 149
+      Avg life time: 93.83893 turns
+
+Generation 321:
+Simulation stats:
+  Fitness      : 34.200626398210275
+    Survivors    : 9 out of 149
+      Avg life time: 87.21477 turns
+
+Generation 322:
+Simulation stats:
+  Fitness      : 33.94769574944071
+    Survivors    : 4 out of 149
+      Avg life time: 85.1745 turns
+
+Generation 323:
+Simulation stats:
+  Fitness      : 32.69642058165549
+    Survivors    : 6 out of 149
+      Avg life time: 87.879196 turns
+
+Generation 324:
+Simulation stats:
+  Fitness      : 39.582729306487686
+    Survivors    : 7 out of 149
+      Avg life time: 87.24161 turns
+
+Generation 325:
+Simulation stats:
+  Fitness      : 37.78420581655482
+    Survivors    : 6 out of 149
+      Avg life time: 84.18792 turns
+
+Generation 326:
+Simulation stats:
+  Fitness      : 45.758702460850124
+    Survivors    : 9 out of 149
+      Avg life time: 96.57047 turns
+
+Generation 327:
+Simulation stats:
+  Fitness      : 41.98098434004474
+    Survivors    : 10 out of 149
+      Avg life time: 90.38926 turns
+
+Generation 328:
+Simulation stats:
+  Fitness      : 37.6476957494407
+    Survivors    : 6 out of 149
+      Avg life time: 87.50336 turns
+
+Generation 329:
+Simulation stats:
+  Fitness      : 41.22420581655481
+    Survivors    : 12 out of 149
+      Avg life time: 95.42953 turns
+
+Generation 330:
+Simulation stats:
+  Fitness      : 35.92595078299776
+    Survivors    : 15 out of 149
+      Avg life time: 99.48993 turns
+
+Generation 331:
+Simulation stats:
+  Fitness      : 49.723176733780775
+    Survivors    : 11 out of 149
+      Avg life time: 102.832214 turns
+
+Generation 332:
+Simulation stats:
+  Fitness      : 46.15941834451902
+    Survivors    : 11 out of 149
+      Avg life time: 90.093956 turns
+
+Generation 333:
+Simulation stats:
+  Fitness      : 46.99136465324384
+    Survivors    : 11 out of 149
+      Avg life time: 98.20134 turns
+
+Generation 334:
+Simulation stats:
+  Fitness      : 48.259194630872486
+    Survivors    : 10 out of 149
+      Avg life time: 94.8255 turns
+
+Generation 335:
+Simulation stats:
+  Fitness      : 51.40129753914989
+    Survivors    : 13 out of 149
+      Avg life time: 97.10067 turns
+
+Generation 336:
+Simulation stats:
+  Fitness      : 38.44111856823268
+    Survivors    : 10 out of 149
+      Avg life time: 94.8255 turns
+
+Generation 337:
+Simulation stats:
+  Fitness      : 45.93472035794184
+    Survivors    : 8 out of 149
+      Avg life time: 96.52349 turns
+
+Generation 338:
+Simulation stats:
+  Fitness      : 50.30572706935122
+    Survivors    : 11 out of 149
+      Avg life time: 94.268456 turns
+
+Generation 339:
+Simulation stats:
+  Fitness      : 47.28183445190157
+    Survivors    : 11 out of 149
+      Avg life time: 94.02685 turns
+
+Generation 340:
+Simulation stats:
+  Fitness      : 49.32765100671139
+    Survivors    : 8 out of 149
+      Avg life time: 96.73826 turns
+
+Generation 341:
+Simulation stats:
+  Fitness      : 48.10116331096197
+    Survivors    : 9 out of 149
+      Avg life time: 87.22819 turns
+
+Generation 342:
+Simulation stats:
+  Fitness      : 40.20715883668903
+    Survivors    : 10 out of 149
+      Avg life time: 97.281876 turns
+
+Generation 343:
+Simulation stats:
+  Fitness      : 44.267114093959755
+    Survivors    : 11 out of 149
+      Avg life time: 93.30872 turns
+
+Generation 344:
+Simulation stats:
+  Fitness      : 36.89373601789711
+    Survivors    : 8 out of 149
+      Avg life time: 92.0 turns
+
+Generation 345:
+Simulation stats:
+  Fitness      : 32.48536912751677
+    Survivors    : 9 out of 149
+      Avg life time: 100.46309 turns
+
+Generation 346:
+Simulation stats:
+  Fitness      : 40.91212527964206
+    Survivors    : 7 out of 149
+      Avg life time: 99.181206 turns
+
+Generation 347:
+Simulation stats:
+  Fitness      : 44.06800894854585
+    Survivors    : 10 out of 149
+      Avg life time: 102.120804 turns
+
+Generation 348:
+Simulation stats:
+  Fitness      : 50.41297539149886
+    Survivors    : 12 out of 149
+      Avg life time: 82.69128 turns
+
+Generation 349:
+Simulation stats:
+  Fitness      : 35.78205816554809
+    Survivors    : 5 out of 149
+      Avg life time: 87.73826 turns
+
+Generation 350:
+Simulation stats:
+  Fitness      : 42.125369127516784
+    Survivors    : 9 out of 149
+      Avg life time: 97.04027 turns
+
+Generation 351:
+Simulation stats:
+  Fitness      : 45.801073825503366
+    Survivors    : 12 out of 149
+      Avg life time: 96.65101 turns
+
+Generation 352:
+Simulation stats:
+  Fitness      : 48.48885906040269
+    Survivors    : 12 out of 149
+      Avg life time: 96.845634 turns
+
+Generation 353:
+Simulation stats:
+  Fitness      : 45.75498881431769
+    Survivors    : 11 out of 149
+      Avg life time: 97.067116 turns
+
+Generation 354:
+Simulation stats:
+  Fitness      : 39.54774049217
+    Survivors    : 10 out of 149
+      Avg life time: 99.02685 turns
+
+Generation 355:
+Simulation stats:
+  Fitness      : 44.33744966442953
+    Survivors    : 12 out of 149
+      Avg life time: 101.22819 turns
+
+Generation 356:
+Simulation stats:
+  Fitness      : 44.659194630872484
+    Survivors    : 11 out of 149
+      Avg life time: 101.919464 turns
+
+Generation 357:
+Simulation stats:
+  Fitness      : 47.68420581655482
+    Survivors    : 12 out of 149
+      Avg life time: 97.40939 turns
+
+Generation 358:
+Simulation stats:
+  Fitness      : 42.60680089485459
+    Survivors    : 10 out of 149
+      Avg life time: 101.154366 turns
+
+Generation 359:
+Simulation stats:
+  Fitness      : 43.797807606264
+    Survivors    : 10 out of 149
+      Avg life time: 93.63758 turns
+
+Generation 360:
+Simulation stats:
+  Fitness      : 37.36836689038032
+    Survivors    : 12 out of 149
+      Avg life time: 88.342285 turns
+
+Generation 361:
+Simulation stats:
+  Fitness      : 40.96331096196868
+    Survivors    : 8 out of 149
+      Avg life time: 89.69798 turns
+
+Generation 362:
+Simulation stats:
+  Fitness      : 29.364161073825503
+    Survivors    : 6 out of 149
+      Avg life time: 86.31544 turns
+
+Generation 363:
+Simulation stats:
+  Fitness      : 42.7757941834452
+    Survivors    : 11 out of 149
+      Avg life time: 100.22819 turns
+
+Generation 364:
+Simulation stats:
+  Fitness      : 39.40013422818792
+    Survivors    : 12 out of 149
+      Avg life time: 98.66443 turns
+
+Generation 365:
+Simulation stats:
+  Fitness      : 46.055659955257255
+    Survivors    : 14 out of 149
+      Avg life time: 97.73826 turns
+
+Generation 366:
+Simulation stats:
+  Fitness      : 47.419597315436235
+    Survivors    : 14 out of 149
+      Avg life time: 101.8255 turns
+
+Generation 367:
+Simulation stats:
+  Fitness      : 41.661476510067125
+    Survivors    : 13 out of 149
+      Avg life time: 90.31544 turns
+
+Generation 368:
+Simulation stats:
+  Fitness      : 39.133199105145394
+    Survivors    : 9 out of 149
+      Avg life time: 91.40939 turns
+
+Generation 369:
+Simulation stats:
+  Fitness      : 41.878568232662204
+    Survivors    : 10 out of 149
+      Avg life time: 91.72483 turns
+
+Generation 370:
+Simulation stats:
+  Fitness      : 38.44568232662193
+    Survivors    : 8 out of 149
+      Avg life time: 94.093956 turns
+
+Generation 371:
+Simulation stats:
+  Fitness      : 37.53682326621924
+    Survivors    : 8 out of 149
+      Avg life time: 94.53691 turns
+
+Generation 372:
+Simulation stats:
+  Fitness      : 44.14742729306488
+    Survivors    : 8 out of 149
+      Avg life time: 95.66443 turns
+
+Generation 373:
+Simulation stats:
+  Fitness      : 44.87977628635346
+    Survivors    : 12 out of 149
+      Avg life time: 89.48322 turns
+
+Generation 374:
+Simulation stats:
+  Fitness      : 42.73208053691276
+    Survivors    : 8 out of 149
+      Avg life time: 92.78523 turns
+
+Generation 375:
+Simulation stats:
+  Fitness      : 40.56465324384787
+    Survivors    : 8 out of 149
+      Avg life time: 85.8859 turns
+
+Generation 376:
+Simulation stats:
+  Fitness      : 47.75597315436243
+    Survivors    : 11 out of 149
+      Avg life time: 96.31544 turns
+
+Generation 377:
+Simulation stats:
+  Fitness      : 40.570961968680095
+    Survivors    : 12 out of 149
+      Avg life time: 93.16107 turns
+
+Generation 378:
+Simulation stats:
+  Fitness      : 43.1317225950783
+    Survivors    : 14 out of 149
+      Avg life time: 96.32215 turns
+
+Generation 379:
+Simulation stats:
+  Fitness      : 39.710648769574945
+    Survivors    : 9 out of 149
+      Avg life time: 98.19463 turns
+
+Generation 380:
+Simulation stats:
+  Fitness      : 41.133512304250566
+    Survivors    : 11 out of 149
+      Avg life time: 95.07382 turns
+
+Generation 381:
+Simulation stats:
+  Fitness      : 44.805324384787475
+    Survivors    : 11 out of 149
+      Avg life time: 100.27517 turns
+
+Generation 382:
+Simulation stats:
+  Fitness      : 36.908903803131984
+    Survivors    : 7 out of 149
+      Avg life time: 94.40269 turns
+
+Generation 383:
+Simulation stats:
+  Fitness      : 34.731946308724844
+    Survivors    : 11 out of 149
+      Avg life time: 90.89933 turns
+
+Generation 384:
+Simulation stats:
+  Fitness      : 50.65503355704698
+    Survivors    : 15 out of 149
+      Avg life time: 88.61074 turns
+
+Generation 385:
+Simulation stats:
+  Fitness      : 35.86434004474271
+    Survivors    : 9 out of 149
+      Avg life time: 94.369125 turns
+
+Generation 386:
+Simulation stats:
+  Fitness      : 38.83046979865772
+    Survivors    : 9 out of 149
+      Avg life time: 95.97315 turns
+
+Generation 387:
+Simulation stats:
+  Fitness      : 47.72930648769577
+    Survivors    : 10 out of 149
+      Avg life time: 97.7047 turns
+
+Generation 388:
+Simulation stats:
+  Fitness      : 39.391767337807615
+    Survivors    : 11 out of 149
+      Avg life time: 89.442955 turns
+
+Generation 389:
+Simulation stats:
+  Fitness      : 49.13928411633109
+    Survivors    : 9 out of 149
+      Avg life time: 91.14765 turns
+
+Generation 390:
+Simulation stats:
+  Fitness      : 34.20510067114093
+    Survivors    : 6 out of 149
+      Avg life time: 91.14765 turns
+
+Generation 391:
+Simulation stats:
+  Fitness      : 37.497718120805374
+    Survivors    : 6 out of 149
+      Avg life time: 90.080536 turns
+
+Generation 392:
+Simulation stats:
+  Fitness      : 43.28277404921702
+    Survivors    : 12 out of 149
+      Avg life time: 96.24832 turns
+
+Generation 393:
+Simulation stats:
+  Fitness      : 41.66085011185684
+    Survivors    : 11 out of 149
+      Avg life time: 99.34899 turns
+
+Generation 394:
+Simulation stats:
+  Fitness      : 40.9853691275168
+    Survivors    : 9 out of 149
+      Avg life time: 94.01342 turns
+
+Generation 395:
+Simulation stats:
+  Fitness      : 29.800044742729327
+    Survivors    : 8 out of 149
+      Avg life time: 89.51678 turns
+
+Generation 396:
+Simulation stats:
+  Fitness      : 35.84630872483221
+    Survivors    : 8 out of 149
+      Avg life time: 84.86577 turns
+
+Generation 397:
+Simulation stats:
+  Fitness      : 36.378076062639835
+    Survivors    : 7 out of 149
+      Avg life time: 92.033554 turns
+
+Generation 398:
+Simulation stats:
+  Fitness      : 39.548545861297555
+    Survivors    : 7 out of 149
+      Avg life time: 94.68456 turns
+
+Generation 399:
+Simulation stats:
+  Fitness      : 34.909172259507834
+    Survivors    : 10 out of 149
+      Avg life time: 94.95973 turns
+
+Generation 400:
+Simulation stats:
+  Fitness      : 37.02997762863535
+    Survivors    : 8 out of 149
+      Avg life time: 83.41611 turns
+
+Generation 401:
+Simulation stats:
+  Fitness      : 34.29883668903802
+    Survivors    : 8 out of 149
+      Avg life time: 89.95302 turns
+
+Generation 402:
+Simulation stats:
+  Fitness      : 41.608903803131994
+    Survivors    : 11 out of 149
+      Avg life time: 93.04027 turns
+
+Generation 403:
+Simulation stats:
+  Fitness      : 33.55167785234899
+    Survivors    : 10 out of 149
+      Avg life time: 95.38255 turns
+
+Generation 404:
+Simulation stats:
+  Fitness      : 30.589798657718127
+    Survivors    : 10 out of 149
+      Avg life time: 81.92618 turns
+
+Generation 405:
+Simulation stats:
+  Fitness      : 39.102818791946305
+    Survivors    : 10 out of 149
+      Avg life time: 92.19463 turns
+
+Generation 406:
+Simulation stats:
+  Fitness      : 34.8579865771812
+    Survivors    : 6 out of 149
+      Avg life time: 91.53691 turns
+
+Generation 407:
+Simulation stats:
+  Fitness      : 36.983982102908286
+    Survivors    : 9 out of 149
+      Avg life time: 91.744965 turns
+
+Generation 408:
+Simulation stats:
+  Fitness      : 38.025548098433994
+    Survivors    : 12 out of 149
+      Avg life time: 98.919464 turns
+
+Generation 409:
+Simulation stats:
+  Fitness      : 46.550111856823264
+    Survivors    : 11 out of 149
+      Avg life time: 94.78523 turns
+
+Generation 410:
+Simulation stats:
+  Fitness      : 39.04241610738256
+    Survivors    : 11 out of 149
+      Avg life time: 91.79866 turns
+
+Generation 411:
+Simulation stats:
+  Fitness      : 37.636375838926135
+    Survivors    : 11 out of 149
+      Avg life time: 95.97315 turns
+
+Generation 412:
+Simulation stats:
+  Fitness      : 39.261789709172255
+    Survivors    : 9 out of 149
+      Avg life time: 89.22147 turns
+
+Generation 413:
+Simulation stats:
+  Fitness      : 44.08997762863534
+    Survivors    : 11 out of 149
+      Avg life time: 100.48993 turns
+
+Generation 414:
+Simulation stats:
+  Fitness      : 45.55588366890382
+    Survivors    : 15 out of 149
+      Avg life time: 94.7047 turns
+
+Generation 415:
+Simulation stats:
+  Fitness      : 30.443847874720344
+    Survivors    : 8 out of 149
+      Avg life time: 90.40269 turns
+
+Generation 416:
+Simulation stats:
+  Fitness      : 41.168411633109635
+    Survivors    : 8 out of 149
+      Avg life time: 91.95302 turns
+
+Generation 417:
+Simulation stats:
+  Fitness      : 43.28111856823266
+    Survivors    : 11 out of 149
+      Avg life time: 95.355705 turns
+
+Generation 418:
+Simulation stats:
+  Fitness      : 43.407114093959756
+    Survivors    : 9 out of 149
+      Avg life time: 90.81208 turns
+
+Generation 419:
+Simulation stats:
+  Fitness      : 39.830782997762846
+    Survivors    : 8 out of 149
+      Avg life time: 92.469795 turns
+
+Generation 420:
+Simulation stats:
+  Fitness      : 37.99914988814318
+    Survivors    : 6 out of 149
+      Avg life time: 86.85906 turns
+
+Generation 421:
+Simulation stats:
+  Fitness      : 38.45284116331095
+    Survivors    : 8 out of 149
+      Avg life time: 87.72483 turns
+
+Generation 422:
+Simulation stats:
+  Fitness      : 30.973780760626386
+    Survivors    : 5 out of 149
+      Avg life time: 80.1141 turns
+
+Generation 423:
+Simulation stats:
+  Fitness      : 39.10751677852349
+    Survivors    : 6 out of 149
+      Avg life time: 87.72483 turns
+
+Generation 424:
+Simulation stats:
+  Fitness      : 38.46174496644293
+    Survivors    : 9 out of 149
+      Avg life time: 89.69128 turns
+
+Generation 425:
+Simulation stats:
+  Fitness      : 40.9379865771812
+    Survivors    : 11 out of 149
+      Avg life time: 105.07382 turns
+
+Generation 426:
+Simulation stats:
+  Fitness      : 47.1380313199105
+    Survivors    : 14 out of 149
+      Avg life time: 103.24161 turns
+
+Generation 427:
+Simulation stats:
+  Fitness      : 37.268769574944095
+    Survivors    : 6 out of 149
+      Avg life time: 89.71141 turns
+
+Generation 428:
+Simulation stats:
+  Fitness      : 48.93780760626399
+    Survivors    : 8 out of 149
+      Avg life time: 91.04698 turns
+
+Generation 429:
+Simulation stats:
+  Fitness      : 47.28375838926173
+    Survivors    : 11 out of 149
+      Avg life time: 95.40269 turns
+
+Generation 430:
+Simulation stats:
+  Fitness      : 40.06563758389261
+    Survivors    : 13 out of 149
+      Avg life time: 94.86577 turns
+
+Generation 431:
+Simulation stats:
+  Fitness      : 38.54425055928411
+    Survivors    : 7 out of 149
+      Avg life time: 92.281876 turns
+
+Generation 432:
+Simulation stats:
+  Fitness      : 38.25319910514542
+    Survivors    : 9 out of 149
+      Avg life time: 90.0 turns
+
+Generation 433:
+Simulation stats:
+  Fitness      : 36.79212527964205
+    Survivors    : 10 out of 149
+      Avg life time: 100.79195 turns
+
+Generation 434:
+Simulation stats:
+  Fitness      : 36.28778523489934
+    Survivors    : 4 out of 149
+      Avg life time: 87.60403 turns
+
+Generation 435:
+Simulation stats:
+  Fitness      : 37.37628635346757
+    Survivors    : 7 out of 149
+      Avg life time: 87.79866 turns
+
+Generation 436:
+Simulation stats:
+  Fitness      : 43.97583892617452
+    Survivors    : 8 out of 149
+      Avg life time: 89.14765 turns
+
+Generation 437:
+Simulation stats:
+  Fitness      : 44.43096196868011
+    Survivors    : 13 out of 149
+      Avg life time: 103.22147 turns
+
+Generation 438:
+Simulation stats:
+  Fitness      : 41.292035794183455
+    Survivors    : 7 out of 149
+      Avg life time: 88.630875 turns
+
+Generation 439:
+Simulation stats:
+  Fitness      : 32.086174496644304
+    Survivors    : 8 out of 149
+      Avg life time: 93.67114 turns
+
+Generation 440:
+Simulation stats:
+  Fitness      : 40.38581655480985
+    Survivors    : 10 out of 149
+      Avg life time: 91.469795 turns
+
+Generation 441:
+Simulation stats:
+  Fitness      : 47.9716331096197
+    Survivors    : 12 out of 149
+      Avg life time: 92.58389 turns
+
+Generation 442:
+Simulation stats:
+  Fitness      : 39.14630872483223
+    Survivors    : 9 out of 149
+      Avg life time: 96.85906 turns
+
+Generation 443:
+Simulation stats:
+  Fitness      : 38.52053691275167
+    Survivors    : 12 out of 149
+      Avg life time: 89.73826 turns
+
+Generation 444:
+Simulation stats:
+  Fitness      : 39.69369127516779
+    Survivors    : 10 out of 149
+      Avg life time: 93.07382 turns
+
+Generation 445:
+Simulation stats:
+  Fitness      : 37.98425055928412
+    Survivors    : 7 out of 149
+      Avg life time: 83.32886 turns
+
+Generation 446:
+Simulation stats:
+  Fitness      : 36.192259507829995
+    Survivors    : 7 out of 149
+      Avg life time: 89.28859 turns
+
+Generation 447:
+Simulation stats:
+  Fitness      : 44.09906040268458
+    Survivors    : 10 out of 149
+      Avg life time: 95.369125 turns
+
+Generation 448:
+Simulation stats:
+  Fitness      : 45.45011185682326
+    Survivors    : 15 out of 149
+      Avg life time: 93.97315 turns
+
+Generation 449:
+Simulation stats:
+  Fitness      : 41.10917225950784
+    Survivors    : 16 out of 149
+      Avg life time: 94.48322 turns
+
+Generation 450:
+Simulation stats:
+  Fitness      : 42.12044742729305
+    Survivors    : 12 out of 149
+      Avg life time: 98.718124 turns
+
+Generation 451:
+Simulation stats:
+  Fitness      : 40.52809843400448
+    Survivors    : 8 out of 149
+      Avg life time: 95.94631 turns
+
+Generation 452:
+Simulation stats:
+  Fitness      : 37.824563758389274
+    Survivors    : 10 out of 149
+      Avg life time: 94.48993 turns
+
+Generation 453:
+Simulation stats:
+  Fitness      : 43.467382550335564
+    Survivors    : 12 out of 149
+      Avg life time: 97.832214 turns
+
+Generation 454:
+Simulation stats:
+  Fitness      : 44.750290827740486
+    Survivors    : 7 out of 149
+      Avg life time: 88.28859 turns
+
+Generation 455:
+Simulation stats:
+  Fitness      : 43.133020134228204
+    Survivors    : 13 out of 149
+      Avg life time: 96.033554 turns
+
+Generation 456:
+Simulation stats:
+  Fitness      : 41.99288590604027
+    Survivors    : 9 out of 149
+      Avg life time: 96.63758 turns
+
+Generation 457:
+Simulation stats:
+  Fitness      : 48.92295302013424
+    Survivors    : 12 out of 149
+      Avg life time: 96.2349 turns
+
+Generation 458:
+Simulation stats:
+  Fitness      : 41.5564653243848
+    Survivors    : 11 out of 149
+      Avg life time: 94.89933 turns
+
+Generation 459:
+Simulation stats:
+  Fitness      : 42.39521252796419
+    Survivors    : 15 out of 149
+      Avg life time: 102.08725 turns
+
+Generation 460:
+Simulation stats:
+  Fitness      : 55.85194630872483
+    Survivors    : 14 out of 149
+      Avg life time: 94.83893 turns
+
+Generation 461:
+Simulation stats:
+  Fitness      : 41.961879194630875
+    Survivors    : 10 out of 149
+      Avg life time: 101.12752 turns
+
+Generation 462:
+Simulation stats:
+  Fitness      : 40.61628635346755
+    Survivors    : 11 out of 149
+      Avg life time: 93.40939 turns
+
+Generation 463:
+Simulation stats:
+  Fitness      : 49.63606263982104
+    Survivors    : 17 out of 149
+      Avg life time: 101.31544 turns
+
+Generation 464:
+Simulation stats:
+  Fitness      : 42.72729306487697
+    Survivors    : 12 out of 149
+      Avg life time: 103.60403 turns
+
+Generation 465:
+Simulation stats:
+  Fitness      : 41.112214765100674
+    Survivors    : 8 out of 149
+      Avg life time: 98.51007 turns
+
+Generation 466:
+Simulation stats:
+  Fitness      : 45.346174496644316
+    Survivors    : 12 out of 149
+      Avg life time: 102.16107 turns
+
+Generation 467:
+Simulation stats:
+  Fitness      : 41.38492170022372
+    Survivors    : 13 out of 149
+      Avg life time: 98.932884 turns
+
+Generation 468:
+Simulation stats:
+  Fitness      : 45.318702460850105
+    Survivors    : 11 out of 149
+      Avg life time: 100.966446 turns
+
+Generation 469:
+Simulation stats:
+  Fitness      : 39.66832214765099
+    Survivors    : 10 out of 149
+      Avg life time: 106.61745 turns
+
+Generation 470:
+Simulation stats:
+  Fitness      : 49.168098434004456
+    Survivors    : 15 out of 149
+      Avg life time: 105.87248 turns
+
+Generation 471:
+Simulation stats:
+  Fitness      : 44.05579418344521
+    Survivors    : 12 out of 149
+      Avg life time: 99.13423 turns
+
+Generation 472:
+Simulation stats:
+  Fitness      : 44.75870246085012
+    Survivors    : 10 out of 149
+      Avg life time: 96.13423 turns
+
+Generation 473:
+Simulation stats:
+  Fitness      : 43.00527964205815
+    Survivors    : 11 out of 149
+      Avg life time: 96.48993 turns
+
+Generation 474:
+Simulation stats:
+  Fitness      : 46.5676062639821
+    Survivors    : 12 out of 149
+      Avg life time: 104.01342 turns
+
+Generation 475:
+Simulation stats:
+  Fitness      : 41.26093959731546
+    Survivors    : 8 out of 149
+      Avg life time: 91.49664 turns
+
+Generation 476:
+Simulation stats:
+  Fitness      : 48.2427293064877
+    Survivors    : 12 out of 149
+      Avg life time: 95.818794 turns
+
+Generation 477:
+Simulation stats:
+  Fitness      : 45.91131991051455
+    Survivors    : 13 out of 149
+      Avg life time: 101.95302 turns
+
+Generation 478:
+Simulation stats:
+  Fitness      : 41.32590604026846
+    Survivors    : 10 out of 149
+      Avg life time: 95.86577 turns
+
+Generation 479:
+Simulation stats:
+  Fitness      : 46.29042505592842
+    Survivors    : 14 out of 149
+      Avg life time: 98.89933 turns
+
+Generation 480:
+Simulation stats:
+  Fitness      : 42.951275167785234
+    Survivors    : 10 out of 149
+      Avg life time: 109.07382 turns
+
+Generation 481:
+Simulation stats:
+  Fitness      : 35.464071588366885
+    Survivors    : 8 out of 149
+      Avg life time: 91.20805 turns
+
+Generation 482:
+Simulation stats:
+  Fitness      : 53.03744966442952
+    Survivors    : 15 out of 149
+      Avg life time: 96.67114 turns
+
+Generation 483:
+Simulation stats:
+  Fitness      : 45.113870246085
+    Survivors    : 12 out of 149
+      Avg life time: 95.98658 turns
+
+Generation 484:
+Simulation stats:
+  Fitness      : 48.95400447427294
+    Survivors    : 12 out of 149
+      Avg life time: 96.24161 turns
+
+Generation 485:
+Simulation stats:
+  Fitness      : 42.02272930648769
+    Survivors    : 9 out of 149
+      Avg life time: 88.2953 turns
+
+Generation 486:
+Simulation stats:
+  Fitness      : 34.250201342281876
+    Survivors    : 9 out of 149
+      Avg life time: 97.78523 turns
+
+Generation 487:
+Simulation stats:
+  Fitness      : 43.414093959731545
+    Survivors    : 10 out of 149
+      Avg life time: 100.255035 turns
+
+Generation 488:
+Simulation stats:
+  Fitness      : 41.44657718120805
+    Survivors    : 12 out of 149
+      Avg life time: 100.80537 turns
+
+Generation 489:
+Simulation stats:
+  Fitness      : 34.52868008948547
+    Survivors    : 10 out of 149
+      Avg life time: 104.543625 turns
+
+Generation 490:
+Simulation stats:
+  Fitness      : 40.44076062639823
+    Survivors    : 8 out of 149
+      Avg life time: 98.58389 turns
+
+Generation 491:
+Simulation stats:
+  Fitness      : 39.56814317673378
+    Survivors    : 11 out of 149
+      Avg life time: 100.53691 turns
+
+Generation 492:
+Simulation stats:
+  Fitness      : 44.783713646532455
+    Survivors    : 10 out of 149
+      Avg life time: 93.22819 turns
+
+Generation 493:
+Simulation stats:
+  Fitness      : 45.63503355704698
+    Survivors    : 12 out of 149
+      Avg life time: 98.731544 turns
+
+Generation 494:
+Simulation stats:
+  Fitness      : 51.95221476510065
+    Survivors    : 12 out of 149
+      Avg life time: 103.44966 turns
+
+Generation 495:
+Simulation stats:
+  Fitness      : 47.89816554809843
+    Survivors    : 10 out of 149
+      Avg life time: 96.32886 turns
+
+Generation 496:
+Simulation stats:
+  Fitness      : 41.33176733780759
+    Survivors    : 10 out of 149
+      Avg life time: 96.62416 turns
+
+Generation 497:
+Simulation stats:
+  Fitness      : 45.34138702460849
+    Survivors    : 12 out of 149
+      Avg life time: 101.630875 turns
+
+Generation 498:
+Simulation stats:
+  Fitness      : 52.20697986577182
+    Survivors    : 15 out of 149
+      Avg life time: 102.644295 turns
+
+Generation 499:
+Simulation stats:
+  Fitness      : 48.67319910514542
+    Survivors    : 12 out of 149
+      Avg life time: 102.79866 turns
+
+Generation 500:
+Simulation stats:
+  Fitness      : 45.331677852349
+    Survivors    : 17 out of 149
+      Avg life time: 109.530205 turns
+
+Best Solution:
+Best Fitness: 468.1666666666667
+Best Chromosome State: MyCreature{chromosome=[-0.12221125, -0.7023365, 2.3067145, 1.5743874, -0.30244038, 0.35868916, 1.2148399, -0.11363524, 0.91921043, 6.4648385, -2.764002, -0.27370614, -17.425552, -1.9189624, 0.31170484, 172.5729, -8.029588, -0.25286606, 0.9218891, 0.9054872, 0.53491, 0.3306862, 0.0709494, -1.4378864, -1.1912507, 0.15840682, 0.5102102, 0.040983334, -0.264614, 0.35441124, -0.14917696, -69.62963, 0.028514506, -4.8509655, 0.16750854, 19.830341, 0.29511768, -275.2036, 3.6991656, 0.25843212, -180.50726, -0.7030523, 0.26298267, -0.56282, 3.1184292, -366.20273, 1.2769492, 0.8513688, 8.521504, 0.40435424, 2.3241026, 4.6790385, 0.32780784, -0.6960911, 1.5991627, 0.07273628, 1.6003714, -1.6609402, 0.16762112, -1.1455606, 191.77559, -22.724663, -1.5949713, -8.203104, 0.10903324, -12.486547, 1.5741266, -1.0878192, 5.6416945, 1.0357966, -5.5833306, 2.9967656, -4.8871293, 112.88719, 0.07945843, 1.0767746, 0.013821386, 3.1655633, -3.9583504, 1.6291837, 1.3545415, 2.0885034, 3.129789, 0.19377454, -0.2007597, 0.6139109, -4.0855665, -1.1731145, -0.6809729, -1.2584966, -3.6841855, 20.048428, 21.549414, -10.466504, 1.3394006, 2.3067303, -2.700622, 0.5238253, 0.31645507, 26.674809, -245.11536, -2481.849, 1.7335608, -1.7906411, -1.3504658, -0.11569659, 15.183156, -1.9160001, -22.549442, -8.022289, 0.05934221, -6.0088854, -1.8392717, 0.7511418, 72.35957, 21.498966, 0.22385664, -0.086047664, -1.0745599, -110.560936, 5.7296605, 0.06504439, 264.28387, -0.4412549, 1.3027557, -13.562914, -3.6485953, 6.0048804, 10.251214, 1.1686934, 1.2049305, 4.296767, -4.381273, 3.266509, -0.5595815, -0.21229383, 9.114849, -1.2821041, -0.41294467, -0.14484867, 3.0633554, 0.8753402, -1.0375084, 0.5313833, 7.1248403, 0.5151308, -4.312378, -0.31305364, -0.40382865, 0.9469851, -3.3447895, 0.62478524, 0.7846896, 1.1450472, 0.028946966, -0.24282102, -0.38108534, 1.0292435, -1.1511483, -0.35296378, 0.37554786, -0.16146079, -1.6010262, 1.1008548, -4.3026876, 1.4060954, -0.8114713, 2.7635436, -0.87437093, 2.509362, -2.0390613, 0.10570421, 0.3965662, 0.1123141, 0.05924003, -0.30232546, 0.07513419, 1.28762, 0.4245747, 0.933986, 0.79749274, -1.118608, -1.0064293, 0.46856767, -0.59608716, 1.9816754, -0.8126526, 1.0669428, 0.63991404, 0.887437, -1.4176366, -0.5870677, 1.0738108, -2.5522013, 1.0397826, -1.1975611, -1.2546468, 0.3757413, 1.2184163, -0.8856074, -0.82363987, -0.9278238, 0.96577996, -0.1693764, 1.4646949, 2.0976226, -2.1800153, 0.6697842, -0.28185406, 0.15675214, -3.2666006]}
+BUILD SUCCESSFUL (total time: 17 seconds)

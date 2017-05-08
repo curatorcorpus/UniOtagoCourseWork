@@ -43,7 +43,7 @@ public class MyWorld extends World {
     
     private static final Random RAND       = RandomTool.random;    
     private static final float BLEND_ALPHA = 0.5f;  // blend crossover alpha value
-    private static final float STEP_SIZE   = 0.03f; // standard deviation
+    private static final float STEP_SIZE   = 0.01f; // standard deviation
     private static final int TOURN_SIZE    = 10;    // competitors
     private static final int NUM_TURNS     = 300;   // turn size
     private static final int NUM_GENS      = 500;   // number of generations
@@ -350,7 +350,7 @@ public class MyWorld extends World {
             // save
             try {
                 ChartRenderingInfo info = new ChartRenderingInfo(new StandardEntityCollection());
-                File file = new File("FitnessChart.png");
+                File file = new File("./Charts/FitnessChart.png");
                 ChartUtilities.saveChartAsPNG(file, jfreechart, 2450, 1440, info);
                 
             } catch(Exception e) {
