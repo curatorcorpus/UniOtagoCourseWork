@@ -109,7 +109,7 @@ public class MyWorld extends World {
             }
             
             // elitists
-            if(currCreature.getFitness() > previousAvgFit) {
+            if(currCreature.getFitness() >= previousAvgFit) {
                 elitists.add(currCreature);
             }
             
