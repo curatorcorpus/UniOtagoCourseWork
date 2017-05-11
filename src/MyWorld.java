@@ -72,6 +72,7 @@ public class MyWorld extends World {
         }
     }    
     
+    // fitness function
     private double determineFitness(MyCreature creature) {
         double fitness = 0;
         
@@ -84,6 +85,7 @@ public class MyWorld extends World {
         return fitness;
     }
     
+    // breed new generations
     private MyCreature[] breed(Creature[] oldPopulationCt, int numCreatures) {
 
         List<MyCreature> elitists = new ArrayList();
@@ -155,6 +157,7 @@ public class MyWorld extends World {
         return newGeneration;
     }
     
+    // selection method
     private ParentCouple tournamentSelection(MyCreature[] oldPopulation) {
 
         int p1, p2, competitor;
@@ -182,24 +185,33 @@ public class MyWorld extends World {
         return new ParentCouple(oldPopulation[p1], oldPopulation[p2]);
     }
     
+    // component-wise crossover
     private float[] blendCrossOver(float[] p1, float[] p2, float alpha) {
 
         float[] offspring = new float[p1.length];
         
         for(int i = 0; i < p1.length; i++) {
+            // determine lower part of interval
             float min = Math.min(p1[i], p2[i]);
+            
+            // determine highest part of interval
             float max = Math.max(p1[i], p2[i]);
+            
+            // determine differnce/interval
             float diff = max - min;
             
+            // apply alpha offsets
             min -= diff * alpha;
             max += diff * alpha;
             
+            // pick from interval (a slight variation)
             offspring[i] = min + RAND.nextFloat() * 2 * diff;
         }
         
         return offspring;
     }
 
+    // mutation function
     private float gaussianMutation(float mean, float stdv) {
 
         float x1;

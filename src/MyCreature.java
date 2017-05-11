@@ -63,13 +63,11 @@ public class MyCreature extends Creature {
         }
     }
     
-    private float tanhActivation(float hLayerOut) {
-        
+    private float tanhActivation(float hLayerOut) {    
         return (float) Math.tanh(hLayerOut);
     }
     
     private float[] softmaxActivation(float[] output) {
-        
         float maxActivation = output[0];
         
         // find max
