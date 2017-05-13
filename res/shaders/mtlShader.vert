@@ -6,22 +6,41 @@ layout(location = 1) in vec2 vertexUV;
 layout(location = 2) in vec3 vertexNormal_modelspace;
 
 // Output data ; will be interpolated for each fragment.
-out vec4 vertex_pos;
-out vec2 vertex_uv;
-out vec3 vertex_normal;
+out vec3 w_vert_pos;
+out vec2 w_vert_uv;
+out vec3 w_vert_norm;
+out vec3 c_light_dir;
+out vec3 c_eye_dir;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
+uniform mat4 M;
+uniform mat4 V;
+
+uniform vec3 light_pos;
+
+const vec3 cam_pos = vec3(0,0,0);
 
 void main() {
 
-	// define normals
-	vertex_normal = normalize(vec3(MVP * vec4(vertexNormal_modelspace, 0.0)));
-
-	// define texture coords
-	vertex_uv = vec2(vertexUV);
-
 	// Output position of the vertex, in clip space : MVP * position
 	gl_Position =  MVP * vec4(vertexPosition_modelspace, 1.0);
+
+	// transform vertex into world space
+	w_vert_pos = (M * vec4(vertexPosition_modelspace, 1.0)).xyz;
+
+	// vector that goes from vertex to camera
+	vec3 vert_cam_space = (V * M * vec4(vertexPosition_modelspace, 1.0)).xyz;
+	c_eye_dir = cam_pos - vert_cam_space;
+
+	// vector that goes from a vertex to light.
+	vec3 c_light_pos = (V * vec4(light_pos, 1.0)).xyz;
+	c_light_dir = c_light_pos + c_eye_dir;
+
+	// define normals
+	w_vert_norm = normalize(M * V * vec4(vertexNormal_modelspace, 0.0)).xyz;
+
+	// define texture coords
+	w_vert_uv = vertexUV;
 }
 
