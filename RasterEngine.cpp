@@ -64,12 +64,15 @@ bool initWindow(std::string windowName){
 
 int main( int argc, char *argv[] )
 {
+    bool transpcyOn = false;
+
     std::string obj_name = "";
     
     // Terminal Argument Parser
     CMDParser parser("...");
 
     parser.addOpt("o", 1 , "obj", "specifies obj file to be rendered");
+    parser.addOpt("t", -1, "trnspnt", "specifies transparency use");
 
     parser.init(argc, argv);
 
@@ -77,6 +80,9 @@ int main( int argc, char *argv[] )
     if(parser.isOptSet("o")) {
         // res models path must be changed if the models directory changes.
         obj_name = "../res/models/" + parser.getOptsString("o")[0] + ".obj";
+    }
+    if(parser.isOptSet("t")) {
+        transpcyOn = true;
     }
 
     // if there is no model specified
@@ -108,12 +114,18 @@ int main( int argc, char *argv[] )
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
     //glClearColor(1.0f, 1.0f, 1.0f, 0.0f); white background
     glEnable(GL_DEPTH_TEST);              // Enable depth test
-    glEnable(GL_BLEND);
     glDepthFunc(GL_LESS);                 // Accept fragment if it closer to the camera than the former ones
     //glEnable(GL_MULTISAMPLE);
 
-    // Cull triangles which normal is not towards the camera
-    glEnable(GL_CULL_FACE);
+    if(transpcyOn) {
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        //glBendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    } else {
+        // Cull triangles which normal is not towards the camera
+        glDisable(GL_BLEND);
+        glEnable(GL_CULL_FACE);
+    }
 
     //create a Vertex Array Object and set it as the current one
     //we will not go into detail here. but this can be used to optimise the performance by storing all of the state needed to supply vertex data

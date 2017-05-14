@@ -118,7 +118,7 @@ GLuint Shader::LoadShaders(const char * vertex_file_path,const char * fragment_f
 void Shader::initShaders(std::string vertexshaderName, std::string fragmentshaderName){
 	programID = LoadShaders(vertexshaderName.c_str(), fragmentshaderName.c_str());
 	m_MVPID = glGetUniformLocation(programID, "MVP");
-	m_MID = glGetUniformLocation(programID, "M");
+	m_MID = glGetUniformLocation(programID, "M"); 
 	m_VID = glGetUniformLocation(programID, "V");
 	
 }
