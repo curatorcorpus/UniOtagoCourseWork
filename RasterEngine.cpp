@@ -64,15 +64,16 @@ bool initWindow(std::string windowName){
 
 int main( int argc, char *argv[] )
 {
-    bool transpcyOn = false;
+    bool arg_obj = false;
 
     std::string obj_name = "";
-    
+    std::string person_dir = "../res/models/person.obj";
+    std::string earth_dir = "../res/models/earthobj.obj";
+
     // Terminal Argument Parser
     CMDParser parser("...");
 
     parser.addOpt("o", 1 , "obj", "specifies obj file to be rendered");
-    parser.addOpt("t", -1, "trnspnt", "specifies transparency use");
 
     parser.init(argc, argv);
 
@@ -80,14 +81,7 @@ int main( int argc, char *argv[] )
     if(parser.isOptSet("o")) {
         // res models path must be changed if the models directory changes.
         obj_name = "../res/models/" + parser.getOptsString("o")[0] + ".obj";
-    }
-    if(parser.isOptSet("t")) {
-        transpcyOn = true;
-    }
-
-    // if there is no model specified
-    if(obj_name == "") {
-        return EXIT_SUCCESS;
+        arg_obj = true;
     }
 
     initWindow("Render Engine");
@@ -112,20 +106,11 @@ int main( int argc, char *argv[] )
     glfwSetCursorPos(window, 1024/2, 768/2);
     
     glClearColor(0.0f, 0.0f, 0.4f, 0.0f); // Dark blue background
-    //glClearColor(1.0f, 1.0f, 1.0f, 0.0f); white background
     glEnable(GL_DEPTH_TEST);              // Enable depth test
     glDepthFunc(GL_LESS);                 // Accept fragment if it closer to the camera than the former ones
-    //glEnable(GL_MULTISAMPLE);
-
-    if(transpcyOn) {
-        glDisable(GL_CULL_FACE);
-        glEnable(GL_BLEND);
-        //glBendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    } else {
-        // Cull triangles which normal is not towards the camera
-        glDisable(GL_BLEND);
-        glEnable(GL_CULL_FACE);
-    }
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //create a Vertex Array Object and set it as the current one
     //we will not go into detail here. but this can be used to optimise the performance by storing all of the state needed to supply vertex data
@@ -138,21 +123,38 @@ int main( int argc, char *argv[] )
 
     // create grouped mesh objects.
     Group *person = new Group();
+    Group *earth  = new Group();
 
     // load obj models and materials.
-    bool res = loadOBJMTL(obj_name.c_str(), person);
+    
+    if(arg_obj) {
+        bool res = loadOBJMTL(obj_name.c_str(), person);
 
-    // check if models successfully loaded.
-    if(!res) {
-        std::cout << "model didn't successfully load" << std::endl;
-        return EXIT_FAILURE;
+        if(!res) {
+            std::cout << "model didn't successfully load" << std::endl;
+            return EXIT_FAILURE;
+        }    
+
+        person->init();
+
+        scene->addObject(person);
+    } 
+    // default
+    else {
+        bool load_earth  = loadOBJMTL(person_dir.c_str(), person);
+        bool load_person = loadOBJMTL(earth_dir.c_str(), earth);
+
+
+        // setup up shader for each grouped meshes.
+        person->init();
+        earth->init();
+
+        // add grouped meshes to scene
+        scene->addObject(person);
+        scene->addObject(earth);
     }
 
-    // setup up shader for each grouped meshes.
-    person->init();
-
-    // add grouped meshes to scene
-    scene->addObject(person);
+    // check if models successfully loaded.
 
     // setup camera.
     Camera* camera = new Camera();
@@ -176,8 +178,7 @@ int main( int argc, char *argv[] )
         // Swap buffers
         glfwSwapBuffers(window);
         glfwPollEvents();
-    }
-    
+    }    
     
     glDeleteVertexArrays(1, &VertexArrayID); //delete texture;
 
