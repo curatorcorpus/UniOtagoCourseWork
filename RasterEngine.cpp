@@ -74,8 +74,10 @@ int main( int argc, char *argv[] )
     // Terminal Argument Parser
     CMDParser parser("...");
 
-    parser.addOpt("o", 1 , "obj", "specifies obj file to be rendered");
-    parser.addOpt("s", -1, "sfxs", "enables special effects - sobel effect");
+    parser.addOpt("o",   1, "obj",      "specifies obj file to be rendered");
+    parser.addOpt("s",  -1, "sepia",    "enables special effects - sepia effect");
+    parser.addOpt("bw", -1, "blckwhte", "enables special effects - black and white effect");
+    parser.addOpt("sb", -1, "sobel",    "enables special effects - sobel effect");
 
     parser.init(argc, argv);
 
@@ -87,6 +89,12 @@ int main( int argc, char *argv[] )
     }
     if(parser.isOptSet("s")) {
         render_mode = 1;
+    }
+    if(parser.isOptSet("bw")) {
+        render_mode = 2;
+    }
+    if(parser.isOptSet("sb")) {
+        render_mode = 3;
     }
 
     initWindow("Render Engine");
@@ -141,6 +149,7 @@ int main( int argc, char *argv[] )
         }    
 
         person->init();
+        person->setRenderMode(render_mode);
 
         scene->addObject(person);
     } 
