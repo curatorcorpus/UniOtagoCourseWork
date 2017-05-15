@@ -52,7 +52,7 @@ class MTLShader: public Shader{
         void setOpacity(float opacity);
         //! setRenderMode
         /*! Set the render mode.*/
-        void setRenderMode(float renderMode);
+        void setRenderMode(int renderMode);
         //! bind
         /*! Bind the shader */
         void bind();

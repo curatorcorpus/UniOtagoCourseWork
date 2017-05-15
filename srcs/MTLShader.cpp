@@ -39,7 +39,6 @@ void MTLShader::setTexture(Texture* texture){
     m_texture = texture;
 }
 
-
 void MTLShader::setLightPos(glm::vec3 lightPos){
     m_lightPos= lightPos;
     GLint lightPosId = glGetUniformLocation(programID, "light_pos");
@@ -92,11 +91,11 @@ void MTLShader::setShininess(const float shininess) {
     glProgramUniform1f(programID, shine_id, m_shininess);
 }
 
-void MTLShader::setRenderMode(float renderMode){
-    
+void MTLShader::setRenderMode(const int renderMode){
     m_renderMode= renderMode;
+    GLint render_mode_id = glGetUniformLocation(programID, "render_mode");
+    glProgramUniform1i(programID, render_mode_id, renderMode);
 }
-
 
 void MTLShader::bind(){
     // Use our shader
@@ -107,8 +106,5 @@ void MTLShader::bind(){
 
         GLint m_TextureID = glGetUniformLocation(programID, "myTextureSampler");
         glProgramUniform1i(programID, m_TextureID, 0);
-        // Set our "myTextureSampler" sampler to user Texture Unit 0 using glUniform1i
-		
-    }
-    
+    }   
 }

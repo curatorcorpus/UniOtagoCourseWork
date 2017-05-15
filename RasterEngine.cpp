@@ -65,6 +65,7 @@ bool initWindow(std::string windowName){
 int main( int argc, char *argv[] )
 {
     bool arg_obj = false;
+    int render_mode = 0;
 
     std::string obj_name = "";
     std::string person_dir = "../res/models/person.obj";
@@ -74,6 +75,7 @@ int main( int argc, char *argv[] )
     CMDParser parser("...");
 
     parser.addOpt("o", 1 , "obj", "specifies obj file to be rendered");
+    parser.addOpt("s", -1, "sfxs", "enables special effects - sobel effect");
 
     parser.init(argc, argv);
 
@@ -82,6 +84,9 @@ int main( int argc, char *argv[] )
         // res models path must be changed if the models directory changes.
         obj_name = "../res/models/" + parser.getOptsString("o")[0] + ".obj";
         arg_obj = true;
+    }
+    if(parser.isOptSet("s")) {
+        render_mode = 1;
     }
 
     initWindow("Render Engine");
@@ -148,6 +153,10 @@ int main( int argc, char *argv[] )
         // setup up shader for each grouped meshes.
         person->init();
         earth->init();
+
+        // set render mode 0 - default, 1 - special effects
+        person->setRenderMode(render_mode);
+        earth->setRenderMode(render_mode);
 
         // add grouped meshes to scene
         scene->addObject(person);

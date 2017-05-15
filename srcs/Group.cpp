@@ -33,7 +33,7 @@ int Group::getNumMeshes(){
     return meshes.size();
 
 }
-void Group::setRenderMode(float rendermode){
+void Group::setRenderMode(int rendermode){
     for (int i = 0; i < materials.size(); i++) {
     
         MTLShader* shader = static_cast<MTLShader*>(materials[i]->getShader());

@@ -45,7 +45,7 @@ class Group:  public Object{
         int getNumMeshes();
         //! SetRenderMode
         /*! Set a render mode. */
-        void setRenderMode(float rendermode);
+        void setRenderMode(int rendermode);
         //! init
         /*! Initialise group. */
         void init();
