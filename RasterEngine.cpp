@@ -77,7 +77,7 @@ int main( int argc, char *argv[] )
     parser.addOpt("o",   1, "obj",      "specifies obj file to be rendered");
     parser.addOpt("s",  -1, "sepia",    "enables special effects - sepia effect");
     parser.addOpt("bw", -1, "blckwhte", "enables special effects - black and white effect");
-    parser.addOpt("sb", -1, "sobel",    "enables special effects - sobel effect");
+    //parser.addOpt("sb", -1, "sobel",    "enables special effects - sobel effect");
 
     parser.init(argc, argv);
 
@@ -93,9 +93,9 @@ int main( int argc, char *argv[] )
     if(parser.isOptSet("bw")) {
         render_mode = 2;
     }
-    if(parser.isOptSet("sb")) {
+    /*if(parser.isOptSet("sb")) {
         render_mode = 3;
-    }
+    }*/
 
     initWindow("Render Engine");
     glfwMakeContextCurrent(window);

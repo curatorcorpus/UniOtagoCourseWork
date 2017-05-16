@@ -28,24 +28,6 @@ const vec3 diffuse_light  = vec3(1.0, 1.0, 1.0);
 const vec3 ambient_light  = vec3(0.2, 0.2, 0.2);
 const vec3 specular_light = vec3(1.0, 1.0, 1.0);
 
-mat3 sx = mat3(
-	-1.0, 0, 1.0,
-	-2.0, 0, 2.0,
-	-1.0, 0, 1.0
-);
-
-mat3 sy = mat3(
-	1.0, 0, 1.0,
-	0.0, 0, 0.0,
-   -1.0,-2.0,-1.0
-);
-
-mat3 I = mat3(
-    1.0, 0.0, 0.0,
-	0.0, 1.0, 0.0,
-	0.0, 0.0, 1.0
-);
-
 void main() {
 
 	vec3 textures = texture(myTextureSampler, w_vert_uv).xyz;
@@ -61,9 +43,9 @@ void main() {
 	float theta     = clamp(dot(N, L), 0.0, 1.0);
 	float cos_alpha = clamp(dot(E, R), 0, 1);
 
-	vec3 diffuse_compo  = diffuseColor.rgb * diffuse_mat_color.rgb  * textures * theta;	            // diffuse component     
-	vec3 ambient_compo  = ambient_light    * ambient_mat_color.rgb  * textures;                          // ambient component
-	vec3 specular_compo = specular_light   * specular_mat_color.rgb * pow(cos_alpha, mat_shininess); 	// specular component
+	vec3 diffuse_compo  = diffuseColor.rgb * diffuse_mat_color.rgb  * textures * theta;	             // diffuse component     
+	vec3 ambient_compo  = ambient_light    * ambient_mat_color.rgb  * textures;                      // ambient component
+	vec3 specular_compo = specular_light   * specular_mat_color.rgb * pow(cos_alpha, mat_shininess); // specular component
 
 	// blinn phong component
 	vec3 blinn_phong = diffuse_compo + ambient_compo + specular_compo;
@@ -84,10 +66,5 @@ void main() {
 	else if(render_mode == 2) {
 
 		color = vec4(vec3(max(color.r, max(color.g, color.b))), mat_opacity);
-	}
-
-	// sobel
-	else if(render_mode == 3) {
-
 	}
 }
