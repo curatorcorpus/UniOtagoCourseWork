@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+
+<html ng-app="ajaxClient">
+    
+    <head>
+        <title>Loyalty Service Client</title>
+
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <script src="scripts/angular.min.js"></script>        
+        <script src="scripts/angular-resource.min.js"></script>
+        <script src="scripts/JsBarcode.all.min.js">
+        </script>
+        <script src="scripts/ClientProcessor.js"></script>
+    </head>
+
+    <body>
+        <h1>Loyalty Service</h1>
+
+        <div ng-controller="ajaxClientController">
+
+            <!-- Login -->
+            <form>
+                <fieldset>
+                    <legend>Login</legend>
+
+                    <label>E-Mail Address:</label>
+                    <input type="text" id="input_email" ng-model="cust_email" ng-change="resetFields()"><br>
+
+                    <button ng-click="sendEmail()">Sign In</button>
+                </fieldset>
+            </form>
+
+            <!-- Your Details -->
+            <form>
+                <fieldset>
+                    <legend>YourDetails</legend>
+
+                    <label>Rewards ID:</label>
+                    <input type="text" id="cust_id" name="cust_id" value="" ng-model="cust_id" readonly><br>
+
+                    <label>Name:</label>
+                    <input type="text" id="cust_name" name="cust_name" value="" ng-model="cust_name" readonly>
+
+                </fieldset>                
+            </form>
+
+            <!-- Create Coupon -->
+            <form>
+                <fieldset>
+                    <legend>Create a Coupon</legend>
+
+                    <label>Available Points:</label>
+                    <input type="text" id="avail_pts" name="avail_pts" ng-model="avail_points" readonly><br>
+
+                    <label>Points to Use:</label>
+                    <input type="number" min="0" id="pt_to_use" name="pt_to_use" ng-model="pts_to_use" ng-change="calcEquivDollar()"><br>
+
+                    <label>Equivalent to $:</label>
+                    <input type="text" id="dollar_equiv" name="dollar_equiv" ng_model="dollar_equiv" readonly><br>                    
+
+                    <button ng-click="sendNewCoupon()">Create Coupon</button>
+                </fieldset>                
+            </form>
+
+            <!-- Coupon -->            
+            <form>
+                <fieldset>
+                    <legend>Coupons</legend>
+
+                    <label>Present this barcode when you next make a purchase.</label><br>
+                    <label>Value: ${{dollar_equiv}}</label><br>
+                    
+                    <!-- canvas -->
+                    <svg id="barcode" jsbarcode-format="upc" jsbarcode-textmargin="0"></svg>
+                    
+                </fieldset>                
+            </form>
+
+        </div>
+    </body>
+
+</html>
