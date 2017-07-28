@@ -3,33 +3,24 @@ using System.Collections;
 
 public class OctreeController : MonoBehaviour {
 
-	private OctreeNode<int> root;
+    private Octree<int> tree;
 
 	public float size  = 5.0f;
 	public int   depth = 2;
 
 	// Use this for initialization
-	void Start () {
-		
-createOctree();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	void Start ()
+    {
+        tree = new Octree<int>(this.transform.position, size, depth);
 	}
 
-	private void createOctree() 
-	{
-		root = new OctreeNode<int>(this.transform.position, size);
-		root.subdivide(depth);
-	}    
+    // Update is called once per frame
+    void Update() {} 
 
 	void OnDrawGizmos()
     {
-        //createOctree();
-
-        //DrawNode(root);
+        tree = new Octree<int>(this.transform.position, size, depth);
+        DrawNode(tree.Root);
     }
 
     private Color minColor = new Color(1, 1, 1, 1f);
