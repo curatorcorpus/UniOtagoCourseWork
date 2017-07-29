@@ -65,7 +65,6 @@ public class OctreeNode<TType> {
         }
 
         int bestSSIdx = findBestSubspace(otherPos); // find best subspace idx
-        this.children[bestSSIdx] = new OctreeNode<TType>(otherPos, size * 0.5f);
         this.children[bestSSIdx].newPosExists = true;
         this.children[bestSSIdx].add(otherPos, depth - 1);
 
