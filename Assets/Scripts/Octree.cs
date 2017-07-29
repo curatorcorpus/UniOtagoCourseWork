@@ -6,7 +6,7 @@ public class Octree<TType>
 {
     private OctreeNode<TType> root;
 
-    private int depth;
+    private int depth = 0;
 
     public OctreeNode<TType> Root
     {
@@ -18,11 +18,12 @@ public class Octree<TType>
     {
         this.depth = depth;
         this.root  = new OctreeNode<TType>(position, size);
-
-        this.root.branch(depth);
     }
 
     // PUBLIC METHODS
-
+    public void add(Vector3 pos)
+    {
+        root.add(pos, depth);
+    }
 
 }

@@ -21,6 +21,7 @@ public class OctreeNode<TType> {
 
 	private static int DEGREE = 8;
 
+    private bool newPosExists = false;
 	private float size;
 
 	private Vector3 position;
@@ -51,16 +52,42 @@ public class OctreeNode<TType> {
 	}
 
     // PUBLIC METHODS
-    public void add(Vector3 otherPos)
+	public void add(Vector3 otherPos, int depth = 0)
     {
+		if(depth < 0)
+			return;
+
         if(children == null)
         {
-            setupChildren();
+            splitSubSpace();
+        } else
+        {
         }
 
         int bestSSIdx = findBestSubspace(otherPos); // find best subspace idx
-        children[bestSSIdx] = new OctreeNode<TType>(otherPos, size);
-        children[bestSSIdx].add(otherPos);
+        this.children[bestSSIdx] = new OctreeNode<TType>(otherPos, size * 0.5f);
+        this.children[bestSSIdx].newPosExists = true;
+        this.children[bestSSIdx].add(otherPos, depth - 1);
+
+        // now that we found best sub space, remove other children
+      //  this.remove();
+    }
+
+    public void remove()
+    {
+        int bestIdx = findBestSubspace(this.position);
+
+        for (int i = 0; i < children.Length; i++)
+        {
+            if (newPosExists)
+            {
+                this.children[i] = null;
+            }
+            else
+            {
+                Debug.Log("working");
+            }
+        }
     }
 
     public void branch(int depth = 0)
@@ -101,7 +128,24 @@ public class OctreeNode<TType> {
                (otherPos.y >= position.y ? 0 : 4) +
                (otherPos.z <= position.z ? 0 : 2);
     }
-    
+
+    void splitSubSpace()
+    {
+        float quarter = size * 0.25f;
+        float newPos = size * 0.5f;
+
+        setupChildren(); // allocates memory to children array.
+
+        children[0] = new OctreeNode<TType>(this.position + new Vector3(-quarter, quarter, -quarter), newPos);
+        children[1] = new OctreeNode<TType>(this.position + new Vector3(quarter, quarter, -quarter), newPos);
+        children[2] = new OctreeNode<TType>(this.position + new Vector3(-quarter, quarter, quarter), newPos);
+        children[3] = new OctreeNode<TType>(this.position + new Vector3(quarter, quarter, quarter), newPos);
+        children[4] = new OctreeNode<TType>(this.position + new Vector3(-quarter, -quarter, -quarter), newPos);
+        children[5] = new OctreeNode<TType>(this.position + new Vector3(quarter, -quarter, -quarter), newPos);
+        children[6] = new OctreeNode<TType>(this.position + new Vector3(-quarter, -quarter, quarter), newPos);
+        children[7] = new OctreeNode<TType>(this.position + new Vector3(quarter, -quarter, quarter), newPos);
+    }
+
     private void setupChildren()
     {
         children = new OctreeNode<TType>[DEGREE];
