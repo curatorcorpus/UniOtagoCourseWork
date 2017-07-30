@@ -9,64 +9,87 @@ public class BruteForceController : MonoBehaviour {
 
     private List<mattatz.VoxelSystem.Voxel> voxelsPos;
 
-    public int maxLength = 3;
-
-    public int voxelLength = 25; // x
-    public int voxelHeight = 25; // y
-    public int voxelDepth = 25; // z
+    private int voxelLength = 25; // x
+    private int voxelHeight = 25; // y
+    private int voxelDepth = 25; // z
+    private int voxelSpaceHalf;
 
     private float voxelSize;
     private float voxelSizeHalf;
 
+    public int volume;
+    public int maxLength = 3;
+
     // Use this for initialization
     void Start ()
     {
+        if(volume == 0)
+        {
+            throw new System.Exception("Volume size is Zero!");
+        }
+
+        voxelLength = volume;
+        voxelHeight = volume;
+        voxelDepth = volume;
+
         voxelspace = new GameObject[voxelLength, voxelHeight, voxelDepth];
         voxelSize = ((float)maxLength / (float)voxelLength);
         voxelSizeHalf = voxelSize / 2;
+        voxelSpaceHalf = voxelLength / 2;
+
+        if (voxelSize % 2 == 0)
+        {
+            voxelSpaceHalf++;
+        }
 
         MeshFilter meshToVoxelize = GetComponent<MeshFilter>();
-
         voxelsPos = Voxelizer.Voxelize(meshToVoxelize.mesh, voxelLength);
 
-        for (int x = 1; x <= voxelLength; x++)
+        for (int i = -voxelSpaceHalf; i <= voxelSpaceHalf; i++)
         {
-            for (int y = 1; y <= voxelHeight; y++)
+            for (int j = -voxelSpaceHalf; j <= voxelSpaceHalf; j++)
             {
-                for (int z = 1; z <= voxelDepth; z++)
+                for (int k = -voxelSpaceHalf; k <= voxelSpaceHalf; k++)
                 {
                     GameObject voxel = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     MeshRenderer shader = voxel.gameObject.GetComponent<MeshRenderer>();
 
+                    voxel.transform.parent = gameObject.transform;
+
+                    voxel.hideFlags = HideFlags.HideInInspector;
+                    voxel.hideFlags = HideFlags.NotEditable;
+                    voxel.hideFlags = HideFlags.HideInHierarchy;
                     shader.material.color = Random.ColorHSV();
                     voxel.SetActive(false);
 
                     Vector3 newPos = new Vector3();
 
-                    newPos.x = x * voxelSize;
-                    newPos.y = y * voxelSize;
-                    newPos.z = z * voxelSize;
+                    newPos.x = i * voxelSize;
+                    newPos.y = j * voxelSize;
+                    newPos.z = k * voxelSize;
 
                     voxel.transform.localPosition = newPos;
                     voxel.transform.localScale = new Vector3(voxelSize, voxelSize, voxelSize);
 
-                    voxelspace[x - 1, y - 1, z - 1] = voxel;
+                    voxelspace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k] = voxel;
                 }
             }
         }
 
         voxelsPos.ForEach(voxel => {
 
-            Vector3 pos = voxel.position;
+            Vector3 pos = voxel.position / 4.0f;
 
-            if((int)pos.x > 0 && (int)pos.y > 0 && (int)pos.z > 0
-            && pos.x < voxelLength && pos.y < voxelLength && pos.z < voxelLength)
+                        Debug.Log(pos);
+            if (pos.x > -voxelSpaceHalf && pos.y > -voxelSpaceHalf && pos.z > -voxelSpaceHalf &&
+                pos.x < voxelSpaceHalf && pos.y < voxelSpaceHalf && pos.z < voxelSpaceHalf)
             {
-                Debug.Log(pos);
-                voxelspace[((int)pos.x - 1), ((int)pos.y - 1), ((int)pos.z - 1)].SetActive(true);
+                voxelspace[((int)pos.x + voxelSpaceHalf), 
+                           ((int)pos.y + voxelSpaceHalf), 
+                           ((int)pos.z + voxelSpaceHalf)].SetActive(true);
             } else
             {
-                Debug.Log("rejected a voxel pos");
+                Debug.Log("rejecteda  voxel pos");
             }
         });
     }
