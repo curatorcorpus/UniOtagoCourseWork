@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using mattatz.VoxelSystem;
 
 public class BruteForceController : MonoBehaviour {
 
-    private int[, ,] voxelspace;
+    private GameObject[, ,] voxelspace;
+
+    private List<mattatz.VoxelSystem.Voxel> voxelsPos;
 
     public int maxLength = 3;
 
@@ -18,9 +21,13 @@ public class BruteForceController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
-        voxelspace = new int[voxelLength, voxelHeight, voxelDepth];
+        voxelspace = new GameObject[voxelLength, voxelHeight, voxelDepth];
         voxelSize = ((float)maxLength / (float)voxelLength);
         voxelSizeHalf = voxelSize / 2;
+
+        MeshFilter meshToVoxelize = GetComponent<MeshFilter>();
+
+        voxelsPos = Voxelizer.Voxelize(meshToVoxelize.mesh, voxelLength);
 
         for (int x = 1; x <= voxelLength; x++)
         {
@@ -42,10 +49,27 @@ public class BruteForceController : MonoBehaviour {
 
                     voxel.transform.localPosition = newPos;
                     voxel.transform.localScale = new Vector3(voxelSize, voxelSize, voxelSize);
+
+                    voxelspace[x - 1, y - 1, z - 1] = voxel;
                 }
             }
         }
-	}
+
+        voxelsPos.ForEach(voxel => {
+
+            Vector3 pos = voxel.position;
+
+            if((int)pos.x > 0 && (int)pos.y > 0 && (int)pos.z > 0
+            && pos.x < voxelLength && pos.y < voxelLength && pos.z < voxelLength)
+            {
+                Debug.Log(pos);
+                voxelspace[((int)pos.x - 1), ((int)pos.y - 1), ((int)pos.z - 1)].SetActive(true);
+            } else
+            {
+                Debug.Log("rejected a voxel pos");
+            }
+        });
+    }
 	
 	// Update is called once per frame
 	void Update () {

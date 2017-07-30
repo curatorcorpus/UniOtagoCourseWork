@@ -115,14 +115,17 @@
     <Compile Include="Assets\Scripts\BoundsOctree.cs" />
     <Compile Include="Assets\Scripts\BoundsOctreeNode.cs" />
     <Compile Include="Assets\Scripts\BruteForceController.cs" />
+    <Compile Include="Assets\Scripts\Demo.cs" />
     <Compile Include="Assets\Scripts\Octree.cs" />
     <Compile Include="Assets\Scripts\OctreeController.cs" />
     <Compile Include="Assets\Scripts\OctreeNode.cs" />
     <Compile Include="Assets\Scripts\PointOctree.cs" />
     <Compile Include="Assets\Scripts\PointOctreeNode.cs" />
     <Compile Include="Assets\Scripts\Voxel.cs" />
+    <Compile Include="Assets\Scripts\Voxelizer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Models\Cup\archibase.net.txt" />
     <None Include="Assets\OVR\Editor\AndroidManifest.OVRSubmission.xml" />
     <None Include="Assets\OVR\Plugins\placeholder.txt" />
     <None Include="Assets\OVR\Resources\Alpha Premultiply.shader" />
