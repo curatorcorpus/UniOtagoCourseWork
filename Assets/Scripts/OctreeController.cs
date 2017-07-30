@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class OctreeController : MonoBehaviour {
 
     private bool drawTree = false;
+    private bool updated = true;
+
     private Octree<int> tree;
     private List<GameObject> voxels;
 
@@ -23,6 +25,11 @@ public class OctreeController : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        if(depth > 8)
+        {
+            throw new System.Exception("The maximum depth is 8 to avoid performance issues!");
+        }
+
         tree = new Octree<int>(this.transform.position, size, depth);
 
         tree.add(new Vector3(0.25f, 0.25f, 0.25f));
@@ -50,8 +57,7 @@ public class OctreeController : MonoBehaviour {
         for(int i = 0; i < tree.Count; i++)
         {
             GameObject voxel = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-
+            voxel.transform.localScale = new Vector3(0.08f, 0.08f, 0.08f);
             voxels.Add(voxel);
         }
 
@@ -59,10 +65,14 @@ public class OctreeController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    /*void Update()
+    void Update()
     {
-        voxelDrawNode(tree.Root, depth);
-    } */
+        if (updated)
+        {
+            voxelDrawNode(tree.Root, depth);
+            updated = false;
+        }
+    } 
 
     // PRIVATE METHODS
     private void voxelDrawNode(OctreeNode<int> node, int nodeDepth = 0)
@@ -78,12 +88,15 @@ public class OctreeController : MonoBehaviour {
             {
                 voxelDrawNode(child, nodeDepth + 1);
             }
+        } else
+        {
+            // draw
+            GameObject voxel = voxels[0];
+
+            voxel.transform.position = node.Position;
+
+            return;
         }
-
-        // draw
-        GameObject voxel = voxels[0];
-
-        voxel.transform.position = node.Position;
     }
 
     private void gizmosDrawNode(OctreeNode<int> node, int nodeDepth = 0)

@@ -60,8 +60,6 @@ public class OctreeNode<TType> {
         if(children == null)
         {
             splitSubSpace();
-        } else
-        {
         }
 
         int bestSSIdx = findBestSubspace(otherPos); // find best subspace idx
@@ -69,7 +67,7 @@ public class OctreeNode<TType> {
         this.children[bestSSIdx].add(otherPos, depth - 1);
 
         // now that we found best sub space, remove other children
-      //  this.remove();
+        //this.remove();
     }
 
     public void remove()
