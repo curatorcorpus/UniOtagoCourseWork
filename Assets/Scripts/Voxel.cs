@@ -2,21 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Voxel {
+public unsafe class Voxel
+{
+    private bool dataExists;
 
-    //private char* label;
-    private Color32 colour;
-    
-    public Voxel(string lab, Color32 colour)
+    private char* _label;
+    private Color32 _colour;
+
+    public Voxel()
     {
-        //fixed (char* label = lab) { }
-        //this.label = label;
-        this.colour = colour;  
+        dataExists = false;
+        _label = null;
+        _colour = new Color32(0, 128, 192, 255);
+    }
+
+    public Voxel(char* label, Color32 colour)
+    {
+        _label = label;
+        _colour = colour;
+    }
+
+    public bool DataExists
+    {
+        get { return dataExists;  }
+        set { dataExists = value;  }
+    }
+
+    public char* Label
+    {
+        get { return _label; }
+        set { _label = value; }
     }
 
     public Color32 Colour
     {
-        get { return colour; }
-        set { colour = value; }
+        get { return _colour; }
+        set { _colour = value; }
     }
 }
+
