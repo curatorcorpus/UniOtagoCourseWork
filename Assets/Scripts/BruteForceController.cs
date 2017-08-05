@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class BruteForceController : MonoBehaviour {
 
+    private static int MAX_VERTS = 65534;
+
     private bool updated = false;
     private int voxelSpaceHalf;
+
+    private List<Mesh> meshes;
 
     private VoxelSpace voxelSpace;
     private Mesh meshToVoxelize;
@@ -24,7 +28,10 @@ public class BruteForceController : MonoBehaviour {
             throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         // add models
-        voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
+        int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
+
+        // add to mesh
+        initMesh(voxelCount);
 
         // initial draw
         drawVoxels();
@@ -37,8 +44,33 @@ public class BruteForceController : MonoBehaviour {
             drawVoxels();
     }
 
+    // PRIVATE METHODS
+    private void initMesh(int voxelCount)
+    {
+        if(voxelCount > MAX_VERTS)
+        {
+            int divisor = Mathf.Ceil(voxelCount / MAX_VERTS);
+
+            meshes = new List<Mesh>(divisor);
+            
+            for(int i = 0; i < meshes.Count; i++)
+            {   
+                Mesh newMesh = new Mesh();
+                newMesh.name = "VoxelMesh_" + i;
+                
+                meshes.Add(new Mesh());
+            }
+        }
+        else{
+            meshes = new List<Mesh>(1);
+            meshes.Add(new Mesh());
+        }
+    }
+
     private void drawVoxels()
     {
+        List<Voxel> voxels;
+
         for (int i = -voxelSpaceHalf; i <= voxelSpaceHalf; i++)
         {
             for (int j = -voxelSpaceHalf; j <= voxelSpaceHalf; j++)
@@ -49,6 +81,9 @@ public class BruteForceController : MonoBehaviour {
 
                     if (voxel.DataExists)
                     {
+                        
+
+                        /*
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         MeshRenderer shader = cube.gameObject.GetComponent<MeshRenderer>();
 
@@ -63,7 +98,7 @@ public class BruteForceController : MonoBehaviour {
                         cube.transform.localPosition = voxelSpace.getPosition(i, j, k);
                         cube.transform.localScale = new Vector3(voxelSpace.VoxelSize, voxelSpace.VoxelSize, voxelSpace.VoxelSize);
 
-                        cube.SetActive(true);
+                        cube.SetActive(true);*/
                     }
                 }
             }

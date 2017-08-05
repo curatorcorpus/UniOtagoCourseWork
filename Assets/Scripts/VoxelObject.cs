@@ -10,12 +10,11 @@ public abstract class VoxelObject : MonoBehaviour
     protected int maxMeshSize;
 
     protected List<Vector3> tmpPos;
-    protected List<Vector3> tmpMpos;
     protected List<Color32> tmpCols;
+   
     protected List<MeshObject> meshObjects;
-    protected List<MeshObject> mirroredMeshObjects;
+   
     protected List<Vector3> positions;
-    protected List<Vector3> mirroredPositions;
     protected List<Vector3> normals;
     protected List<Color32> colors;
 
@@ -31,11 +30,6 @@ public abstract class VoxelObject : MonoBehaviour
     {
         get { return colors; }
         set { colors = value; }
-    }
-    public List<Vector3> MirroredPositions
-    {
-        get { return mirroredPositions; }
-        set { mirroredPositions = value; }
     }
 
     // Use this for initialization
@@ -99,24 +93,19 @@ public abstract class VoxelObject : MonoBehaviour
             if(i < neededMeshes)
             {
                 meshObjects[i].gameObject.SetActive(true);
-                mirroredMeshObjects[i].gameObject.SetActive(true);
 
                 tmpPos.Clear();
                 tmpCols.Clear();
-                tmpMpos.Clear();
 
                 tmpPos.AddRange(positions);
                 tmpCols.AddRange(colors);
-                tmpMpos.AddRange(mirroredPositions);
             
                 if (rest - maxMeshSize <= 0)
                 {
                     tmpPos.RemoveRange(0, count - rest);
                     tmpCols.RemoveRange(0, count - rest);
-                    tmpMpos.RemoveRange(0, count - rest);
 
                     meshObjects[i].updateMesh(tmpPos, tmpCols);
-                    mirroredMeshObjects[i].updateMesh(tmpMpos, tmpCols);
                 } else
                 {
                     tmpPos.RemoveRange(0, i * maxMeshSize);
@@ -125,17 +114,12 @@ public abstract class VoxelObject : MonoBehaviour
                     tmpCols.RemoveRange(0, i * maxMeshSize);
                     tmpCols.RemoveRange(maxMeshSize, tmpCols.Count - maxMeshSize);
 
-                    tmpMpos.RemoveRange(0, i * maxMeshSize);
-                    tmpMpos.RemoveRange(maxMeshSize, tmpMpos.Count - maxMeshSize);
-
                     meshObjects[i].updateMesh(tmpPos, tmpCols);
-                    mirroredMeshObjects[i].updateMesh(tmpMpos, tmpCols);
                 }
                 rest -= maxMeshSize;
             }  else
             {
                 meshObjects[i].gameObject.SetActive(false);
-                mirroredMeshObjects[i].gameObject.SetActive(false);
             }       
 
         }

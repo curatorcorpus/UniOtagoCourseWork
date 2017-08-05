@@ -83,7 +83,6 @@ public class MeshObject : MonoBehaviour
             colors.Clear();
         }
 
-
         mesh.Clear();
         mesh.SetVertices(verts);
         mesh.SetColors(cols);

@@ -82,7 +82,7 @@ public class VoxelSpace
         return voxelSpace[(int)index.x, (int)index.y, (int)index.z];
     }
 
-    public void addMeshToVoxelSpace(Mesh mesh, float scale)
+    public int addMeshToVoxelSpace(Mesh mesh, float scale)
     {
         voxelPos = Voxelizer.Voxelize(mesh, voxelLength);
 
@@ -102,6 +102,8 @@ public class VoxelSpace
                 Debug.Log("Voxel Position Rejected!");
             }
         });
+
+        return voxelPos.Count;
     }
 
     // PRIVATE METHODS

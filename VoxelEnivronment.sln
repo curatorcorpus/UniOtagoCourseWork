@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 
 Project("{A1C794F3-869E-C30B-DD0D-8C62F99F1361}") = "VoxelEnivronment", "Assembly-CSharp.csproj", "{9B254F02-6E08-544B-CDED-6FFBE0EFFBA1}"
 EndProject
+Project("{A1C794F3-869E-C30B-DD0D-8C62F99F1361}") = "VoxelEnivronment", "Assembly-CSharp-Editor.csproj", "{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{9B254F02-6E08-544B-CDED-6FFBE0EFFBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B254F02-6E08-544B-CDED-6FFBE0EFFBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B254F02-6E08-544B-CDED-6FFBE0EFFBA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
