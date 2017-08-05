@@ -4,23 +4,38 @@ using UnityEngine;
 
 public class BruteForceController : MonoBehaviour {
 
-    private VoxelSpace voxelSpace;
+    private bool updated = false;
     private int voxelSpaceHalf;
+
+    private VoxelSpace voxelSpace;
+    private Mesh meshToVoxelize;
 
     public float scale = 5.5f;
 
     // Use this for initialization
     void Start ()
     {
-        voxelSpace = new VoxelSpace();
+        voxelSpace     = new VoxelSpace();
         voxelSpaceHalf = voxelSpace.VoxelSpaceHalf;
-        voxelSpace.addMeshToVoxelSpace(GetComponent<MeshFilter>().mesh, scale);
+        meshToVoxelize = GetComponent<MeshFilter>().mesh;
 
+        // check that model to voxel exists
+        if (meshToVoxelize.vertexCount == 0)
+            throw new System.Exception("Mesh to voxelize doesn't exist!");
+
+        // add models
+        voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
+
+        // initial draw
         drawVoxels();
     }
-	
-	// Update is called once per frame
-	//void Update () {}
+
+    // Update is called once per frame
+    void Update ()
+    {
+        if (updated)
+            drawVoxels();
+    }
 
     private void drawVoxels()
     {
@@ -42,12 +57,13 @@ public class BruteForceController : MonoBehaviour {
                         cube.hideFlags = HideFlags.HideInInspector;
                         cube.hideFlags = HideFlags.NotEditable;
                         cube.hideFlags = HideFlags.HideInHierarchy;
-                        //shader.material.color = Random.ColorHSV();
+
                         shader.material.color = voxel.Colour;
-                        cube.SetActive(true);
 
                         cube.transform.localPosition = voxelSpace.getPosition(i, j, k);
                         cube.transform.localScale = new Vector3(voxelSpace.VoxelSize, voxelSpace.VoxelSize, voxelSpace.VoxelSize);
+
+                        cube.SetActive(true);
                     }
                 }
             }

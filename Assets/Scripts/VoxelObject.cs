@@ -3,11 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class VoxelObject : MonoBehaviour {
+public abstract class VoxelObject : MonoBehaviour
+
+{
 
     protected int maxMeshSize;
-
-    protected MREPManager manager;
 
     protected List<Vector3> tmpPos;
     protected List<Vector3> tmpMpos;
@@ -41,7 +41,7 @@ public abstract class VoxelObject : MonoBehaviour {
     // Use this for initialization
     protected void Start ()
     {
-        manager = GameObject.FindObjectOfType<MREPManager>();
+       /* manager = GameObject.FindObjectOfType<MREPManager>();
         maxMeshSize = manager.maxMeshSize;
 
         meshObjects = new List<MeshObject>(2);
@@ -64,7 +64,7 @@ public abstract class VoxelObject : MonoBehaviour {
         positions         = new List<Vector3>(meshObjects.Count * maxMeshSize);
         colors            = new List<Color32>(meshObjects.Count * maxMeshSize);
         mirroredPositions = new List<Vector3>(meshObjects.Count * maxMeshSize);
-
+        */
         updated = true;
     }
 
@@ -75,8 +75,7 @@ public abstract class VoxelObject : MonoBehaviour {
             voxelToMesh();
             updated = false;
         }
-        if (gameObject.transform.hasChanged)
-            mirrorTransform();
+       // if (gameObject.transform.hasChanged)
     }
 
     public void setMeshesToActive()
@@ -140,18 +139,5 @@ public abstract class VoxelObject : MonoBehaviour {
             }       
 
         }
-    }
-
-    protected void mirrorTransform()
-    {
-        for(int i = 0; i < mirroredMeshObjects.Count; i++)
-        {
-            Vector3 position = gameObject.transform.position;
-            mirroredMeshObjects[i].transform.position = new Vector3(position.x, position.y, -position.z);
-            Vector3 rotation = gameObject.transform.eulerAngles;
-            mirroredMeshObjects[i].transform.eulerAngles = new Vector3(-rotation.x, -rotation.y, rotation.z);
-            mirroredMeshObjects[i].transform.Translate(manager.mirrorOffset);
-        }
-
     }
 }
