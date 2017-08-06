@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoxelEnviroment", "VoxelEnviroment.csproj", "{41EC01B5-6F5C-336F-47D5-5AF03ADE540F}"
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoxelEnviroment.CSharp", "VoxelEnviroment.CSharp.csproj", "{66AE87EF-A4A0-9E26-FA7D-EE478B32EF1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoxelEnviroment.Editor", "VoxelEnviroment.Editor.csproj", "{640E7183-11CF-3676-8CD0-34CECEA5C5C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoxelEnviroment.CSharp.Editor", "VoxelEnviroment.CSharp.Editor.csproj", "{81446A67-0F45-D362-BF0C-50E92855C004}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,14 +11,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{41EC01B5-6F5C-336F-47D5-5AF03ADE540F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{41EC01B5-6F5C-336F-47D5-5AF03ADE540F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{41EC01B5-6F5C-336F-47D5-5AF03ADE540F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{41EC01B5-6F5C-336F-47D5-5AF03ADE540F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{640E7183-11CF-3676-8CD0-34CECEA5C5C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{640E7183-11CF-3676-8CD0-34CECEA5C5C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{640E7183-11CF-3676-8CD0-34CECEA5C5C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{640E7183-11CF-3676-8CD0-34CECEA5C5C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66AE87EF-A4A0-9E26-FA7D-EE478B32EF1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66AE87EF-A4A0-9E26-FA7D-EE478B32EF1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66AE87EF-A4A0-9E26-FA7D-EE478B32EF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66AE87EF-A4A0-9E26-FA7D-EE478B32EF1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81446A67-0F45-D362-BF0C-50E92855C004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81446A67-0F45-D362-BF0C-50E92855C004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81446A67-0F45-D362-BF0C-50E92855C004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81446A67-0F45-D362-BF0C-50E92855C004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

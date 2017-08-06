@@ -84,7 +84,7 @@ public class VoxelSpace
 
     public int addMeshToVoxelSpace(Mesh mesh, float scale)
     {
-        voxelPos = Voxelizer.Voxelize(mesh, voxelLength);
+        voxelPos = Voxelizer.Voxelize(mesh, volume/2);
 
         voxelPos.ForEach(voxel => {
 

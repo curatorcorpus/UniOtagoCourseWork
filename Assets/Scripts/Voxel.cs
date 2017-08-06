@@ -14,6 +14,8 @@ public unsafe class Voxel
         dataExists = false;
         _label = null;
         _colour = Random.ColorHSV();
+        //_colour = new Color32(236, 240, 241, 255);
+        _colour.a = 255;
     }
 
     public Voxel(char* label, Color32 colour)

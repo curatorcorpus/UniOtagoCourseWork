@@ -55,6 +55,22 @@ public class MeshObject : MonoBehaviour
         }*/
     }
 
+    public void updateMesh(List<VoxelStruct> voxelData)
+    {
+        if(voxelData != null)
+        {
+            voxelData.Clear();
+        }
+
+        //mesh.Clear();
+        //mesh.SetVertices(voxelData);
+
+        //foreach (VoxelStruct vs in voxelData)
+        //{
+        //    vs.position
+        //}
+    }
+
     public void updateMesh(Voxel voxel)
     {
         /*
