@@ -15,7 +15,7 @@ public class VoxelSpace
     private float voxelSize;
     private float voxelSizeHalf;
 
-    private int volume = 127;
+    private int volume = 257;
     private int maxLength = 3;
 
     // CONSTRUCTORS
@@ -93,7 +93,7 @@ public class VoxelSpace
 
         voxelPos.ForEach(voxel => {
 
-            Vector3 pos = voxel.position / scale;
+        Vector3 pos = voxel.position * scale;
 
             if (pos.x > -voxelSpaceHalf && pos.y > -voxelSpaceHalf && pos.z > -voxelSpaceHalf &&
                 pos.x < voxelSpaceHalf && pos.y < voxelSpaceHalf && pos.z < voxelSpaceHalf)
@@ -101,10 +101,12 @@ public class VoxelSpace
                 Vector3 indices = getPosToIndices(pos);
 
                 voxelSpace[(int)indices.x, (int)indices.y, (int)indices.z].DataExists = true;
+                Debug.Log(voxel.position);
             }
             else
             {
                 Debug.Log("Voxel Position Rejected!");
+                Debug.Log(voxel.position);
             }
         });
 
@@ -123,7 +125,6 @@ public class VoxelSpace
                 for (int k = -voxelSpaceHalf; k <= voxelSpaceHalf; k++)
                 {
                     voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k] = new Voxel();
-                    //voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k].DataExists = true;
                 }
             }
         }

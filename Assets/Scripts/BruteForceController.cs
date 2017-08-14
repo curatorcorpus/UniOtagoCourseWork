@@ -22,48 +22,47 @@ public class BruteForceController : MonoBehaviour
 
     private Material voxelMat;
 
-    public float scale = 5.5f;
+    public float scale = 1.0f;
 
     // Use this for initialization
     void Start()
     {
        // long start = Stopwatch.GetTimestamp();
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
-       // long end = Stopwatch.GetTimestamp();
+        // long end = Stopwatch.GetTimestamp();
 
         //UnityEngine.Debug.Log("Took " + ((float)(end-start)/10000) + " ms to setup voxel space");
+
+        //MeshFilter[] models = GetComponentsInChildren<MeshFilter>();
 
         voxelSpace = new VoxelSpace();
         voxelSpaceHalf = voxelSpace.VoxelSpaceHalf;
         meshToVoxelize = GetComponent<MeshFilter>().mesh;
-
         // check that materials were loaded successfully
         if (voxelMat == null)
             throw new System.Exception("Material File wasn't loaded!");
 
         // check that model to voxel exists
-        if (meshToVoxelize.vertexCount == 0)
-            throw new System.Exception("Mesh to voxelize doesn't exist!");
+        //if (meshToVoxelize.vertexCount == 0)
+         //   throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         // add models
-        //int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
+        int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
 
-        int voxelCount = voxelSpace.VoxelVolume;
+        /*
+        for(int i = 0; i < models.Length; i++)
+        {
+           voxelCount += voxelSpace.addMeshToVoxelSpace(models[i].mesh, scale);
+        }
+        */
         // add to mesh
         initMesh(voxelCount);
 
         // initialize indices to use
         initArrays();
 
-       // UnityEngine.Debug.Log(meshes.Count + " voxel meshes used");
-
         // initial draw
-       // start = Stopwatch.GetTimestamp();
         drawVoxels();
-        //end = Stopwatch.GetTimestamp();
-
-        // UnityEngine.Debug.Log("Took " + ((float)(end - start) / 10000) + " ms to traverse voxel space");
-        UnityEngine.Debug.Log(OVRManager.profile.ipd);
     }
 
     // Update is called once per frame
@@ -108,9 +107,9 @@ public class BruteForceController : MonoBehaviour
 
             gObj.transform.parent = gameObject.transform;
 
-            gObj.hideFlags = HideFlags.HideInInspector;
-            gObj.hideFlags = HideFlags.NotEditable;
-            gObj.hideFlags = HideFlags.HideInHierarchy;
+            //gObj.hideFlags = HideFlags.HideInInspector;
+            //gObj.hideFlags = HideFlags.NotEditable;
+            //gObj.hideFlags = HideFlags.HideInHierarchy;
             gObj.SetActive(true);
         });
     }
