@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class BruteForceController : MonoBehaviour
@@ -26,7 +27,11 @@ public class BruteForceController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+       // long start = Stopwatch.GetTimestamp();
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
+       // long end = Stopwatch.GetTimestamp();
+
+        //UnityEngine.Debug.Log("Took " + ((float)(end-start)/10000) + " ms to setup voxel space");
 
         voxelSpace = new VoxelSpace();
         voxelSpaceHalf = voxelSpace.VoxelSpaceHalf;
@@ -41,16 +46,24 @@ public class BruteForceController : MonoBehaviour
             throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         // add models
-        int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
+        //int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
 
+        int voxelCount = voxelSpace.VoxelVolume;
         // add to mesh
         initMesh(voxelCount);
 
         // initialize indices to use
         initArrays();
 
+       // UnityEngine.Debug.Log(meshes.Count + " voxel meshes used");
+
         // initial draw
+       // start = Stopwatch.GetTimestamp();
         drawVoxels();
+        //end = Stopwatch.GetTimestamp();
+
+        // UnityEngine.Debug.Log("Took " + ((float)(end - start) / 10000) + " ms to traverse voxel space");
+        UnityEngine.Debug.Log(OVRManager.profile.ipd);
     }
 
     // Update is called once per frame
@@ -88,7 +101,6 @@ public class BruteForceController : MonoBehaviour
             GameObject gObj = new GameObject();
 
             gObj.AddComponent<MeshRenderer>().material = voxelMat;
-
             mesh.name = "VoxelMesh";
 
             gObj.AddComponent<MeshFilter>().mesh = mesh;

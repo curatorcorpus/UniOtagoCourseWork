@@ -15,7 +15,7 @@ public class VoxelSpace
     private float voxelSize;
     private float voxelSizeHalf;
 
-    private int volume = 257;
+    private int volume = 127;
     private int maxLength = 3;
 
     // CONSTRUCTORS
@@ -32,7 +32,7 @@ public class VoxelSpace
         voxelSizeHalf = voxelSize / 2;
         voxelSpaceHalf = voxelLength / 2;
 
-        setupVoxelSpace();
+        setupVoxelSpace();    
     }
 
     // ACCESSOR METHODS
@@ -52,6 +52,11 @@ public class VoxelSpace
     {
         get { return voxelSizeHalf; }
         set { voxelSizeHalf = value; }
+    }
+
+    public int VoxelVolume
+    {
+        get { return voxelLength * voxelHeight * voxelDepth; }
     }
 
     public Voxel[,,] getVoxelSpace()
@@ -118,6 +123,7 @@ public class VoxelSpace
                 for (int k = -voxelSpaceHalf; k <= voxelSpaceHalf; k++)
                 {
                     voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k] = new Voxel();
+                    //voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k].DataExists = true;
                 }
             }
         }
