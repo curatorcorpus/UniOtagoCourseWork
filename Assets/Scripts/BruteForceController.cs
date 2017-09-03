@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -27,15 +28,15 @@ public class BruteForceController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-       // long start = Stopwatch.GetTimestamp();
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
-        // long end = Stopwatch.GetTimestamp();
-
-        //UnityEngine.Debug.Log("Took " + ((float)(end-start)/10000) + " ms to setup voxel space");
 
         //MeshFilter[] models = GetComponentsInChildren<MeshFilter>();
 
+        Stopwatch init = Stopwatch.StartNew();
         voxelSpace = new VoxelSpace();
+        init.Stop();
+        UnityEngine.Debug.Log("Took " + init.Elapsed.TotalMilliseconds + " ms to setup voxel space");
+
         voxelSpaceHalf = voxelSpace.VoxelSpaceHalf;
         meshToVoxelize = GetComponent<MeshFilter>().mesh;
         // check that materials were loaded successfully
@@ -47,29 +48,31 @@ public class BruteForceController : MonoBehaviour
          //   throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         // add models
-        int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
+       int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
 
-        /*
-        for(int i = 0; i < models.Length; i++)
-        {
-           voxelCount += voxelSpace.addMeshToVoxelSpace(models[i].mesh, scale);
-        }
-        */
         // add to mesh
-        initMesh(voxelCount);
+        initMesh(1000000);
 
         // initialize indices to use
         initArrays();
 
         // initial draw
+        init = Stopwatch.StartNew();
         drawVoxels();
+        init.Stop();
+        UnityEngine.Debug.Log("Took "+ init.Elapsed.TotalMilliseconds + " ms for Initial Traversal");
     }
 
     // Update is called once per frame
     void Update()
     {
+        UnityEngine.Debug.Log(OVRManager.display.latency.render);
+
         if (updated)
+        {
+            Stopwatch sw_draw_frame = Stopwatch.StartNew();
             drawVoxels();
+        }
     }
 
     // PRIVATE METHODS
@@ -138,7 +141,7 @@ public class BruteForceController : MonoBehaviour
         }
 
         Mesh mesh = meshes[0];
-
+        UnityEngine.Debug.Log(meshes.Count + " gameobjects/meshes");
         for (int i = -voxelSpaceHalf; i <= voxelSpaceHalf; i++)
         {
             for (int j = -voxelSpaceHalf; j <= voxelSpaceHalf; j++)
@@ -166,7 +169,6 @@ public class BruteForceController : MonoBehaviour
                     {
                         verts.Add(voxelSpace.getPosition(i, j, k));
                         clrs.Add(voxel.Colour);
-
                         currVert++;
                     }
                 }

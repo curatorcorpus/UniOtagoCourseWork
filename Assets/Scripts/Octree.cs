@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Octree<TType>
@@ -42,7 +42,6 @@ public class Octree<TType>
             pos.z <= maxPoint && pos.z >= -maxPoint)
         {
             root.add(pos, depth);
-
             count++;
         }
 
@@ -53,6 +52,16 @@ public class Octree<TType>
             Debug.Log("The maximum boundaries are: ");
             printBoundaries();
         }
+    }
+
+    public List<Vector3> get()
+    {
+        if(root == null)
+        {
+            return null;
+        }
+
+        return root.getPositions();
     }
 
     public void printBoundaries()

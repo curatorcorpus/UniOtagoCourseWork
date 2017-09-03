@@ -70,6 +70,27 @@ public class OctreeNode<TType> {
         //this.remove();
     }
 
+    public List<Vector3> getPositions()
+    {
+        List<Vector3> pos = new List<Vector3>();
+        
+        if(children == null)
+        {
+            if(newPosExists)
+            {
+                pos.Add(position);
+            }
+        }
+        else
+        {
+            foreach (OctreeNode<TType> child in children)
+            {
+                pos.AddRange(child.getPositions());
+            }
+        }
+        return pos;
+    }
+
     public void remove()
     {
         int bestIdx = findBestSubspace(this.position);

@@ -15,18 +15,18 @@ public class VoxelSpace
     private float voxelSize;
     private float voxelSizeHalf;
 
-    private int volume = 257;
+    private int volume = 357;
     private int maxLength = 3;
 
     // CONSTRUCTORS
     public VoxelSpace()
     {
-        if (volume % 2 == 0)
-            throw new System.Exception("This voxelspace doesn't support for even voxel space!");
+        //if (volume % 2 == 0)
+            //throw new System.Exception("This voxelspace doesn't support for even voxel space!");
 
         voxelLength = volume;
         voxelHeight = volume;
-        voxelDepth = volume;
+        voxelDepth  = volume;
 
         voxelSize = ((float)maxLength / (float)voxelLength);
         voxelSizeHalf = voxelSize / 2;
@@ -101,12 +101,10 @@ public class VoxelSpace
                 Vector3 indices = getPosToIndices(pos);
 
                 voxelSpace[(int)indices.x, (int)indices.y, (int)indices.z].DataExists = true;
-                Debug.Log(voxel.position);
             }
             else
             {
                 Debug.Log("Voxel Position Rejected!");
-                Debug.Log(voxel.position);
             }
         });
 
@@ -118,6 +116,8 @@ public class VoxelSpace
     {
         voxelSpace = new Voxel[voxelLength, voxelHeight, voxelDepth];
 
+        int ct = 0;
+
         for (int i = -voxelSpaceHalf; i <= voxelSpaceHalf; i++)
         {
             for (int j = -voxelSpaceHalf; j <= voxelSpaceHalf; j++)
@@ -125,6 +125,8 @@ public class VoxelSpace
                 for (int k = -voxelSpaceHalf; k <= voxelSpaceHalf; k++)
                 {
                     voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k] = new Voxel();
+                    if(ct < 1000000) voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k].DataExists = true;
+                    ct++;
                 }
             }
         }
