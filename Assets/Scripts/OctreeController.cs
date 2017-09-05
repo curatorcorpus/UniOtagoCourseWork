@@ -66,7 +66,7 @@ public class OctreeController : MonoBehaviour {
             }
         }
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(node.Position, Vector3.one * node.Size);
+        Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
     }
 
     // Use this for initialization
@@ -89,19 +89,18 @@ public class OctreeController : MonoBehaviour {
            throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         tree = new Octree<int>(this.transform.position, size, depth);
-
-        List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
-        Debug.Log(voxelPos.Count + "TESt");
+        tree.add(new Vector3(-50, -50, -50));
+        /*List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
         voxelPos.ForEach(voxel => 
         {
             Vector3 pos = voxel.position;
             tree.add(pos);
-        });
+        });*/
 
-        initMesh(voxelPos.Count);   // add to mesh
-        initArrays();               // initialize indices to use
+        initMesh(1);    // add to mesh
+        initArrays();   // initialize indices to use
 
-        voxelDrawNode();
+        voxelDrawNode();    // inital draw
     }
 
     // Update is called once per frame
@@ -171,7 +170,7 @@ public class OctreeController : MonoBehaviour {
 
     private void voxelDrawNode()
     {
-        List<Vector3> test = tree.get();
+        List<Vector3> test = tree.getAllPoints();
 
         // draw
         int idx = 0;
@@ -183,6 +182,7 @@ public class OctreeController : MonoBehaviour {
             clrs.Clear();
         }
 
+        // initial mesh
         Mesh mesh = meshes[0];
 
         while (remainingVerts > 0)

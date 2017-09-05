@@ -27,14 +27,19 @@ public class Octree<TType>
     // CONSTRUCTORS
     public Octree(Vector3 position, float size, int depth)
     {
+        // initialize the root node
+        this.root = new OctreeNode<TType>(position, size);
+
         this.depth = depth;
-        this.root  = new OctreeNode<TType>(position, size);
         this.maxSize  = size;
         this.maxPoint = maxSize / 2;
         this.count = 0;
     }
 
     // PUBLIC METHODS
+    /*
+     * Method for adding a new node to data structure.
+     */
     public void add(Vector3 pos)
     {
         if (pos.x <= maxPoint && pos.x >= -maxPoint &&
@@ -54,7 +59,10 @@ public class Octree<TType>
         }
     }
 
-    public List<Vector3> get()
+    /*
+     * Method for traversing entire Octree data structure.
+     */
+    public List<Vector3> getAllPoints()
     {
         if(root == null)
         {

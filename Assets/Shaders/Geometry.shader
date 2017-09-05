@@ -57,7 +57,7 @@ Shader "Custom/Geometry" {
 
 			[maxvertexcount(24)]
 			void geo(point vs_out voxelPoint[1], inout TriangleStream<fs_in> stream) {
-				float size = 0.2;
+				float size = 0.19;
 				fs_in v1, v2, v3, v4, v5, v6, v7, v8;
 				float4 corner = voxelPoint[0].pos;
 				float4 colour = voxelPoint[0].colour;
@@ -204,7 +204,7 @@ Shader "Custom/Geometry" {
 
 		[maxvertexcount(24)]
 		void geo(point fs_in voxelPoint[1], inout TriangleStream<fs_in> stream) {
-			float size = 0.2;
+			float size = 0.19;
 			fs_in v1, v2, v3, v4, v5, v6, v7, v8;
 			SHADOW_VERTEX v;
 			float4 corner = voxelPoint[0].pos;

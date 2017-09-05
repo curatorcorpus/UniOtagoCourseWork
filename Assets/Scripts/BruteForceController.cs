@@ -66,7 +66,7 @@ public class BruteForceController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UnityEngine.Debug.Log(OVRManager.display.latency.render);
+        //UnityEngine.Debug.Log(OVRManager.display.latency.render);
 
         if (updated)
         {
