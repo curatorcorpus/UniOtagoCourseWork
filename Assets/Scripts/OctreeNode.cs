@@ -49,7 +49,9 @@ public class OctreeNode<TType> {
 	public void add(Vector3 newSize, int depth = 0)
     {
 		if(depth == 0)
-			return;
+        {
+            return;
+        }
 
         if(children == null)
             splitSubSpace();
@@ -57,6 +59,7 @@ public class OctreeNode<TType> {
         int bestSSIdx = findBestSubspace(newSize); // find best subspace idx.
 
         this.children[bestSSIdx].newSizeExists = true;
+        Debug.Log("WTF " + this.children[bestSSIdx].SubspaceSize);
         this.children[bestSSIdx].add(newSize, depth - 1);
 
         // now that we found best sub space, remove other children

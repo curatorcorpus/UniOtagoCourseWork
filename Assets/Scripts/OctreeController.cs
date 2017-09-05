@@ -7,8 +7,8 @@ public class OctreeController : MonoBehaviour {
     private static int MAX_VERTS = 65534;
 
     [SerializeField] private bool debug = false;
-    [SerializeField] private float size = 5.0f;
-    [SerializeField] private int depth = 2;
+    [SerializeField] private float voxelSpaceLength = 5.0f;
+    [SerializeField] private int octreeMaxDepth = 2;
 
     private bool initDebug = true;
     private bool updated = true;
@@ -88,7 +88,8 @@ public class OctreeController : MonoBehaviour {
         if (meshToVoxelize.vertexCount == 0)
            throw new System.Exception("Mesh to voxelize doesn't exist!");
 
-        tree = new Octree<int>(this.transform.position, size, depth);
+        tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+        Debug.Log("voxel size " + tree.getVoxelSize());
         tree.add(new Vector3(-1, -1, -1));
         /*List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
         voxelPos.ForEach(voxel => 

@@ -8,11 +8,11 @@ public class Octree<TType>
 
     private int count;
     private int depth = 0;
-    private float maxSize;
+    private float vsLength;
+    private float voxelSize = -1;
     private float maxPoint;
 
     // GETTERS AND SETTERS
-
     public int Count
     {
         get { return count; }
@@ -24,6 +24,15 @@ public class Octree<TType>
         get { return root; }
     }
 
+    public float getVoxelSize()
+    {
+        if(voxelSize == -1)
+        {
+            voxelSize = calculateVoxelSize();
+        }
+        return voxelSize;
+    }
+
     // CONSTRUCTORS
     public Octree(Vector3 position, float size, int depth)
     {
@@ -31,8 +40,8 @@ public class Octree<TType>
         this.root = new OctreeNode<TType>(position, size);
 
         this.depth = depth;
-        this.maxSize  = size;
-        this.maxPoint = maxSize / 2;
+        this.vsLength  = size;
+        this.maxPoint = vsLength / 2;
         this.count = 0;
     }
 
@@ -53,7 +62,7 @@ public class Octree<TType>
         // any position outside mentioned boundary is just inserted at the boundary points.
         else
         {
-            Debug.Log("position " + pos + " wasn't inserted because the max size is " + maxSize);
+            Debug.Log("position " + pos + " wasn't inserted because the max size is " + vsLength);
             Debug.Log("The maximum boundaries are: ");
             printBoundaries();
         }
@@ -82,5 +91,16 @@ public class Octree<TType>
         Debug.Log(new Vector3(-maxPoint, maxPoint, -maxPoint));
         Debug.Log(new Vector3(maxPoint, -maxPoint, -maxPoint));
         Debug.Log(new Vector3(-maxPoint, -maxPoint, -maxPoint));
+    }
+
+    // PRIVATE METHODS
+
+    /*
+     * Method for calculating the minimum voxel size given voxel space
+     * length and depth of octree. 
+     */
+    private float calculateVoxelSize()
+    {
+        return vsLength / Mathf.Pow(2, depth);
     }
 }
