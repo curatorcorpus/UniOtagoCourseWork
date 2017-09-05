@@ -89,6 +89,8 @@ public class OctreeController : MonoBehaviour {
            throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+
+        voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
         Debug.Log("voxel size " + tree.getVoxelSize());
         tree.add(new Vector3(-1, -1, -1));
         /*List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
