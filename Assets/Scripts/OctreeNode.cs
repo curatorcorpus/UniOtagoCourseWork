@@ -15,7 +15,8 @@ public class OctreeNode<TType> {
     private static int BRB = 6;
     private static int BLB = 7;
 
-    private bool newPosExists = false;
+    private bool debug = true;
+    private bool newSizeExists = false;
 	private float subspaceSize;
 
 	private Vector3 center;
@@ -45,7 +46,7 @@ public class OctreeNode<TType> {
 	}
 
     // PUBLIC METHODS
-	public void add(Vector3 newPos, int depth = 0)
+	public void add(Vector3 newSize, int depth = 0)
     {
 		if(depth == 0)
 			return;
@@ -53,10 +54,10 @@ public class OctreeNode<TType> {
         if(children == null)
             splitSubSpace();
 
-        int bestSSIdx = findBestSubspace(newPos); // find best subspace idx.
+        int bestSSIdx = findBestSubspace(newSize); // find best subspace idx.
 
-        this.children[bestSSIdx].newPosExists = true;
-        this.children[bestSSIdx].add(newPos, depth - 1);
+        this.children[bestSSIdx].newSizeExists = true;
+        this.children[bestSSIdx].add(newSize, depth - 1);
 
         // now that we found best sub space, remove other children
         //this.remove();
@@ -68,7 +69,7 @@ public class OctreeNode<TType> {
         
         if(children == null)
         {
-            if(newPosExists)
+            if(newSizeExists)
             {
                 pos.Add(center);
             }
@@ -89,7 +90,7 @@ public class OctreeNode<TType> {
 
         for (int i = 0; i < children.Length; i++)
         {
-            if (newPosExists)
+            if (newSizeExists)
             {
                 this.children[i] = null;
             }
@@ -107,17 +108,17 @@ public class OctreeNode<TType> {
         setupChildren();
         for (int i = 0; i < children.Length; i++)
         {
-            Vector3 newPos = center;
-            if ((i & 4) == 4) newPos.y += quarter;
-            else              newPos.y -= quarter;
+            Vector3 newSize = center;
+            if ((i & 4) == 4) newSize.y += quarter;
+            else              newSize.y -= quarter;
 
-            if ((i & 2) == 2) newPos.x += quarter;
-            else              newPos.x -= quarter;
+            if ((i & 2) == 2) newSize.x += quarter;
+            else              newSize.x -= quarter;
 
-            if ((i & 1) == 1) newPos.z += quarter;
-            else              newPos.z -= quarter;
+            if ((i & 1) == 1) newSize.z += quarter;
+            else              newSize.z -= quarter;
 
-            children[i] = new OctreeNode<TType>(newPos, subspaceSize * 0.5f);
+            children[i] = new OctreeNode<TType>(newSize, subspaceSize * 0.5f);
             if (depth > 0)
             {
                 children[i].branch(depth - 1);
@@ -132,37 +133,41 @@ public class OctreeNode<TType> {
 	}
 
     // PRIVATE METHODS
-    private int findBestSubspace(Vector3 newPos)
+    private int findBestSubspace(Vector3 newSize)
     {
 
-        Debug.Log(newPos.x + " x: " + center.x + " y: " + newPos.y + " " + center.y + " z: " + newPos.z + " " + center.z);
-        Debug.Log((newPos.x >= center.x ? 0 : 1) +
-               (newPos.y >= center.y ? 0 : 2) +
-               (newPos.z >= center.z ? 0 : 4));
+        if (debug)
+        {
+            Debug.Log(newSize.x + " x: " + center.x + " y: " + newSize.y + " " + center.y + " z: " + newSize.z + " " + center.z);
+            Debug.Log((newSize.x >= center.x ? 0 : 1) +
+               (newSize.y >= center.y ? 0 : 2) +
+               (newSize.z >= center.z ? 0 : 4));
+            Debug.Log(subspaceSize);
+        }
 
-        return (newPos.x >= center.x ? 0 : 1) + 
-               (newPos.y >= center.y ? 0 : 2) +
-               (newPos.z >= center.z ? 0 : 4);
+        return (newSize.x >= center.x ? 0 : 1) + 
+               (newSize.y >= center.y ? 0 : 2) +
+               (newSize.z >= center.z ? 0 : 4);
     }
 
     void splitSubSpace()
     {
         float quarter = subspaceSize * 0.25f;
-        float newPos = subspaceSize * 0.5f;
+        float newSize = subspaceSize * 0.5f;
 
         setupChildren(); // allocates memory to children array.
 
-        children[TRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, quarter), newPos);
-        children[TLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, quarter), newPos);
+        children[TRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, quarter), newSize);
+        children[TLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, quarter), newSize);
 
-        children[BRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, quarter), newPos);
-        children[BLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, quarter), newPos);
+        children[BRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, quarter), newSize);
+        children[BLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, quarter), newSize);
 
-        children[TRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, -quarter), newPos);
-        children[TLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, -quarter), newPos);
+        children[TRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, -quarter), newSize);
+        children[TLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, -quarter), newSize);
 
-        children[BRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, -quarter), newPos);
-        children[BLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, -quarter), newPos);
+        children[BRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, -quarter), newSize);
+        children[BLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, -quarter), newSize);
 }
 
     private void setupChildren()

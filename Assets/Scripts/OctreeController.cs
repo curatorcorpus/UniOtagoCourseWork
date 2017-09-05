@@ -71,11 +71,11 @@ public class OctreeController : MonoBehaviour {
 
     // Use this for initialization
     void Start ()
-    {
+    {/*
         if(depth > 8)
         {
             throw new System.Exception("The maximum depth is 8 to avoid performance issues!");
-        }
+        }*/
 
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
         // check that materials were loaded successfully
@@ -89,7 +89,7 @@ public class OctreeController : MonoBehaviour {
            throw new System.Exception("Mesh to voxelize doesn't exist!");
 
         tree = new Octree<int>(this.transform.position, size, depth);
-        tree.add(new Vector3(-50, -50, -50));
+        tree.add(new Vector3(-1, -1, -1));
         /*List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
         voxelPos.ForEach(voxel => 
         {

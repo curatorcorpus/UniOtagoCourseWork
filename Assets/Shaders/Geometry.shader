@@ -282,7 +282,8 @@ Shader "Custom/Geometry" {
 
 		//FRAGMENT-----------------------------------------------------------------------------------------
 
-		float4 frag(fs_in v) : COLOR{
+		float4 frag(fs_in v) : COLOR
+		{
 			// TODO: Shade based on lighting, probably using 
 			// from http://docs.unity3d.com/Manual/SL-BuiltinIncludes.html
 			SHADOW_CASTER_FRAGMENT(v)
