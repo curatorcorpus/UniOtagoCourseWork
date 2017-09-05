@@ -51,7 +51,7 @@ public class BruteForceController : MonoBehaviour
        int voxelCount = voxelSpace.addMeshToVoxelSpace(meshToVoxelize, scale);
 
         // add to mesh
-        initMesh(1000000);
+        initMesh(5000000);
 
         // initialize indices to use
         initArrays();

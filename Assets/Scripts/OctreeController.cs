@@ -6,10 +6,11 @@ public class OctreeController : MonoBehaviour {
 
     private static int MAX_VERTS = 65534;
 
-    [SerializeField] private bool drawTree = false;
+    [SerializeField] private bool debug = false;
     [SerializeField] private float size = 5.0f;
     [SerializeField] private int depth = 2;
 
+    private bool initDebug = true;
     private bool updated = true;
 
     private Octree<int> tree;
@@ -20,18 +21,52 @@ public class OctreeController : MonoBehaviour {
     private List<Color32> clrs;
     private List<int> indices;
 
-    void OnValidate()
-    {
-        tree = new Octree<int>(this.transform.position, size, depth);
-    }
-
-    // used for debugging
+    // GIZMOS DEBUGGER
     void OnDrawGizmos()
     {
-        if (drawTree)
+        if (debug)
         {
-            gizmosDrawNode(tree.Root);
+            // throw error if debugger is turned on without starting program.
+            if(tree == null)
+            {
+                throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
+            }
+
+            // draw debugger once.
+            if(initDebug)
+            {
+                initDebug = false;
+                gizmosDrawNode(tree.Root);
+            }
+
+            // re draw if data structure is updated
+           // if(updated)
+         //   {
+                gizmosDrawNode(tree.Root);
+           // }
         }
+        else
+        {
+            initDebug = true;
+        }
+    }
+
+    private void gizmosDrawNode(OctreeNode<int> node, int nodeDepth = 0)
+    {
+        if (node == null)
+        {
+            return;
+        }
+
+        if (!node.isLeaf())
+        {
+            foreach (var child in node.Children)
+            {
+                gizmosDrawNode(child, nodeDepth + 1);
+            }
+        }
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(node.Position, Vector3.one * node.Size);
     }
 
     // Use this for initialization
@@ -47,7 +82,6 @@ public class OctreeController : MonoBehaviour {
         if (voxelMat == null)
             throw new System.Exception("Material File wasn't loaded!");
 
-        //MeshFilter[] models = GetComponentsInChildren<MeshFilter>();
         Mesh meshToVoxelize = GetComponent<MeshFilter>().mesh;
 
         // check that model to voxel exists
@@ -56,39 +90,16 @@ public class OctreeController : MonoBehaviour {
 
         tree = new Octree<int>(this.transform.position, size, depth);
 
-        List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 200);
+        List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
         Debug.Log(voxelPos.Count + "TESt");
-        voxelPos.ForEach(voxel => {
+        voxelPos.ForEach(voxel => 
+        {
             Vector3 pos = voxel.position;
-
             tree.add(pos);
         });
 
-        /*
-                tree.add(new Vector3(0.25f, 0.25f, 0.25f));
-                tree.add(new Vector3(-0.25f, 0.25f, 0.25f));
-                tree.add(new Vector3(0.25f, -0.25f, 0.25f));
-                tree.add(new Vector3(0.25f, 0.25f, -0.25f));
-                tree.add(new Vector3(-0.25f,- 0.25f, 0.25f));
-                tree.add(new Vector3(0.25f, -0.25f, -0.25f));
-                tree.add(new Vector3(-0.25f, 0.25f, -0.25f));
-                tree.add(new Vector3(-2f, -2f, -2f));
-                tree.add(new Vector3(5f, 5f, 5f));
-                tree.add(new Vector3(-5f, -5f, -5f));
-                tree.add(new Vector3(5f, -5f, 5f));
-                tree.add(new Vector3(5f, 5f, -5f));
-                tree.add(new Vector3(-5f, 5f, 5f));
-                tree.add(new Vector3(-5f, 5f, -5f));
-                tree.add(new Vector3(-5f, -5f, 5f));
-                tree.add(new Vector3(5f, -5f, -5f));
-                tree.add(new Vector3(20f, 20f, 20f));
-
-                voxels = new List<GameObject>(tree.Count);*/
-        // add to mesh
-        initMesh(voxelPos.Count);
-
-        // initialize indices to use
-        initArrays();
+        initMesh(voxelPos.Count);   // add to mesh
+        initArrays();               // initialize indices to use
 
         voxelDrawNode();
     }
@@ -188,29 +199,11 @@ public class OctreeController : MonoBehaviour {
                 mesh.Clear();
                 mesh.SetVertices(test.GetRange(remainingVerts - MAX_VERTS, remainingVerts));
                 mesh.SetColors(clrs);
-                mesh.SetIndices(indices.GetRange(remainingVerts - MAX_VERTS, remainingVerts).ToArray(), MeshTopology.Points, 0);
+                mesh.SetIndices(indices.GetRange(0, MAX_VERTS).ToArray(), MeshTopology.Points, 0);
                 mesh = meshes[++idx];
             }
 
             remainingVerts -= MAX_VERTS;
         }
-    }
-
-    private void gizmosDrawNode(OctreeNode<int> node, int nodeDepth = 0)
-    {
-        if(node == null)
-        {
-            return;
-        }
-
-        if (!node.isLeaf())
-        {
-            foreach (var child in node.Children)
-            {
-                gizmosDrawNode(child, nodeDepth + 1);
-            }
-        }
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(node.Position, Vector3.one * node.Size);
     }
 }

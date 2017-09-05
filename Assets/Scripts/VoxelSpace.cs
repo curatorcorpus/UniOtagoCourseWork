@@ -125,7 +125,7 @@ public class VoxelSpace
                 for (int k = -voxelSpaceHalf; k <= voxelSpaceHalf; k++)
                 {
                     voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k] = new Voxel();
-                    if(ct < 1000000) voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k].DataExists = true;
+                    if(ct < 5000000) voxelSpace[voxelSpaceHalf + i, voxelSpaceHalf + j, voxelSpaceHalf + k].DataExists = true;
                     ct++;
                 }
             }
