@@ -70,7 +70,7 @@ public class Voxelizer
     // http://blog.wolfire.com/2009/11/Triangle-mesh-voxelization
     public static List<Voxel> Voxelize (Mesh mesh, int count = 10) {
         var voxels = new List<Voxel>();
-
+        
         mesh.RecalculateBounds();
         var bounds = mesh.bounds;
         float maxLength = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
@@ -81,11 +81,16 @@ public class Voxelizer
 
         var triangles = new List<Triangle>();
         for(int i = 0, n = indices.Length; i < n; i += 3) {
+
+            Debug.Log(vertices[indices[i]] * 100);
+            Debug.Log(vertices[indices[i + 1]] * 100);
+            Debug.Log(vertices[indices[i + 2]] * 100);
+
             triangles.Add(
                 new Triangle(
-                    vertices[indices[i]],
-                    vertices[indices[i + 1]],
-                    vertices[indices[i + 2]]
+                    vertices[indices[i]] * 100,
+                    vertices[indices[i + 1]] * 100,
+                    vertices[indices[i + 2]] * 100
                 )
             );
         }

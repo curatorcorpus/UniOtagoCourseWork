@@ -10,6 +10,8 @@ public class OctreeController : MonoBehaviour {
     [SerializeField] private float voxelSpaceLength = 5.0f;
     [SerializeField] private int octreeMaxDepth = 2;
 
+    [SerializeField] private GameObject meshModel;
+
     private bool initDebug = true;
     private bool updated = true;
 
@@ -29,11 +31,9 @@ public class OctreeController : MonoBehaviour {
             // throw error if debugger is turned on without starting program.
             if(tree == null)
             {
-                throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
+                //throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
             }
-
-            // draw debugger once.
-            if(initDebug)
+            else if(initDebug) // draw debugger once.
             {
                 initDebug = false;
                 gizmosDrawNode(tree.Root);
@@ -71,39 +71,40 @@ public class OctreeController : MonoBehaviour {
 
     // Use this for initialization
     void Start ()
-    {/*
-        if(depth > 8)
-        {
-            throw new System.Exception("The maximum depth is 8 to avoid performance issues!");
-        }*/
-
+    {
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
         // check that materials were loaded successfully
         if (voxelMat == null)
             throw new System.Exception("Material File wasn't loaded!");
 
-        Mesh meshToVoxelize = GetComponent<MeshFilter>().mesh;
+        //   Mesh meshToVoxelize = GetComponent<MeshFilter>().mesh;
 
         // check that model to voxel exists
-        if (meshToVoxelize.vertexCount == 0)
-           throw new System.Exception("Mesh to voxelize doesn't exist!");
+        // if (meshToVoxelize.vertexCount == 0)
+        //    throw new System.Exception("Mesh to voxelize doesn't exist!");
 
+        MeshRenderer[] mr = meshModel.GetComponentsInChildren<MeshRenderer>();
+        MeshFilter[] m = meshModel.GetComponentsInChildren<MeshFilter>();
+        Matrix4x4 modelMatrix = transform.localToWorldMatrix;
+        Debug.Log(modelMatrix);
         tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
 
         voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
-        Debug.Log("voxel size " + tree.getVoxelSize());
-        tree.add(new Vector3(-1, -1, -1));
-        /*List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(meshToVoxelize, 100);
-        voxelPos.ForEach(voxel => 
+
+        for(int i = 0; i < mr.Length; i++)
         {
-            Vector3 pos = voxel.position;
-            tree.add(pos);
-        });*/
+            List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(m[i].sharedMesh, 50);
+            voxelPos.ForEach(voxel =>
+            {
+                Vector3 pos = voxel.position;
+                //Debug.Log(pos);
+                tree.add(pos);
+            });
+        }
 
-        initMesh(1);    // add to mesh
-        initArrays();   // initialize indices to use
-
-        voxelDrawNode();    // inital draw
+        initMeshByNoMeshes(m.Length);    // add to mesh
+        initArrays();                // initialize indices to use
+        voxelDrawNode();             // inital draw
     }
 
     // Update is called once per frame
@@ -117,7 +118,32 @@ public class OctreeController : MonoBehaviour {
     }
 
     // PRIVATE METHODS
-    private void initMesh(int voxelCount)
+    private void initMeshByNoMeshes(int noMeshes)
+    {
+        meshes = new List<Mesh>(noMeshes);
+        for (int i = 0; i < noMeshes; i++)
+        {
+            GameObject gObj = new GameObject();
+            Mesh newMesh = new Mesh();
+
+            meshes.Add(newMesh);
+
+            gObj.AddComponent<MeshRenderer>().material = voxelMat;
+            newMesh.name = "VoxelMesh";
+
+            gObj.AddComponent<MeshFilter>().mesh = newMesh;
+            gObj.name = "VoxelMesh";
+
+            gObj.transform.parent = gameObject.transform;
+
+            //gObj.hideFlags = HideFlags.HideInInspector;
+            //gObj.hideFlags = HideFlags.NotEditable;
+            //gObj.hideFlags = HideFlags.HideInHierarchy;
+            gObj.SetActive(true);
+        }
+    }
+
+    private void initMeshByVoxelCount(int voxelCount)
     {
         if (voxelCount > MAX_VERTS)
         {

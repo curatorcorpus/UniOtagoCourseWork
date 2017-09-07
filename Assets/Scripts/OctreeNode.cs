@@ -15,7 +15,7 @@ public class OctreeNode<TType> {
     private static int BRB = 6;
     private static int BLB = 7;
 
-    private bool debug = true;
+    private bool debug = false;
     private bool newSizeExists = false;
 	private float subspaceSize;
 
@@ -59,7 +59,7 @@ public class OctreeNode<TType> {
         int bestSSIdx = findBestSubspace(newSize); // find best subspace idx.
 
         this.children[bestSSIdx].newSizeExists = true;
-        Debug.Log("WTF " + this.children[bestSSIdx].SubspaceSize);
+       // Debug.Log("WTF " + this.children[bestSSIdx].SubspaceSize);
         this.children[bestSSIdx].add(newSize, depth - 1);
 
         // now that we found best sub space, remove other children

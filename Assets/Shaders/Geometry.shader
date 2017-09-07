@@ -27,17 +27,20 @@ Shader "Custom/Geometry"
 			#include "UnityCG.cginc"
 			#include "AutoLight.cginc"
 
-			struct vs_in {
+			struct vs_in 
+			{
 				float4 pos: POSITION;
 				float4 colour: COLOR;
 			};
 
-			struct vs_out {
+			struct vs_out 
+			{
 				float4 pos: POSITION;
 				float4 colour: COLOR;
 			};
 
-			struct fs_in {
+			struct fs_in 
+			{
 				float4 pos: SV_POSITION;		// has to be called this way because of Unity Macro for light
 				float4 colour: COLOR;
 
