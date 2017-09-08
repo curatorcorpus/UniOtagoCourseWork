@@ -6,10 +6,16 @@ public class OctreeController : MonoBehaviour
 {
     private static int MAX_VERTS = 65534;
 
-    [SerializeField] private bool debug = false;
+    [Header("Voxel Space Settings")]
     [SerializeField] private float voxelSpaceLength = 5.0f;
     [SerializeField] private int octreeMaxDepth = 2;
+
+    [Header("Models")]
     [SerializeField] private GameObject meshModel;
+
+    [Header("Debug Tools")]
+    [SerializeField] private bool debugOctree = false;
+    [SerializeField] private bool useBasicVoxelization = false;
 
     private bool initDebug = true;
     private bool updated = true;
@@ -18,14 +24,12 @@ public class OctreeController : MonoBehaviour
     private Material voxelMat;
 
     private List<Mesh> meshes;
-    private List<Vector3> verts;
-    private List<Color32> clrs;
     private List<int> indices;
 
     // GIZMOS DEBUGGER
     void OnDrawGizmos()
     {
-        if (debug)
+        if (debugOctree)
         {
             // throw error if debugger is turned on without starting program.
             if(tree == null)
@@ -72,9 +76,8 @@ public class OctreeController : MonoBehaviour
     void Start ()
     {
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
-        // check that materials were loaded successfully
         if (voxelMat == null)
-            throw new System.Exception("Material File wasn't loaded!");
+            throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
 
         tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
 
@@ -89,38 +92,35 @@ public class OctreeController : MonoBehaviour
             childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
         }
 
-        Matrix4x4 modelWorldMatrix = transform.localToWorldMatrix;
-
-        for(int i = 0; i < gameObjects.Count; i++)
+        for (int i = 0; i < gameObjects.Count; i++)
         {
             Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
-            MeshFilter meshfilter = gameObjects[i].GetComponent<MeshFilter>();
+            MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
             Transform modelTransform = childTransforms[i];
 
             Matrix4x4 ltW = modelTransform.localToWorldMatrix;
-            Vector3[] verts = meshfilter.mesh.vertices;
 
-            for(int j = 0; j < verts.Length; j++)
+            if(useBasicVoxelization)
             {
-                tree.add(ltW.MultiplyPoint3x4(verts[j]) * 50, mat.color);
+                Vector3[] verts = meshFilter.mesh.vertices;
+
+                for (int j = 0; j < verts.Length; j++)
+                {
+                    tree.add(ltW.MultiplyPoint3x4(verts[j]) * 50, mat.color);
+                }
+            } else
+            {
+                List<Voxelizer.Voxel> voxels = Voxelizer.Voxelize(meshFilter.mesh, 50);
+
+                for (int j = 0; j < voxels.Count; j++)
+                {
+                    tree.add(ltW.MultiplyPoint3x4(voxels[j].position) * 50, mat.color);
+                }
             }
         }
-        /*for(int i = 0; i < GetComponent<MeshFilter>().mesh.vertexCount; i++)
-        {
-            Debug.Log(GetComponent<MeshFilter>().mesh.vertices[i]);
-        }*/
-        /*List<Voxelizer.Voxel> voxels = Voxelizer.Voxelize(GetComponent<MeshFilter>().mesh, 100);
 
-        voxels.ForEach(voxel =>
-        {
-                Vector3 pos = voxel.position;
-                Debug.Log(pos);
-                tree.add(pos * 110);
-        });*/
-
-        initMeshByVoxelCount(tree.getAllPoints().Count);    // add to mesh
-        //initMeshByNoMeshes(gameObjects.Count);
-        initArrays();                // initialize indices to use
+        initMeshes(tree.getAllPoints().Count);    // add to mesh
+        initIndices();                // initialize indices to use
         voxelDrawNode();             // inital draw
     }
 
@@ -135,32 +135,7 @@ public class OctreeController : MonoBehaviour
     }
 
     // PRIVATE METHODS
-    private void initMeshByNoMeshes(int noMeshes)
-    {
-        meshes = new List<Mesh>(noMeshes);
-        for (int i = 0; i < noMeshes; i++)
-        {
-            GameObject gObj = new GameObject();
-            Mesh newMesh = new Mesh();
-
-            meshes.Add(newMesh);
-
-            gObj.AddComponent<MeshRenderer>().material = voxelMat;
-            newMesh.name = "VoxelMesh";
-
-            gObj.AddComponent<MeshFilter>().mesh = newMesh;
-            gObj.name = "VoxelMesh";
-
-            gObj.transform.parent = gameObject.transform;
-
-            //gObj.hideFlags = HideFlags.HideInInspector;
-            //gObj.hideFlags = HideFlags.NotEditable;
-            //gObj.hideFlags = HideFlags.HideInHierarchy;
-            gObj.SetActive(true);
-        }
-    }
-
-    private void initMeshByVoxelCount(int voxelCount)
+    private void initMeshes(int voxelCount)
     {
         if (voxelCount > MAX_VERTS)
         {
@@ -187,9 +162,9 @@ public class OctreeController : MonoBehaviour
             GameObject gObj = new GameObject();
 
             gObj.AddComponent<MeshRenderer>().material = voxelMat;
-            mesh.name = "VoxelMesh";
-
             gObj.AddComponent<MeshFilter>().mesh = mesh;
+
+            mesh.name = "VoxelMesh";
             gObj.name = "VoxelMesh";
 
             gObj.transform.parent = gameObject.transform;
@@ -201,10 +176,8 @@ public class OctreeController : MonoBehaviour
         });
     }
 
-    private void initArrays()
+    private void initIndices()
     {
-        verts = new List<Vector3>(MAX_VERTS);
-        clrs = new List<Color32>(MAX_VERTS);
         indices = new List<int>(MAX_VERTS);
 
         for (int i = 0; i < MAX_VERTS; i++)
@@ -216,8 +189,9 @@ public class OctreeController : MonoBehaviour
     private void voxelDrawNode()
     {
         List<Vector3> test = tree.getAllPoints();
+        List<Color32> clrs = tree.getAllColors();
+
         Debug.Log("Final poss" + test.Count);
-        clrs = tree.getAllColors();
         Debug.Log("Final clrss" + clrs.Count);
         // draw
         int idx = 0;
