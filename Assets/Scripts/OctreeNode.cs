@@ -21,6 +21,7 @@ public class OctreeNode<TType> {
 
 	private Vector3 center;
 	private OctreeNode<TType>[] children;
+    private Color32 clr;
 
     // CONSTRUCTORS
 	public OctreeNode(Vector3 center, float subspaceSize) 
@@ -40,13 +41,18 @@ public class OctreeNode<TType> {
 		get { return subspaceSize; }
 		set { this.subspaceSize = value; }
 	}
+    public Color32 Color
+    {
+        get { return clr; }
+        set { this.clr = value; }
+    }
 	public bool isLeaf()
 	{
 		return children == null;
 	}
 
     // PUBLIC METHODS
-	public void add(Vector3 newSize, int depth = 0)
+	public void add(Vector3 newSize, Color32 color, int depth = 0)
     {
 		if(depth == 0)
         {
@@ -59,8 +65,9 @@ public class OctreeNode<TType> {
         int bestSSIdx = findBestSubspace(newSize); // find best subspace idx.
 
         this.children[bestSSIdx].newSizeExists = true;
+        this.clr = color;
        // Debug.Log("WTF " + this.children[bestSSIdx].SubspaceSize);
-        this.children[bestSSIdx].add(newSize, depth - 1);
+        this.children[bestSSIdx].add(newSize, color, depth - 1);
 
         // now that we found best sub space, remove other children
         //this.remove();
@@ -85,6 +92,27 @@ public class OctreeNode<TType> {
             }
         }
         return pos;
+    }
+
+    public List<Color32> getColors()
+    {
+        List<Color32> colors = new List<Color32>();
+
+        if (children == null)
+        {
+            if (newSizeExists)
+            {
+                colors.Add(clr);
+            }
+        }
+        else
+        {
+            foreach (OctreeNode<TType> child in children)
+            {
+                colors.AddRange(child.getColors());
+            }
+        }
+        return colors;
     }
 
     public void remove()

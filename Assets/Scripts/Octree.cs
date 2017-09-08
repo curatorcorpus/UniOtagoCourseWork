@@ -49,13 +49,13 @@ public class Octree<TType>
     /*
      * Method for adding a new node to data structure.
      */
-    public void add(Vector3 pos)
+    public void add(Vector3 pos, Color32 color)
     {
         if (pos.x <= maxPoint && pos.x >= -maxPoint &&
             pos.y <= maxPoint && pos.y >= -maxPoint &&
             pos.z <= maxPoint && pos.z >= -maxPoint)
         {
-            root.add(pos, depth);
+            root.add(pos, color, depth);
             count++;
         }
 
@@ -79,6 +79,16 @@ public class Octree<TType>
         }
 
         return root.getPositions();
+    }
+
+    public List<Color32> getAllColors()
+    {
+        if (root == null)
+        {
+            return null;
+        }
+
+        return root.getColors();
     }
 
     public void printBoundaries()

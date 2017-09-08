@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class OctreeController : MonoBehaviour {
-
+public class OctreeController : MonoBehaviour
+{
     private static int MAX_VERTS = 65534;
 
     [SerializeField] private bool debug = false;
     [SerializeField] private float voxelSpaceLength = 5.0f;
     [SerializeField] private int octreeMaxDepth = 2;
-
     [SerializeField] private GameObject meshModel;
 
     private bool initDebug = true;
@@ -77,32 +76,51 @@ public class OctreeController : MonoBehaviour {
         if (voxelMat == null)
             throw new System.Exception("Material File wasn't loaded!");
 
-        //   Mesh meshToVoxelize = GetComponent<MeshFilter>().mesh;
-
-        // check that model to voxel exists
-        // if (meshToVoxelize.vertexCount == 0)
-        //    throw new System.Exception("Mesh to voxelize doesn't exist!");
-
-        MeshRenderer[] mr = meshModel.GetComponentsInChildren<MeshRenderer>();
-        MeshFilter[] m = meshModel.GetComponentsInChildren<MeshFilter>();
-        Matrix4x4 modelMatrix = transform.localToWorldMatrix;
-        Debug.Log(modelMatrix);
         tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
 
         voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
 
-        for(int i = 0; i < mr.Length; i++)
+        List<GameObject> gameObjects = new List<GameObject>();
+        for(int i = 0; i < meshModel.transform.childCount; i++) 
         {
-            List<Voxelizer.Voxel> voxelPos = Voxelizer.Voxelize(m[i].sharedMesh, 50);
-            voxelPos.ForEach(voxel =>
-            {
-                Vector3 pos = voxel.position;
-                //Debug.Log(pos);
-                tree.add(pos);
-            });
+            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject); 
         }
 
-        initMeshByNoMeshes(m.Length);    // add to mesh
+        for(int i = 0; i < gameObjects.Count; i++)
+        {
+            MeshFilter meshfilter = gameObjects[i].GetComponent<MeshFilter>();
+            Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
+            Transform modelTransform = gameObjects[i].GetComponent<Transform>();
+
+            Matrix4x4 matrix = Matrix4x4.TRS(modelTransform.localPosition,
+                                             modelTransform.localRotation,
+                                             modelTransform.localScale);
+            Vector3[] verts = meshfilter.mesh.vertices;
+
+            Debug.Log(mat.color);
+            Debug.Log(verts.Length);
+
+            for(int j = 0; j < verts.Length; j++)
+            {
+                tree.add(matrix.MultiplyPoint3x4(verts[j] * 100), mat.color);
+                //Debug.Log(matrix.MultiplyPoint3x4(verts[j] * 2));
+            }
+        }
+        /*for(int i = 0; i < GetComponent<MeshFilter>().mesh.vertexCount; i++)
+        {
+            Debug.Log(GetComponent<MeshFilter>().mesh.vertices[i]);
+        }*/
+        /*List<Voxelizer.Voxel> voxels = Voxelizer.Voxelize(GetComponent<MeshFilter>().mesh, 100);
+
+        voxels.ForEach(voxel =>
+        {
+                Vector3 pos = voxel.position;
+                Debug.Log(pos);
+                tree.add(pos * 110);
+        });*/
+
+        initMeshByVoxelCount(tree.getAllPoints().Count);    // add to mesh
+        //initMeshByNoMeshes(gameObjects.Count);
         initArrays();                // initialize indices to use
         voxelDrawNode();             // inital draw
     }
@@ -193,14 +211,15 @@ public class OctreeController : MonoBehaviour {
         for (int i = 0; i < MAX_VERTS; i++)
         {
             indices.Add(i);
-            clrs.Add(new Color32(1,1,1,1));
         }
     }
 
     private void voxelDrawNode()
     {
         List<Vector3> test = tree.getAllPoints();
-
+        Debug.Log("Final poss" + test.Count);
+        clrs = tree.getAllColors();
+        Debug.Log("Final clrss" + clrs.Count);
         // draw
         int idx = 0;
         int remainingVerts = test.Count;
@@ -226,7 +245,7 @@ public class OctreeController : MonoBehaviour {
             else
             {
                 mesh.Clear();
-                mesh.SetVertices(test.GetRange(remainingVerts - MAX_VERTS, remainingVerts));
+                mesh.SetVertices(test.GetRange(remainingVerts - MAX_VERTS, MAX_VERTS));
                 mesh.SetColors(clrs);
                 mesh.SetIndices(indices.GetRange(0, MAX_VERTS).ToArray(), MeshTopology.Points, 0);
                 mesh = meshes[++idx];

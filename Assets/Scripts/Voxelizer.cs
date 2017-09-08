@@ -82,15 +82,11 @@ public class Voxelizer
         var triangles = new List<Triangle>();
         for(int i = 0, n = indices.Length; i < n; i += 3) {
 
-            Debug.Log(vertices[indices[i]] * 100);
-            Debug.Log(vertices[indices[i + 1]] * 100);
-            Debug.Log(vertices[indices[i + 2]] * 100);
-
             triangles.Add(
                 new Triangle(
-                    vertices[indices[i]] * 100,
-                    vertices[indices[i + 1]] * 100,
-                    vertices[indices[i + 2]] * 100
+                    vertices[indices[i]],
+                    vertices[indices[i + 1]],
+                    vertices[indices[i + 2]]
                 )
             );
         }
@@ -104,6 +100,51 @@ public class Voxelizer
                 var ray = new Ray(new Vector3(x + hunit, y + hunit, start.z - hunit), Vector3.forward);
                 List<HitResult> results;
                 if(Hit(ray, triangles, out results)) {
+                    voxels.AddRange(Build(ray, results, unit));
+                }
+            }
+        }
+
+        return voxels;
+    }
+
+    public static List<Voxel> Voxelize(Mesh mesh, Matrix4x4 transformMatrix, int count = 10)
+    {
+        var voxels = new List<Voxel>();
+
+        mesh.RecalculateBounds();
+        var bounds = mesh.bounds;
+        float maxLength = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
+        float unit = maxLength / count;
+
+        var vertices = mesh.vertices;
+        var indices = mesh.triangles;
+
+        var triangles = new List<Triangle>();
+        for (int i = 0, n = indices.Length; i < n; i += 3)
+        {
+
+            triangles.Add(
+                new Triangle(
+                    transformMatrix.MultiplyPoint(vertices[indices[i]]),
+                    transformMatrix.MultiplyPoint(vertices[indices[i + 1]]),
+                    transformMatrix.MultiplyPoint(vertices[indices[i + 2]])
+                )
+            );
+        }
+
+        var start = bounds.min;
+        var end = bounds.max;
+
+        var hunit = unit * 0.5f;
+        for (float y = start.y; y <= end.y; y += unit)
+        {
+            for (float x = start.x; x <= end.x; x += unit)
+            {
+                var ray = new Ray(new Vector3(x + hunit, y + hunit, start.z - hunit), Vector3.forward);
+                List<HitResult> results;
+                if (Hit(ray, triangles, out results))
+                {
                     voxels.AddRange(Build(ray, results, unit));
                 }
             }
