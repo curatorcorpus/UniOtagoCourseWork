@@ -81,29 +81,28 @@ public class OctreeController : MonoBehaviour
         voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
 
         List<GameObject> gameObjects = new List<GameObject>();
+        List<Transform> childTransforms = new List<Transform>();
+
         for(int i = 0; i < meshModel.transform.childCount; i++) 
         {
-            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject); 
+            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject);
+            childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
         }
+
+        Matrix4x4 modelWorldMatrix = transform.localToWorldMatrix;
 
         for(int i = 0; i < gameObjects.Count; i++)
         {
-            MeshFilter meshfilter = gameObjects[i].GetComponent<MeshFilter>();
             Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
-            Transform modelTransform = gameObjects[i].GetComponent<Transform>();
+            MeshFilter meshfilter = gameObjects[i].GetComponent<MeshFilter>();
+            Transform modelTransform = childTransforms[i];
 
-            Matrix4x4 matrix = Matrix4x4.TRS(modelTransform.localPosition,
-                                             modelTransform.localRotation,
-                                             modelTransform.localScale);
+            Matrix4x4 ltW = modelTransform.localToWorldMatrix;
             Vector3[] verts = meshfilter.mesh.vertices;
-
-            Debug.Log(mat.color);
-            Debug.Log(verts.Length);
 
             for(int j = 0; j < verts.Length; j++)
             {
-                tree.add(matrix.MultiplyPoint3x4(verts[j] * 100), mat.color);
-                //Debug.Log(matrix.MultiplyPoint3x4(verts[j] * 2));
+                tree.add(ltW.MultiplyPoint3x4(verts[j]) * 50, mat.color);
             }
         }
         /*for(int i = 0; i < GetComponent<MeshFilter>().mesh.vertexCount; i++)
@@ -224,12 +223,6 @@ public class OctreeController : MonoBehaviour
         int idx = 0;
         int remainingVerts = test.Count;
 
-        if (verts != null)
-        {
-            verts.Clear();
-            clrs.Clear();
-        }
-
         // initial mesh
         Mesh mesh = meshes[0];
 
@@ -239,14 +232,14 @@ public class OctreeController : MonoBehaviour
             {
                 mesh.Clear();
                 mesh.SetVertices(test.GetRange(0, remainingVerts));
-                mesh.SetColors(clrs);
+                mesh.SetColors(clrs.GetRange(0, remainingVerts));
                 mesh.SetIndices(indices.GetRange(0, remainingVerts).ToArray(), MeshTopology.Points, 0);
             }
             else
             {
                 mesh.Clear();
                 mesh.SetVertices(test.GetRange(remainingVerts - MAX_VERTS, MAX_VERTS));
-                mesh.SetColors(clrs);
+                mesh.SetColors(clrs.GetRange(remainingVerts - MAX_VERTS, MAX_VERTS));
                 mesh.SetIndices(indices.GetRange(0, MAX_VERTS).ToArray(), MeshTopology.Points, 0);
                 mesh = meshes[++idx];
             }

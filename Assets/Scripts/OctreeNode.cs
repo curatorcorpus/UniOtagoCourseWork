@@ -56,6 +56,7 @@ public class OctreeNode<TType> {
     {
 		if(depth == 0)
         {
+            this.clr = color;
             return;
         }
 
@@ -65,7 +66,7 @@ public class OctreeNode<TType> {
         int bestSSIdx = findBestSubspace(newSize); // find best subspace idx.
 
         this.children[bestSSIdx].newSizeExists = true;
-        this.clr = color;
+
        // Debug.Log("WTF " + this.children[bestSSIdx].SubspaceSize);
         this.children[bestSSIdx].add(newSize, color, depth - 1);
 
