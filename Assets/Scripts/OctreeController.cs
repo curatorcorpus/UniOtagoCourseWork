@@ -18,12 +18,15 @@ public class OctreeController : MonoBehaviour
     [SerializeField] private bool useBasicVoxelization = false;
 
     private bool initDebug = true;
-    private bool updated = true;
+    private bool updated = false;
 
     private Octree<int> tree;
     private Material voxelMat;
 
     private List<Mesh> meshes;
+    private List<Vector3> verts;
+    private List<Color32> clrs;
+
     private List<int> indices;
 
     // GIZMOS DEBUGGER
@@ -72,67 +75,61 @@ public class OctreeController : MonoBehaviour
         Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
     }
 
-    // Use this for initialization
+    //==================== MAIN ===========================
     void Start ()
     {
-        voxelMat = Resources.Load("Materials/VoxelMat") as Material;
-        if (voxelMat == null)
-            throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
-
-        tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
-
-        voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
-
-        List<GameObject> gameObjects = new List<GameObject>();
-        List<Transform> childTransforms = new List<Transform>();
-
-        for(int i = 0; i < meshModel.transform.childCount; i++) 
-        {
-            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject);
-            childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
-        }
-
-        for (int i = 0; i < gameObjects.Count; i++)
-        {
-            Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
-            MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
-            Transform modelTransform = childTransforms[i];
-
-            Matrix4x4 ltW = modelTransform.localToWorldMatrix;
-
-            if(useBasicVoxelization)
-            {
-                Vector3[] verts = meshFilter.mesh.vertices;
-
-                for (int j = 0; j < verts.Length; j++)
-                {
-                    tree.add(ltW.MultiplyPoint3x4(verts[j]) * 50, mat.color);
-                }
-            } else
-            {
-                List<Voxelizer.Voxel> voxels = Voxelizer.Voxelize(meshFilter.mesh, 50);
-
-                for (int j = 0; j < voxels.Count; j++)
-                {
-                    tree.add(ltW.MultiplyPoint3x4(voxels[j].position) * 50, mat.color);
-                }
-            }
-        }
-
+        prepare();
         initMeshes(tree.getAllPoints().Count);    // add to mesh
         initIndices();                // initialize indices to use
         voxelDrawNode();             // inital draw
     }
 
-    // Update is called once per frame
     void Update()
-    {
+    { 
+        if(Input.GetKey(KeyCode.RightArrow))
+        {
+            tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+
+            Quaternion rot = Quaternion.Euler(0, 10.0f, 0);
+
+            Matrix4x4 m = Matrix4x4.TRS(Vector3.zero,
+                                        rot,
+                                        new Vector3(1,1,1));
+
+            for (int i = 0; i < verts.Count; i++)
+            {
+                tree.add(m.MultiplyPoint3x4(verts[i]), clrs[i]);
+            }
+
+            updated = true;
+        }
+
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+
+            Quaternion rot = Quaternion.Euler(0, -10.0f, 0);
+
+            Matrix4x4 m = Matrix4x4.TRS(Vector3.zero,
+                                        rot,
+                                        new Vector3(1, 1, 1));
+
+            for (int i = 0; i < verts.Count; i++)
+            {
+                tree.add(m.MultiplyPoint3x4(verts[i]), clrs[i]);
+            }
+
+            updated = true;
+        }
+
         if (updated)
         {
-            //voxelDrawNode(tree.Root, depth);
+            voxelDrawNode();
             updated = false;
         }
     }
+
+    //======================================================
 
     // PRIVATE METHODS
     private void initMeshes(int voxelCount)
@@ -168,10 +165,9 @@ public class OctreeController : MonoBehaviour
             gObj.name = "VoxelMesh";
 
             gObj.transform.parent = gameObject.transform;
-
-            //gObj.hideFlags = HideFlags.HideInInspector;
-            //gObj.hideFlags = HideFlags.NotEditable;
-            //gObj.hideFlags = HideFlags.HideInHierarchy;
+            gObj.hideFlags = HideFlags.HideInInspector;
+            gObj.hideFlags = HideFlags.NotEditable;
+            gObj.hideFlags = HideFlags.HideInHierarchy;
             gObj.SetActive(true);
         });
     }
@@ -186,33 +182,93 @@ public class OctreeController : MonoBehaviour
         }
     }
 
+    /**
+     * Method prepares data structure and voxelizes models. 
+     */
+    private void prepare()
+    {
+        voxelMat = Resources.Load("Materials/VoxelMat") as Material;
+        if (voxelMat == null)
+            throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
+
+        // initialize data structure.
+        tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+
+        voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
+
+        List<GameObject> gameObjects = new List<GameObject>();
+        List<Transform> childTransforms = new List<Transform>();
+
+        for (int i = 0; i < meshModel.transform.childCount; i++)
+        {
+            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject);
+            childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
+        }
+
+        //meshModel.hideFlags = HideFlags.HideInInspector;
+        //meshModel.hideFlags = HideFlags.NotEditable;
+        //meshModel.hideFlags = HideFlags.HideInHierarchy;
+        meshModel.SetActive(false);
+
+        // voxelizes and adds voxels to data structure.
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
+            MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
+            Transform modelTransform = childTransforms[i];
+
+            Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
+
+            if (useBasicVoxelization)
+            {
+                Vector3[] verts = meshFilter.mesh.vertices;
+
+                for (int j = 0; j < verts.Length; j++)
+                {
+                    tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]) * 50, mat.color);
+                }
+            }
+            else
+            {
+                List<Voxelizer.Voxel> voxels = Voxelizer.Voxelize(meshFilter.mesh, 50);
+
+                for (int j = 0; j < voxels.Count; j++)
+                {
+                    tree.add(localToWorldMatrix.MultiplyPoint3x4(voxels[j].position) * 50, mat.color);
+                }
+            }
+        }
+    }
+
+    // RENDER METHODS
     private void voxelDrawNode()
     {
-        List<Vector3> test = tree.getAllPoints();
-        List<Color32> clrs = tree.getAllColors();
+        verts = tree.getAllPoints();
+        clrs = tree.getAllColors();
 
-        Debug.Log("Final poss" + test.Count);
-        Debug.Log("Final clrss" + clrs.Count);
+        //Debug.Log("Final poss" + verts.Count);
+        //Debug.Log("Final clrss" + clrs.Count);
+
         // draw
         int idx = 0;
-        int remainingVerts = test.Count;
+        int remainingVerts = verts.Count;
 
         // initial mesh
         Mesh mesh = meshes[0];
 
         while (remainingVerts > 0)
         {
-            if(remainingVerts < MAX_VERTS)
+            mesh.Clear();
+
+            if (remainingVerts < MAX_VERTS)
             {
-                mesh.Clear();
-                mesh.SetVertices(test.GetRange(0, remainingVerts));
+                mesh.SetVertices(verts.GetRange(0, remainingVerts));
                 mesh.SetColors(clrs.GetRange(0, remainingVerts));
                 mesh.SetIndices(indices.GetRange(0, remainingVerts).ToArray(), MeshTopology.Points, 0);
             }
             else
             {
-                mesh.Clear();
-                mesh.SetVertices(test.GetRange(remainingVerts - MAX_VERTS, MAX_VERTS));
+                mesh.SetVertices(verts.GetRange(remainingVerts - MAX_VERTS, MAX_VERTS));
                 mesh.SetColors(clrs.GetRange(remainingVerts - MAX_VERTS, MAX_VERTS));
                 mesh.SetIndices(indices.GetRange(0, MAX_VERTS).ToArray(), MeshTopology.Points, 0);
                 mesh = meshes[++idx];

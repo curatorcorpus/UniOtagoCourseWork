@@ -167,7 +167,7 @@ Shader "Custom/Geometry"
 			}
 
 			ENDCG
-		}
+		}/*
 		Pass{
 
 			Tags{ "LightMode" = "ShadowCaster" }
@@ -302,6 +302,6 @@ Shader "Custom/Geometry"
 		}
 
 			ENDCG
-		}
+		}*/
 	}
 }
