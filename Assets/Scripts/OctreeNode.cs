@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class OctreeNode<TType> {
 
+    struct Bounds
+    {
+        public float ii, jj, kk;
+        public Vector3 i, j, k;
+    };
+
     private static int DEGREE = 8; // branching factor
     private static int TRF = 0;
     private static int TLF = 1;
@@ -18,6 +24,8 @@ public class OctreeNode<TType> {
     private bool voxelExists = false;
 	private float subspaceSize;
 
+    private Bounds bounds;
+
 	private Vector3 center;
 	private OctreeNode<TType>[] children;
     private Color32 clr;
@@ -27,6 +35,8 @@ public class OctreeNode<TType> {
 	{
 		this.center = center;
 		this.subspaceSize = subspaceSize;
+
+        calculateBounds();
 	}
 
     // GETTERS AND SETTERS
@@ -127,6 +137,43 @@ public class OctreeNode<TType> {
         //this.remove(newSize);
     }
 
+    public bool addWithCheck(ref Vector3[] verts, ref Matrix4x4 matrix, ref Color32 clr, ref int count, int depth = 0)
+    {
+        if (depth == 0)
+        {
+            return true;
+        }
+
+        // Check to see if we have any vertices within us.
+        for(int i = 0; i < verts.Length; i++)
+        {
+            if (checkBounds(matrix.MultiplyPoint3x4(verts[i]) * 50))
+            {
+                // Subdivide, and check each of the new children.
+                split();
+                break;
+            }
+        }
+
+        if (children != null)
+        {
+            for (int i = 0; i < DEGREE; i++)
+            {
+                if (children[i].addWithCheck(ref verts, ref matrix, ref clr, ref count, depth - 1))
+                {
+                    if (depth == 1)
+                    {
+                        this.clr = clr;
+                        this.voxelExists = true;
+                        count++;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
     public void remove(Vector3 newSize)
     {
         int bestIdx = findBestSubspace(newSize);
@@ -186,6 +233,40 @@ public class OctreeNode<TType> {
 
         children[BRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, -quarter), newSize);
         children[BLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, -quarter), newSize);
+    }
+
+    private void calculateBounds()
+    {
+        float sizeHalf = subspaceSize / 2;
+
+        Vector3 p1 = new Vector3(center.x + sizeHalf, center.y - sizeHalf, center.z + sizeHalf);
+        Vector3 p2 = new Vector3(center.x + sizeHalf, center.y + sizeHalf, center.z + sizeHalf);
+        Vector3 p3 = new Vector3(center.x + sizeHalf, center.y - sizeHalf, center.z - sizeHalf);
+        Vector3 p4 = new Vector3(center.x - sizeHalf, center.y - sizeHalf, center.z + sizeHalf);
+
+        bounds.i = p3 - p1;
+        bounds.j = p4 - p1;
+        bounds.k = p2 - p1;
+
+        bounds.ii = Vector3.Dot(bounds.i, bounds.i);
+        bounds.jj = Vector3.Dot(bounds.j, bounds.j);
+        bounds.kk = Vector3.Dot(bounds.k, bounds.k);
+    }
+
+    private bool checkBounds(Vector3 vert)
+    {
+        float dotScalarI = Vector3.Dot(vert, bounds.i);
+        float dotScalarJ = Vector3.Dot(vert, bounds.j);
+        float dotScalarK = Vector3.Dot(vert, bounds.k);
+
+        if (0 < dotScalarI && dotScalarI < bounds.ii &&
+            0 < dotScalarJ && dotScalarJ < bounds.jj &&
+            0 < dotScalarK && dotScalarK < bounds.kk)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void spawn(int bestIdx)

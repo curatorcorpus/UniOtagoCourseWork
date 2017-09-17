@@ -15,6 +15,7 @@ public class OctreeController : MonoBehaviour
 
     [Header("Debug Tools")]
     [SerializeField] private bool debugOctree = false;
+    [SerializeField] private bool useBoundedVoxelization = false;
     [SerializeField] private bool useBasicVoxelization = false;
 
     private bool initDebug = true;
@@ -227,6 +228,13 @@ public class OctreeController : MonoBehaviour
                 {
                     tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]) * 50, mat.color);
                 }
+            }
+            else if(useBoundedVoxelization)
+            {
+                Vector3[] verts = meshFilter.mesh.vertices;
+                Color32 clr = mat.color;
+
+                tree.addWithCheck(ref verts, ref localToWorldMatrix, ref clr);
             }
             else
             {
