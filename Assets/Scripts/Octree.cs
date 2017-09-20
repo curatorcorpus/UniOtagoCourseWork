@@ -70,7 +70,7 @@ public class Octree<TType>
 
     public void addWithCheck(ref Vector3[] verts, ref Matrix4x4 matrix, ref Color32 clr)
     {
-        root.addWithCheck(ref verts, ref matrix, ref clr, ref count, depth);
+        root.addWithCheck(ref verts, ref matrix, ref clr, ref count, depth, 0);
     }
 
     /*

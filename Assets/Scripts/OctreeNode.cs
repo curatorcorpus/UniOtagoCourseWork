@@ -7,7 +7,7 @@ public class OctreeNode<TType> {
     struct Bounds
     {
         public float ii, jj, kk;
-        public Vector3 i, j, k;
+        public Vector3 p1, i, j, k;
     };
 
     private static int DEGREE = 8; // branching factor
@@ -37,7 +37,7 @@ public class OctreeNode<TType> {
 		this.subspaceSize = subspaceSize;
 
         calculateBounds();
-	}
+    }
 
     // GETTERS AND SETTERS
 	public Vector3 Center
@@ -64,10 +64,10 @@ public class OctreeNode<TType> {
     public List<Vector3> getPositions()
     {
         List<Vector3> pos = new List<Vector3>();
-        
-        if(children == null)
+
+        if (children == null)
         {
-            if(voxelExists)
+            if (voxelExists)
             {
                 pos.Add(center);
             }
@@ -137,41 +137,33 @@ public class OctreeNode<TType> {
         //this.remove(newSize);
     }
 
-    public bool addWithCheck(ref Vector3[] verts, ref Matrix4x4 matrix, ref Color32 clr, ref int count, int depth = 0)
+    public void addWithCheck(ref Vector3[] verts, ref Matrix4x4 matrix, ref Color32 clr, ref int count, int maxDepth, int currDepth)
     {
-        if (depth == 0)
+        if (currDepth == maxDepth)
         {
-            return true;
+            this.clr = clr;
+            this.voxelExists = true;
+            count++;
+            //Debug.Log("Drawn: " + count + "\nDepth: " + currDepth + " of " + maxDepth);
+            return;
         }
 
         // Check to see if we have any vertices within us.
         for(int i = 0; i < verts.Length; i++)
         {
-            if (checkBounds(matrix.MultiplyPoint3x4(verts[i]) * 50))
+            if (checkBounds(matrix.MultiplyPoint3x4(verts[i]) * 1))
             {
                 // Subdivide, and check each of the new children.
                 split();
+
+                for (int j = 0; j < DEGREE; j++)
+                {
+                    children[j].addWithCheck(ref verts, ref matrix, ref clr, ref count, maxDepth, currDepth + 1);
+                }
+
                 break;
             }
         }
-
-        if (children != null)
-        {
-            for (int i = 0; i < DEGREE; i++)
-            {
-                if (children[i].addWithCheck(ref verts, ref matrix, ref clr, ref count, depth - 1))
-                {
-                    if (depth == 1)
-                    {
-                        this.clr = clr;
-                        this.voxelExists = true;
-                        count++;
-                    }
-                }
-            }
-        }
-
-        return false;
     }
 
     public void remove(Vector3 newSize)
@@ -237,16 +229,17 @@ public class OctreeNode<TType> {
 
     private void calculateBounds()
     {
-        float sizeHalf = subspaceSize / 2;
+        float sizeHalf = subspaceSize * 0.5f;
 
-        Vector3 p1 = new Vector3(center.x + sizeHalf, center.y - sizeHalf, center.z + sizeHalf);
         Vector3 p2 = new Vector3(center.x + sizeHalf, center.y + sizeHalf, center.z + sizeHalf);
         Vector3 p3 = new Vector3(center.x + sizeHalf, center.y - sizeHalf, center.z - sizeHalf);
         Vector3 p4 = new Vector3(center.x - sizeHalf, center.y - sizeHalf, center.z + sizeHalf);
 
-        bounds.i = p3 - p1;
-        bounds.j = p4 - p1;
-        bounds.k = p2 - p1;
+        bounds.p1 = new Vector3(center.x + sizeHalf, center.y - sizeHalf, center.z + sizeHalf);
+
+        bounds.i = p3 - bounds.p1;
+        bounds.j = p4 - bounds.p1;
+        bounds.k = p2 - bounds.p1;
 
         bounds.ii = Vector3.Dot(bounds.i, bounds.i);
         bounds.jj = Vector3.Dot(bounds.j, bounds.j);
@@ -255,13 +248,14 @@ public class OctreeNode<TType> {
 
     private bool checkBounds(Vector3 vert)
     {
-        float dotScalarI = Vector3.Dot(vert, bounds.i);
-        float dotScalarJ = Vector3.Dot(vert, bounds.j);
-        float dotScalarK = Vector3.Dot(vert, bounds.k);
+        Vector3 verts = vert - bounds.p1;
+        float dotScalarI = Vector3.Dot(verts, bounds.i);
+        float dotScalarJ = Vector3.Dot(verts, bounds.j);
+        float dotScalarK = Vector3.Dot(verts, bounds.k);
 
-        if (0 < dotScalarI && dotScalarI < bounds.ii &&
-            0 < dotScalarJ && dotScalarJ < bounds.jj &&
-            0 < dotScalarK && dotScalarK < bounds.kk)
+        if (dotScalarI > 0 && dotScalarI < bounds.ii &&
+            dotScalarJ > 0 && dotScalarJ < bounds.jj &&
+            dotScalarK > 0 && dotScalarK < bounds.kk)
         {
             return true;
         }

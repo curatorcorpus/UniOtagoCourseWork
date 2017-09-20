@@ -17,6 +17,7 @@ public class OctreeController : MonoBehaviour
     [SerializeField] private bool debugOctree = false;
     [SerializeField] private bool useBoundedVoxelization = false;
     [SerializeField] private bool useBasicVoxelization = false;
+    [SerializeField] private bool debugMeshes = false;
 
     private bool initDebug = true;
     private bool updated = false;
@@ -80,6 +81,7 @@ public class OctreeController : MonoBehaviour
     void Start ()
     {
         prepare();
+        Debug.Log("Number of points: " + tree.getAllPoints().Count);
         initMeshes(tree.getAllPoints().Count);    // add to mesh
         initIndices();                // initialize indices to use
         voxelDrawNode();             // inital draw
@@ -166,9 +168,13 @@ public class OctreeController : MonoBehaviour
             gObj.name = "VoxelMesh";
 
             gObj.transform.parent = gameObject.transform;
-            gObj.hideFlags = HideFlags.HideInInspector;
-            gObj.hideFlags = HideFlags.NotEditable;
-            gObj.hideFlags = HideFlags.HideInHierarchy;
+
+            if(!debugMeshes)
+            {
+                gObj.hideFlags = HideFlags.HideInInspector;
+                gObj.hideFlags = HideFlags.NotEditable;
+                gObj.hideFlags = HideFlags.HideInHierarchy;
+            }
             gObj.SetActive(true);
         });
     }
