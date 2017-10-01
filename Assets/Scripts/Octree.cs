@@ -236,14 +236,14 @@ public class Octree<TType>
 		return Math.Max( a, Math.Max( b, c ) ); 
 	}
     
-	float round(float axisBound, float voxelSize, bool down)
+	float clipToVoxelGrid(float axisBound, float voxelSize, bool down)
 	{
-		float difference = axisBound % voxelSize;
-
+		axisBound -= (axisBound % voxelSize);
+        
 		if (down)
-			return (axisBound - difference);
+			return axisBound;
 		
-		return ((axisBound - difference) + voxelSize);
+		return (axisBound + voxelSize);
 	}
 
     public void voxelizeMesh(ref Mesh mesh, Color32 clr, Matrix4x4 matrix)
@@ -260,13 +260,13 @@ public class Octree<TType>
             Vector3 p3 = mesh.vertices[mesh.triangles[i + 2]];
 
             // Create the axis aligned bounding box around the triangle
-            float minX = round(Mathf.Min(p1.x, p2.x, p3.x), voxelSize, true);
-            float minY = round(Mathf.Min(p1.y, p2.y, p3.y), voxelSize, true); 
-            float minZ = round(Mathf.Min(p1.z, p2.z, p3.z), voxelSize, true);
+            float minX = clipToVoxelGrid(Mathf.Min(p1.x, p2.x, p3.x), voxelSize, true);
+            float minY = clipToVoxelGrid(Mathf.Min(p1.y, p2.y, p3.y), voxelSize, true); 
+            float minZ = clipToVoxelGrid(Mathf.Min(p1.z, p2.z, p3.z), voxelSize, true);
 
-            float maxX = round(Mathf.Max(p1.x, p2.x, p3.x), voxelSize, false);
-            float maxY = round(Mathf.Max(p1.y, p2.y, p3.y), voxelSize, false);
-            float maxZ = round(Mathf.Max(p1.z, p2.z, p3.z), voxelSize, false);
+            float maxX = clipToVoxelGrid(Mathf.Max(p1.x, p2.x, p3.x), voxelSize, false);
+            float maxY = clipToVoxelGrid(Mathf.Max(p1.y, p2.y, p3.y), voxelSize, false);
+            float maxZ = clipToVoxelGrid(Mathf.Max(p1.z, p2.z, p3.z), voxelSize, false);
 
 	        float voxelSizeHalf = voxelSize / 2;
 	        Vector3 voxelExtends = new Vector3(voxelSizeHalf, voxelSizeHalf, voxelSizeHalf);
