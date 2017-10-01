@@ -1,28 +1,27 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 public class OctreeController : MonoBehaviour
 {
     private static int MAX_VERTS = 65534;
-
-    [Header("Voxel Space Settings")]
-    [SerializeField] private float voxelSpaceLength = 5.0f;
-    [SerializeField] private int octreeMaxDepth = 2;
-
+    private static int M_FACTOR = 100;
+    private static int MM_FACTOR = 1000;
+    
     [Header("Voxel Settings")]
-    [SerializeField] private float voxelSpaceSize = 250;
-    [SerializeField] private float voxelSize = 0.001f;
-
+    [SerializeField] private int voxelSpaceSize = 256;
+    [SerializeField] private int voxelSize = 1;
+    [SerializeField] private int octreeMaxDepth = 2;
+    
     [Header("Models")]
     [SerializeField] private GameObject meshModel;
 
     [Header("Debug Tools")]
     [SerializeField] private bool debugMeshes = false;
     [SerializeField] private bool debugOctree = false;
-    [SerializeField] private bool useBoundedVoxelization = false;
-    [SerializeField] private bool useGridVoxelization = false;
     [SerializeField] private bool useBasicVoxelization = false;
+    [SerializeField] private bool useGridVoxelization = false;
 
     private bool initDebug = true;
     private bool updated = false;
@@ -42,21 +41,14 @@ public class OctreeController : MonoBehaviour
         if (debugOctree)
         {
             // throw error if debugger is turned on without starting program.
-            if(tree == null)
+            if (tree == null)
             {
-                //throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
+                throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
             }
-            else if(initDebug) // draw debugger once.
+            else
             {
-                initDebug = false;
-                gizmosDrawNode(tree.Root);
+                gizmosDrawNode(tree.Root);                
             }
-
-            // re draw if data structure is updated
-           // if(updated)
-         //   {
-                gizmosDrawNode(tree.Root);
-           // }
         }
         else
         {
@@ -85,7 +77,7 @@ public class OctreeController : MonoBehaviour
     //==================== MAIN ===========================
     void Start ()
     {
-        settingsCheck();
+        checkVoxelSettings();
         prepare();
         Debug.Log("Number of points: " + tree.getAllPoints().Count);
         initMeshes(tree.getAllPoints().Count);    // add to mesh
@@ -95,7 +87,7 @@ public class OctreeController : MonoBehaviour
 
     void Update()
     { 
-        if(Input.GetKey(KeyCode.RightArrow))
+/*        if(Input.GetKey(KeyCode.RightArrow))
         {
             tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
 
@@ -130,7 +122,7 @@ public class OctreeController : MonoBehaviour
 
             updated = true;
         }
-
+*/
         if (updated)
         {
             voxelDrawNode();
@@ -141,15 +133,17 @@ public class OctreeController : MonoBehaviour
     //======================================================
 
     // PRIVATE METHODS
-    private void settingsCheck()
+    private void checkVoxelSettings()
     {
-        if ((int)(voxelSpaceSize*1000) % (int)(voxelSize*1000) != 0)
+        if (voxelSpaceSize % voxelSize != 0)
         {
-            //throw new System.Exception("Voxel size should be divisible by the Voxel Space Size.");
-            UnityEngine.Debug.Log("Not divisible");
+            if (voxelSpaceSize % 2 != 0 || (voxelSize % 2 != 0 && voxelSize != 1))
+            {
+                throw new System.Exception("Voxel size should be divisible by the Voxel Space Size.");
+            }
         }
     }
-
+    
     private void initMeshes(int voxelCount)
     {
         if (voxelCount > MAX_VERTS)
@@ -214,15 +208,10 @@ public class OctreeController : MonoBehaviour
             throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
 
         // initialize data structure.
-        if (useGridVoxelization)
-        {
-            tree = new Octree<int>(this.transform.position, voxelSpaceSize, octreeMaxDepth);
-        }
-        else
-        {
-            tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
-        }
+        tree = new Octree<int>(this.transform.position, voxelSpaceSize/M_FACTOR, octreeMaxDepth);
+        Debug.Log("max depth " + tree.calculateMaxDepth(voxelSpaceSize/M_FACTOR, voxelSize/MM_FACTOR));
 
+        // set voxel size to shader.
         voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
 
         List<GameObject> gameObjects = new List<GameObject>();
@@ -257,28 +246,14 @@ public class OctreeController : MonoBehaviour
                     tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]) * 50, mat.color);
                 }
             }
-            else if(useBoundedVoxelization)
-            {
-                Vector3[] verts = meshFilter.mesh.vertices;
-                Color32 clr = mat.color;
-
-                tree.addWithCheck(ref verts, ref localToWorldMatrix, ref clr);
-            }
             else if(useGridVoxelization)
             {
                 Mesh mesh = meshFilter.mesh;
                 Color32 clr = mat.color;
 
-                tree.voxelizeMesh(ref mesh, ref clr, ref localToWorldMatrix, ref voxelSize);
-            }
-            else
-            {
-                List<Voxelizer.Voxel> voxels = Voxelizer.Voxelize(meshFilter.mesh, 50);
-
-                for (int j = 0; j < voxels.Count; j++)
-                {
-                    tree.add(localToWorldMatrix.MultiplyPoint3x4(voxels[j].position) * 50, mat.color);
-                }
+                float vs = voxelSize / MM_FACTOR;
+                
+                tree.voxelizeMesh(ref mesh, ref clr, ref localToWorldMatrix, ref vs);
             }
         }
     }

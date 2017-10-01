@@ -371,4 +371,9 @@ public class Octree<TType>
     {
         return vsLength / Mathf.Pow(2, depth);
     }
+
+	public float calculateMaxDepth(float vsLength, float voxelSize)
+	{
+		return Mathf.Log(vsLength/voxelSize, 2);
+	}
 }
