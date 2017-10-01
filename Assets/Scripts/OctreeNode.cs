@@ -51,6 +51,10 @@ public class OctreeNode<TType> {
 	{
 		return children == null;
 	}
+    public bool IsLeafVoxel
+    {
+        get { return isLeafVoxel; }
+    }
 
     // PUBLIC METHODS
     public List<Vector3> getPositions()

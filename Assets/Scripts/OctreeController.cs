@@ -22,7 +22,6 @@ public class OctreeController : MonoBehaviour
     [SerializeField] private bool useBasicVoxelization = false;
     [SerializeField] private bool useGridVoxelization = false;
 
-    private bool initDebug = true;
     private bool updated = false;
 
     private Octree<int> tree;
@@ -49,28 +48,27 @@ public class OctreeController : MonoBehaviour
                 gizmosDrawNode(tree.Root);                
             }
         }
-        else
-        {
-            initDebug = true;
-        }
     }
 
-    private void gizmosDrawNode(OctreeNode<int> node, int nodeDepth = 0)
+    private void gizmosDrawNode(OctreeNode<int> node)
     {
         if (node == null)
         {
             return;
         }
 
-        if (!node.isLeaf())
+        if(node.IsLeafVoxel)
         {
-            foreach (var child in node.Children)
-            {
-                gizmosDrawNode(child, nodeDepth + 1);
-            }
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
+
+            return;
         }
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
+
+        foreach (var child in node.Children)
+        {
+            gizmosDrawNode(child);
+        }
     }
 
     //==================== MAIN ===========================
@@ -182,6 +180,12 @@ public class OctreeController : MonoBehaviour
             Transform modelTransform = childTransforms[i];
 
             Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
+
+            //float scale = 0.5f;
+
+            //localToWorldMatrix.m00 = scale;
+            //localToWorldMatrix.m11 = scale;
+            //localToWorldMatrix.m22 = scale;
 
             if (useBasicVoxelization)
             {

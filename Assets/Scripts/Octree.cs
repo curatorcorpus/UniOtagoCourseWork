@@ -62,7 +62,7 @@ public class Octree<TType>
         {
             UnityEngine.Debug.Log("position " + pos + " wasn't inserted because the max size is " + voxelSpaceSize);
             UnityEngine.Debug.Log("The maximum boundaries are: ");
-            printBoundaries();
+           // printBoundaries();
         }
     }
 
