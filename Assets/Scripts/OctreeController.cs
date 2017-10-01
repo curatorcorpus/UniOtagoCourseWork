@@ -175,11 +175,12 @@ public class OctreeController : MonoBehaviour
         // voxelizes and adds voxels to data structure.
         for (int i = 0; i < gameObjects.Count; i++)
         {
+            // obtain mesh properties.
             Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
             MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
             Transform modelTransform = childTransforms[i];
-
             Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
+            Color32 matColor = mat.color;
 
             //float scale = 0.5f;
 
@@ -193,15 +194,14 @@ public class OctreeController : MonoBehaviour
 
                 for (int j = 0; j < verts.Length; j++)
                 {
-                    tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]) * 50, mat.color);
+                    tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]), matColor);
                 }
             }
             else if(useGridVoxelization)
             {
                 Mesh mesh = meshFilter.mesh;
-                Color32 clr = mat.color;
-                
-                tree.voxelizeMesh(ref mesh, clr, localToWorldMatrix);
+
+                tree.voxelizeMesh(ref mesh, matColor, localToWorldMatrix);
             }
         }
     }
@@ -210,7 +210,7 @@ public class OctreeController : MonoBehaviour
     {
         if (voxelCount > MAX_VERTS)
         {
-            int divisor = Mathf.CeilToInt((float)voxelCount / (float)MAX_VERTS);
+            int divisor = Mathf.CeilToInt((float)voxelCount / MAX_VERTS);
 
             meshes = new List<Mesh>(divisor);
 

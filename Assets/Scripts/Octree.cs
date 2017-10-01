@@ -34,7 +34,7 @@ public class Octree<TType>
     public Octree(Vector3 position, float voxelSpaceSize, float voxelSize)
     {
         // initialize the root node
-        this.root = new OctreeNode<TType>(position, voxelSize);
+        this.root = new OctreeNode<TType>(position, voxelSpaceSize);
 
 	    this.voxelSize = voxelSize;
         this.voxelSpaceSize = voxelSpaceSize;
@@ -55,6 +55,7 @@ public class Octree<TType>
         {
             root.add(pos, color, voxelSize);
             count++;
+            UnityEngine.Debug.Log(pos);
         }
 
         // any position outside mentioned boundary is just inserted at the boundary points.
@@ -62,7 +63,7 @@ public class Octree<TType>
         {
             UnityEngine.Debug.Log("position " + pos + " wasn't inserted because the max size is " + voxelSpaceSize);
             UnityEngine.Debug.Log("The maximum boundaries are: ");
-           // printBoundaries();
+            printBoundaries();
         }
     }
 
@@ -260,10 +261,11 @@ public class Octree<TType>
 
             // Create the axis aligned bounding box around the triangle
             float minX = round(Mathf.Min(p1.x, p2.x, p3.x), voxelSize, true);
-            float maxX = round(Mathf.Max(p1.x, p2.x, p3.x), voxelSize, false);
             float minY = round(Mathf.Min(p1.y, p2.y, p3.y), voxelSize, true); 
-            float maxY = round(Mathf.Max(p1.y, p2.y, p3.y), voxelSize, false);
             float minZ = round(Mathf.Min(p1.z, p2.z, p3.z), voxelSize, true);
+
+            float maxX = round(Mathf.Max(p1.x, p2.x, p3.x), voxelSize, false);
+            float maxY = round(Mathf.Max(p1.y, p2.y, p3.y), voxelSize, false);
             float maxZ = round(Mathf.Max(p1.z, p2.z, p3.z), voxelSize, false);
 
 	        float voxelSizeHalf = voxelSize / 2;

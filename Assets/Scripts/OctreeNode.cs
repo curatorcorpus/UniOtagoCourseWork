@@ -20,12 +20,13 @@ public class OctreeNode<TType> {
 	
     private float subspaceSize;
     
-	private Vector3 center;
 	private OctreeNode<TType>[] children;
+
     private Color32 clr;
+    private Vector3 center;
 
     // CONSTRUCTORS
-	public OctreeNode(Vector3 center, float subspaceSize) 
+    public OctreeNode(Vector3 center, float subspaceSize) 
 	{
 		this.center = center;
 		this.subspaceSize = subspaceSize;
@@ -61,14 +62,11 @@ public class OctreeNode<TType> {
     {
         List<Vector3> pos = new List<Vector3>();
 
-        if (children == null)
+        if (isLeafVoxel)
         {
-            if (isLeafVoxel)
-            {
-                pos.Add(center);
-            }
+            pos.Add(center);
         }
-        else
+        else if (children != null)
         {
             foreach (OctreeNode<TType> child in children)
             {
@@ -78,6 +76,7 @@ public class OctreeNode<TType> {
                 }
             }
         }
+        
         return pos;
     }
 
@@ -85,14 +84,11 @@ public class OctreeNode<TType> {
     {
         List<Color32> colors = new List<Color32>();
 
-        if (children == null)
+        if (isLeafVoxel)
         {
-            if (isLeafVoxel)
-            {
-                colors.Add(clr);
-            }
+            colors.Add(clr);
         }
-        else
+        else if(children != null)
         {
             foreach (OctreeNode<TType> child in children)
             {
@@ -110,8 +106,10 @@ public class OctreeNode<TType> {
     {
         if (subspaceSize <= minVoxelSize)
         {
-            this.isLeafVoxel = true;
-            this.clr = color;
+            //Debug.Log(subspaceSize + " " + minVoxelSize);
+            //Debug.Log(subspaceSize == minVoxelSize);
+            isLeafVoxel = true;
+            clr = color;
             
             return;
         }
@@ -119,34 +117,13 @@ public class OctreeNode<TType> {
         int bestSSIdx = findBestSubspace(pos); // find best subspace idx.
 
         if (children == null)
-        {
             setupChildren(); // allocates memory to children array.
-        }
 
         if (children[bestSSIdx] == null)
-        {
             spawn(bestSSIdx);
-        }
         
         this.children[bestSSIdx].add(pos, color, minVoxelSize);
     }
-/*
-    public void remove(Vector3 newSize)
-    {
-        int bestIdx = findBestSubspace(newSize);
-
-        for (int i = 0; i < children.Length; i++)
-        {
-            if (bestIdx != i && voxelExists)
-            {
-                this.children[i] = null;
-            }
-            else
-            {
-                Debug.Log("working");
-            }
-        }
-    }*/
 
     // allows foreach children
     public IEnumerable<OctreeNode<TType>> Children
@@ -194,24 +171,24 @@ public class OctreeNode<TType> {
     private void spawn(int bestIdx)
     {
         float quarter = subspaceSize * 0.25f;
-        float pos = subspaceSize * 0.5f;
+        float voxelSpaceHalf = subspaceSize * 0.5f;
 
         if (TRF == bestIdx)
-            children[TRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, quarter), pos);
+            children[TRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, quarter), voxelSpaceHalf);
         else if (TLF == bestIdx)
-            children[TLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, quarter), pos);
+            children[TLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, quarter), voxelSpaceHalf);
         else if (BRF == bestIdx)
-            children[BRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, quarter), pos);
+            children[BRF] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, quarter), voxelSpaceHalf);
         else if (BLF == bestIdx)
-            children[BLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, quarter), pos);
+            children[BLF] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, quarter), voxelSpaceHalf);
         else if (TRB == bestIdx)
-            children[TRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, -quarter), pos);
+            children[TRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, quarter, -quarter), voxelSpaceHalf);
         else if (TLB == bestIdx)
-            children[TLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, -quarter), pos);
+            children[TLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, quarter, -quarter), voxelSpaceHalf);
         else if (BRB == bestIdx)
-            children[BRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, -quarter), pos);
+            children[BRB] = new OctreeNode<TType>(this.center + new Vector3(quarter, -quarter, -quarter), voxelSpaceHalf);
         else if (BLB == bestIdx)
-            children[BLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, -quarter), pos);
+            children[BLB] = new OctreeNode<TType>(this.center + new Vector3(-quarter, -quarter, -quarter), voxelSpaceHalf);
     }
 
     private void setupChildren()
