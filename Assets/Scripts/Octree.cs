@@ -13,9 +13,9 @@ public class Octree<TType>
     private OctreeNode<TType> root;
 
     private int count;
-    private int depth = 0;
-    private float vsLength;
-    private float voxelSize = -1;
+	
+    private float voxelSpaceSize;
+    private float voxelSize;
     private float maxPoint;
 
     // GETTERS AND SETTERS
@@ -30,24 +30,16 @@ public class Octree<TType>
         get { return root; }
     }
 
-    public float getVoxelSize()
-    {
-        if(voxelSize == -1)
-        {
-            voxelSize = calculateVoxelSize();
-        }
-        return voxelSize;
-    }
-
     // CONSTRUCTORS
-    public Octree(Vector3 position, float size, int depth)
+    public Octree(Vector3 position, float voxelSpaceSize, float voxelSize)
     {
         // initialize the root node
-        this.root = new OctreeNode<TType>(position, size);
+        this.root = new OctreeNode<TType>(position, voxelSize);
 
-        this.depth = depth;
-        this.vsLength  = size;
-        this.maxPoint = vsLength / 2;
+	    this.voxelSize = voxelSize;
+        this.voxelSpaceSize = voxelSpaceSize;
+	    
+        this.maxPoint = voxelSpaceSize / 2;
         this.count = 0;
     }
 
@@ -61,28 +53,17 @@ public class Octree<TType>
             pos.y <= maxPoint && pos.y >= -maxPoint &&
             pos.z <= maxPoint && pos.z >= -maxPoint)
         {
-            root.add(pos, color, depth);
+            root.add(pos, color, voxelSize);
             count++;
         }
 
         // any position outside mentioned boundary is just inserted at the boundary points.
         else
         {
-            UnityEngine.Debug.Log("position " + pos + " wasn't inserted because the max size is " + vsLength);
+            UnityEngine.Debug.Log("position " + pos + " wasn't inserted because the max size is " + voxelSpaceSize);
             UnityEngine.Debug.Log("The maximum boundaries are: ");
             printBoundaries();
         }
-    }
-	
-	public void customAdd(Vector3 pos, Color32 color)
-	{
-		root.add(pos, color, depth);
-		count++;
-	}
-
-    public void addWithCheck(ref Vector3[] verts, ref Matrix4x4 matrix, ref Color32 clr)
-    {
-        root.addWithCheck(ref verts, ref matrix, ref clr, ref count, depth, 0);
     }
 
     public static bool IntersectsBox( Vector3 a, Vector3 b, Vector3 c, Vector3 boxCenter, Vector3 boxExtents )
@@ -254,29 +235,17 @@ public class Octree<TType>
 		return Math.Max( a, Math.Max( b, c ) ); 
 	}
     
-    public float round(float numToRound, float multiple, int dir = 0)
-    {
-        if (multiple == 0)
-            return numToRound;
+	float round(float axisBound, float voxelSize, bool down)
+	{
+		float difference = axisBound % voxelSize;
 
-        float remainder = Mathf.Abs(numToRound) % multiple;
-        if (remainder == 0f)
-            return numToRound;
+		if (down)
+			return (axisBound - difference);
+		
+		return ((axisBound - difference) + voxelSize);
+	}
 
-        float result;
-
-        if (numToRound < 0)
-            result = -(Mathf.Abs(numToRound) - remainder);
-        else
-            result = numToRound + multiple - remainder;
-
-        if (result < 0)
-            return result - multiple;
-        else
-            return result + multiple;
-    }
-
-    public void voxelizeMesh(ref Mesh mesh, ref Color32 clr, ref Matrix4x4 matrix, ref float size)
+    public void voxelizeMesh(ref Mesh mesh, Color32 clr, Matrix4x4 matrix)
     {
 	    int i_count = 0;
 	    int ni_count = 0;
@@ -290,31 +259,33 @@ public class Octree<TType>
             Vector3 p3 = mesh.vertices[mesh.triangles[i + 2]];
 
             // Create the axis aligned bounding box around the triangle
-            float minX = round(Mathf.Min(p1.x, p2.x, p3.x), size);
-            float maxX = round(Mathf.Max(p1.x, p2.x, p3.x), size, 1);
-            float minY = round(Mathf.Min(p1.y, p2.y, p3.y), size);
-            float maxY = round(Mathf.Max(p1.y, p2.y, p3.y), size, 1);
-            float minZ = round(Mathf.Min(p1.z, p2.z, p3.z), size);
-            float maxZ = round(Mathf.Max(p1.z, p2.z, p3.z), size, 1);
-            
-            // Scan the boudning box by increments of voxelSize
-            for (float x = minX + size; x < maxX; x += size)
+            float minX = round(Mathf.Min(p1.x, p2.x, p3.x), voxelSize, true);
+            float maxX = round(Mathf.Max(p1.x, p2.x, p3.x), voxelSize, false);
+            float minY = round(Mathf.Min(p1.y, p2.y, p3.y), voxelSize, true); 
+            float maxY = round(Mathf.Max(p1.y, p2.y, p3.y), voxelSize, false);
+            float minZ = round(Mathf.Min(p1.z, p2.z, p3.z), voxelSize, true);
+            float maxZ = round(Mathf.Max(p1.z, p2.z, p3.z), voxelSize, false);
+
+	        float voxelSizeHalf = voxelSize / 2;
+	        Vector3 voxelExtends = new Vector3(voxelSizeHalf, voxelSizeHalf, voxelSizeHalf);
+	        
+            // Scan the bounding box by increments of voxelvoxelSize
+            for (float x = minX + voxelSizeHalf; x < maxX; x += voxelSize)
             {
-                for (float y = minY + size; y < maxY; y += size)
-                {
-                    for (float z = minZ + size; z < maxZ; z += size)
-                    {
-	                    if (IntersectsBox(p1, p2, p3, new Vector3(x, y, z), new Vector3(size/2, size/2, size/2)))
-	                    {
-//		                    add(new Vector3(x, y, z), clr);
-//		                    tree.add(localToWorldMatrix.MultiplyPoint3x4(voxels[j].position) * 50, mat.color);
-	                    	customAdd(matrix.MultiplyPoint3x4(new Vector3(x, y, z) * 5), clr);
-	                    	i_count++;	
-	                    }
-//	                    add(matrix.MultiplyPoint3x4(new Vector3(x, y, z) * 50), clr);
+	            for (float y = minY + voxelSizeHalf; y < maxY; y += voxelSize)
+	            {
+		            for (float z = minZ + voxelSizeHalf; z < maxZ; z += voxelSize)
+		            {
+			            Vector3 currentVoxel = new Vector3(x, y, z);
+			            
+			            if (IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
+			            {
+				            this.add(matrix.MultiplyPoint3x4(currentVoxel), clr);
+				            i_count++;
+			            }
 //	                    UnityEngine.Debug.Log("mX: " + minX + " MX: " + maxX + " mY: " + minY + " MY: " + maxY + " mZ: " + 
 //	                                      minZ +" MZ: " + maxZ + " x: " + x + " y: " + y + " z: " + z);
-	                    ni_count++;
+			            ni_count++;
                     }
                 }
             }
@@ -323,7 +294,6 @@ public class Octree<TType>
 	    UnityEngine.Debug.Log("Intersect count: " + i_count);
 	    UnityEngine.Debug.Log("Not interesect count: " + ni_count);
 	    UnityEngine.Debug.Log("Total count: " + (i_count + ni_count));
-        
     }
 
     /*
@@ -360,20 +330,4 @@ public class Octree<TType>
         UnityEngine.Debug.Log(new Vector3(maxPoint, -maxPoint, -maxPoint));
         UnityEngine.Debug.Log(new Vector3(-maxPoint, -maxPoint, -maxPoint));
     }
-
-    // PRIVATE METHODS
-
-    /*
-     * Method for calculating the minimum voxel size given voxel space
-     * length and depth of octree. 
-     */
-    private float calculateVoxelSize()
-    {
-        return vsLength / Mathf.Pow(2, depth);
-    }
-
-	public float calculateMaxDepth(float vsLength, float voxelSize)
-	{
-		return Mathf.Log(vsLength/voxelSize, 2);
-	}
 }

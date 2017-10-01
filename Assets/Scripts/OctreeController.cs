@@ -12,7 +12,6 @@ public class OctreeController : MonoBehaviour
     [Header("Voxel Settings")]
     [SerializeField] private int voxelSpaceSize = 256;
     [SerializeField] private int voxelSize = 1;
-    [SerializeField] private int octreeMaxDepth = 2;
     
     [Header("Models")]
     [SerializeField] private GameObject meshModel;
@@ -144,6 +143,65 @@ public class OctreeController : MonoBehaviour
         }
     }
     
+    /**
+     * Method prepares data structure and voxelizes models. 
+     */
+    private void prepare()
+    {
+        voxelMat = Resources.Load("Materials/VoxelMat") as Material;
+        if (voxelMat == null)
+            throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
+
+        // initialize data structure.
+        tree = new Octree<int>(this.transform.position, (float) voxelSpaceSize/M_FACTOR, (float) voxelSize/MM_FACTOR);
+//        Debug.Log("max depth " + tree.calculateMaxDepth((float) voxelSpaceSize/M_FACTOR, (float) voxelSize/MM_FACTOR));
+
+        // set voxel size to shader.
+        voxelMat.SetFloat("voxel_size", (float) voxelSize/MM_FACTOR);
+
+        List<GameObject> gameObjects = new List<GameObject>();   // obtain the objects to voxelize.
+        List<Transform> childTransforms = new List<Transform>(); // 
+
+        for (int i = 0; i < meshModel.transform.childCount; i++)
+        {
+            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject);
+            childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
+        }
+
+        // hide mesh model.
+        meshModel.hideFlags = HideFlags.HideInInspector;
+        meshModel.hideFlags = HideFlags.NotEditable;
+        meshModel.hideFlags = HideFlags.HideInHierarchy;
+        meshModel.SetActive(false);
+
+        // voxelizes and adds voxels to data structure.
+        for (int i = 0; i < gameObjects.Count; i++)
+        {
+            Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
+            MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
+            Transform modelTransform = childTransforms[i];
+
+            Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
+
+            if (useBasicVoxelization)
+            {
+                Vector3[] verts = meshFilter.mesh.vertices;
+
+                for (int j = 0; j < verts.Length; j++)
+                {
+                    tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]) * 50, mat.color);
+                }
+            }
+            else if(useGridVoxelization)
+            {
+                Mesh mesh = meshFilter.mesh;
+                Color32 clr = mat.color;
+                
+                tree.voxelizeMesh(ref mesh, clr, localToWorldMatrix);
+            }
+        }
+    }
+
     private void initMeshes(int voxelCount)
     {
         if (voxelCount > MAX_VERTS)
@@ -198,74 +256,11 @@ public class OctreeController : MonoBehaviour
         }
     }
 
-    /**
-     * Method prepares data structure and voxelizes models. 
-     */
-    private void prepare()
-    {
-        voxelMat = Resources.Load("Materials/VoxelMat") as Material;
-        if (voxelMat == null)
-            throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
-
-        // initialize data structure.
-        tree = new Octree<int>(this.transform.position, voxelSpaceSize/M_FACTOR, octreeMaxDepth);
-        Debug.Log("max depth " + tree.calculateMaxDepth(voxelSpaceSize/M_FACTOR, voxelSize/MM_FACTOR));
-
-        // set voxel size to shader.
-        voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
-
-        List<GameObject> gameObjects = new List<GameObject>();
-        List<Transform> childTransforms = new List<Transform>();
-
-        for (int i = 0; i < meshModel.transform.childCount; i++)
-        {
-            gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject);
-            childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
-        }
-
-        //meshModel.hideFlags = HideFlags.HideInInspector;
-        //meshModel.hideFlags = HideFlags.NotEditable;
-        //meshModel.hideFlags = HideFlags.HideInHierarchy;
-        meshModel.SetActive(false);
-
-        // voxelizes and adds voxels to data structure.
-        for (int i = 0; i < gameObjects.Count; i++)
-        {
-            Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
-            MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
-            Transform modelTransform = childTransforms[i];
-
-            Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
-
-            if (useBasicVoxelization)
-            {
-                Vector3[] verts = meshFilter.mesh.vertices;
-
-                for (int j = 0; j < verts.Length; j++)
-                {
-                    tree.add(localToWorldMatrix.MultiplyPoint3x4(verts[j]) * 50, mat.color);
-                }
-            }
-            else if(useGridVoxelization)
-            {
-                Mesh mesh = meshFilter.mesh;
-                Color32 clr = mat.color;
-
-                float vs = voxelSize / MM_FACTOR;
-                
-                tree.voxelizeMesh(ref mesh, ref clr, ref localToWorldMatrix, ref vs);
-            }
-        }
-    }
-
     // RENDER METHODS
     private void voxelDrawNode()
     {
         verts = tree.getAllPoints();
         clrs = tree.getAllColors();
-
-        //Debug.Log("Final poss" + verts.Count);
-        //Debug.Log("Final clrss" + clrs.Count);
 
         // draw
         int idx = 0;
