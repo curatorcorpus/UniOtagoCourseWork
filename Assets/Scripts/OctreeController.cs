@@ -10,14 +10,19 @@ public class OctreeController : MonoBehaviour
     [SerializeField] private float voxelSpaceLength = 5.0f;
     [SerializeField] private int octreeMaxDepth = 2;
 
+    [Header("Voxel Settings")]
+    [SerializeField] private float voxelSpaceSize = 250;
+    [SerializeField] private float voxelSize = 0.001f;
+
     [Header("Models")]
     [SerializeField] private GameObject meshModel;
 
     [Header("Debug Tools")]
+    [SerializeField] private bool debugMeshes = false;
     [SerializeField] private bool debugOctree = false;
     [SerializeField] private bool useBoundedVoxelization = false;
+    [SerializeField] private bool useGridVoxelization = false;
     [SerializeField] private bool useBasicVoxelization = false;
-    [SerializeField] private bool debugMeshes = false;
 
     private bool initDebug = true;
     private bool updated = false;
@@ -80,6 +85,7 @@ public class OctreeController : MonoBehaviour
     //==================== MAIN ===========================
     void Start ()
     {
+        settingsCheck();
         prepare();
         Debug.Log("Number of points: " + tree.getAllPoints().Count);
         initMeshes(tree.getAllPoints().Count);    // add to mesh
@@ -135,6 +141,15 @@ public class OctreeController : MonoBehaviour
     //======================================================
 
     // PRIVATE METHODS
+    private void settingsCheck()
+    {
+        if ((int)(voxelSpaceSize*1000) % (int)(voxelSize*1000) != 0)
+        {
+            //throw new System.Exception("Voxel size should be divisible by the Voxel Space Size.");
+            UnityEngine.Debug.Log("Not divisible");
+        }
+    }
+
     private void initMeshes(int voxelCount)
     {
         if (voxelCount > MAX_VERTS)
@@ -199,7 +214,14 @@ public class OctreeController : MonoBehaviour
             throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
 
         // initialize data structure.
-        tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+        if (useGridVoxelization)
+        {
+            tree = new Octree<int>(this.transform.position, voxelSpaceSize, octreeMaxDepth);
+        }
+        else
+        {
+            tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
+        }
 
         voxelMat.SetFloat("voxel_size", tree.getVoxelSize());
 
@@ -241,6 +263,13 @@ public class OctreeController : MonoBehaviour
                 Color32 clr = mat.color;
 
                 tree.addWithCheck(ref verts, ref localToWorldMatrix, ref clr);
+            }
+            else if(useGridVoxelization)
+            {
+                Mesh mesh = meshFilter.mesh;
+                Color32 clr = mat.color;
+
+                tree.voxelizeMesh(ref mesh, ref clr, ref localToWorldMatrix, ref voxelSize);
             }
             else
             {

@@ -1,9 +1,8 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
-
-Project("{A1C794F3-869E-C30B-DD0D-8C62F99F1361}") = "VoxelEnivronment", "Assembly-CSharp.csproj", "{9B254F02-6E08-544B-CDED-6FFBE0EFFBA1}"
+Project("{A1C794F3-869E-C30B-DD0D-8C62F99F1361}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{9B254F02-6E08-544B-CDED-6FFBE0EFFBA1}"
 EndProject
-Project("{A1C794F3-869E-C30B-DD0D-8C62F99F1361}") = "VoxelEnivronment", "Assembly-CSharp-Editor.csproj", "{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}"
+Project("{A1C794F3-869E-C30B-DD0D-8C62F99F1361}") = "Assembly-CSharp-Editor", "Assembly-CSharp-Editor.csproj", "{AD9CF9FF-7FFB-EE88-D12C-9F0C175C784B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
