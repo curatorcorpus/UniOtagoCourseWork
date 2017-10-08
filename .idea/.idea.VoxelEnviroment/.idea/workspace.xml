@@ -2,13 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cdab4ce2-9fca-4029-ada4-35eb8014aa43" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/BoundsOctree.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/BoundsOctreeNode.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/BruteForceController.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/MeshObject.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/PointOctree.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/PointOctreeNode.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/Voxel.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/VoxelObject.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/VoxelSpace.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/VoxelStruct.cs" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Assets/Scripts/Voxelizer.cs" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Resources/Materials/VoxelMat.mat" afterPath="$PROJECT_DIR$/Assets/Resources/Materials/VoxelMat.mat" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Scenes/First Scene.unity" afterPath="$PROJECT_DIR$/Assets/Scenes/First Scene.unity" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/AnnotationManager" afterPath="$PROJECT_DIR$/Library/AnnotationManager" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/assetDatabase3" afterPath="$PROJECT_DIR$/Library/assetDatabase3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/metadata/95/9554fb34d765a426087ff52bd566706d" afterPath="$PROJECT_DIR$/Library/metadata/95/9554fb34d765a426087ff52bd566706d" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Library/metadata/a5/a5936a607a358db498d1e55692ca937a.info" afterPath="$PROJECT_DIR$/Library/metadata/a5/a5936a607a358db498d1e55692ca937a.info" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.idea.VoxelEnviroment/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/.idea.VoxelEnviroment/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assets/Shaders/Geometry.shader" afterPath="$PROJECT_DIR$/Assets/Shaders/Geometry.shader" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Assembly-CSharp.csproj" afterPath="$PROJECT_DIR$/Assembly-CSharp.csproj" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -31,7 +42,7 @@
       <content type="file-editors">
         <state>
           <leaf>
-            <file leaf-file-name="OctreeNode.cs" pinned="false" current-in-tab="true">
+            <file leaf-file-name="OctreeNode.cs" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/Assets/Scripts/OctreeNode.cs">
                 <provider selected="true" editor-type-id="text-editor">
                   <state relative-caret-position="-1920">
@@ -72,11 +83,11 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="OctreeController.cs" pinned="false" current-in-tab="false">
+            <file leaf-file-name="OctreeController.cs" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/Assets/Scripts/OctreeController.cs">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="77">
-                    <caret line="197" column="9" lean-forward="false" selection-start-line="197" selection-start-column="9" selection-end-line="198" selection-end-column="39" />
+                  <state relative-caret-position="1067">
+                    <caret line="206" column="32" lean-forward="false" selection-start-line="206" selection-start-column="32" selection-end-line="206" selection-end-column="32" />
                     <folding>
                       <marker date="1507433720909" expanded="true" signature="6:92" ph="..." />
                       <marker date="1507433720909" expanded="true" signature="139:8075" ph="{...}" />
@@ -132,58 +143,42 @@
       <file leaf-file-name="Octree.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/Octree.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+            <state relative-caret-position="305">
+              <caret line="24" column="9" lean-forward="false" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
               <folding>
-                <marker date="1507428937116" expanded="true" signature="23:186" ph="..." />
-                <marker date="1507428937116" expanded="true" signature="214:5299" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="418:499" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="534:575" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="671:942" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
-                <marker date="1507428937116" expanded="true" signature="1083:1725" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="1252:1378" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="1484:1719" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="1752:1797" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="1877:4254" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="2185:4054" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="3250:4044" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="3340:4030" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="3432:4012" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="3608:3738" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
-                <marker date="1507428937116" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
-                <marker date="1507428937116" expanded="true" signature="4369:4488" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="4400:4445" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="4529:4646" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="4561:4606" ph="{...}" />
-                <marker date="1507428937116" expanded="true" signature="4681:5297" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="23:186" ph="..." />
+                <marker date="1507435936635" expanded="true" signature="214:5299" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="418:499" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="534:575" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="671:942" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
+                <marker date="1507435936635" expanded="true" signature="1083:1725" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="1252:1378" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="1484:1719" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="1752:1797" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="1877:4254" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="2185:4054" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="3250:4044" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="3340:4030" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="3432:4012" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="3608:3738" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
+                <marker date="1507435936635" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
+                <marker date="1507435936635" expanded="true" signature="4369:4488" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="4400:4445" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="4529:4646" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="4561:4606" ph="{...}" />
+                <marker date="1507435936635" expanded="true" signature="4681:5297" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Geometry.shader" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Assets/Shaders/Geometry.shader">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="615">
-              <caret line="138" column="0" lean-forward="true" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
-              <folding>
-                <marker date="1507434677167" expanded="true" signature="96:4681" ph="{...}" />
-                <marker date="1507434677167" expanded="true" signature="113:157" ph="{...}" />
-                <marker date="1507434677167" expanded="true" signature="170:4679" ph="{...}" />
-                <marker date="1507434677167" expanded="true" signature="240:4676" ph="{...}" />
-                <marker date="1507434677167" expanded="true" signature="306:4667" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MathUtils.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MathUtils.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/MathUtils.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="421">
-              <caret line="176" column="35" lean-forward="false" selection-start-line="176" selection-start-column="35" selection-end-line="176" selection-end-column="35" />
+            <state relative-caret-position="-135">
+              <caret line="151" column="55" lean-forward="true" selection-start-line="151" selection-start-column="55" selection-end-line="151" selection-end-column="55" />
               <folding>
                 <marker date="1507432696476" expanded="true" signature="6:32" ph="..." />
                 <marker date="1507432696476" expanded="true" signature="56:5424" ph="{...}" />
@@ -231,27 +226,25 @@
       <find>voxelSpaceSize</find>
       <find>geo</find>
       <find>center</find>
-      <find>Gi</find>
       <find>corner</find>
+      <find>Gi</find>
     </findStrings>
     <replaceStrings>
       <replace>pos</replace>
       <replace>256 / (2</replace>
-      <replace>iCount</replace>
       <replace>center</replace>
+      <replace>iCount</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/PointOctree.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/71E0D042-CA0A-405E-A629-7B2703D2273D/88/d486c07e/Math.cs" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/OctreeNode.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3C98668-1A93-4CF9-A2CC-637F3FD01AA5/af/f0c6ebc0/Mathf.cs" root0="SKIP_INSPECTION" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3C98668-1A93-4CF9-A2CC-637F3FD01AA5/bc/34595e1f/GameObject.cs" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/OctreeController.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Voxelizer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/MathUtils.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3C98668-1A93-4CF9-A2CC-637F3FD01AA5/16/b6479f73/MeshFilter.cs" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/Assets/Shaders/Geometry.shader" root0="FORCE_HIGHLIGHTING" />
@@ -272,10 +265,10 @@
         <option value="$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3C98668-1A93-4CF9-A2CC-637F3FD01AA5/f8/08677362/MeshRenderer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/OctreeNode.cs" />
         <option value="$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3C98668-1A93-4CF9-A2CC-637F3FD01AA5/af/f0c6ebc0/Mathf.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/Octree.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/MathUtils.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/OctreeController.cs" />
         <option value="$PROJECT_DIR$/Assets/Shaders/Geometry.shader" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/Octree.cs" />
       </list>
     </option>
   </component>
@@ -607,12 +600,12 @@
       <workItem from="1506052996923" duration="16199000" />
       <workItem from="1506820073275" duration="17115000" />
       <workItem from="1506986218045" duration="1200000" />
-      <workItem from="1507421208753" duration="12346000" />
+      <workItem from="1507421208753" duration="13622000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="46860000" />
+    <option name="totallyTimeSpent" value="48136000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -707,29 +700,29 @@
         <state relative-caret-position="195">
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <marker date="1507428937116" expanded="true" signature="23:186" ph="..." />
-            <marker date="1507428937116" expanded="true" signature="214:5299" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="418:499" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="534:575" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="671:942" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="1083:1725" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1252:1378" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1484:1719" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1752:1797" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1877:4254" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="2185:4054" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3250:4044" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3340:4030" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3432:4012" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3608:3738" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
-            <marker date="1507428937116" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="4369:4488" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4400:4445" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4529:4646" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4561:4606" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4681:5297" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="23:186" ph="..." />
+            <marker date="1507435936635" expanded="true" signature="214:5299" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="418:499" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="534:575" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="671:942" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="1083:1725" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1252:1378" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1484:1719" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1752:1797" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1877:4254" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="2185:4054" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3250:4044" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3340:4030" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3432:4012" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3608:3738" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
+            <marker date="1507435936635" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="4369:4488" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4400:4445" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4529:4646" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4561:4606" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4681:5297" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -825,29 +818,29 @@
         <state relative-caret-position="285">
           <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
           <folding>
-            <marker date="1507428937116" expanded="true" signature="23:186" ph="..." />
-            <marker date="1507428937116" expanded="true" signature="214:5299" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="418:499" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="534:575" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="671:942" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="1083:1725" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1252:1378" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1484:1719" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1752:1797" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1877:4254" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="2185:4054" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3250:4044" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3340:4030" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3432:4012" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3608:3738" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
-            <marker date="1507428937116" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="4369:4488" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4400:4445" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4529:4646" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4561:4606" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4681:5297" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="23:186" ph="..." />
+            <marker date="1507435936635" expanded="true" signature="214:5299" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="418:499" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="534:575" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="671:942" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="1083:1725" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1252:1378" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1484:1719" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1752:1797" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1877:4254" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="2185:4054" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3250:4044" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3340:4030" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3432:4012" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3608:3738" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
+            <marker date="1507435936635" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="4369:4488" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4400:4445" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4529:4646" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4561:4606" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4681:5297" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -904,29 +897,29 @@
         <state relative-caret-position="4770">
           <caret line="318" column="17" lean-forward="false" selection-start-line="318" selection-start-column="17" selection-end-line="318" selection-end-column="17" />
           <folding>
-            <marker date="1507428937116" expanded="true" signature="23:186" ph="..." />
-            <marker date="1507428937116" expanded="true" signature="214:5299" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="418:499" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="534:575" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="671:942" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="1083:1725" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1252:1378" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1484:1719" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1752:1797" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1877:4254" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="2185:4054" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3250:4044" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3340:4030" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3432:4012" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3608:3738" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
-            <marker date="1507428937116" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="4369:4488" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4400:4445" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4529:4646" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4561:4606" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4681:5297" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="23:186" ph="..." />
+            <marker date="1507435936635" expanded="true" signature="214:5299" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="418:499" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="534:575" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="671:942" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="1083:1725" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1252:1378" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1484:1719" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1752:1797" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1877:4254" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="2185:4054" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3250:4044" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3340:4030" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3432:4012" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3608:3738" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
+            <marker date="1507435936635" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="4369:4488" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4400:4445" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4529:4646" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4561:4606" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4681:5297" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1082,6 +1075,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/OctreeNode.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1920">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding>
+            <marker date="1507428900973" expanded="false" signature="6:78" ph="..." />
+            <marker date="1507428900973" expanded="true" signature="111:6474" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="712:781" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="832:894" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="921:995" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1020:1094" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1116:1149" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1177:1225" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1288:1721" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1369:1418" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1453:1686" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1521:1676" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1570:1662" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1759:2189" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1843:1892" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1926:2159" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="1994:2149" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="2043:2135" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="2258:2860" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="2306:2527" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="2905:3262" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="2953:3075" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="3106:3147" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="3189:3256" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="3349:3381" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="3451:3935" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="3476:3793" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="3961:4989" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="5026:6376" ph="{...}" />
+            <marker date="1507428900973" expanded="true" signature="6410:6472" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C3C98668-1A93-4CF9-A2CC-637F3FD01AA5/f8/08677362/MeshRenderer.cs">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -1097,76 +1129,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/Octree.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Shaders/Geometry.shader">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="20" column="26" lean-forward="false" selection-start-line="20" selection-start-column="26" selection-end-line="20" selection-end-column="26" />
+        <state relative-caret-position="465">
+          <caret line="168" column="0" lean-forward="true" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
           <folding>
-            <marker date="1507428937116" expanded="true" signature="23:186" ph="..." />
-            <marker date="1507428937116" expanded="true" signature="214:5299" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="418:499" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="534:575" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="671:942" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="1083:1725" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1252:1378" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1484:1719" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1752:1797" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="1877:4254" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="2185:4054" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3250:4044" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3340:4030" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3432:4012" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3608:3738" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
-            <marker date="1507428937116" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
-            <marker date="1507428937116" expanded="true" signature="4369:4488" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4400:4445" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4529:4646" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4561:4606" ph="{...}" />
-            <marker date="1507428937116" expanded="true" signature="4681:5297" ph="{...}" />
+            <marker date="1507434677167" expanded="true" signature="96:4681" ph="{...}" />
+            <marker date="1507434677167" expanded="true" signature="113:157" ph="{...}" />
+            <marker date="1507434677167" expanded="true" signature="170:4679" ph="{...}" />
+            <marker date="1507434677167" expanded="true" signature="240:4676" ph="{...}" />
+            <marker date="1507434677167" expanded="true" signature="306:4667" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/MathUtils.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/Voxel.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="176" column="35" lean-forward="false" selection-start-line="176" selection-start-column="35" selection-end-line="176" selection-end-column="35" />
+        <state relative-caret-position="135">
+          <caret line="11" column="14" lean-forward="false" selection-start-line="11" selection-start-column="14" selection-end-line="11" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/Octree.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="305">
+          <caret line="24" column="9" lean-forward="false" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
           <folding>
-            <marker date="1507432696476" expanded="true" signature="6:32" ph="..." />
-            <marker date="1507432696476" expanded="true" signature="56:5424" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="166:4712" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="439:3380" ph="Test axes a00..a22 (category 3)" />
-            <marker date="1507432696476" expanded="true" signature="788:813" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="1107:1132" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="1426:1451" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="1745:1770" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="2064:2089" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="2383:2408" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="2702:2727" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="3021:3046" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="3340:3365" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="3386:4146" ph="Test the three axes corresponding to the face normals of AABB b (category 1)" />
-            <marker date="1507432696476" expanded="true" signature="3475:3583" ph="/* Exit if... ... */" />
-            <marker date="1507432696476" expanded="true" signature="3675:3700" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="3889:3914" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="4106:4131" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="4152:4692" ph="Test separating axis corresponding to triangle face normal (category 2)" />
-            <marker date="1507432696476" expanded="true" signature="4652:4677" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="4768:4816" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="4873:4922" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="5006:5125" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="5167:5421" ph="{...}" />
-            <marker date="1507432696476" expanded="true" signature="5353:5397" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="23:186" ph="..." />
+            <marker date="1507435936635" expanded="true" signature="214:5299" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="418:499" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="534:575" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="671:942" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="970:1035" ph="/* Method for adding a new node to data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="1083:1725" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1252:1378" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1484:1719" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1752:1797" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="1877:4254" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="2185:4054" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3250:4044" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3340:4030" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3432:4012" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3608:3738" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="3739:3964" ph="/* UnityEngine.Debug.Log(&quot;mX: &quot; + minX + &quot; MX: &quot; + maxX + &quot; mY: &quot; + minY + &quot; MY: &quot; + maxY + &quot; mZ: &quot; + ... */" />
+            <marker date="1507435936635" expanded="true" signature="4260:4329" ph="/* Method for traversing entire Octree data structure. ... */" />
+            <marker date="1507435936635" expanded="true" signature="4369:4488" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4400:4445" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4529:4646" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4561:4606" ph="{...}" />
+            <marker date="1507435936635" expanded="true" signature="4681:5297" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Scripts/OctreeController.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="77">
-          <caret line="197" column="9" lean-forward="false" selection-start-line="197" selection-start-column="9" selection-end-line="198" selection-end-column="39" />
+        <state relative-caret-position="1067">
+          <caret line="206" column="32" lean-forward="false" selection-start-line="206" selection-start-column="32" selection-end-line="206" selection-end-column="32" />
           <folding>
             <marker date="1507433720909" expanded="true" signature="6:92" ph="..." />
             <marker date="1507433720909" expanded="true" signature="139:8075" ph="{...}" />
@@ -1210,55 +1230,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/OctreeNode.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/MeshObject.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1920">
-          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding>
-            <marker date="1507428900973" expanded="false" signature="6:78" ph="..." />
-            <marker date="1507428900973" expanded="true" signature="111:6474" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="712:781" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="832:894" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="921:995" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1020:1094" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1116:1149" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1177:1225" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1288:1721" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1369:1418" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1453:1686" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1521:1676" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1570:1662" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1759:2189" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1843:1892" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1926:2159" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="1994:2149" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="2043:2135" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="2258:2860" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="2306:2527" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="2905:3262" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="2953:3075" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="3106:3147" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="3189:3256" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="3349:3381" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="3451:3935" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="3476:3793" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="3961:4989" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="5026:6376" ph="{...}" />
-            <marker date="1507428900973" expanded="true" signature="6410:6472" ph="{...}" />
-          </folding>
+        <state relative-caret-position="-1320">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Shaders/Geometry.shader">
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/MathUtils.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="138" column="0" lean-forward="true" selection-start-line="138" selection-start-column="0" selection-end-line="138" selection-end-column="0" />
+        <state relative-caret-position="-135">
+          <caret line="151" column="55" lean-forward="true" selection-start-line="151" selection-start-column="55" selection-end-line="151" selection-end-column="55" />
           <folding>
-            <marker date="1507434677167" expanded="true" signature="96:4681" ph="{...}" />
-            <marker date="1507434677167" expanded="true" signature="113:157" ph="{...}" />
-            <marker date="1507434677167" expanded="true" signature="170:4679" ph="{...}" />
-            <marker date="1507434677167" expanded="true" signature="240:4676" ph="{...}" />
-            <marker date="1507434677167" expanded="true" signature="306:4667" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="6:32" ph="..." />
+            <marker date="1507432696476" expanded="true" signature="56:5424" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="166:4712" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="439:3380" ph="Test axes a00..a22 (category 3)" />
+            <marker date="1507432696476" expanded="true" signature="788:813" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="1107:1132" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="1426:1451" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="1745:1770" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="2064:2089" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="2383:2408" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="2702:2727" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="3021:3046" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="3340:3365" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="3386:4146" ph="Test the three axes corresponding to the face normals of AABB b (category 1)" />
+            <marker date="1507432696476" expanded="true" signature="3475:3583" ph="/* Exit if... ... */" />
+            <marker date="1507432696476" expanded="true" signature="3675:3700" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="3889:3914" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="4106:4131" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="4152:4692" ph="Test separating axis corresponding to triangle face normal (category 2)" />
+            <marker date="1507432696476" expanded="true" signature="4652:4677" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="4768:4816" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="4873:4922" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="5006:5125" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="5167:5421" ph="{...}" />
+            <marker date="1507432696476" expanded="true" signature="5353:5397" ph="{...}" />
           </folding>
         </state>
       </provider>

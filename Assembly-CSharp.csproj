@@ -53,21 +53,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\BoundsOctree.cs" />
-    <Compile Include="Assets\Scripts\BoundsOctreeNode.cs" />
-    <Compile Include="Assets\Scripts\BruteForceController.cs" />
     <Compile Include="Assets\Scripts\MathUtils.cs" />
-    <Compile Include="Assets\Scripts\MeshObject.cs" />
     <Compile Include="Assets\Scripts\Octree.cs" />
     <Compile Include="Assets\Scripts\OctreeController.cs" />
     <Compile Include="Assets\Scripts\OctreeNode.cs" />
-    <Compile Include="Assets\Scripts\PointOctree.cs" />
-    <Compile Include="Assets\Scripts\PointOctreeNode.cs" />
-    <Compile Include="Assets\Scripts\Voxel.cs" />
-    <Compile Include="Assets\Scripts\VoxelObject.cs" />
-    <Compile Include="Assets\Scripts\VoxelSpace.cs" />
-    <Compile Include="Assets\Scripts\VoxelStruct.cs" />
-    <Compile Include="Assets\Scripts\Voxelizer.cs" />
     <None Include="Assets\Shaders\Geometry.shader" />
     <None Include="Assets\Shaders\GeometryLit.shader" />
     <None Include="Assets\Resources\Models\Cup\archibase.net.txt" />
