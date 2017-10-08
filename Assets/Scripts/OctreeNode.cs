@@ -125,6 +125,27 @@ public class OctreeNode<TType> {
         this.children[bestSSIdx].add(pos, color, minVoxelSize);
     }
 
+    public void AddFill(float minVoxelSize)
+    {
+        if (subspaceSize <= minVoxelSize)
+        {
+            isLeafVoxel = true;
+            clr = Random.ColorHSV();
+            
+            return;
+        }
+
+        if (children == null)
+        {
+            split();
+        }
+
+        for (int i = 0; i < DEGREE; i++)
+        {
+            children[i].AddFill(minVoxelSize);
+        }
+    }
+    
     // allows foreach children
     public IEnumerable<OctreeNode<TType>> Children
 	{

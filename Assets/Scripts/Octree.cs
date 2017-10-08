@@ -67,6 +67,11 @@ public class Octree<TType>
         }
     }
 
+    public void AddFill()
+    {
+        root.AddFill(voxelSize);
+    }
+    
     public void VoxelizeMesh(ref Mesh mesh, Color32 clr, Matrix4x4 matrix)
     {
 	    int iCount = 0;
@@ -104,7 +109,7 @@ public class Octree<TType>
 			            
 			            if (MathUtils.IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
 			            {
-				            this.add(matrix.MultiplyPoint3x4(currentVoxel), clr);
+				            this.Add(matrix.MultiplyPoint3x4(currentVoxel), clr);
 				            iCount++;
 			            }
 //	                    UnityEngine.Debug.Log("mX: " + minX + " MX: " + maxX + " mY: " + minY + " MY: " + maxY + " mZ: " + 

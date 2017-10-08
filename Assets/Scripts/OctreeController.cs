@@ -21,6 +21,7 @@ public class OctreeController : MonoBehaviour
     [SerializeField] private bool debugOctree = false;
     [SerializeField] private bool useBasicVoxelization = false;
     [SerializeField] private bool useGridVoxelization = false;
+    [SerializeField] private bool useFillSpace = false;
 
     private bool updated = false;
 
@@ -84,42 +85,6 @@ public class OctreeController : MonoBehaviour
 
     private void Update()
     { 
-/*        if(Input.GetKey(KeyCode.RightArrow))
-        {
-            tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
-
-            Quaternion rot = Quaternion.Euler(0, 10.0f, 0);
-
-            Matrix4x4 m = Matrix4x4.TRS(Vector3.zero,
-                                        rot,
-                                        new Vector3(1,1,1));
-
-            for (int i = 0; i < verts.Count; i++)
-            {
-                tree.add(m.MultiplyPoint3x4(verts[i]), clrs[i]);
-            }
-
-            updated = true;
-        }
-
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            tree = new Octree<int>(this.transform.position, voxelSpaceLength, octreeMaxDepth);
-
-            Quaternion rot = Quaternion.Euler(0, -10.0f, 0);
-
-            Matrix4x4 m = Matrix4x4.TRS(Vector3.zero,
-                                        rot,
-                                        new Vector3(1, 1, 1));
-
-            for (int i = 0; i < verts.Count; i++)
-            {
-                tree.add(m.MultiplyPoint3x4(verts[i]), clrs[i]);
-            }
-
-            updated = true;
-        }
-*/
         if (updated)
         {
             VoxelDrawNode();
@@ -151,12 +116,10 @@ public class OctreeController : MonoBehaviour
             throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
 
         // initialize data structure.
-//        tree = new Octree<int>(this.transform.position, (float) voxelSpaceSize/M_FACTOR, (float) voxelSize/MM_FACTOR);
-        tree = new Octree<int>(this.transform.position, voxelSpaceSize, voxelSize);
-//        Debug.Log("max depth " + tree.calculateMaxDepth((float) voxelSpaceSize/M_FACTOR, (float) voxelSize/MM_FACTOR));
+        tree = new Octree<int>(this.transform.position, (float)voxelSpaceSize/1000,(float) voxelSize/1000);
 
         // set voxel size to shader.
-        voxelMat.SetFloat("voxel_size", voxelSize);
+        voxelMat.SetFloat("voxel_size", (float)voxelSize/1000);
 
         List<GameObject> gameObjects = new List<GameObject>();   // obtain the objects to voxelize.
         List<Transform> childTransforms = new List<Transform>(); // 
@@ -203,6 +166,10 @@ public class OctreeController : MonoBehaviour
                 Mesh mesh = meshFilter.mesh;
 
                 tree.VoxelizeMesh(ref mesh, matColor, localToWorldMatrix);
+            }
+            else if (useFillSpace)
+            {
+                tree.AddFill();
             }
         }
     }
