@@ -99,8 +99,8 @@ public class OctreeController : MonoBehaviour
     {
         if (voxelSpaceSize % 2 != 0 || (voxelSize % 2 != 0 && voxelSize != 1))
         {
-            int closestVSS = ClosetPow2(voxelSpaceSize);
-            int closestVS = ClosetPow2(voxelSize);
+            int closestVSS = MathUtils.ClosetPow2(voxelSpaceSize);
+            int closestVS = MathUtils.ClosetPow2(voxelSize);
 
             Debug.Log("Voxel Settings not powers of 2.\nVoxel space size rounded from " + voxelSpaceSize + " to " + 
                       closestVSS + ".\nVoxel Size rounded from " + voxelSize + " to " + closestVS + ".");
@@ -109,19 +109,6 @@ public class OctreeController : MonoBehaviour
             voxelSize = closestVS;  
         }
     }
-
-    private int ClosetPow2(int size)
-    {
-        float ceil = Mathf.Pow(2, Mathf.Ceil(Mathf.Log(size)/Mathf.Log(2)));
-        float floor = Mathf.Pow(2, Mathf.Floor(Mathf.Log(size)/Mathf.Log(2)));
-
-        if ((size - floor) < (ceil - size))
-        {
-            return (int) floor;
-            
-        }
-        return (int) ceil;
-    } 
     
     /**
      * Method prepares data structure and voxelizes models. 
