@@ -55,7 +55,6 @@ public class Octree<TType>
         {
             root.add(pos, color, voxelSize);
             count++;
-            UnityEngine.Debug.Log(pos);
         }
 
         // any position outside mentioned boundary is just inserted at the boundary points.

@@ -7,8 +7,7 @@ using System.Threading;
 public class OctreeController : MonoBehaviour 
 {
     private static int MAX_VERTS = 65534;
-//    private static int M_FACTOR = 100;
-//    private static int MM_FACTOR = 1000;
+    private static int MM_FACTOR = 1000;
     
     [Header("Voxel Settings")]
     [SerializeField] private int voxelSpaceSize = 256;
@@ -78,7 +77,6 @@ public class OctreeController : MonoBehaviour
     {
         CheckVoxelSettings();
         Setup();
-        Debug.Log("Number of points: " + tree.GetAllPoints().Count);
         InitMeshes(tree.GetAllPoints().Count);    // add to mesh
         InitIndices();                // initialize indices to use
         VoxelDrawNode();             // inital draw
@@ -121,14 +119,15 @@ public class OctreeController : MonoBehaviour
             throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
 
         // initialize data structure.
-        tree = new Octree<int>(this.transform.position, (float)voxelSpaceSize/1000,(float) voxelSize/1000);
+        tree = new Octree<int>(this.transform.position, (float)voxelSpaceSize/ MM_FACTOR, (float) voxelSize/ MM_FACTOR);
 
         // set voxel size to shader.
         voxelMat.SetFloat("voxel_size", (float)voxelSize/1000);
 
         List<GameObject> gameObjects = new List<GameObject>();   // obtain the objects to voxelize.
         List<Transform> childTransforms = new List<Transform>(); // 
-        List<Thread> threads = new List<Thread>();
+        List<VoxelizerThread> threads = new List<VoxelizerThread>();
+        List<Color32> meshColors = new List<Color32>();
 
         for (int i = 0; i < meshModel.transform.childCount; i++)
         {
@@ -140,9 +139,13 @@ public class OctreeController : MonoBehaviour
             Transform modelTransform = childTransforms[i];
             Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
             Color32 matColor = mat.color;
-            Mesh mesh = meshFilter.mesh;
             
-            threads.Add(new Thread(() => new VoxelizerThread().VoxelizeMesh(ref mesh, matColor, localToWorldMatrix)));
+            Mesh mesh = meshFilter.mesh;
+            Vector3[] verts = mesh.vertices;
+            int[] tris = mesh.triangles;
+
+            threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix,(float)voxelSize/ MM_FACTOR));
+            meshColors.Add(matColor);
         }
 
         // hide mesh model.
@@ -188,12 +191,32 @@ public class OctreeController : MonoBehaviour
                 tree.AddFill();
             }
         }
-        
-        throw new Exception();
+
+        int idx = 0;
+        int no = 0;
+        while(idx < threads.Count)
+        {
+            VoxelizerThread currThread = threads[idx];
+
+            if (currThread.finished)
+            {
+                no++;
+                tree.Add(currThread.voxelsToAdd.Pop(), meshColors[idx]);
+                if (currThread.voxelsToAdd.Count == 0)
+                {
+                    idx++;
+                    Debug.Log(currThread.IsAlive);
+                }
+            }
+        }
+
+        threads.Clear();
+
+        Debug.Log("Number of points added to tree " + no);
     }
 
     private void InitMeshes(int voxelCount)
-    {
+    {Debug.Log("Total Voxel Count " + voxelCount);
         if (voxelCount > MAX_VERTS)
         {
             int divisor = Mathf.CeilToInt((float)voxelCount / MAX_VERTS);
@@ -276,7 +299,6 @@ public class OctreeController : MonoBehaviour
                 mesh.SetIndices(indices.GetRange(0, MAX_VERTS).ToArray(), MeshTopology.Points, 0);
                 mesh = meshes[++idx];
             }
-
             remainingVerts -= MAX_VERTS;
         }
     }

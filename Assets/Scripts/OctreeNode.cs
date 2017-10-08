@@ -55,6 +55,7 @@ public class OctreeNode<TType> {
     public bool IsLeafVoxel
     {
         get { return isLeafVoxel; }
+        set { this.isLeafVoxel = true; }
     }
 
     // PUBLIC METHODS
@@ -106,8 +107,8 @@ public class OctreeNode<TType> {
     {
         if (subspaceSize <= minVoxelSize)
         {
-            Debug.Log(subspaceSize + " " + minVoxelSize);
-            Debug.Log(subspaceSize == minVoxelSize);
+            //Debug.Log(subspaceSize + " " + minVoxelSize);
+            //Debug.Log(subspaceSize == minVoxelSize);
             isLeafVoxel = true;
             clr = color;
             
