@@ -2,8 +2,9 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
-public class OctreeController : MonoBehaviour
+public class OctreeController : MonoBehaviour 
 {
     private static int MAX_VERTS = 65534;
 //    private static int M_FACTOR = 100;
@@ -106,7 +107,7 @@ public class OctreeController : MonoBehaviour
                       closestVSS + ".\nVoxel Size rounded from " + voxelSize + " to " + closestVS + ".");
 
             voxelSpaceSize = closestVSS;
-            voxelSize = closestVS;  
+            voxelSize = closestVS;
         }
     }
     
@@ -127,11 +128,21 @@ public class OctreeController : MonoBehaviour
 
         List<GameObject> gameObjects = new List<GameObject>();   // obtain the objects to voxelize.
         List<Transform> childTransforms = new List<Transform>(); // 
+        List<Thread> threads = new List<Thread>();
 
         for (int i = 0; i < meshModel.transform.childCount; i++)
         {
             gameObjects.Add(meshModel.gameObject.transform.GetChild(i).gameObject);
             childTransforms.Add(meshModel.gameObject.transform.GetChild(i).transform);
+            
+            Material mat = gameObjects[i].GetComponent<MeshRenderer>().material;
+            MeshFilter meshFilter = gameObjects[i].GetComponent<MeshFilter>();
+            Transform modelTransform = childTransforms[i];
+            Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
+            Color32 matColor = mat.color;
+            Mesh mesh = meshFilter.mesh;
+            
+            threads.Add(new Thread(() => new VoxelizerThread().VoxelizeMesh(ref mesh, matColor, localToWorldMatrix)));
         }
 
         // hide mesh model.
@@ -167,15 +178,18 @@ public class OctreeController : MonoBehaviour
             }
             else if(useGridVoxelization)
             {
-                Mesh mesh = meshFilter.mesh;
+//                Mesh mesh = meshFilter.mesh;
 
-                tree.VoxelizeMesh(ref mesh, matColor, localToWorldMatrix);
+                //tree.VoxelizeMesh(ref mesh, matColor, localToWorldMatrix);
+                threads[i].Start();
             }
             else if (useFillSpace)
             {
                 tree.AddFill();
             }
         }
+        
+        throw new Exception();
     }
 
     private void InitMeshes(int voxelCount)
