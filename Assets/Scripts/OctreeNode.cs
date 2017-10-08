@@ -106,8 +106,8 @@ public class OctreeNode<TType> {
     {
         if (subspaceSize <= minVoxelSize)
         {
-            //Debug.Log(subspaceSize + " " + minVoxelSize);
-            //Debug.Log(subspaceSize == minVoxelSize);
+            Debug.Log(subspaceSize + " " + minVoxelSize);
+            Debug.Log(subspaceSize == minVoxelSize);
             isLeafVoxel = true;
             clr = color;
             

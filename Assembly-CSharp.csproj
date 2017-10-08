@@ -56,6 +56,7 @@
     <Compile Include="Assets\Scripts\BoundsOctree.cs" />
     <Compile Include="Assets\Scripts\BoundsOctreeNode.cs" />
     <Compile Include="Assets\Scripts\BruteForceController.cs" />
+    <Compile Include="Assets\Scripts\MathUtils.cs" />
     <Compile Include="Assets\Scripts\MeshObject.cs" />
     <Compile Include="Assets\Scripts\Octree.cs" />
     <Compile Include="Assets\Scripts\OctreeController.cs" />
