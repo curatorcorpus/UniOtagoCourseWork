@@ -10,18 +10,20 @@ public class OctreeController : MonoBehaviour
     private static int MM_FACTOR = 1000;
     
     [Header("Voxel Settings")]
-    [SerializeField] private int voxelSpaceSize = 256;
+    [SerializeField] private int voxelSpaceSize = 2048;
     [SerializeField] private int voxelSize = 1;
     
     [Header("Models")]
     [SerializeField] private GameObject meshModel;
 
-    [Header("Debug Tools")]
-    [SerializeField] private bool debugMeshes = false;
-    [SerializeField] private bool debugOctree = false;
+    [Header("Voxelizer Features")]
     [SerializeField] private bool useBasicVoxelization = false;
     [SerializeField] private bool useGridVoxelization = false;
     [SerializeField] private bool useFillSpace = false;
+
+    [Header("Debug Tools")]
+    [SerializeField] private bool debugMeshes = false;
+    [SerializeField] private bool debugOctree = false;
 
     private bool updated = false;
 
@@ -60,7 +62,7 @@ public class OctreeController : MonoBehaviour
 
         if(node.IsLeafVoxel)
         {
-            Gizmos.color = Color.green;
+            Gizmos.color = Color.red;
             Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
 
             return;
@@ -79,14 +81,14 @@ public class OctreeController : MonoBehaviour
         Setup();
         InitMeshes(tree.GetAllPoints().Count);    // add to mesh
         InitIndices();                // initialize indices to use
-        VoxelDrawNode();             // inital draw
+        renderVoxels();             // inital draw
     }
 
     private void Update()
     { 
         if (updated)
         {
-            VoxelDrawNode();
+            renderVoxels();
             updated = false;
         }
     }
@@ -103,7 +105,21 @@ public class OctreeController : MonoBehaviour
     // PRIVATE METHODS
     private void CheckVoxelSettings()
     {
-        if (voxelSpaceSize % 2 != 0 || (voxelSize % 2 != 0 && voxelSize != 1))
+        Debug.Log((voxelSize & (voxelSize - 1)) == 0);
+        Debug.Log((voxelSpaceSize & (voxelSpaceSize - 1)) == 0);
+
+        /*
+         * Performs a bitwise logical operation to determine if voxel space size and
+         * voxel size are powers of two. This happens using the AND logical operator. 
+         * 
+         * For example if voxel size if 10, in binary it would be 1 0 1 0. The difference of 1 
+         * would be 9 - 1 0 0 1. If we perform the AND operator. (1 0 1 0 AND 1 0 0 1) the 
+         * resulting binary value will be non-zero. If the value was a power of 2. For example, 
+         * 8 - 1 0 0 0. Then we would be checking 1 0 0 0 AND 0 1 1 1. Because any power of 
+         * 2 number will have the form 1 * 0 (how many zeros in binary), the AND operation will 
+         * always be zero. 
+         */
+        if ((voxelSpaceSize & (voxelSpaceSize - 1 )) != 0 || (voxelSize & (voxelSize - 1)) != 0)
         {
             int closestVSS = MathUtils.ClosetPow2(voxelSpaceSize);
             int closestVS = MathUtils.ClosetPow2(voxelSize);
@@ -264,7 +280,7 @@ public class OctreeController : MonoBehaviour
     }
 
     // RENDER METHODS
-    private void VoxelDrawNode()
+    private void renderVoxels()
     {
         verts = tree.GetAllPoints();
         clrs = tree.GetAllColors();
