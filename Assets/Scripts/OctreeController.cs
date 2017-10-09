@@ -90,7 +90,6 @@ public class OctreeController : MonoBehaviour
             updated = false;
         }
     }
-
     //======================================================
 
     // PRIVATE METHODS
@@ -109,7 +108,7 @@ public class OctreeController : MonoBehaviour
         }
     }
     
-    /**
+    /*
      * Method prepares data structure and voxelizes models. 
      */
     private void Setup()
@@ -122,7 +121,7 @@ public class OctreeController : MonoBehaviour
         tree = new Octree<int>(this.transform.position, (float)voxelSpaceSize/ MM_FACTOR, (float) voxelSize/ MM_FACTOR);
 
         // set voxel size to shader.
-        voxelMat.SetFloat("voxel_size", (float)voxelSize/1000);
+        voxelMat.SetFloat("voxel_size", (float)voxelSize/ MM_FACTOR);
 
         List<GameObject> gameObjects = new List<GameObject>();   // obtain the objects to voxelize.
         List<Transform> childTransforms = new List<Transform>(); // 
@@ -139,12 +138,7 @@ public class OctreeController : MonoBehaviour
             Transform modelTransform = childTransforms[i];
             Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
             Color32 matColor = mat.color;
-            
-            Mesh mesh = meshFilter.mesh;
-            Vector3[] verts = mesh.vertices;
-            int[] tris = mesh.triangles;
 
-            threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix,(float)voxelSize/ MM_FACTOR));
             meshColors.Add(matColor);
         }
 
@@ -164,12 +158,6 @@ public class OctreeController : MonoBehaviour
             Matrix4x4 localToWorldMatrix = modelTransform.localToWorldMatrix;
             Color32 matColor = mat.color;
 
-            //float scale = 0.5f;
-
-            //localToWorldMatrix.m00 = scale;
-            //localToWorldMatrix.m11 = scale;
-            //localToWorldMatrix.m22 = scale;
-
             if (useBasicVoxelization)
             {
                 Vector3[] verts = meshFilter.mesh.vertices;
@@ -181,9 +169,10 @@ public class OctreeController : MonoBehaviour
             }
             else if(useGridVoxelization)
             {
-//                Mesh mesh = meshFilter.mesh;
-
-                //tree.VoxelizeMesh(ref mesh, matColor, localToWorldMatrix);
+                Mesh mesh = meshFilter.mesh;
+                Vector3[] verts = mesh.vertices;
+                int[] tris = mesh.triangles;
+                threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix, (float)voxelSize / MM_FACTOR));
                 threads[i].Start();
             }
             else if (useFillSpace)
@@ -198,14 +187,13 @@ public class OctreeController : MonoBehaviour
         {
             VoxelizerThread currThread = threads[idx];
 
-            if (currThread.finished)
+            if (currThread.Finished)
             {
                 no++;
-                tree.Add(currThread.voxelsToAdd.Pop(), meshColors[idx]);
-                if (currThread.voxelsToAdd.Count == 0)
+                tree.Add(currThread.VoxelsToAdd.Pop(), meshColors[idx]);
+                if (currThread.VoxelsToAdd.Count == 0)
                 {
                     idx++;
-                    Debug.Log(currThread.IsAlive);
                 }
             }
         }

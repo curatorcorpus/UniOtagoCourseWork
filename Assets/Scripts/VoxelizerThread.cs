@@ -7,15 +7,31 @@ using System.Threading;
 
 public class VoxelizerThread
 {
-    private Thread thread;
-    public bool finished = false;
-
-    public Stack<Vector3> voxelsToAdd;
-
-    private Vector3[] verts;
-    private int[] tris;
-    private Matrix4x4 matrix;
+    private bool finished = false;
     private float voxelSize;
+    private int[] tris;
+
+    private Matrix4x4 matrix;
+    private Stack<Vector3> voxelsToAdd;
+    private Thread thread;
+    private Vector3[] verts;
+
+    // GETTERS AND SETTERS.
+    public bool Finished
+    {
+        get { return finished; }
+        set { this.finished = value; }
+    }
+    public Stack<Vector3> VoxelsToAdd
+    {
+        get { return voxelsToAdd; }
+        set { this.voxelsToAdd = value; }
+    }
+    public Thread Thread
+    {
+        get { return thread; }
+        set { this.thread = value; }
+    }
 
     public VoxelizerThread(ref Vector3[] verts, ref int[] tris, Matrix4x4 matrix, float voxelSize)
     {
@@ -34,11 +50,6 @@ public class VoxelizerThread
         thread.Start();
     }
 
-    public void Join()
-    {
-        thread.Join();
-    }
-
     public bool IsAlive
     {
         get { return thread.IsAlive; }
@@ -48,12 +59,13 @@ public class VoxelizerThread
     { 
 		int iCount = 0;
 		int niCount = 0;
-		
-		float voxelSizeHalf = voxelSize / 2;
+
+        float voxelSizeHalf = voxelSize / 2;
 		Vector3 voxelExtends = new Vector3(voxelSizeHalf, voxelSizeHalf, voxelSizeHalf);
-		
-		// Take each triangle in the mesh
-		for (int i = 0; i < verts.Length; i += 3)
+        Debug.Log("tris length " + tris.Length);
+        Debug.Log("vert Length " + verts.Length);
+        // Take each triangle in the mesh
+        for (int i = 0; i < tris.Length; i += 3)
 		{
 			// Get the triangles three points
 			Vector3 p1 = verts[tris[i + 0]];
