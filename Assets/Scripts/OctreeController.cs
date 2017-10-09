@@ -62,7 +62,7 @@ public class OctreeController : MonoBehaviour
 
         if(node.IsLeafVoxel)
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
 
             return;
@@ -103,11 +103,11 @@ public class OctreeController : MonoBehaviour
     //======================================================
 
     // PRIVATE METHODS
+    /**
+     * Method for checking that user voxel settings are power of two.
+     */
     private void CheckVoxelSettings()
-    {
-        Debug.Log((voxelSize & (voxelSize - 1)) == 0);
-        Debug.Log((voxelSpaceSize & (voxelSpaceSize - 1)) == 0);
-
+    { 
         /*
          * Performs a bitwise logical operation to determine if voxel space size and
          * voxel size are powers of two. This happens using the AND logical operator. 
@@ -119,16 +119,21 @@ public class OctreeController : MonoBehaviour
          * 2 number will have the form 1 * 0 (how many zeros in binary), the AND operation will 
          * always be zero. 
          */
-        if ((voxelSpaceSize & (voxelSpaceSize - 1 )) != 0 || (voxelSize & (voxelSize - 1)) != 0)
+        if ((voxelSpaceSize & (voxelSpaceSize - 1 )) != 0)
         {
             int closestVSS = MathUtils.ClosetPow2(voxelSpaceSize);
-            int closestVS = MathUtils.ClosetPow2(voxelSize);
 
-            Debug.Log("Voxel Settings not powers of 2.\nVoxel space size rounded from " + voxelSpaceSize + " to " + 
-                      closestVSS + ".\nVoxel Size rounded from " + voxelSize + " to " + closestVS + ".");
+            Debug.Log("Voxel Settings not powers of 2.\nVoxel space size rounded from " + voxelSpaceSize + " to " + closestVSS);
 
             voxelSpaceSize = closestVSS;
-            voxelSize = closestVS;
+        }
+        if((voxelSize & (voxelSize - 1)) != 0)
+        {
+            int closestVS = MathUtils.ClosetPow2(voxelSize);
+
+            Debug.Log("Voxel Settings not powers of 2.\nVoxel Size rounded from " + voxelSize + " to " + closestVS + ".");
+
+            voxelSize = MathUtils.ClosetPow2(voxelSize);
         }
     }
     
