@@ -60,8 +60,7 @@ public class VoxelizerThread
 		int iCount = 0;
 		int niCount = 0;
 
-        float voxelSizeHalf = voxelSize / 2;
-		Vector3 voxelExtends = new Vector3(voxelSizeHalf, voxelSizeHalf, voxelSizeHalf);
+		Vector3 voxelExtends = new Vector3(voxelSize, voxelSize, voxelSize);
 
         // Take each triangle in the mesh
         for (int i = 0; i < tris.Length; i += 3)
@@ -81,11 +80,11 @@ public class VoxelizerThread
 			float maxZ = MathUtils.ClipToVoxelGrid(Mathf.Max(p1.z, p2.z, p3.z), voxelSize, false);
 			
 			// Scan the bounding box by increments of voxelvoxelSize
-			for (float x = minX + voxelSizeHalf; x < maxX; x += voxelSize)
+			for (float x = minX; x < maxX; x += voxelSize)
 			{
-				for (float y = minY + voxelSizeHalf; y < maxY; y += voxelSize)
+				for (float y = minY; y < maxY; y += voxelSize)
 				{
-					for (float z = minZ + voxelSizeHalf; z < maxZ; z += voxelSize)
+					for (float z = minZ; z < maxZ; z += voxelSize)
 					{
 						Vector3 currentVoxel = new Vector3(x, y, z);
 						
