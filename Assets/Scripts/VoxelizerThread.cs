@@ -62,8 +62,7 @@ public class VoxelizerThread
 
         float voxelSizeHalf = voxelSize / 2;
 		Vector3 voxelExtends = new Vector3(voxelSizeHalf, voxelSizeHalf, voxelSizeHalf);
-        Debug.Log("tris length " + tris.Length);
-        Debug.Log("vert Length " + verts.Length);
+
         // Take each triangle in the mesh
         for (int i = 0; i < tris.Length; i += 3)
 		{
