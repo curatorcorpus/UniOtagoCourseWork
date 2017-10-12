@@ -96,9 +96,7 @@ public class VoxelizerThread
 						
 						if (MathUtils.IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
 						{
-							locked = true;
                             voxelsToAdd.Push(matrix.MultiplyPoint3x4(currentVoxel));
-							locked = false;
                             iCount++;
 						}
 						niCount++;

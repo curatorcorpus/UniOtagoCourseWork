@@ -13,15 +13,14 @@ public class OctreeController : MonoBehaviour
     [Header("Voxel Settings")]
     [SerializeField] private int voxelSpaceSize = 2048;
     [SerializeField] private int voxelSize = 1;
-    
-    [Header("Models")]
-    [SerializeField] private GameObject meshModel;
 
     [Header("Voxelizer Features")]
     [SerializeField] private bool useBasicVoxelization = false;
     [SerializeField] private bool useGridVoxelization = false;
     [SerializeField] private bool useFillSpace = false;
-
+    [SerializeField] private bool saveVoxelModel = false;
+    [SerializeField] private bool loadVoxelModel = false;
+    
     [Header("Debug Tools")]
     [SerializeField] private bool debugMeshes = false;
     [SerializeField] private bool debugOctree = false;
@@ -214,44 +213,9 @@ public class OctreeController : MonoBehaviour
                 }
             }
 
+            VoxelData voxelData = new VoxelData();
 
             // main worker thread for adding thread voxels to octree.
-//        int iterated = 0;
-//        
-//        
-//        int idx = 0;
-//        int finishedThreads = 0;
-//        int threadCount = threads.Count;
-//        while(finishedThreads < threadCount)
-//        {
-//            VoxelizerThread currThread = threads[idx];
-//
-//            // start extracting voxels once thread is finished.
-//            if (currThread.Locked)
-//            {   
-//                if (++idx >= threads.Count)
-//                    idx = 0;
-//            }
-//            else
-//            {   
-//                // start adding voxels
-//                if(currThread.VoxelsToAdd.Count > 0)
-//                    tree.Add(currThread.VoxelsToAdd.Pop(), meshColors[idx]);
-//             
-//                // increment finished threads once a thread is finished
-//                if (currThread.Finished && currThread.VoxelsToAdd.Count == 0)
-//                {
-//                    ++finishedThreads;
-//                    
-//                    threads.RemoveAt(idx);
-//                    
-//                    if (++idx >= threads.Count)
-//                        idx = 0;
-//                }
-//            }
-//        }
-
-            int iterated = 0;
             int idx = 0;
             while (idx < threads.Count)
             {
@@ -260,17 +224,22 @@ public class OctreeController : MonoBehaviour
                 // start extracting voxels once thread is finished.
                 if (currThread.Finished)
                 {
-                    tree.Add(currThread.VoxelsToAdd.Pop(), meshColors[idx]);
+                    Vector3 voxelPos = currThread.VoxelsToAdd.Pop();
+                    Color32 color = meshColors[idx];
+                    
+                    tree.Add(voxelPos, color);
 
+                    if (saveVoxelModel)
+                    {
+                        voxelData.AddToVoxelList(voxelPos);
+                        voxelData.AddToColorList(color);   
+                    }
+                        
                     // only jump to next thread once we finished extracting all voxels.
                     if (currThread.VoxelsToAdd.Count == 0)
-                        idx++;
+                        ++idx;
                 }
-
-                iterated++;
             }
-
-            Debug.Log("Iterated: " + iterated);
 
             // destroy all thread class objects.
             threads.Clear();
@@ -283,6 +252,11 @@ public class OctreeController : MonoBehaviour
             currModel.hideFlags = HideFlags.NotEditable;
             currModel.hideFlags = HideFlags.HideInHierarchy;
             currModel.SetActive(false);
+
+            if (saveVoxelModel)
+            {
+                VoxelSerializer.saveModel(currModel.name, voxelData);
+            }
         }
     }
 

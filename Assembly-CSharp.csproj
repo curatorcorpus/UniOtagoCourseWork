@@ -57,6 +57,7 @@
     <Compile Include="Assets\Scripts\Octree.cs" />
     <Compile Include="Assets\Scripts\OctreeController.cs" />
     <Compile Include="Assets\Scripts\OctreeNode.cs" />
+    <Compile Include="Assets\Scripts\VoxelSerializer.cs" />
     <Compile Include="Assets\Scripts\VoxelizerThread.cs" />
     <None Include="Assets\Shaders\Geometry.shader" />
     <None Include="Assets\Shaders\GeometryLit.shader" />
