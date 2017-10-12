@@ -217,10 +217,11 @@ public class OctreeController : MonoBehaviour
                     }
                 }
 
-                VoxelData voxelData = new VoxelData();
+                VoxelData voxelData = new VoxelData(threads.Count);
 
                 // main worker thread for adding thread voxels to octree.
                 int idx = 0;
+                int voxelCount = 0;
                 while (idx < threads.Count)
                 {
                     VoxelizerThread currThread = threads[idx];
@@ -228,20 +229,26 @@ public class OctreeController : MonoBehaviour
                     // start extracting voxels once thread is finished.
                     if (currThread.Finished)
                     {
-                        Vector3 voxelPos = currThread.VoxelsToAdd.Pop();
                         Color32 color = meshColors[idx];
-
-                        tree.Add(voxelPos, color);
+                        voxelCount += currThread.VoxelsToAdd.Count;
 
                         if (saveVoxelModel)
                         {
-                            voxelData.AddToVoxelList(voxelPos);
-                            voxelData.AddToColorList(color);
+                            voxelData.AddToColorList(idx, color);
+                            voxelData.AddToColorSwitch(idx, voxelCount);
                         }
 
+                        while(currThread.VoxelsToAdd.Count != 0)
+                        {
+                            Vector3 voxelPos = currThread.VoxelsToAdd.Pop();
+
+                            tree.Add(voxelPos, color);
+
+                            if (saveVoxelModel)
+                                voxelData.AddToVoxelList(voxelPos);
+                        }
                         // only jump to next thread once we finished extracting all voxels.
-                        if (currThread.VoxelsToAdd.Count == 0)
-                            ++idx;
+                        ++idx;
                     }
                 }
 
@@ -268,12 +275,23 @@ public class OctreeController : MonoBehaviour
             VoxelData voxelData = VoxelSerializer.loadModel(this.filePath.name+".arnold");
 
             List<SerializableVector3> voxels = voxelData.GetVoxelList();
-            List<SerializableColor32> colors = voxelData.GetColorList();
-            
+            SerializableColor32[] colors = voxelData.GetColorList();
+            int[] colorSwitches = voxelData.GetColorSwitches();
+
             int voxelCount = voxelData.GetListSize();
+            int colorIdx = 0;
+            int colorCount = colorSwitches[colorIdx];
+
+            Color32 color = colors[colorIdx];
+
             for (int i = 0; i < voxelCount; i++)
             {
-                tree.Add(voxels[i], colors[i]);
+                if(i == colorCount)
+                {
+                    colorCount = colorSwitches[++colorIdx];
+                    color = colors[colorIdx];
+                }
+                tree.Add(voxels[i], color);
             }
 
             // hide all active models.

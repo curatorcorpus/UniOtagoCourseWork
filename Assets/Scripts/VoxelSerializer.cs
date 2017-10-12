@@ -55,7 +55,8 @@ public struct SerializableColor32
 public class VoxelData
 {
     private List<SerializableVector3> voxels;
-    private List<SerializableColor32> colors;
+    private SerializableColor32[] colors;
+    private int[] colorSwitch;
 
     private List<SerializableVector3> Voxels
     {
@@ -63,22 +64,17 @@ public class VoxelData
         set { this.voxels = value; }
     }
     
-    private List<SerializableColor32> Colors
+    private SerializableColor32[] Colors
     {
         get { return colors; }
         set { this.colors = value; }
     }
 
-    public VoxelData()
+    public VoxelData(int meshCount)
     {
         this.voxels = new List<SerializableVector3>();
-        this.colors = new List<SerializableColor32>();
-    }
-    
-    public VoxelData(List<SerializableVector3> voxels, List<SerializableColor32> colors)
-    {
-        this.voxels = voxels;
-        this.colors = colors;
+        this.colors = new SerializableColor32[meshCount];
+        this.colorSwitch = new int[meshCount];
     }
 
     public void AddToVoxelList(SerializableVector3 voxelPos)
@@ -86,9 +82,14 @@ public class VoxelData
         voxels.Add(voxelPos);
     }
     
-    public void AddToColorList(SerializableColor32 voxelColors)
+    public void AddToColorList(int idx, SerializableColor32 voxelColors)
     {
-        colors.Add(voxelColors);
+        colors[idx] = voxelColors;
+    }
+
+    public void AddToColorSwitch(int idx, int voxelCount)
+    {
+        colorSwitch[idx] = voxelCount;
     }
 
     public List<SerializableVector3> GetVoxelList()
@@ -96,11 +97,16 @@ public class VoxelData
         return voxels;
     }
     
-    public List<SerializableColor32> GetColorList()
+    public SerializableColor32[] GetColorList()
     {
         return colors;
     }
-    
+
+    public int[] GetColorSwitches()
+    {
+        return colorSwitch;
+    }
+
     public int GetListSize()
     {
         return voxels.Count;
