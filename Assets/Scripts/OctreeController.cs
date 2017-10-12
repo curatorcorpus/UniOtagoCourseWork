@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 public class OctreeController : MonoBehaviour 
@@ -35,6 +36,8 @@ public class OctreeController : MonoBehaviour
     private List<Color32> clrs;
 
     private List<int> indices;
+
+    private List<GameObject> models = new List<GameObject>();
 
     // GIZMOS DEBUGGER
     private void OnDrawGizmos()
@@ -157,77 +160,130 @@ public class OctreeController : MonoBehaviour
         List<VoxelizerThread> threads = new List<VoxelizerThread>();
         List<Color32> meshColors = new List<Color32>();
 
-        int noOfMeshModelChildren = meshModel.transform.childCount;
+        // Add objects to our model list
+        for(int i = 0; i < this.transform.childCount; i++)
+            if(this.transform.GetChild(i).gameObject.activeSelf)
+                models.Add(this.transform.GetChild(i).gameObject);
 
-        for (int i = 0; i < noOfMeshModelChildren; i++)
+        for (int m = 0; m < models.Count; m++)
         {
-            // obtain mesh properties.
-            GameObject meshObject = meshModel.gameObject.transform.GetChild(i).gameObject;
+            GameObject currModel = models[m];
+            int noOfMeshModelChildren = currModel.transform.childCount;
 
-            // obtains local to world transformation matrix.
-            Transform meshTransform      = meshModel.gameObject.transform.GetChild(i).transform;
-            Matrix4x4 localToWorldMatrix = meshTransform.localToWorldMatrix;
-
-            // obtain mesh and mesh colour.
-            Material   material   = meshObject.GetComponent<MeshRenderer>().material;
-            MeshFilter meshFilter = meshObject.GetComponent<MeshFilter>();
-            Color32    matColor   = material.color;
-
-            // remember mesh colour for adding to octree.
-            meshColors.Add(matColor);
-
-            if (useBasicVoxelization)
+            for (int i = 0; i < noOfMeshModelChildren; i++)
             {
-                Vector3[] verts = meshFilter.mesh.vertices;
+                // obtain mesh properties.
+                GameObject meshObject = currModel.gameObject.transform.GetChild(i).gameObject;
 
-                for (int j = 0; j < verts.Length; j++)
+                // obtains local to world transformation matrix.
+                Transform meshTransform = currModel.gameObject.transform.GetChild(i).transform;
+                Matrix4x4 localToWorldMatrix = meshTransform.localToWorldMatrix;
+
+                // obtain mesh and mesh colour.
+                Material material = meshObject.GetComponent<MeshRenderer>().material;
+                MeshFilter meshFilter = meshObject.GetComponent<MeshFilter>();
+                Color32 matColor = material.color;
+
+                // remember mesh colour for adding to octree.
+                meshColors.Add(matColor);
+
+                if (useBasicVoxelization)
                 {
-                    tree.Add(localToWorldMatrix.MultiplyPoint3x4(verts[j]), matColor);
+                    Vector3[] verts = meshFilter.mesh.vertices;
+
+                    for (int j = 0; j < verts.Length; j++)
+                    {
+                        tree.Add(localToWorldMatrix.MultiplyPoint3x4(verts[j]), matColor);
+                    }
+                }
+                else if (useGridVoxelization)
+                {
+                    // extract verts and triangles indices. 
+                    Mesh mesh = meshFilter.mesh;
+                    Vector3[] verts = mesh.vertices;
+                    int[] tris = mesh.triangles;
+
+                    // setup thread for voxelizing current mesh. 
+                    threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix,
+                        (float) voxelSize / MM_FACTOR));
+                    threads[i].Start(); // start voxelizing.
+                }
+                else if (useFillSpace)
+                {
+                    tree.AddFill();
                 }
             }
-            else if (useGridVoxelization)
-            {
-                // extract verts and triangles indices. 
-                Mesh mesh = meshFilter.mesh;
-                Vector3[] verts = mesh.vertices;
-                int[] tris = mesh.triangles;
 
-                // setup thread for voxelizing current mesh. 
-                threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix, (float)voxelSize / MM_FACTOR));
-                threads[i].Start(); // start voxelizing.
-            }
-            else if (useFillSpace)
+
+            // main worker thread for adding thread voxels to octree.
+//        int iterated = 0;
+//        
+//        
+//        int idx = 0;
+//        int finishedThreads = 0;
+//        int threadCount = threads.Count;
+//        while(finishedThreads < threadCount)
+//        {
+//            VoxelizerThread currThread = threads[idx];
+//
+//            // start extracting voxels once thread is finished.
+//            if (currThread.Locked)
+//            {   
+//                if (++idx >= threads.Count)
+//                    idx = 0;
+//            }
+//            else
+//            {   
+//                // start adding voxels
+//                if(currThread.VoxelsToAdd.Count > 0)
+//                    tree.Add(currThread.VoxelsToAdd.Pop(), meshColors[idx]);
+//             
+//                // increment finished threads once a thread is finished
+//                if (currThread.Finished && currThread.VoxelsToAdd.Count == 0)
+//                {
+//                    ++finishedThreads;
+//                    
+//                    threads.RemoveAt(idx);
+//                    
+//                    if (++idx >= threads.Count)
+//                        idx = 0;
+//                }
+//            }
+//        }
+
+            int iterated = 0;
+            int idx = 0;
+            while (idx < threads.Count)
             {
-                tree.AddFill();
+                VoxelizerThread currThread = threads[idx];
+
+                // start extracting voxels once thread is finished.
+                if (currThread.Finished)
+                {
+                    tree.Add(currThread.VoxelsToAdd.Pop(), meshColors[idx]);
+
+                    // only jump to next thread once we finished extracting all voxels.
+                    if (currThread.VoxelsToAdd.Count == 0)
+                        idx++;
+                }
+
+                iterated++;
             }
+
+            Debug.Log("Iterated: " + iterated);
+
+            // destroy all thread class objects.
+            threads.Clear();
+            
+            // Clear colours array
+            meshColors.Clear();
+
+            // hide mesh model.
+            currModel.hideFlags = HideFlags.HideInInspector;
+            currModel.hideFlags = HideFlags.NotEditable;
+            currModel.hideFlags = HideFlags.HideInHierarchy;
+            currModel.SetActive(false);
         }
-
-        // main worker thread for adding thread voxels to octree.
-
-        int idx = 0;
-        while(idx < threads.Count)
-        {
-            VoxelizerThread currThread = threads[idx];
-
-            // start extracting voxels once thread is finished.
-            if (currThread.Finished)
-            {
-                tree.Add(currThread.VoxelsToAdd.Pop(), meshColors[idx]);
-
-                // only jump to next thread once we finished extracting all voxels.
-                if (currThread.VoxelsToAdd.Count == 0)
-                    idx++;
-            }
-        }
-
-        // destroy all thread class objects.
-        threads.Clear();
-
-        // hide mesh model.
-        meshModel.hideFlags = HideFlags.HideInInspector;
-        meshModel.hideFlags = HideFlags.NotEditable;
-        meshModel.hideFlags = HideFlags.HideInHierarchy;
-        meshModel.SetActive(false);
     }
 
     private void InitMeshes(int voxelCount)

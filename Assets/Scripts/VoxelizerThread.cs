@@ -8,6 +8,7 @@ using System.Threading;
 public class VoxelizerThread
 {
     private bool finished = false;
+	private bool locked = false;
     private float voxelSize;
     private int[] tris;
 
@@ -22,7 +23,12 @@ public class VoxelizerThread
         get { return finished; }
         set { this.finished = value; }
     }
-    public Stack<Vector3> VoxelsToAdd
+	public bool Locked
+	{
+		get { return locked; }
+		set { this.locked = value; }
+	}
+	public Stack<Vector3> VoxelsToAdd
     {
         get { return voxelsToAdd; }
         set { this.voxelsToAdd = value; }
@@ -90,7 +96,9 @@ public class VoxelizerThread
 						
 						if (MathUtils.IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
 						{
+							locked = true;
                             voxelsToAdd.Push(matrix.MultiplyPoint3x4(currentVoxel));
+							locked = false;
                             iCount++;
 						}
 						niCount++;
