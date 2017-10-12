@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
+using JetBrains.Annotations;
 
 [Serializable]
 public struct SerializableVector3
@@ -89,6 +90,21 @@ public class VoxelData
     {
         colors.Add(voxelColors);
     }
+
+    public List<SerializableVector3> GetVoxelList()
+    {
+        return voxels;
+    }
+    
+    public List<SerializableColor32> GetColorList()
+    {
+        return colors;
+    }
+    
+    public int GetListSize()
+    {
+        return voxels.Count;
+    }
 }
 
 public class VoxelSerializer
@@ -116,8 +132,15 @@ public class VoxelSerializer
         Debug.Log("Clip saved to: " + filename);
     }
 
-    public static void loadModel()
+    public static VoxelData loadModel(string filename)
     {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream saveFile = File.Open(filePath + filename, FileMode.Open);
+
+        VoxelData voxelData = (VoxelData)formatter.Deserialize(saveFile);
         
+        saveFile.Close();
+
+        return voxelData;
     }
 }
