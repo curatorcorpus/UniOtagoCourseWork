@@ -47,23 +47,23 @@ public class Octree<TType>
     /*
      * Method for adding a new node to data structure.
      */
-    public void Add(Vector3 pos, Color32 color)
+    public bool Add(Vector3 pos, Color32 color)
     {
-        if (pos.x <= maxPoint && pos.x >= -maxPoint &&
-            pos.y <= maxPoint && pos.y >= -maxPoint &&
-            pos.z <= maxPoint && pos.z >= -maxPoint)
-        {
-            root.add(pos, color, voxelSize);
-            count++;
-        }
+        // if (pos.x <= maxPoint && pos.x >= -maxPoint &&
+        //      pos.y <= maxPoint && pos.y >= -maxPoint &&
+        //     pos.z <= maxPoint && pos.z >= -maxPoint)
+        //{
+        count++;
+        return root.Add(pos, color, voxelSize);
+        //}
 
         // any position outside mentioned boundary is just inserted at the boundary points.
-        else
-        {
-            UnityEngine.Debug.Log("position " + pos + " wasn't inserted because the max size is " + voxelSpaceSize);
-            UnityEngine.Debug.Log("The maximum boundaries are: ");
-            PrintBoundaries();
-        }
+       // else
+      //  {
+      //      UnityEngine.Debug.Log("position " + pos + " wasn't inserted because the max size is " + voxelSpaceSize);
+      //      UnityEngine.Debug.Log("The maximum boundaries are: ");
+       //     PrintBoundaries();
+      //  }
     }
 
     public void AddFill()

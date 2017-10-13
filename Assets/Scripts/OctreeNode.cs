@@ -103,16 +103,19 @@ public class OctreeNode<TType> {
         return colors;
     }
 
-    public void add(Vector3 pos, Color32 color, float minVoxelSize)
+    public bool Add(Vector3 pos, Color32 color, float minVoxelSize)
     {
         if (subspaceSize <= minVoxelSize)
         {
-            //Debug.Log(subspaceSize + " " + minVoxelSize);
-            //Debug.Log(subspaceSize == minVoxelSize);
+            if(isLeafVoxel)
+            {
+                return false;
+            }
+
             isLeafVoxel = true;
             clr = color;
             
-            return;
+            return true;
         }
         
         int bestSSIdx = findBestSubspace(pos); // find best subspace idx.
@@ -123,7 +126,7 @@ public class OctreeNode<TType> {
         if (children[bestSSIdx] == null)
             spawn(bestSSIdx);
         
-        this.children[bestSSIdx].add(pos, color, minVoxelSize);
+        return this.children[bestSSIdx].Add(pos, color, minVoxelSize);
     }
 
     public void AddFill(float minVoxelSize)

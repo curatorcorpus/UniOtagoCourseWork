@@ -242,9 +242,9 @@ public class OctreeController : MonoBehaviour
                         {
                             Vector3 voxelPos = currThread.VoxelsToAdd.Pop();
 
-                            tree.Add(voxelPos, color);
+                            bool isAdded = tree.Add(voxelPos, color);
 
-                            if (saveVoxelModel)
+                            if (saveVoxelModel && isAdded)
                                 voxelData.AddToVoxelList(voxelPos);
                         }
                         // only jump to next thread once we finished extracting all voxels.
