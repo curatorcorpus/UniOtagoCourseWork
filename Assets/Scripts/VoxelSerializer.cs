@@ -135,7 +135,7 @@ public class VoxelSerializer
         formatter.Serialize(saveFile, voxelData);
         saveFile.Close();
         
-        Debug.Log("Clip saved to: " + filename);
+        Debug.Log("Voxel Model File Saved As " + filename);
     }
 
     public static VoxelData loadModel(string filename)
