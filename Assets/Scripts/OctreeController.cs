@@ -230,13 +230,9 @@ public class OctreeController : MonoBehaviour
                     if (currThread.Finished)
                     {
                         Color32 color = meshColors[idx];
-                        voxelCount += currThread.VoxelsToAdd.Count;
 
                         if (saveVoxelModel)
-                        {
                             voxelData.AddToColorList(idx, color);
-                            voxelData.AddToColorSwitch(idx, voxelCount);
-                        }
 
                         while(currThread.VoxelsToAdd.Count != 0)
                         {
@@ -245,8 +241,14 @@ public class OctreeController : MonoBehaviour
                             bool isAdded = tree.Add(voxelPos, color);
 
                             if (saveVoxelModel && isAdded)
+                            {
                                 voxelData.AddToVoxelList(voxelPos);
+                                ++voxelCount;
+                            }
                         }
+
+                        voxelData.AddToColorSwitch(idx, voxelCount);
+
                         // only jump to next thread once we finished extracting all voxels.
                         ++idx;
                     }

@@ -1,4 +1,5 @@
-Assets/Models/*
+Assets/Resources/Models/*
+Assets/Resources/Saves/*
 *.meta
 
 [Ll]ibrary/
