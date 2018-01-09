@@ -24,11 +24,13 @@ public class Main {
 	// read each line of each unformatted phone number.
 	try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
 
+	    TelephoneFormatter tf = new TelephoneFormatter();
 	    StringBuilder sb = new StringBuilder();
-
 	    String line = "";
+	    
 	    while((line = br.readLine()) != null) {
-		System.out.println(line);
+
+		tf.format(line);
 	    }
 
 	} catch(FileNotFoundException e) {
