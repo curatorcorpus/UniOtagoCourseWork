@@ -9,34 +9,34 @@ public class Main {
 
     public static void main(String args[]) {
 
-	String filename = "";
+		String filename = "";
 
-	// determine we have a filename by args.
-	try {
+		// determine we have a filename by args.
+		try {
 
-	    filename = args[0] + ".txt";	    
-        } catch(ArrayIndexOutOfBoundsException e) {
-	    System.err.println("Input file not provided by argument!");
-	    return;
-	}
+		    filename = args[0] + ".txt";	    
+	        } catch(ArrayIndexOutOfBoundsException e) {
+		    System.err.println("Input file not provided by argument!");
+		    return;
+		}
 
 
-	// read each line of each unformatted phone number.
-	try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
+		// read each line of each unformatted phone number.
+		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
 
-	    TelephoneFormatter tf = new TelephoneFormatter();
-	    StringBuilder sb = new StringBuilder();
-	    String line = "";
-	    
-	    while((line = br.readLine()) != null) {
+		    TelephoneFormatter tf = new TelephoneFormatter();
+		    StringBuilder sb = new StringBuilder();
+		    String line = "";
+		    
+		    while((line = br.readLine()) != null) {
 
-		tf.format(line);
-	    }
+			tf.format(line);
+		    }
 
-	} catch(FileNotFoundException e) {
-	    System.err.println("File not found!");
-	} catch(IOException e) {
-	    System.err.println("Incorrect Input");
-	}
+		} catch(FileNotFoundException e) {
+		    System.err.println("File not found!");
+		} catch(IOException e) {
+		    System.err.println("Incorrect Input");
+		}
     }
 }
