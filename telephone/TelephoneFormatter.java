@@ -3,13 +3,6 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class TelephoneFormatter {
-
-    // ENUM TYPES.
-    
-    private enum Category { FREEPHONE, MOBILE, UNUSED_MOBILE, LANDLINE, INVALID }
-    private enum Identity { F0508, F0800, F0900, L02, L03, L04, L06, L07,
-    						L09, M021, M022, M027, M025, UNKNOWN }
-
     
     // STATIC FIELDS.
 
@@ -28,6 +21,12 @@ public class TelephoneFormatter {
     	telephoneKeypadLookup.put("9", "WXYZ");
 
     }
+
+    // ENUM TYPES.
+    
+    private enum Category { FREEPHONE, MOBILE, UNUSED_MOBILE, LANDLINE, INVALID }
+    private enum Identity { F0508, F0800, F0900, L02, L03, L04, L06, L07,
+    						L09, M021, M022, M027, M025, UNKNOWN }
 
 	// DATA FIELDS.
 
@@ -76,18 +75,16 @@ public class TelephoneFormatter {
 				prefix = teleNumber.substring(0,2);
 				break;
 			case INVALID:
-
-				break;
+				teleNumber += " INV";
+				return teleNumber;		
 		}
 
 		Identity id = determineIdentity(prefix);
 
-		boolean isValid = determineValidity(teleNumber);
+		boolean isValid = determineValidity(teleNumber, prefix, id);
 
 		if(isValid) {
 
-		} else {
-			teleNumber += " INV";
 		}
 
 		System.out.println("Identity " + id);
@@ -167,8 +164,74 @@ public class TelephoneFormatter {
 		}
 	}
 
-    private boolean determineValidity(String number) {
+	/*
+		
+	*/
+    private boolean determineValidity(String number, String prefix, Identity id) {
 
-    	return false;
+    	number = number.replaceAll(prefix,"");
+    	number = number.replaceAll(" ","");
+    	number = number.replaceAll("-","");
+
+		switch(id) {
+
+			// Freephone
+			case F0508:
+
+				if(number.length() == 6 && ) {
+					return true;
+				}
+				break;
+
+			case F0800:
+
+				break;
+
+			case F0900:
+
+				break;
+
+			// Landline
+			case L02:
+
+				break;
+				
+			case L03:
+
+				break;
+			case L04:
+
+				break;
+			case L06:
+
+				break;
+			
+			case L07:
+
+				break;
+
+			case L09:
+
+				break;
+
+			// Mobile
+			case M021:
+
+				break;
+			
+			case M022:
+			
+				break;
+			
+			case M027:
+			
+				break;
+			
+			case M025:
+			
+				break;
+
+			default: return false;
+		}
     }
 }
