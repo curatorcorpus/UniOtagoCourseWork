@@ -1,6 +1,7 @@
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class TelephoneFormatter {
     
@@ -81,12 +82,12 @@ public class TelephoneFormatter {
 
 		Identity id = determineIdentity(prefix);
 
-		boolean isValid = determineValidity(teleNumber, prefix, id);
+		boolean isValid = determineValidity(teleNumber, prefix, category, id);
 
 		if(isValid) {
 
 		}
-
+		System.out.println(isValid);
 		System.out.println("Identity " + id);
 		return teleNumber;
     }
@@ -167,35 +168,55 @@ public class TelephoneFormatter {
 	/*
 		
 	*/
-    private boolean determineValidity(String number, String prefix, Identity id) {
+    private boolean determineValidity(String number, String prefix, Category cat, Identity id) {
+
+    	String lowercaseRegx = "[a..z]";
 
     	number = number.replaceAll(prefix,"");
     	number = number.replaceAll(" ","");
     	number = number.replaceAll("-","");
+
+    	// Preliminary checks. Determines validity by applying group rules.
+    	if(cat == Category.FREEPHONE) {
+    		Pattern p = Pattern.compile(lowercaseRegx);
+    		if(p.matcher(number).matches()) {
+    			return false;
+    		}
+    	} else if(cat == Category.MOBILE) {
+
+    	} else if(cat == Category.LANDLINE) {
+
+    	}
 
 		switch(id) {
 
 			// Freephone
 			case F0508:
 
-				if(number.length() == 6 && ) {
+				if(number.length() == 6) {
 					return true;
 				}
 				break;
 
 			case F0800:
 
+				if(number.length() == 6 || number.length() == 7) {
+					return true;
+				}
 				break;
 
 			case F0900:
 
+				if(number.length() == 5) {
+					return true;
+				}
 				break;
 
 			// Landline
 			case L02:
 
 				break;
-				
+
 			case L03:
 
 				break;
@@ -230,8 +251,8 @@ public class TelephoneFormatter {
 			case M025:
 			
 				break;
-
-			default: return false;
 		}
+
+		return false;
     }
 }
