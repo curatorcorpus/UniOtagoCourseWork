@@ -20,7 +20,6 @@ public class Main {
 		    return;
 		}
 
-
 		// read each line of each unformatted phone number.
 		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
 
@@ -30,7 +29,7 @@ public class Main {
 		    
 		    while((line = br.readLine()) != null) {
 
-			tf.format(line);
+				System.out.println(tf.format(line));
 		    }
 
 		} catch(FileNotFoundException e) {
