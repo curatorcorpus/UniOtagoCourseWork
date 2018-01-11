@@ -180,12 +180,22 @@ public class TelephoneFormatter {
     		number = number.substring(4);
     		if(number.matches(lowercaseRegx)) {
     			return false;
+    		}else if(number.matches(uppercaseRegx)) {
+
+    			int counter = 0;
+    			for(int i = 0; i < number.length(); i++) {
+    				if(Character.isLetter(number.charAt(i))) {
+    					++counter;
+    				}
+    			}
+
+    			if(counter > 9) {
+    				return false;
+    			}
     		}
     	} else if(cat == Category.MOBILE) {
     		number = number.substring(3);
     		if(number.matches(alphabetRegx)) {
-    			return false;
-    		}else if(number.matches(uppercaseRegx) && number.length() > 9) {
     			return false;
     		}
     	} else if(cat == Category.LANDLINE) {
