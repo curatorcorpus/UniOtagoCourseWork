@@ -40,6 +40,8 @@ public class TelephoneFormatter {
     	telephoneKeypadLookup.put('Z', "9");
     }
 
+    private Map<String, Boolean> duplicatesLookup;
+
     // ENUM TYPES.
     
     private enum Category { FREEPHONE, MOBILE, UNUSED_MOBILE, LANDLINE, INVALID }
@@ -56,19 +58,28 @@ public class TelephoneFormatter {
 
     // CONSTRUCTORS.
     
-    public TelephoneFormatter() {}
+    public TelephoneFormatter() {
 
-    // GETTERS SETTERS.
-
-
+    	this.duplicatesLookup = new HashMap<String, Boolean>();
+    }
 
     // PUBLIC METHODS.
 
     public String format(String teleNumber) {
 
+    	boolean isDuplicate = false;
+
     	Category category = determineCategory(teleNumber);
 		String prefix = "";
 		String number = "";
+		String originalNumber = teleNumber;
+
+		// check if this number was already called in the batch file.
+		if(duplicatesLookup.containsKey(originalNumber)) {
+			isDuplicate = true;
+		} else {
+			duplicatesLookup.put(originalNumber, true);
+		}
 
 		// remove parenthesis if it exists.
 		if(teleNumber.contains("(") || teleNumber.contains(")")) {
@@ -91,8 +102,8 @@ public class TelephoneFormatter {
     			number = teleNumber.substring(2);				
 				break;
 			case INVALID:
-				teleNumber += " INV";
-				return teleNumber;		
+				originalNumber += " INV";
+				return originalNumber;		
 		}
 
 		Identity id = determineIdentity(prefix);
@@ -106,15 +117,25 @@ public class TelephoneFormatter {
 
 		boolean isValid = determineValidity(teleNumber, prefix, category, id);
 
+		teleNumber += " Identity " + id +  " " + isValid + " " + category;
+
 		if(!isValid) {
-			teleNumber += " INV";
-			return teleNumber;
+			
+			originalNumber += " INV";
+			if(isDuplicate) {
+				originalNumber += " DUP";
+			}
+			return originalNumber;
 		}
 
-		//teleNumber += " Identity " + id +  " " + isValid;
-		return buildFormat(prefix, number, id);
+		teleNumber = buildFormat(prefix, number, id);
+
+		if(isDuplicate) {
+			teleNumber += " DUP";
+		}
+
+		return teleNumber;
     }
-    
 
     /// PRIVATE METHODS.
 
@@ -146,6 +167,7 @@ public class TelephoneFormatter {
 
 		// is it a mobile number?
 		prefix = prefix.substring(0,3);
+
 		if(prefix.matches(mobileRegx)) {
 		    return Category.MOBILE;
 		} else if(prefix.matches(unusedMobileRegx)) {
