@@ -1,3 +1,8 @@
+/**
+*	@Author Jung Woo (Noel) Park.
+	Student ID: 1162424.
+*/
+
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
