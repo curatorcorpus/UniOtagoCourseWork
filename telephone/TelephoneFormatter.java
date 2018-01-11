@@ -7,20 +7,37 @@ public class TelephoneFormatter {
     
     // STATIC FIELDS.
 
-    private static Map<String, String> telephoneKeypadLookup;
+    private static Map<char, String> telephoneKeypadLookup;
     static {
 	
-		telephoneKeypadLookup = new HashMap<String, String>();
+		telephoneKeypadLookup = new HashMap<char, String>();
 
-		telephoneKeypadLookup.put("2", "ABC");
-    	telephoneKeypadLookup.put("3", "DEF");
-    	telephoneKeypadLookup.put("4", "GHI");
-    	telephoneKeypadLookup.put("5", "JKL");
-    	telephoneKeypadLookup.put("6", "MNO");
-    	telephoneKeypadLookup.put("7", "PQRS");
-    	telephoneKeypadLookup.put("8", "TUV");
-    	telephoneKeypadLookup.put("9", "WXYZ");
-
+		telephoneKeypadLookup.put('A', "2");
+    	telephoneKeypadLookup.put('B', "2");
+    	telephoneKeypadLookup.put('C', "2");
+    	telephoneKeypadLookup.put('D', "3");
+    	telephoneKeypadLookup.put('E', "3");
+    	telephoneKeypadLookup.put('F', "3");
+    	telephoneKeypadLookup.put('G', "4");
+    	telephoneKeypadLookup.put('H', "4");
+    	telephoneKeypadLookup.put('I', "4");
+    	telephoneKeypadLookup.put('J', "5");
+    	telephoneKeypadLookup.put('K', "5");
+    	telephoneKeypadLookup.put('L', "5");
+    	telephoneKeypadLookup.put('M', "6");
+    	telephoneKeypadLookup.put('N', "6");
+    	telephoneKeypadLookup.put('O', "6");
+    	telephoneKeypadLookup.put('P', "7");
+    	telephoneKeypadLookup.put('Q', "7");
+    	telephoneKeypadLookup.put('R', "7");
+    	telephoneKeypadLookup.put('S', "7");
+    	telephoneKeypadLookup.put('T', "8");
+    	telephoneKeypadLookup.put('U', "8");
+    	telephoneKeypadLookup.put('V', "8");
+    	telephoneKeypadLookup.put('W', "8");
+    	telephoneKeypadLookup.put('X', "9");
+    	telephoneKeypadLookup.put('Y', "9");
+    	telephoneKeypadLookup.put('Z', "9");
     }
 
     // ENUM TYPES.
@@ -35,7 +52,8 @@ public class TelephoneFormatter {
     private String mobileRegx       = "(021|022|027)";
     private String unusedMobileRegx = "(025)";
     private String landlineRegx     = "(02|03|04|05|06|07|09)";
-    
+    private String uppercaseRegx	= ".*[A-Z]+.*";
+
     // CONSTRUCTORS.
     
     public TelephoneFormatter() {}
@@ -173,7 +191,6 @@ public class TelephoneFormatter {
     private boolean determineValidity(String number, String prefix, Category cat, Identity id) {
 
     	String alphabetRegx		   = ".*[a-zA-Z]+.*";
-    	String uppercaseRegx	   = ".*[A-Z]+.*";
     	String lowercaseRegx 	   = ".*[a-z]+.*";
     	String landlineNumRuleRegx = "[2-9]";
 		
@@ -299,6 +316,11 @@ public class TelephoneFormatter {
     	StringBuilder sb = new StringBuilder(prefix);
 
     	int numberSize = number.length();
+
+    	if(number.matches(uppercaseRegx)) {
+    		number = decryptTextKeypad(number, numberSize);
+    	}
+
     	// no spaces required
     	if(numberSize == 5) {
     		sb.append(" ");
@@ -316,7 +338,18 @@ public class TelephoneFormatter {
     	return sb.toString();
     }
 
-    private String decrypt(String number) {
+    private String decryptTextKeypad(String number, int length) {
+
+    	StringBuilder sb = new StringBuilder();
+
+    	for(int i = 0; i < length; i++) {
+
+    		if(Character.isDigit(number.charAt(i))) {
+    			sb.append(number.charAt(i));
+    		} else {
+
+    		}
+    	}
 
     	return "";	
     }
