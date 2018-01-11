@@ -38,9 +38,7 @@ public class TelephoneFormatter {
     
     // CONSTRUCTORS.
     
-    public TelephoneFormatter() {
-
-    }
+    public TelephoneFormatter() {}
 
     // GETTERS SETTERS.
 
@@ -51,19 +49,14 @@ public class TelephoneFormatter {
     public String format(String teleNumber) {
 
     	Category category = determineCategory(teleNumber);
+		String prefix = "";
 
-    	//TODO: determine invalids + add tests for invalid numbers.
-
-		System.out.println(category + " origin: " + teleNumber);
-	
 		// remove parenthesis if it exists.
 		if(teleNumber.contains("(") || teleNumber.contains(")")) {
 
 		    // extract prefix code if within parenthesis.
-		    teleNumber = teleNumber.replaceAll(".*\\(|\\).*", "");
+		    prefix = teleNumber.replaceAll(".*\\(|\\).*", "");
 		}
-
-		String prefix = "";
 
 		switch(category) {
 			case FREEPHONE:
@@ -81,14 +74,15 @@ public class TelephoneFormatter {
 		}
 
 		Identity id = determineIdentity(prefix);
-
 		boolean isValid = determineValidity(teleNumber, prefix, category, id);
 
 		if(isValid) {
 
+		} else  {
+			teleNumber += " INV";
 		}
-		System.out.println(isValid);
-		System.out.println("Identity " + id);
+
+		System.out.println(teleNumber + " Identity " + id +  " " + isValid);
 		return teleNumber;
     }
     
@@ -170,22 +164,35 @@ public class TelephoneFormatter {
 	*/
     private boolean determineValidity(String number, String prefix, Category cat, Identity id) {
 
-    	String lowercaseRegx = "[a..z]";
+    	String alphabetRegx		   = ".*[a-zA-Z]+.*";
+    	String uppercaseRegx	   = "[A..Z]";
+    	String lowercaseRegx 	   = "[a..z]";
+    	String landlineNumRuleRegx = "[2-9]";
+		
+		int firstSpace = number.indexOf(" ");
 
-    	number = number.replaceAll(prefix,"");
+    	// filter prefix, spaces and dashes.
     	number = number.replaceAll(" ","");
     	number = number.replaceAll("-","");
 
     	// Preliminary checks. Determines validity by applying group rules.
     	if(cat == Category.FREEPHONE) {
-    		Pattern p = Pattern.compile(lowercaseRegx);
-    		if(p.matcher(number).matches()) {
+    		number = number.substring(4);
+    		if(number.matches(lowercaseRegx)) {
     			return false;
     		}
     	} else if(cat == Category.MOBILE) {
-
+    		number = number.substring(3);
+    		if(number.matches(alphabetRegx)) {
+    			return false;
+    		}else if(number.matches(uppercaseRegx) && number.length() > 9) {
+    			return false;
+    		}
     	} else if(cat == Category.LANDLINE) {
-
+    		number = number.substring(2);
+    		if(number.length() != 7) {
+    			return false;
+    		}
     	}
 
 		switch(id) {
@@ -212,45 +219,60 @@ public class TelephoneFormatter {
 				}
 				break;
 
-			// Landline
-			case L02:
-
-				break;
-
-			case L03:
-
-				break;
-			case L04:
-
-				break;
-			case L06:
-
-				break;
-			
-			case L07:
-
-				break;
-
-			case L09:
-
-				break;
-
 			// Mobile
 			case M021:
 
+				if(6 <= number.length() && number.length() <= 8) {
+					return true;
+				}
 				break;
 			
 			case M022:
 			
+				if(number.length() == 7) {
+					return true;
+				}
 				break;
 			
 			case M027:
-			
+				
+				if(number.length() == 7) {
+					return true;
+				}
 				break;
 			
 			case M025:
-			
+				if(number.length() == 6) {
+
+				}
 				break;
+
+			case L02:
+
+				if(number.substring(0,3).equals("409")) {
+					return true;
+				}
+
+			// default to landline.
+			default:
+
+				// check the exceptions for next three digits.
+				String nextFirstDigit  = number.substring(0,1);
+				String nextThreeDigits = number.substring(0,3);
+
+				if(nextThreeDigits.equals("900") || 
+				   nextThreeDigits.equals("911") || 
+				   nextThreeDigits.equals("999")) {
+
+					return true;
+				} 
+
+				// if it doesnt follow any of the exception test landline rule.
+				if(nextFirstDigit.matches(landlineNumRuleRegx)) {
+					return true;
+				} else {
+					return false;
+				}
 		}
 
 		return false;

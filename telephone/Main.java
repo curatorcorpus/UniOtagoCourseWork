@@ -24,12 +24,11 @@ public class Main {
 		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
 
 		    TelephoneFormatter tf = new TelephoneFormatter();
-		    StringBuilder sb = new StringBuilder();
 		    String line = "";
 		    
 		    while((line = br.readLine()) != null) {
 
-				System.out.println(tf.format(line));
+				tf.format(line);
 		    }
 
 		} catch(FileNotFoundException e) {
