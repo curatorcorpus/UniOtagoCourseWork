@@ -50,6 +50,7 @@ public class TelephoneFormatter {
 
     	Category category = determineCategory(teleNumber);
 		String prefix = "";
+		String number = "";
 
 		// remove parenthesis if it exists.
 		if(teleNumber.contains("(") || teleNumber.contains(")")) {
@@ -61,12 +62,15 @@ public class TelephoneFormatter {
 		switch(category) {
 			case FREEPHONE:
 				prefix = teleNumber.substring(0,4);
+    			number = teleNumber.substring(4);
 				break;
 			case MOBILE:
 				prefix = teleNumber.substring(0,3);
+    			number = teleNumber.substring(3);				
 				break;
 			case LANDLINE:
 				prefix = teleNumber.substring(0,2);
+    			number = teleNumber.substring(2);				
 				break;
 			case INVALID:
 				teleNumber += " INV";
@@ -74,17 +78,20 @@ public class TelephoneFormatter {
 		}
 
 		Identity id = determineIdentity(prefix);
+
+    	// filter prefix, spaces and dashes.
+    	teleNumber = teleNumber.replaceAll(" ","");
+    	teleNumber = teleNumber.replaceAll("-","");
+
 		boolean isValid = determineValidity(teleNumber, prefix, category, id);
 
-		if(isValid) {
-
-		} else  {
+		if(!isValid) {
 			teleNumber += " INV";
 			return teleNumber;
 		}
 
-		teleNumber += " Identity " + id +  " " + isValid;
-		return teleNumber;
+		//teleNumber += " Identity " + id +  " " + isValid;
+		return buildFormat(prefix, number, id);
     }
     
 
@@ -172,10 +179,6 @@ public class TelephoneFormatter {
 		
 		int firstSpace = number.indexOf(" ");
 
-    	// filter prefix, spaces and dashes.
-    	number = number.replaceAll(" ","");
-    	number = number.replaceAll("-","");
-
     	// Preliminary checks. Determines validity by applying group rules.
     	if(cat == Category.FREEPHONE) {
     		number = number.substring(4);
@@ -183,6 +186,7 @@ public class TelephoneFormatter {
     			return false;
     		}else if(number.matches(uppercaseRegx)) {
 
+    			// determines number of uppercase characters in free phone (less than or equal to 9).
     			int counter = 0;
     			for(int i = 0; i < number.length(); i++) {
     				if(Character.isLetter(number.charAt(i))) {
@@ -265,7 +269,7 @@ public class TelephoneFormatter {
 					return true;
 				}
 
-			// default to landline.
+			// default to landline. landline codes similar rules.
 			default:
 
 				// check the exceptions for next three digits.
@@ -288,5 +292,32 @@ public class TelephoneFormatter {
 		}
 
 		return false;
+    }
+
+    private String buildFormat(String prefix, String number, Identity id) {
+
+    	StringBuilder sb = new StringBuilder(prefix);
+
+    	int numberSize = number.length();
+    	// no spaces required
+    	if(numberSize == 5) {
+    		sb.append(" ");
+    		sb.append(number);
+    	} 
+    	// space between third and fourth digit.
+    	else if(numberSize == 6 || numberSize == 7) {
+
+    	}
+    	// space after fourth digit.
+    	else if(numberSize == 8) {
+
+    	}
+
+    	return sb.toString();
+    }
+
+    private String decrypt(String number) {
+
+    	return "";	
     }
 }
