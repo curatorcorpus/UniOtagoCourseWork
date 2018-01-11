@@ -44,15 +44,14 @@ public class TelephoneFormatter {
 
     // ENUM TYPES.
     
-    private enum Category { FREEPHONE, MOBILE, UNUSED_MOBILE, LANDLINE, INVALID }
+    private enum Category { FREEPHONE, MOBILE, LANDLINE, INVALID }
     private enum Identity { F0508, F0800, F0900, L02, L03, L04, L06, L07,
     						L09, M021, M022, M027, M025, UNKNOWN }
 
 	// DATA FIELDS.
 
     private String freephoneRegx    = "(0508|0800|0900)";
-    private String mobileRegx       = "(021|022|027)";
-    private String unusedMobileRegx = "(025)";
+    private String mobileRegx       = "(021|022|025|027)";
     private String landlineRegx     = "(02|03|04|05|06|07|09)";
     private String uppercaseRegx	= ".*[A-Z]+.*";
 
@@ -120,7 +119,7 @@ public class TelephoneFormatter {
 		teleNumber += " Identity " + id +  " " + isValid + " " + category;
 
 		if(!isValid) {
-			
+
 			originalNumber += " INV";
 			if(isDuplicate) {
 				originalNumber += " DUP";
@@ -129,7 +128,6 @@ public class TelephoneFormatter {
 		}
 
 		teleNumber = buildFormat(prefix, number, id);
-
 		if(isDuplicate) {
 			teleNumber += " DUP";
 		}
@@ -157,8 +155,6 @@ public class TelephoneFormatter {
 		    }
 		}
 
-		// determine number type if there are no parenthesis.
-
 		// is it a freephone number?
 		String prefix = number.substring(0,4);
 		if(prefix.matches(freephoneRegx)) {
@@ -167,11 +163,8 @@ public class TelephoneFormatter {
 
 		// is it a mobile number?
 		prefix = prefix.substring(0,3);
-
 		if(prefix.matches(mobileRegx)) {
 		    return Category.MOBILE;
-		} else if(prefix.matches(unusedMobileRegx)) {
-		    return Category.UNUSED_MOBILE;
 		}
 
 		// is it a landline number?
@@ -301,7 +294,7 @@ public class TelephoneFormatter {
 			
 			case M025:
 				if(number.length() == 6) {
-
+					return true;
 				}
 				break;
 
@@ -338,7 +331,13 @@ public class TelephoneFormatter {
 
     private String buildFormat(String prefix, String number, Identity id) {
 
-    	StringBuilder sb = new StringBuilder(prefix);
+    	StringBuilder sb;
+
+    	if(id == Identity.M025) {
+			sb = new StringBuilder("027");
+    	} else {
+    		sb = new StringBuilder(prefix);
+    	}
 
     	int numberSize = number.length();
 
@@ -353,6 +352,19 @@ public class TelephoneFormatter {
     	if(numberSize == 5) {
     		sb.append(number);
     	} 
+    	// special case for mobile numbers with 025.
+    	else if(numberSize == 6 && id == Identity.M025) {
+
+    		sb.append("4");
+    		for(int i = 1; i < numberSize; i++) {
+
+	    		if(i == 3) {
+	    			sb.append(" ");
+	    		}
+
+	    		sb.append(number.charAt(i));
+    		}
+    	}
     	// space between third and fourth digit.
     	else if(numberSize == 6 || numberSize == 7) {
     		for(int i = 0; i < numberSize; i++) {
