@@ -31,7 +31,7 @@ public class TelephoneFormatter {
 
 	// DATA FIELDS.
 
-    private String freephoneRegx    = "(0508|0800|09000)";
+    private String freephoneRegx    = "(0508|0800|0900)";
     private String mobileRegx       = "(021|022|027)";
     private String unusedMobileRegx = "(025)";
     private String landlineRegx     = "(02|03|04|05|06|07|09)";
@@ -55,7 +55,7 @@ public class TelephoneFormatter {
 		if(teleNumber.contains("(") || teleNumber.contains(")")) {
 
 		    // extract prefix code if within parenthesis.
-		    prefix = teleNumber.replaceAll(".*\\(|\\).*", "");
+		    teleNumber = teleNumber.replaceAll(".*\\(|\\).*", "");
 		}
 
 		switch(category) {
@@ -97,7 +97,7 @@ public class TelephoneFormatter {
 
 		    // extract prefix code if within parenthesis.
 		    String prefix = number.replaceAll(".*\\(|\\).*", "");
-		    
+
 		    if(prefix.length() == 4) {
 				return Category.FREEPHONE;
 		    } else if(prefix.length() == 3) {
@@ -165,8 +165,8 @@ public class TelephoneFormatter {
     private boolean determineValidity(String number, String prefix, Category cat, Identity id) {
 
     	String alphabetRegx		   = ".*[a-zA-Z]+.*";
-    	String uppercaseRegx	   = "[A..Z]";
-    	String lowercaseRegx 	   = "[a..z]";
+    	String uppercaseRegx	   = ".*[A-Z]+.*";
+    	String lowercaseRegx 	   = ".*[a-z]+.*";
     	String landlineNumRuleRegx = "[2-9]";
 		
 		int firstSpace = number.indexOf(" ");
@@ -189,9 +189,10 @@ public class TelephoneFormatter {
     				}
     			}
 
-    			if(counter > 9) {
-    				return false;
+    			if(counter <= 9) {
+    				return true;
     			}
+    			return false;
     		}
     	} else if(cat == Category.MOBILE) {
     		number = number.substring(3);
