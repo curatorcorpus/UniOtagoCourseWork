@@ -61,6 +61,9 @@ public class TelephoneFormatter {
 
     // CONSTRUCTORS.
     
+    /*
+    *	Default constructor.
+    */
     public TelephoneFormatter() {
 
     	this.duplicatesLookup = new HashMap<String, Boolean>();
@@ -68,6 +71,11 @@ public class TelephoneFormatter {
 
     // PUBLIC METHODS.
 
+
+    /*
+    *	Method checks category, identity and validity of telephone number. 
+    *	Formats number accordingly.
+    */
     public String format(String teleNumber) {
 
     	boolean isDuplicate = false;
@@ -91,6 +99,7 @@ public class TelephoneFormatter {
 		    teleNumber = teleNumber.replaceAll("[()]", "");
 		}
 
+		// split prefix and number depending on its category.
 		switch(category) {
 			case FREEPHONE:
 				prefix = teleNumber.substring(0,4);
@@ -109,18 +118,17 @@ public class TelephoneFormatter {
 				return originalNumber;		
 		}
 
+		// determine identity of number.
 		Identity id = determineIdentity(prefix);
 
     	// filter prefix, spaces and dashes.
 		teleNumber = teleNumber.replaceAll(" ","");
     	teleNumber = teleNumber.replaceAll("-","");
-
     	number = number.replaceAll(" ","");
     	number = number.replaceAll("-","");
 
+    	// determine validity of number.
 		boolean isValid = determineValidity(teleNumber, prefix, category, id);
-
-		teleNumber += " Identity " + id +  " " + isValid + " " + category;
 
 		if(!isValid) {
 
@@ -141,6 +149,10 @@ public class TelephoneFormatter {
 
     /// PRIVATE METHODS.
 
+
+    /*
+    *	Method determines category of number (mobile, landline, freephone).
+    */
     private Category determineCategory(String number) {
 
 		// check parentheses, if there are parenthesis, we can assume the telephone
@@ -180,8 +192,12 @@ public class TelephoneFormatter {
 		return Category.INVALID;
 	}
 
+	/*
+	*	Method determine specific type of number prefix.
+	*/
 	private Identity determineIdentity(String prefix) {
 
+		// determines identity based on prefix.
 		switch(prefix) {
 
 			// Freephone
@@ -208,7 +224,7 @@ public class TelephoneFormatter {
 	}
 
 	/*
-		
+	*	Method determines if number is consistent with length rules of standard format. 	
 	*/
     private boolean determineValidity(String number, String prefix, Category cat, Identity id) {
 
@@ -233,23 +249,29 @@ public class TelephoneFormatter {
     				}
     			}
 
+    			// check if length of Uppercase letter exceeds 9.
     			if(counter <= 9) {
     				return true;
     			}
     			return false;
     		}
-    	} else if(cat == Category.MOBILE) {
+    	} 
+    	// checks if mobile numbers contain text.
+    	else if(cat == Category.MOBILE) {
     		number = number.substring(3);
     		if(number.matches(alphabetRegx)) {
     			return false;
     		}
-    	} else if(cat == Category.LANDLINE) {
+    	} 
+    	// could also check if landline number has text.
+    	else if(cat == Category.LANDLINE) {
     		number = number.substring(2);
     		if(number.length() != 7) {
     			return false;
     		}
     	}
 
+    	// determines if numbers follow length rules.
 		switch(id) {
 
 			// Freephone
@@ -333,10 +355,15 @@ public class TelephoneFormatter {
 		return false;
     }
 
+    /*
+    *	Method formats the number by adding spaces, decrypting text, and substituting 
+    *	special case mobile numbers.
+    */
     private String buildFormat(String prefix, String number, Identity id) {
 
     	StringBuilder sb;
 
+    	// if id is special mobile case.
     	if(id == Identity.M025) {
 			sb = new StringBuilder("027");
     	} else {
@@ -348,6 +375,7 @@ public class TelephoneFormatter {
     	// initial space after code.
     	sb.append(" ");
 
+    	// determine if number consists of text, and decrypt.
     	if(number.matches(uppercaseRegx)) {
     		number = decryptTextKeypad(number, numberSize);
     	}
@@ -390,13 +418,18 @@ public class TelephoneFormatter {
 
 	    		sb.append(number.charAt(i));
     		}
-    	} else {
+    	}
+    	// no space requirement for numbers size 9. 
+    	else {
     		sb.append(number);
     	}
 
     	return sb.toString();
     }
 
+    /*
+    *	Method that decrypts uppercase letters to numbers.
+    */
     private String decryptTextKeypad(String number, int length) {
 
     	StringBuilder sb = new StringBuilder();
