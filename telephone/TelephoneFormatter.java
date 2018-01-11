@@ -7,10 +7,10 @@ public class TelephoneFormatter {
     
     // STATIC FIELDS.
 
-    private static Map<char, String> telephoneKeypadLookup;
+    private static Map<Character, String> telephoneKeypadLookup;
     static {
 	
-		telephoneKeypadLookup = new HashMap<char, String>();
+		telephoneKeypadLookup = new HashMap<Character, String>();
 
 		telephoneKeypadLookup.put('A', "2");
     	telephoneKeypadLookup.put('B', "2");
@@ -98,8 +98,11 @@ public class TelephoneFormatter {
 		Identity id = determineIdentity(prefix);
 
     	// filter prefix, spaces and dashes.
-    	teleNumber = teleNumber.replaceAll(" ","");
+		teleNumber = teleNumber.replaceAll(" ","");
     	teleNumber = teleNumber.replaceAll("-","");
+
+    	number = number.replaceAll(" ","");
+    	number = number.replaceAll("-","");
 
 		boolean isValid = determineValidity(teleNumber, prefix, category, id);
 
@@ -317,22 +320,40 @@ public class TelephoneFormatter {
 
     	int numberSize = number.length();
 
+    	// initial space after code.
+    	sb.append(" ");
+
     	if(number.matches(uppercaseRegx)) {
     		number = decryptTextKeypad(number, numberSize);
     	}
 
     	// no spaces required
     	if(numberSize == 5) {
-    		sb.append(" ");
     		sb.append(number);
     	} 
     	// space between third and fourth digit.
     	else if(numberSize == 6 || numberSize == 7) {
+    		for(int i = 0; i < numberSize; i++) {
 
+	    		if(i == 3) {
+	    			sb.append(" ");
+	    		}
+
+	    		sb.append(number.charAt(i));
+    		}
     	}
     	// space after fourth digit.
     	else if(numberSize == 8) {
+    		for(int i = 0; i < numberSize; i++) {
 
+	    		if(i == 4) {
+	    			sb.append(" ");
+	    		}
+
+	    		sb.append(number.charAt(i));
+    		}
+    	} else {
+    		sb.append(number);
     	}
 
     	return sb.toString();
@@ -341,16 +362,17 @@ public class TelephoneFormatter {
     private String decryptTextKeypad(String number, int length) {
 
     	StringBuilder sb = new StringBuilder();
-
     	for(int i = 0; i < length; i++) {
 
-    		if(Character.isDigit(number.charAt(i))) {
-    			sb.append(number.charAt(i));
-    		} else {
+    		char currChar = number.charAt(i);
 
+    		if(Character.isDigit(currChar)) {
+    			sb.append(currChar);
+    		} else {
+    			sb.append(telephoneKeypadLookup.get(currChar));
     		}
     	}
 
-    	return "";	
+    	return sb.toString();	
     }
 }
