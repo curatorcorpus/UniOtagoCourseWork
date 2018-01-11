@@ -55,7 +55,7 @@ public class TelephoneFormatter {
 		if(teleNumber.contains("(") || teleNumber.contains(")")) {
 
 		    // extract prefix code if within parenthesis.
-		    teleNumber = teleNumber.replaceAll(".*\\(|\\).*", "");
+		    teleNumber = teleNumber.replaceAll("[()]", "");
 		}
 
 		switch(category) {
@@ -80,9 +80,10 @@ public class TelephoneFormatter {
 
 		} else  {
 			teleNumber += " INV";
+			return teleNumber;
 		}
 
-		System.out.println(teleNumber + " Identity " + id +  " " + isValid);
+		teleNumber += " Identity " + id +  " " + isValid;
 		return teleNumber;
     }
     

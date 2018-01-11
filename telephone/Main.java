@@ -28,7 +28,7 @@ public class Main {
 		    
 		    while((line = br.readLine()) != null) {
 
-				tf.format(line);
+				System.out.println(tf.format(line));
 		    }
 
 		} catch(FileNotFoundException e) {
