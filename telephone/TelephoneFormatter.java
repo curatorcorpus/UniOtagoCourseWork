@@ -388,9 +388,9 @@ public class TelephoneFormatter {
     	else if(numberSize == 6 && id == Identity.M025) {
 
     		sb.append("4");
-    		for(int i = 1; i < numberSize; i++) {
+    		for(int i = 0; i < numberSize; i++) {
 
-	    		if(i == 3) {
+	    		if(i == 2) {
 	    			sb.append(" ");
 	    		}
 
