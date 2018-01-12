@@ -14,7 +14,19 @@ public class Main {
 
     public static void main(String args[]) {
 
-		String filename = "";
+		TelephoneFormatter tf = new TelephoneFormatter();
+    	Scanner sc = new Scanner(System.in);
+
+    	String line = "";
+    	while(!(line = sc.nextLine()).equals("q")) {
+			if(line.equals("")) {
+	    		continue;
+	    	}
+			System.out.println("Formatted->" + tf.format(line));
+			System.out.println();
+    	}
+
+	/*	String filename = "";
 
 		// determine we have a filename by args.
 		try {
@@ -45,6 +57,6 @@ public class Main {
 		    System.err.println("File not found!");
 		} catch(IOException e) {
 		    System.err.println("Incorrect Input");
-		}
+		}*/
     }
 }
