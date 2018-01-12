@@ -33,6 +33,11 @@ public class Main {
 		    
 		    while((line = br.readLine()) != null) {
 
+		    	if(line.equals("")) {
+		    		//System.out.println();
+		    		continue;
+		    	}
+
 				System.out.println(tf.format(line));
 		    }
 

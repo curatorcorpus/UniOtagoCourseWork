@@ -121,6 +121,19 @@ public class TelephoneFormatter {
 		// determine identity of number.
 		Identity id = determineIdentity(prefix);
 
+		// determine placement spaces and dashes.
+		boolean isAppropriate = determineAppropriateSpaceAndDashes(category, id, originalNumber, prefix, number);
+
+		if(!isAppropriate) {
+
+			originalNumber += " INV";
+			if(isDuplicate) {
+				originalNumber += " DUP";
+			}
+			return originalNumber;
+		}
+
+ //System.out.println(isAppropriate);
     	// filter prefix, spaces and dashes.
 		teleNumber = teleNumber.replaceAll(" ","");
     	teleNumber = teleNumber.replaceAll("-","");
@@ -190,6 +203,76 @@ public class TelephoneFormatter {
 		}
 
 		return Category.INVALID;
+	}
+
+	private boolean determineAppropriateSpaceAndDashes(Category cat, Identity id, String originalNumber, String prefix, String number) {
+
+		String dashRegx = "^([0-9]*-[0-9]*){1}$";
+		String spaceRegx = "^([0-9]* [0-9]*){1}$";
+
+		String withoutSpaceOrDash = number.replaceAll(" ","");
+    	withoutSpaceOrDash = number.replaceAll("-","");
+
+    	int lengthWithoutSpaceOrDash = withoutSpaceOrDash.length();
+
+    	int noOfDashes = 0;
+    	int noOfSpaces = 0;
+
+    	for(int i = 0; i < originalNumber.length(); i++) {
+
+    		if(originalNumber.charAt(i) == ' ') {
+    			noOfSpaces++;
+    		}
+    		if(originalNumber.charAt(i) == '-') {
+    			noOfDashes++;
+    		}
+    	}
+
+		if(prefix.contains("-")) {
+			return false;
+		}
+		else if(noOfDashes > 1) {
+			return false;
+		}
+		else if(noOfSpaces > 1) {
+			return false;
+		}
+		else if(noOfSpaces == 1) {
+			if(lengthWithoutSpaceOrDash == 5) {
+				return false;
+			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
+				if(number.indexOf(" ") == 0) {
+					return true;
+				} else if(number.indexOf(" ") != 3) {
+					return false;
+				}
+			} else if(lengthWithoutSpaceOrDash == 8) {
+				if(number.indexOf(" ") == 0) {
+					return true;
+				} else if(number.indexOf(" ") != 4) {
+					return false;
+				}
+			} 
+			return true;
+		}
+		else if(noOfDashes == 1) {
+			if(lengthWithoutSpaceOrDash == 5) {
+				return false;
+			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
+				if(number.indexOf("-") != 3) {
+					return false;
+				}
+			} else if(lengthWithoutSpaceOrDash == 8) {
+				if(number.indexOf("-") != 4) {
+					return false;
+				}
+			}
+			return true;
+		}
+		else if(noOfSpaces == 0 && noOfDashes == 0) {
+			return true;
+		}
+		return false;
 	}
 
 	/*
