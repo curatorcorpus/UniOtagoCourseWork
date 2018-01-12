@@ -17,13 +17,9 @@ public class Main {
 		TelephoneFormatter tf = new TelephoneFormatter();
     	Scanner sc = new Scanner(System.in);
 
-    	String line = "";
-    	while(!(line = sc.nextLine()).equals("q")) {
-			if(line.equals("")) {
-	    		continue;
-	    	}
-			System.out.println("Formatted->" + tf.format(line));
-			System.out.println();
+    	while(sc.hasNextLine()) {
+			String line = sc.nextLine();
+			System.out.println(tf.format(line));
     	}
 
 	/*	String filename = "";

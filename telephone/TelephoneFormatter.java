@@ -78,6 +78,10 @@ public class TelephoneFormatter {
     */
     public String format(String teleNumber) {
 
+    	if(teleNumber.equals("")) {
+    		return "INV";
+    	}
+
     	boolean isDuplicate = false;
 
     	Category category = determineCategory(teleNumber);
