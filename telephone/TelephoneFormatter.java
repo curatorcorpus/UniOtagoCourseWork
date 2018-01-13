@@ -78,7 +78,7 @@ public class TelephoneFormatter {
     public String format(String teleNumber) {
 
     	if(teleNumber.equals("")) {
-    		return "INV";
+    		return " INV";
     	}
 
     	boolean isDuplicate = false;
@@ -210,10 +210,10 @@ public class TelephoneFormatter {
 
 		String dashRegx = "^([0-9]*-[0-9]*){1}$";
 		String spaceRegx = "^([0-9]* [0-9]*){1}$";
+		String dashBetweenLettersRegx = "[A-Z]-[A-Z]";
 
 		String withoutSpaceOrDash = number.replaceAll(" ","");
     	withoutSpaceOrDash = number.replaceAll("-","");
-
     	int lengthWithoutSpaceOrDash = withoutSpaceOrDash.length();
 
     	int noOfDashes = 0;
@@ -238,6 +238,25 @@ public class TelephoneFormatter {
 		else if(noOfSpaces > 2) {
 			return false;
 		}
+
+		if(noOfDashes == 1) {
+			
+			if(number.matches(uppercaseRegx)) {
+				return false;
+			}
+			else if(lengthWithoutSpaceOrDash == 5) {
+				return false;
+			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
+				if(number.indexOf("-") != 3) {
+					return false;
+				}
+			} else if(lengthWithoutSpaceOrDash == 8) {
+				if(number.indexOf("-") != 4) {
+					return false;
+				}
+			}
+			return true;
+}
 		else if(noOfSpaces == 1 || noOfSpaces == 2) {
 			if(lengthWithoutSpaceOrDash == 5) {
 				return false;
@@ -254,20 +273,6 @@ public class TelephoneFormatter {
 					return false;
 				}
 			} 
-			return true;
-		}
-		else if(noOfDashes == 1) {
-			if(lengthWithoutSpaceOrDash == 5) {
-				return false;
-			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
-				if(number.indexOf("-") != 3) {
-					return false;
-				}
-			} else if(lengthWithoutSpaceOrDash == 8) {
-				if(number.indexOf("-") != 4) {
-					return false;
-				}
-			}
 			return true;
 		}
 		else if(noOfSpaces == 0 && noOfDashes == 0) {
@@ -371,7 +376,7 @@ public class TelephoneFormatter {
     	String alphabetRegx		   = ".*[a-zA-Z]+.*";
     	String lowercaseRegx 	   = ".*[a-z]+.*";
     	String landlineNumRuleRegx = "[2-9]";
-		
+
 		int firstSpace = number.indexOf(" ");
 
     	// Preliminary checks. Determines validity by applying group rules.
