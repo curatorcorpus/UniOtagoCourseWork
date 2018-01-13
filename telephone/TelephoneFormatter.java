@@ -211,9 +211,9 @@ public class TelephoneFormatter {
 		String dashRegx = "^([0-9]*-[0-9]*){1}$";
 		String spaceRegx = "^([0-9]* [0-9]*){1}$";
 		String dashBetweenLettersRegx = "[A-Z]-[A-Z]";
-
-		String withoutSpaceOrDash = number.replaceAll(" ","");
-    	withoutSpaceOrDash = number.replaceAll("-","");
+		String withoutSpaceOrDash = number;
+		withoutSpaceOrDash = withoutSpaceOrDash.replaceAll(" ","");
+    	withoutSpaceOrDash = withoutSpaceOrDash.replaceAll("-","");
     	int lengthWithoutSpaceOrDash = withoutSpaceOrDash.length();
 
     	int noOfDashes = 0;
@@ -256,8 +256,8 @@ public class TelephoneFormatter {
 				}
 			}
 			return true;
-}
-		else if(noOfSpaces == 1 || noOfSpaces == 2) {
+		}
+		if(noOfSpaces == 1 || noOfSpaces == 2) {
 			if(lengthWithoutSpaceOrDash == 5) {
 				return false;
 			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
