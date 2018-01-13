@@ -235,10 +235,10 @@ public class TelephoneFormatter {
 		else if(noOfDashes > 1) {
 			return false;
 		}
-		else if(noOfSpaces > 1) {
+		else if(noOfSpaces > 2) {
 			return false;
 		}
-		else if(noOfSpaces == 1) {
+		else if(noOfSpaces == 1 || noOfSpaces == 2) {
 			if(lengthWithoutSpaceOrDash == 5) {
 				return false;
 			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
@@ -467,7 +467,7 @@ public class TelephoneFormatter {
 			case L02:
 				number = number.replaceAll(" ","");
     			number = number.replaceAll("-","");
-    			System.out.println(number.substring(0,3));
+
 				if(number.substring(0,3).equals("409")) {
 					return true;
 				}
