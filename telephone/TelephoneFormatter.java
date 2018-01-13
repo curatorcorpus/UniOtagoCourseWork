@@ -214,8 +214,8 @@ public class TelephoneFormatter {
 		String withoutSpaceOrDash = number;
 		withoutSpaceOrDash = withoutSpaceOrDash.replaceAll(" ","");
     	withoutSpaceOrDash = withoutSpaceOrDash.replaceAll("-","");
-    	int lengthWithoutSpaceOrDash = withoutSpaceOrDash.length();
 
+    	int lengthWithoutSpaceOrDash = withoutSpaceOrDash.length();
     	int noOfDashes = 0;
     	int noOfSpaces = 0;
 
@@ -381,6 +381,7 @@ public class TelephoneFormatter {
     	String alphabetRegx		   = ".*[a-zA-Z]+.*";
     	String lowercaseRegx 	   = ".*[a-z]+.*";
     	String landlineNumRuleRegx = "[2-9]";
+    	String numberFollowsLetterRegx = ".*[A-Z][0-9]+.*";
 
 		int firstSpace = number.indexOf(" ");
 
@@ -389,7 +390,10 @@ public class TelephoneFormatter {
     		number = number.substring(4);
     		if(number.matches(lowercaseRegx)) {
     			return false;
-    		}else if(number.matches(uppercaseRegx)) {
+    		} else if(number.matches(uppercaseRegx)) {
+    			if(number.matches(numberFollowsLetterRegx)) {
+					return false;
+    			}
 
     			// determines number of uppercase characters in free phone (less than or equal to 9).
     			int counter = 0;
