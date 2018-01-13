@@ -158,7 +158,6 @@ public class TelephoneFormatter {
 		if(isDuplicate) {
 			teleNumber += " DUP";
 		}
-
 		return teleNumber;
     }
 
@@ -466,10 +465,13 @@ public class TelephoneFormatter {
 				break;
 
 			case L02:
-
+				number = number.replaceAll(" ","");
+    			number = number.replaceAll("-","");
+    			System.out.println(number.substring(0,3));
 				if(number.substring(0,3).equals("409")) {
 					return true;
 				}
+				break;
 
 			// default to landline. landline codes similar rules.
 			default:
