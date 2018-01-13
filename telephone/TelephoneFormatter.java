@@ -71,7 +71,6 @@ public class TelephoneFormatter {
 
     // PUBLIC METHODS.
 
-
     /*
     *	Method checks category, identity and validity of telephone number. 
     *	Formats number accordingly.
@@ -88,13 +87,6 @@ public class TelephoneFormatter {
 		String prefix = "";
 		String number = "";
 		String originalNumber = teleNumber;
-
-		// check if this number was already called in the batch file.
-		if(duplicatesLookup.containsKey(originalNumber)) {
-			isDuplicate = true;
-		} else {
-			duplicatesLookup.put(originalNumber, true);
-		}
 
 		// remove parenthesis if it exists.
 		if(teleNumber.contains("(") || teleNumber.contains(")")) {
@@ -137,7 +129,6 @@ public class TelephoneFormatter {
 			return originalNumber;
 		}
 
- //System.out.println(isAppropriate);
     	// filter prefix, spaces and dashes.
 		teleNumber = teleNumber.replaceAll(" ","");
     	teleNumber = teleNumber.replaceAll("-","");
@@ -157,6 +148,13 @@ public class TelephoneFormatter {
 		}
 
 		teleNumber = buildFormat(prefix, number, id);
+		// check if this number was already called in the batch file.
+		if(duplicatesLookup.containsKey(teleNumber)) {
+			isDuplicate = true;
+		} else {
+			duplicatesLookup.put(teleNumber, true);
+		}
+
 		if(isDuplicate) {
 			teleNumber += " DUP";
 		}
@@ -310,6 +308,62 @@ public class TelephoneFormatter {
 		}
 	}
 
+	private String truncate(String number, Identity id) {
+		    	// determines if numbers follow length rules.
+		switch(id) {
+
+			// Freephone
+			case F0508:
+				if(number.length() > 6) {
+					number = number.substring(0,6);
+				}
+				break;
+
+			case F0800:
+				if(number.length() > 7) {
+					number = number.substring(0,7);
+				}
+				break;
+
+			case F0900:
+				if(number.length() > 5) {
+					number = number.substring(0,5);
+				}
+				break;
+
+			// Mobile
+			case M021:
+				if(number.length() > 8) {
+					number = number.substring(0,8);
+				}
+				break;
+			
+			case M022:
+				if(number.length() > 7) {
+					number = number.substring(0,7);
+				}
+				break;
+			
+			case M027:
+				if(number.length() > 7) {
+					number = number.substring(0,7);
+				}
+				break;
+			
+			case M025:
+				if(number.length() > 6) {
+					number = number.substring(0,7);
+				}
+				break;
+
+			// default to landline. landline codes similar rules.
+			default:
+				number = number.substring(0,7);
+		}
+
+		return number;
+	}
+
 	/*
 	*	Method determines if number is consistent with length rules of standard format. 	
 	*/
@@ -450,6 +504,8 @@ public class TelephoneFormatter {
 
     	StringBuilder sb;
 
+    	number = truncate(number, id);
+
     	// if id is special mobile case.
     	if(id == Identity.M025) {
 			sb = new StringBuilder("027");
@@ -491,7 +547,6 @@ public class TelephoneFormatter {
 	    		if(i == 3) {
 	    			sb.append(" ");
 	    		}
-
 	    		sb.append(number.charAt(i));
     		}
     	}
@@ -502,7 +557,6 @@ public class TelephoneFormatter {
 	    		if(i == 4) {
 	    			sb.append(" ");
 	    		}
-
 	    		sb.append(number.charAt(i));
     		}
     	}
@@ -510,7 +564,6 @@ public class TelephoneFormatter {
     	else {
     		sb.append(number);
     	}
-
     	return sb.toString();
     }
 
@@ -530,7 +583,6 @@ public class TelephoneFormatter {
     			sb.append(telephoneKeypadLookup.get(currChar));
     		}
     	}
-
-    	return sb.toString();	
+    	return sb.toString();
     }
 }

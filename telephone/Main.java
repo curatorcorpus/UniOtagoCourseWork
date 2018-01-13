@@ -21,38 +21,5 @@ public class Main {
 			String line = sc.nextLine();
 			System.out.println(tf.format(line));
     	}
-
-	/*	String filename = "";
-
-		// determine we have a filename by args.
-		try {
-
-		    filename = args[0] + ".txt";	    
-	        } catch(ArrayIndexOutOfBoundsException e) {
-		    System.err.println("Input file not provided by argument!");
-		    return;
-		}
-
-		// read each line of each unformatted phone number.
-		try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
-
-		    TelephoneFormatter tf = new TelephoneFormatter();
-		    String line = "";
-		    
-		    while((line = br.readLine()) != null) {
-
-		    	if(line.equals("")) {
-		    		//System.out.println();
-		    		continue;
-		    	}
-
-				System.out.println(tf.format(line));
-		    }
-
-		} catch(FileNotFoundException e) {
-		    System.err.println("File not found!");
-		} catch(IOException e) {
-		    System.err.println("Incorrect Input");
-		}*/
     }
 }
