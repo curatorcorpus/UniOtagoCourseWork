@@ -258,6 +258,11 @@ public class TelephoneFormatter {
 			return true;
 		}
 		if(noOfSpaces == 1 || noOfSpaces == 2) {
+			if(noOfSpaces == 2 && number.indexOf(" ") == 0) {
+				if(number.matches(uppercaseRegx)) {
+					return false;
+				}
+			}
 			if(lengthWithoutSpaceOrDash == 5) {
 				return false;
 			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
