@@ -239,8 +239,24 @@ public class TelephoneFormatter {
 			return false;
 		}
 
+
+		if(noOfDashes == 1 && noOfSpaces == 1) {
+			if(prefix.length() != originalNumber.indexOf(" ")) {
+				return false;
+			}
+			if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
+				if((number.indexOf("-")) - 1 != 3) {
+					return false;
+				}
+			} else if(lengthWithoutSpaceOrDash == 8) {
+				if((number.indexOf("-")) - 1 != 4) {
+					return false;
+				}
+			}
+
+			return true;
+		}
 		if(noOfDashes == 1) {
-			
 			if(number.matches(uppercaseRegx)) {
 				return false;
 			}
@@ -264,7 +280,12 @@ public class TelephoneFormatter {
 				}
 			}
 			if(lengthWithoutSpaceOrDash == 5) {
-				return false;
+				if(number.indexOf(" ") != 0) {
+					return false;
+				}
+				if(noOfSpaces == 2) {
+					return false;
+				}
 			} else if(lengthWithoutSpaceOrDash == 6 || lengthWithoutSpaceOrDash == 7) {
 				if(number.indexOf(" ") == 0) {
 					return true;
@@ -283,6 +304,7 @@ public class TelephoneFormatter {
 		else if(noOfSpaces == 0 && noOfDashes == 0) {
 			return true;
 		}
+
 		return false;
 	}
 
