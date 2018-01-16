@@ -277,7 +277,14 @@ public class TelephoneFormatter {
 			}
 			return true;
 		}
-		if(noOfSpaces == 1 || noOfSpaces == 2) {
+		if(noOfSpaces == 1) {
+			if(number.matches(uppercaseRegx) && number.indexOf(" ") == 0) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		if(noOfSpaces == 2) {
 			if(noOfSpaces == 2 && number.indexOf(" ") == 0) {
 				if(number.matches(uppercaseRegx)) {
 					return false;
@@ -297,8 +304,8 @@ public class TelephoneFormatter {
 					return false;
 				}
 			} else if(lengthWithoutSpaceOrDash == 8) {
-				if(number.indexOf(" ") == 0) {
-					return true;
+				if(number.indexOf(" ") != 0) {
+					return false;
 				} else if(number.indexOf(" ") != 4) {
 					return false;
 				}
