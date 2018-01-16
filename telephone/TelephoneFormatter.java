@@ -254,6 +254,10 @@ public class TelephoneFormatter {
 				}
 			}
 
+			if(number.matches(uppercaseRegx)) {
+				return false;
+			}
+
 			return true;
 		}
 		if(noOfDashes == 1) {
