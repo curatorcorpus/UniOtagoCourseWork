@@ -281,7 +281,8 @@ public class TelephoneFormatter {
 			if(number.matches(uppercaseRegx) && number.indexOf(" ") == 0) {
 				return true;
 			}
-			if(lengthWithoutSpaceOrDash == 5) {
+			if(lengthWithoutSpaceOrDash == 5 || lengthWithoutSpaceOrDash == 6 || 
+			   lengthWithoutSpaceOrDash == 7 || lengthWithoutSpaceOrDash == 8) {
 				if(number.indexOf(" ") == 0) {
 					return true;
 				}
