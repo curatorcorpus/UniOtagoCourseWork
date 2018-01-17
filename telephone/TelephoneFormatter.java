@@ -280,6 +280,11 @@ public class TelephoneFormatter {
 		if(noOfSpaces == 1) {
 			if(number.matches(uppercaseRegx) && number.indexOf(" ") == 0) {
 				return true;
+			}
+			if(lengthWithoutSpaceOrDash == 5) {
+				if(number.indexOf(" ") == 0) {
+					return true;
+				}
 			} else {
 				return false;
 			}
