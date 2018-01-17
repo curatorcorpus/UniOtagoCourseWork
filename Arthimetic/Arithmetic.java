@@ -34,25 +34,33 @@ public class Arithmetic {
 			num[i] = Integer.parseInt(numbers[i]);
 		}*/
 
+		// impl for leftToRight order of operation.
 		num[0] = Integer.parseInt(numbers[0]);
 		num[1] = Integer.parseInt(numbers[1]);
 		num[2] = Integer.parseInt(numbers[2]);
 
 		int result = num[0];
+		// iterate through opertaion sets.
 		for(String operation : operationsPowTwo) {
+			// iterate through each operation in the set.
 			for(int i = 0; i < operation.length(); i++){
+				// extract an operation.
 				String op = operation.substring(i,i+1);
 				
+				// apply operation.
 				if(op.equals("+")) {
 					result += num[i+1];
 				} else {
 					result *= num[i+1];
 				}
 			}
+			// if target value.
 			if(result == 9) {
 				System.out.println(operation);
 				break;
 			}
+
+			// reset back to starting number.
 			//System.out.println(result + " " + operation);
 			result = num[0];
 		}
