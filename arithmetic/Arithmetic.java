@@ -1,4 +1,4 @@
-/**
+	/**
 *	@Author Jung Woo (Noel) Park.
 	Student ID: 1162424.
 */
@@ -23,11 +23,28 @@ public class Arithmetic {
 
 	public String search(String input, String target) {
 		
-		
-		int[] num = extractIntFromStringInput(input);
+		String[] targets = extractTargets(target);
+		int[] num 	   	 = extractIntFromStringInput(input);
 
-		int result = num[0];
+		int targetValue  = Integer.parseInt(targets[0]);
+		String oooMethod = targets[1];
+
+		String operand = "";
+		if(oooMethod.equals("L")) {
+			operand = searchForCorrectOperationL(num, targetValue);
+		}
+		else if(oooMethod.equals("N")) {
+
+		}
+
+		return formatForOutput(oooMethod, num, operand);
+	}
+
+	private String searchForCorrectOperationL(int[] inputs, int target) {
+		
 		String correctOperation = "";
+
+		int result = inputs[0];
 		// iterate through opertaion sets.
 		for(String operation : operationsPowTwo) {
 			// iterate through each operation in the set.
@@ -37,22 +54,25 @@ public class Arithmetic {
 				
 				// apply operation.
 				if(op.equals("+")) {
-					result += num[i+1];
+					result += inputs[i+1];
 				} else {
-					result *= num[i+1];
+					result *= inputs[i+1];
 				}
 			}
 			// if target value.
-			if(result == 9) {
+			if(result == target) {
 				correctOperation = operation;
 				break;
 			}
-
-			// reset back to starting number.
-			//System.out.println(result + " " + operation);
-			result = num[0];
+			result = inputs[0];
 		}
-		return formatForOutput("L", num, correctOperation);
+
+		return correctOperation;
+	}
+
+	private String searchForCorrectOperationN(int[] inputs, int target) {
+		
+		return "";
 	}
 
 	//TODO extract input as number.
@@ -60,12 +80,17 @@ public class Arithmetic {
 	private int[] extractIntFromStringInput(String input) {
 
 		String[] numbers = input.split(" ");
-		int[] num = new int[9];
+		int[] num = new int[10];
 
 		for(int i = 0; i < numbers.length; i++) {
 			num[i] = Integer.parseInt(numbers[i]);
 		}
 		return num;
+	}
+
+	private String[] extractTargets(String target) {
+
+		return target.split(" ");
 	}
 
 	//TODO extract order of operation method.
