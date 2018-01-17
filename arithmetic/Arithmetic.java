@@ -23,18 +23,8 @@ public class Arithmetic {
 
 	public String search(String input, String target) {
 		
-		String[] numbers = input.split(" ");
 		
-		int[] num = new int[9];
-/*
-		for(int i = 0; i < numbers.length; i++) {
-			num[i] = Integer.parseInt(numbers[i]);
-		}*/
-
-		// impl for leftToRight order of operation.
-		num[0] = Integer.parseInt(numbers[0]);
-		num[1] = Integer.parseInt(numbers[1]);
-		num[2] = Integer.parseInt(numbers[2]);
+		int[] num = extractIntFromStringInput(input);
 
 		int result = num[0];
 		String correctOperation = "";
@@ -67,12 +57,23 @@ public class Arithmetic {
 
 	//TODO extract input as number.
 
+	private int[] extractIntFromStringInput(String input) {
+
+		String[] numbers = input.split(" ");
+		int[] num = new int[9];
+
+		for(int i = 0; i < numbers.length; i++) {
+			num[i] = Integer.parseInt(numbers[i]);
+		}
+		return num;
+	}
+
 	//TODO extract order of operation method.
 
 	//TODO extract target.
 
 	//TODO format output public String formatForOutput(operation method, inputs, operations);
-	public String formatForOutput(String oooMethod, int[] inputs, String correctOperations) {
+	private String formatForOutput(String oooMethod, int[] inputs, String correctOperations) {
 
 		StringBuilder sb = new StringBuilder();
 
