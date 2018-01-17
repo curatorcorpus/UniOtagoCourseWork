@@ -26,12 +26,13 @@ public class Arithmetic {
 		String[] targets = extractTargets(target);
 		int[] num 	   	 = extractIntFromStringInput(input);
 
+		int inputSize 	 = input.split(" ").length;
 		int targetValue  = Integer.parseInt(targets[0]);
 		String oooMethod = targets[1];
 
 		String operand = "";
 		if(oooMethod.equals("L")) {
-			operand = searchForCorrectOperationL(num, targetValue);
+			operand = searchForCorrectOperationL(num, targetValue, inputSize);
 		}
 		else if(oooMethod.equals("N")) {
 
@@ -40,13 +41,45 @@ public class Arithmetic {
 		return formatForOutput(oooMethod, num, operand);
 	}
 
-	private String searchForCorrectOperationL(int[] inputs, int target) {
+	private String searchForCorrectOperationL(int[] inputs, int target, int inputSize) {
 		
 		String correctOperation = "";
 
+		ArrayList<String> operationSet = null;
+
+		switch(inputSize) {
+			case 2:
+				operationSet =  operationsPowOne;
+				break;
+			case 3:
+				operationSet =  operationsPowTwo;
+				break;
+			case 4:
+				operationSet =  operationsPowThr;
+				break;
+			case 5:
+				operationSet =  operationsPowFor;
+				break;
+			case 6:
+				operationSet =  operationsPowFiv;
+				break;
+			case 7:
+				operationSet =  operationsPowSix;
+				break;
+			case 8:
+				operationSet =  operationsPowSev;
+				break;
+			case 9:
+				operationSet =  operationsPowEig;
+				break;
+			case 10:
+				operationSet =  operationsPowNin;
+				break;
+		}
+
 		int result = inputs[0];
 		// iterate through opertaion sets.
-		for(String operation : operationsPowTwo) {
+		for(String operation : operationSet) {
 			// iterate through each operation in the set.
 			for(int i = 0; i < operation.length(); i++){
 				// extract an operation.
@@ -70,7 +103,7 @@ public class Arithmetic {
 		return correctOperation;
 	}
 
-	private String searchForCorrectOperationN(int[] inputs, int target) {
+	private String searchForCorrectOperationN(int[] inputs, int target, int inputSize) {
 		
 		return "";
 	}
@@ -92,10 +125,6 @@ public class Arithmetic {
 
 		return target.split(" ");
 	}
-
-	//TODO extract order of operation method.
-
-	//TODO extract target.
 
 	//TODO format output public String formatForOutput(operation method, inputs, operations);
 	private String formatForOutput(String oooMethod, int[] inputs, String correctOperations) {
