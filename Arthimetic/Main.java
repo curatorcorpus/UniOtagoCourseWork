@@ -11,6 +11,8 @@ public class Main {
     	//Scanner sc = new Scanner(System.in);
 
     	Arithmetic arth = new Arithmetic();
+
+    	arth.search();
 /*
     	while(sc.hasNextLine()) {
 			String line = sc.nextLine();
