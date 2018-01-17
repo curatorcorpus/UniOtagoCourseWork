@@ -8,15 +8,15 @@ public class Main {
 
     public static void main(String args[]) {
 
-    	//Scanner sc = new Scanner(System.in);
-
     	Arithmetic arth = new Arithmetic();
+        Scanner sc = new Scanner(System.in);
 
-    	System.out.println(arth.search());
-/*
     	while(sc.hasNextLine()) {
-			String line = sc.nextLine();
-			//System.out.println(tf.format(line));
-    	}*/
+			
+            String input = sc.nextLine();
+            String target = sc.nextLine();
+            
+            System.out.println(arth.search(input, target));
+    	}
     }
 }

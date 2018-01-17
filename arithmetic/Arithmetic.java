@@ -21,10 +21,7 @@ public class Arithmetic {
 
 	public Arithmetic() {}
 
-	public String search() {
-
-		String input = "1 2 3";
-		String target = "9 L";
+	public String search(String input, String target) {
 		
 		String[] numbers = input.split(" ");
 		
