@@ -21,7 +21,7 @@ public class Arithmetic {
 
 	public Arithmetic() {}
 
-	public int search() {
+	public String search() {
 
 		String input = "1 2 3";
 		String target = "9 L";
@@ -40,6 +40,7 @@ public class Arithmetic {
 		num[2] = Integer.parseInt(numbers[2]);
 
 		int result = num[0];
+		String correctOperation = "";
 		// iterate through opertaion sets.
 		for(String operation : operationsPowTwo) {
 			// iterate through each operation in the set.
@@ -56,7 +57,7 @@ public class Arithmetic {
 			}
 			// if target value.
 			if(result == 9) {
-				System.out.println(operation);
+				correctOperation = operation;
 				break;
 			}
 
@@ -64,14 +65,37 @@ public class Arithmetic {
 			//System.out.println(result + " " + operation);
 			result = num[0];
 		}
-		return -1;	
+		return formatForOutput("L", num, correctOperation);
 	}
 
-	// extract input as number.
+	//TODO extract input as number.
 
-	// extract order of operation method.
+	//TODO extract order of operation method.
 
-	// extract target.
+	//TODO extract target.
 
-	// format output public String formatForOutput(operation method, inputs, operations);
+	//TODO format output public String formatForOutput(operation method, inputs, operations);
+	public String formatForOutput(String oooMethod, int[] inputs, String correctOperations) {
+
+		StringBuilder sb = new StringBuilder();
+
+		// append first number and oooMethod
+		sb.append(oooMethod);
+		sb.append(" ");
+		sb.append(inputs[0]);
+
+		for(int i = 0; i < correctOperations.length(); i++) {
+			String op = correctOperations.substring(i,i+1);
+			sb.append(" ");
+			if(op.equals("x")) {
+				sb.append("*");
+			} else {
+				sb.append(op);
+			}
+			sb.append(" ");
+			sb.append(inputs[i+1]);
+		}
+
+		return sb.toString();
+	}
 }

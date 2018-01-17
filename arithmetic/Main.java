@@ -12,7 +12,7 @@ public class Main {
 
     	Arithmetic arth = new Arithmetic();
 
-    	arth.search();
+    	System.out.println(arth.search());
 /*
     	while(sc.hasNextLine()) {
 			String line = sc.nextLine();
