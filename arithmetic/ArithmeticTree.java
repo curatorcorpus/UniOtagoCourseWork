@@ -38,24 +38,20 @@ public class ArithmeticTree {
 			sb.append(" ");
 			sb.append(firstInput);
 
-			if((firstInput + secondInput) == target) {
+			if((firstInput + secondInput) == target)
 				sb.append(" + ");
-			}
-			else if((firstInput * secondInput) == target) {
+			else if((firstInput * secondInput) == target)
 				sb.append(" * ");
-			}
-			else {
+			else
 				return oooMethod + " impossible";
-			}
+			
 			sb.append(secondInput);
 
 			return sb.toString();
 		}
 
 		if(oooMethod.equals("L")) {
-			result = evaluateL(inputs);
-
-			return result;
+			return evaluateL(inputs);
 		}
 
 		return evaluateN(inputs);
@@ -65,7 +61,7 @@ public class ArithmeticTree {
 
 		OperationNode[] rootChildren = root.getChildren();
 
-		return "";
+		return rootChildren[0].evaluateNodeL(inputs, target, 0);
 	}
 
 	public String evaluateN(String[] inputs) {
