@@ -47,28 +47,20 @@ public class ArithmeticTree {
 			int firstInput = Integer.parseInt(inputs[0]);
 			int secondInput = Integer.parseInt(inputs[1]);
 
+			StringBuilder sb = new StringBuilder(oooMethod);
+
+			sb.append(" ");
+			sb.append(firstInput);
+
 			if((firstInput + secondInput) == target) {
-
-				StringBuilder sb = new StringBuilder(oooMethod);
-
-				sb.append(" ");
-				sb.append(firstInput);
 				sb.append(" + ");
-				sb.append(secondInput);
-
-				return sb.toString();
 			}
 			if((firstInput * secondInput) == target) {
-
-				StringBuilder sb = new StringBuilder(oooMethod);
-
-				sb.append(" ");
-				sb.append(firstInput);
 				sb.append(" * ");
-				sb.append(secondInput);
-
-				return sb.toString();
 			}
+			sb.append(secondInput);
+
+			return sb.toString();
 		}
 
 		return "";
