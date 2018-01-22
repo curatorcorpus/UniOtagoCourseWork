@@ -55,8 +55,11 @@ public class ArithmeticTree {
 			if((firstInput + secondInput) == target) {
 				sb.append(" + ");
 			}
-			if((firstInput * secondInput) == target) {
+			else if((firstInput * secondInput) == target) {
 				sb.append(" * ");
+			}
+			else {
+				return oooMethod + " impossible";
 			}
 			sb.append(secondInput);
 

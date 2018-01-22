@@ -16,9 +16,12 @@ public class Main {
             String input = sc.nextLine();
             String target = sc.nextLine();
             
-            arth.setExpectedTarget(target);
+            if(input.equals("") && target.equals("")) {
 
-            System.out.println(arth.evaluate(input));
+            } else {                
+                arth.setExpectedTarget(target);
+                System.out.println(arth.evaluate(input));
+            }
     	}
     }
 }
