@@ -8,7 +8,7 @@ public class Main {
 
     public static void main(String args[]) {
 
-    	Arithmetic arth = new Arithmetic();
+    	ArithmeticTree arth = new ArithmeticTree();
         Scanner sc = new Scanner(System.in);
 
     	while(sc.hasNextLine()) {
@@ -16,7 +16,9 @@ public class Main {
             String input = sc.nextLine();
             String target = sc.nextLine();
             
-            System.out.println(arth.search(input, target));
+            arth.setExpectedTarget(target);
+
+            //System.out.println(arth.search(input, target));
     	}
     }
 }
