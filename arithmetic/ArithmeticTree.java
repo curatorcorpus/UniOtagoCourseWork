@@ -21,15 +21,60 @@ public class ArithmeticTree {
 
 		target = Integer.parseInt(oooMethodAndTarget[0]);
 		oooMethod = oooMethodAndTarget[1];
-		System.out.println(oooMethod);
-		System.out.println(target);
 	}
 
-	public String evaluateL(String input, String target) {
+	public String evaluate(String input) {
+
+		String[] inputs = input.split(" ");
+
+		String result = "";
+		if(oooMethod.equals("L")) {
+			result = evaluateL(inputs);
+
+			return result;
+		}
+
+		return evaluateN(inputs);
+	}
+
+	public String evaluateL(String[] inputs) {
 
 		OperationNode[] rootChildren = root.getChildren();
 
 		String result = "";
+
+		if(inputs.length == 2) {
+			int firstInput = Integer.parseInt(inputs[0]);
+			int secondInput = Integer.parseInt(inputs[1]);
+
+			if((firstInput + secondInput) == target) {
+
+				StringBuilder sb = new StringBuilder(oooMethod);
+
+				sb.append(" ");
+				sb.append(firstInput);
+				sb.append(" + ");
+				sb.append(secondInput);
+
+				return sb.toString();
+			}
+			if((firstInput * secondInput) == target) {
+
+				StringBuilder sb = new StringBuilder(oooMethod);
+
+				sb.append(" ");
+				sb.append(firstInput);
+				sb.append(" * ");
+				sb.append(secondInput);
+
+				return sb.toString();
+			}
+		}
+
+		return "";
+	}
+
+	public String evaluateN(String[] inputs) {
 
 		return "";
 	}

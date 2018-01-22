@@ -18,7 +18,7 @@ public class Main {
             
             arth.setExpectedTarget(target);
 
-            //System.out.println(arth.search(input, target));
+            System.out.println(arth.evaluate(input));
     	}
     }
 }
