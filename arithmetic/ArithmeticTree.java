@@ -60,7 +60,7 @@ public class ArithmeticTree {
 
 		OperationNode[] rootChildren = root.getChildren();
 
-		return rootChildren[0].evaluateNodeL(inputs, target, 0);
+		return rootChildren[0].evaluateNodeL(inputs, "", target, 0);
 	}
 
 	public String evaluateN(String[] inputs) {

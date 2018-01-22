@@ -29,17 +29,21 @@ public class OperationNode {
 		this.children[1] = new OperationNode("x", depth+1);
 	}
 
-	public String evaluateNodeL(String[] inputs, int target, int currentTotal) {
-		System.out.println(depth);
+	public String evaluateNodeL(String[] inputs, String currentOperations, int target, int currentTotal) {
+		System.out.println(currentOperations);
 		if(depth == inputs.length) {
-			return "";
+			return "NA";
 		}
-
 		if(children == null) {
 			this.children = new OperationNode[2];
 			subdivide();
 		}
 
-		return children[1].evaluateNodeL(inputs, target, currentTotal);
+		String result = children[0].evaluateNodeL(inputs, currentOperations + " " + operation, target, currentTotal);
+
+		if(!result.equals("NA")) {
+			return result;
+		}	
+		return children[1].evaluateNodeL(inputs, currentOperations + " " + operation, target, currentTotal);
 	}
 }
