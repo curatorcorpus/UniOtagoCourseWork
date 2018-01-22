@@ -53,7 +53,6 @@ public class ArithmeticTree {
 		if(oooMethod.equals("L")) {
 			return evaluateL(inputs);
 		}
-
 		return evaluateN(inputs);
 	}
 

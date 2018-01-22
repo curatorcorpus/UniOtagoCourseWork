@@ -15,7 +15,7 @@ public class OperationNode {
 	public OperationNode(String operation, int depth) {
 
 		this.depth = depth;
-		this.children = new OperationNode[2];
+		this.children = null;
 		this.operation = operation;
 	}
 
@@ -32,8 +32,14 @@ public class OperationNode {
 	public String evaluateNodeL(String[] inputs, int target, int currentTotal) {
 		System.out.println(depth);
 		if(depth == inputs.length) {
-
+			return "";
 		}
+
+		if(children == null) {
+			this.children = new OperationNode[2];
+			subdivide();
+		}
+
 		return children[1].evaluateNodeL(inputs, target, currentTotal);
 	}
 }
