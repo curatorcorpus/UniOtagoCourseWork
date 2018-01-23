@@ -26,41 +26,23 @@ public class ArithmeticTree {
 	public String evaluate(String input) {
 
 		String[] inputs = input.split(" ");
-		String result = "";
-
-		// check if input length is 2.
-		if(inputs.length == 2) {
-			int firstInput = Integer.parseInt(inputs[0]);
-			int secondInput = Integer.parseInt(inputs[1]);
-
-			StringBuilder sb = new StringBuilder(oooMethod);
-
-			sb.append(" ");
-			sb.append(firstInput);
-
-			if((firstInput + secondInput) == target)
-				sb.append(" + ");
-			else if((firstInput * secondInput) == target)
-				sb.append(" * ");
-			else
-				return oooMethod + " impossible";
-			
-			sb.append(secondInput);
-
-			return sb.toString();
-		}
 
 		if(oooMethod.equals("L")) {
-			return evaluateL(inputs);
+			if(evaluateL(inputs)) {
+				return OperationNode.expression;
+			}
 		}
-		return evaluateN(inputs);
+		return "L impossible";
 	}
 
-	public String evaluateL(String[] inputs) {
+	public boolean evaluateL(String[] inputs) {
+		
+		OperationNode[] children = root.getChildren();
 
-		OperationNode[] rootChildren = root.getChildren();
-
-		return rootChildren[0].evaluateNodeL(inputs, "", target, 0);
+		if(children[0].evaluateNodeL(inputs, target, Integer.parseInt(inputs[0]), "")) {
+			return true;
+		}
+		return children[1].evaluateNodeL(inputs, target, Integer.parseInt(inputs[0]), "");
 	}
 
 	public String evaluateN(String[] inputs) {

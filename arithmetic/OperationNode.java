@@ -1,6 +1,8 @@
 
 public class OperationNode {
 
+	public static String expression;
+
 	private int depth;
 	private OperationNode[] children;
 	private String operation;
@@ -25,25 +27,41 @@ public class OperationNode {
 
 	public void subdivide() {
 
-		this.children[0] = new OperationNode("+", depth+1);
-		this.children[1] = new OperationNode("x", depth+1);
+		this.children[0] = new OperationNode("x", depth+1);
+		this.children[1] = new OperationNode("+", depth+1);
 	}
 
-	public String evaluateNodeL(String[] inputs, String currentOperations, int target, int currentTotal) {
-		System.out.println(currentOperations);
-		if(depth == inputs.length) {
-			return "NA";
+	public boolean evaluateNodeL(String[] inputs, int target, int currentTotal, String currentOperations) {
+
+		int rhsInput = Integer.parseInt(inputs[depth]);
+		int total = currentTotal;
+
+		currentOperations += operation;
+
+		if(operation.equals("x")) {
+			total *= rhsInput;
+		} else if(operation.equals("+")) {
+			total += rhsInput;
+		}
+		System.out.println(depth + " " +operation);
+		if(total > target) {
+			return false;
+		}
+		if(depth == (inputs.length - 1)) {
+			if(total == target) {
+				expression = currentOperations;
+				return true;
+			} else {
+				return false;
+			}
 		}
 		if(children == null) {
 			this.children = new OperationNode[2];
 			subdivide();
 		}
-
-		String result = children[0].evaluateNodeL(inputs, currentOperations + " " + operation, target, currentTotal);
-
-		if(!result.equals("NA")) {
-			return result;
-		}	
-		return children[1].evaluateNodeL(inputs, currentOperations + " " + operation, target, currentTotal);
+		if(children[0].evaluateNodeL(inputs, target, total, currentOperations)) {
+			return true;
+		}
+		return children[1].evaluateNodeL(inputs, target, total, currentOperations);
 	}
 }
