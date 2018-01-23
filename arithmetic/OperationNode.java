@@ -64,4 +64,38 @@ public class OperationNode {
 		}
 		return children[1].evaluateNodeL(inputs, target, total, currentOperations);
 	}
+
+	public boolean evaluateNodeN(String[] inputs, int target, int currentTotal, String currentOperations) {
+
+		int rhsInput = Integer.parseInt(inputs[depth]);
+		int total = currentTotal;
+
+		currentOperations += operation;
+
+		if(operation.equals("x")) {
+			total *= rhsInput;
+		} else if(operation.equals("+")) {
+			total += rhsInput;
+		}
+		
+		if(total > target) {
+			return false;
+		}
+		if(depth == (inputs.length - 1)) {
+			if(total == target) {
+				expression = currentOperations;
+				return true;
+			} else {
+				return false;
+			}
+		}
+		if(children == null) {
+			this.children = new OperationNode[2];
+			subdivide();
+		}
+		if(children[0].evaluateNodeN(inputs, target, total, currentOperations)) {
+			return true;
+		}
+		return children[1].evaluateNodeN(inputs, target, total, currentOperations);
+	}
 }

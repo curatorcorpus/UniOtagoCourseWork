@@ -23,18 +23,19 @@ public class ArithmeticTree {
 		oooMethod = oooMethodAndTarget[1];
 	}
 
-	public String evaluate(String input) {
+	public String search(String input) {
 
 		String[] inputs = input.split(" ");
-
 		if(oooMethod.equals("L")) {
 			if(evaluateL(inputs)) {
 				return formatOutput(oooMethod, OperationNode.expression, inputs);
 			}
 		} else if(oooMethod.equals("N")) {
-
+			if(evaluateN(inputs)) {
+				return formatOutput(oooMethod, OperationNode.expression, inputs);
+			}
 		}
-		return "L impossible";
+		return oooMethod + " impossible";
 	}
 
 	public boolean evaluateL(String[] inputs) {
@@ -47,11 +48,14 @@ public class ArithmeticTree {
 		return children[1].evaluateNodeL(inputs, target, Integer.parseInt(inputs[0]), "");
 	}
 
-	public String evaluateN(String[] inputs) {
+	public boolean evaluateN(String[] inputs) {
 
-		OperationNode[] rootChildren = root.getChildren();
+		OperationNode[] children = root.getChildren();
 
-		return "";
+		if(children[0].evaluateNodeN(inputs, target, Integer.parseInt(inputs[0]), "")) {
+			return true;
+		}
+		return children[1].evaluateNodeN(inputs, target, Integer.parseInt(inputs[0]), "");
 	}
 
 	private String formatOutput(String oooMethod, String expression, String[] inputs) {

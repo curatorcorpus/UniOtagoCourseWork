@@ -8,7 +8,6 @@ public class Main {
 
     public static void main(String args[]) {
 
-    	ArithmeticTree arth = new ArithmeticTree();
         Scanner sc = new Scanner(System.in);
 
     	while(sc.hasNextLine()) {
@@ -18,9 +17,10 @@ public class Main {
             
             if(input.equals("") && target.equals("")) {
 
-            } else {                
+            } else {
+                ArithmeticTree arth = new ArithmeticTree();
                 arth.setExpectedTarget(target);
-                System.out.println(arth.evaluate(input));
+                System.out.println(arth.search(input));
             }
     	}
     }
