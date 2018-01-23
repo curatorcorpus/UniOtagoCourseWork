@@ -1,3 +1,8 @@
+/**
+*	@Author Jung Woo (Noel) Park.
+	Student ID: 1162424.
+*/
+import java.util.ArrayList;
 
 public class OperationNode {
 
@@ -65,7 +70,9 @@ public class OperationNode {
 		return children[1].evaluateNodeL(inputs, target, total, currentOperations);
 	}
 
-	public boolean evaluateNodeN(String[] inputs, int target, int currentTotal, String currentOperations) {
+	public boolean evaluateNodeN(String[] inputs, int target, int currentTotal, String currentOperations, ArrayList<Integer> additionBuffer) {
+
+		ArrayList<Integer> additions = new ArrayList<Integer>(additionBuffer);
 
 		int rhsInput = Integer.parseInt(inputs[depth]);
 		int total = currentTotal;
@@ -73,9 +80,30 @@ public class OperationNode {
 		currentOperations += operation;
 
 		if(operation.equals("x")) {
-			total *= rhsInput;
+			if(additions.size() == 0) {
+				total *= rhsInput;
+			} else {
+				int lhsInput = additions.get(additionBuffer.size()-1);
+				additions.remove(additions.size()-1);
+				lhsInput *= rhsInput;
+				for(int i : additions) {
+					total += i;
+				}
+				total += lhsInput;
+			}
 		} else if(operation.equals("+")) {
-			total += rhsInput;
+			if(depth == (inputs.length - 1)) {
+				if(additions.size() == 0) {
+					total += rhsInput;
+				} else {
+					for(int i : additions) {
+						total += i;
+					}
+					total += rhsInput;
+				}
+			} else {
+				additions.add(rhsInput);
+			}
 		}
 		
 		if(total > target) {
@@ -93,9 +121,9 @@ public class OperationNode {
 			this.children = new OperationNode[2];
 			subdivide();
 		}
-		if(children[0].evaluateNodeN(inputs, target, total, currentOperations)) {
+		if(children[0].evaluateNodeN(inputs, target, total, currentOperations, additions)) {
 			return true;
 		}
-		return children[1].evaluateNodeN(inputs, target, total, currentOperations);
+		return children[1].evaluateNodeN(inputs, target, total, currentOperations, additions);
 	}
 }

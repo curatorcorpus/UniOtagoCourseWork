@@ -1,7 +1,9 @@
-	/**
+/**
 *	@Author Jung Woo (Noel) Park.
 	Student ID: 1162424.
 */
+
+import java.util.ArrayList;
 
 public class ArithmeticTree {
 
@@ -52,10 +54,10 @@ public class ArithmeticTree {
 
 		OperationNode[] children = root.getChildren();
 
-		if(children[0].evaluateNodeN(inputs, target, Integer.parseInt(inputs[0]), "")) {
+		if(children[0].evaluateNodeN(inputs, target, Integer.parseInt(inputs[0]), "", new ArrayList<Integer>())) {
 			return true;
 		}
-		return children[1].evaluateNodeN(inputs, target, Integer.parseInt(inputs[0]), "");
+		return children[1].evaluateNodeN(inputs, target, Integer.parseInt(inputs[0]), "", new ArrayList<Integer>());
 	}
 
 	private String formatOutput(String oooMethod, String expression, String[] inputs) {
