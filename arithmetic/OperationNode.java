@@ -43,7 +43,7 @@ public class OperationNode {
 		} else if(operation.equals("+")) {
 			total += rhsInput;
 		}
-		System.out.println(depth + " " +operation);
+		
 		if(total > target) {
 			return false;
 		}

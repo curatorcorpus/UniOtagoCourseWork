@@ -29,8 +29,10 @@ public class ArithmeticTree {
 
 		if(oooMethod.equals("L")) {
 			if(evaluateL(inputs)) {
-				return OperationNode.expression;
+				return formatOutput(oooMethod, OperationNode.expression, inputs);
 			}
+		} else if(oooMethod.equals("N")) {
+
 		}
 		return "L impossible";
 	}
@@ -50,5 +52,23 @@ public class ArithmeticTree {
 		OperationNode[] rootChildren = root.getChildren();
 
 		return "";
+	}
+
+	private String formatOutput(String oooMethod, String expression, String[] inputs) {
+
+		String[] expressions = expression.split("");
+
+		StringBuilder sb = new StringBuilder(oooMethod);
+
+		sb.append(" ");
+		sb.append(inputs[0]);
+
+		for(int i = 0; i < expressions.length; i++) {
+			sb.append(" ");
+			sb.append(expressions[i]);
+			sb.append(" ");
+			sb.append(inputs[i+1]);
+		}
+		return sb.toString();
 	}
 }
