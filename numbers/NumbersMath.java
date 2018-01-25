@@ -5,9 +5,8 @@
 
 public class NumbersMath {
 
-
 	public static float harmonicNumbersF(int n) {
-		float harmonicNumber = 0.0;
+		float harmonicNumber = 0.0f;
 
 		for(float i = 1.0f; i <= (float)n; i++) {
 			harmonicNumber += 1.0f/i;
@@ -27,7 +26,7 @@ public class NumbersMath {
 		return harmonicNumber;
 	}	
 
-	public static float stdDevMean(int n) {
+	public static float stdDevMeanF(int n) {
 		float mean = 0.0f;
 
 		for(float i = 1.0f; i <= (float)n; i++) {
@@ -36,9 +35,9 @@ public class NumbersMath {
 
 		mean /= (float)n;
 
-		float stdDev = 0.0;
+		float stdDev = 0.0f;
 
-		for(float i = 1.0; i <= ((float)n); i++) {
+		for(float i = 1.0f; i <= ((float)n); i++) {
 			stdDev += (float)Math.pow((i - mean), 2);
 		}
 
@@ -47,14 +46,14 @@ public class NumbersMath {
 		return stdDev;
 	}
 
-	public static float stdDevNonMean() {
-		float mean = 0.0;
+	public static float stdDevNonMeanF(int n) {
+		float mean = 0.0f;
 
-		for(float i = 1; i <= (float)n; i++) {
+		for(float i = 1.0f; i <= (float)n; i++) {
 			mean += (float) i;
 		}
 
-		float sqrSum = 0;
+		float sqrSum = 0.0f;
 
 		for(int i = 1; i <= n; i++) {
 			sqrSum += (float)Math.pow(i, 2);
@@ -68,7 +67,7 @@ public class NumbersMath {
 		return stdDev;
 	}
 
-	public static double stdDevMean(int n) {
+	public static double stdDevMeanD(int n) {
 
 		double mean = 0.0;
 
@@ -89,7 +88,7 @@ public class NumbersMath {
 		return stdDev;
 	}
 
-	public static double stdDevNonMean(int n) {
+	public static double stdDevNonMeanD(int n) {
 		double mean = 0.0;
 
 		for(double i = 1.0; i <= (double)n; i++) {
