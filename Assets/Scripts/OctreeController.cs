@@ -5,6 +5,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+/*
+ * Fixed Noel and mine's broken code.
+ * TODO: If you need to scale up models bigger than the voxel space size, weird stuff happens. Rip.
+ */
+
+
 public class OctreeController : MonoBehaviour 
 {
     private static int MAX_VERTS = 65534;
@@ -63,11 +69,15 @@ public class OctreeController : MonoBehaviour
             return;
         }
 
-        if(node.IsLeafVoxel)
-        {
+        //if(/*node.IsLeafVoxel*/true)
+        //{
             Gizmos.color = Color.blue;
             Gizmos.DrawWireCube(node.Center, Vector3.one * node.SubspaceSize);
 
+          //  return;
+        //}
+        if(node.IsLeafVoxel)
+        {
             return;
         }
 
