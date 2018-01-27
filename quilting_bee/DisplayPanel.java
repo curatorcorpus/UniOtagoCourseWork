@@ -17,6 +17,7 @@ class DisplayPanel extends JPanel {
 	private Position previousPosition;
 
 	private List<Square> squares;
+	private ArrayList<Position> nextCorners;
 
     public DisplayPanel(int width, int height) {
 
@@ -24,6 +25,7 @@ class DisplayPanel extends JPanel {
     	this.width 	= width;
     	this.size 	= width/2;
     	this.squares = new ArrayList<Square>();
+    	this.nextCorners = new ArrayList<Position>();
 
         setBackground(Color.WHITE);
     }
@@ -35,32 +37,44 @@ class DisplayPanel extends JPanel {
 	    	int x = width/2 - size/2;
 			int y = height/2 - size/2;
 
-			previousPosition = new Position(x,y);
-
 	    	squares.add(new Square(new Color(r,g,b), x, y, size));
+	    	nextCorners.add(new Position(x, y));
     	} else {
+
     		int newSize = (int)((float)size * scale);
-    		System.out.println(newSize);
     		
-    		// top left corner.
-    		int x = previousPosition.x - newSize/2;
-    		int y = previousPosition.y - newSize/2;
-	    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+    		List<Position> newCorners = new ArrayList<Position>();
 
-    		// bot left corner.    		
-    		x = previousPosition.x - newSize/2;
-    		y = (previousPosition.y+size) - newSize/2;
-	    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+    		for(Position prevCorner : nextCorners) {
 
-    		// top right corner.
-    		x = (previousPosition.x+size)- newSize/2;
-    		y = previousPosition.y - newSize/2;
-	    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+	    		// top left corner.
+	    		int x = prevCorner.x - newSize/2;
+	    		int y = prevCorner.y - newSize/2;
+		    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+		    	newCorners.add(new Position(x, y));
 
-    		// bot right corner.    		
-    		x = previousPosition.x+size-newSize/2;
-    		y = previousPosition.y+size-newSize/2;
-	    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+	    		// bot left corner.    		
+	    		x = prevCorner.x - newSize/2;
+	    		y = (prevCorner.y+size) - newSize/2;
+		    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+	    		newCorners.add(new Position(x, y));
+
+	    		// top right corner.
+	    		x = (prevCorner.x+size)- newSize/2;
+	    		y = prevCorner.y - newSize/2;
+		    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+		    	newCorners.add(new Position(x, y));
+
+	    		// bot right corner.    		
+	    		x = prevCorner.x+size-newSize/2;
+	    		y = prevCorner.y+size-newSize/2;
+		    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
+		    	newCorners.add(new Position(x, y));
+    		}
+    		size = newSize;
+
+    		nextCorners.clear();
+    		nextCorners.addAll(newCorners);
     	}
     }
 
