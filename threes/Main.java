@@ -71,6 +71,6 @@ public class Main {
 	}
 
 	private static int RHS(int z) {
-		return (int)Math.pow(z, 4);
+		return (int)Math.pow(z, 4) + 1;
 	}
 }
