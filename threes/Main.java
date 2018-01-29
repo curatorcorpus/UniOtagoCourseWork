@@ -7,12 +7,24 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		int iterations = 10000;
+		int iterations = 1000;
 
 		for(int z = 1; z < iterations; z++) {
 			for(int x = z+1; x < iterations; x++) {
 				for(int y = x+1; y < iterations; y++) {
 
+					if(hasCommonFactor(x,y)) {
+						continue;
+					}
+					if(hasCommonFactor(x,z)) {
+						continue;
+					}
+					if(hasCommonFactor(y,z)) {
+						continue;
+					}
+					if(isSet(x, y, z)) {
+						System.out.println(z + " " + x + " " + y);
+					}
 				}
 			}
 		}
@@ -39,22 +51,26 @@ public class Main {
 		return false;
 	}
 
-	private boolean isSet(int x, int y, int z) {
+	private static boolean isSet(int x, int y, int z) {
 
-		int lhs = LHS(x,y);
-		int rhs = RHS(z);
+		if(z < x && x < y) {
 
-		return lhs == rhs;
+			int lhs = LHS(x,y);
+			int rhs = RHS(z);
+
+			return lhs == rhs;
+		}
+		return false;
 	}
 
-	private int LHS(int x, int y) {
+	private static int LHS(int x, int y) {
 
 		int power = 2;
 
 		return (int)Math.pow(x, power) + (int)Math.pow(y, power);
 	}
 
-	private int RHS(int z) {
+	private static int RHS(int z) {
 		return (int)Math.pow(z, 4);
 	}
 }
