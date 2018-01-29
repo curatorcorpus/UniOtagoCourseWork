@@ -26,6 +26,27 @@ public class NumbersMath {
 		return harmonicNumber;
 	}	
 
+	public static float reverseHarmonicNumbersF(int n) {
+		float harmonicNumber = 0.0f;
+
+		for(float i = n; i > 0; i--) {
+			harmonicNumber += 1.0f/i;
+		}
+
+		return harmonicNumber;
+	}
+
+	public static double reverseHarmonicNumbersD(int n) {
+
+		double harmonicNumber = 0.0;
+
+		for(double i = n; i > 0.0; i--) {
+			harmonicNumber += 1.0/i;
+		}
+
+		return harmonicNumber;
+	}	
+
 	public static float stdDevMeanF(int n) {
 		float mean = 0.0f;
 
@@ -109,13 +130,13 @@ public class NumbersMath {
 		return stdDev;
 	}
 
-	public static boolean identity(int x, int y) {
+	public static boolean identity(double x, double y) {
 
-		if(y != 0) {
+		if(y == 0) {
 			return false;
 		}
 
-		int identity = x;
+		double identity = x;
 
 		double result = (((double) x / (double)y) - x * y) * y + x * y *y;
 
