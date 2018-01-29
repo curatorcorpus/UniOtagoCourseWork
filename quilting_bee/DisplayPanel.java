@@ -61,7 +61,7 @@ class DisplayPanel extends JPanel {
     				int newSize = (int)(changingSize * s);
     				totalSize += newSize;
     				changingSize = newSize;
-    			}System.out.println("Changing " +size);
+    			}
     		}
     	} else if(totalSize > 560) {
     		for(int i = size; totalSize > 560; i--) {
@@ -71,9 +71,7 @@ class DisplayPanel extends JPanel {
     				int newSize = (int)(changingSize * s);
     				totalSize += newSize;
     				changingSize = newSize;
-    				System.out.println("Changing " +totalSize);
-    			}
-    			   				    	
+    			}  	
     		}
     	}
     }
@@ -88,7 +86,7 @@ class DisplayPanel extends JPanel {
 			int g = Integer.parseInt(data[2]);
 			int b = Integer.parseInt(data[3]);
 			int newSize = (int)((float)size * scale);
-System.out.println(scale);
+
 			// if the square we are adding is an initial square.
 	    	if(squares.size() == 0) {
 		    	int x = INITIAL_SIZE/2 - newSize/2;
