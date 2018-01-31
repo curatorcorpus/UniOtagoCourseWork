@@ -14,7 +14,7 @@ public class Main {
 		JFrame frame = new JFrame("Quilting Bee");
         DisplayPanel mainContentPane = new DisplayPanel();
 
-        //frame.setResizable(false);
+        frame.setResizable(false);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setContentPane(mainContentPane);

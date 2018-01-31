@@ -52,24 +52,34 @@ class DisplayPanel extends JPanel {
         if(totalSize < 560) {
     		for(int i = 1; totalSize < 560; i++) {
     			totalSize = 0;
-    			int changingSize = size;
     			for(String [] data : inputData) {
                     float newScale = Float.parseFloat(data[0])+0.01f;
                     data[0] = String.valueOf(newScale);
     				
-                    int newSize = (int)(changingSize * newScale);
-    				
+                    int newSize = (int)(size * newScale);
                     totalSize += newSize;
-    				changingSize = newSize;
     			}
     		}
-    	} else if(totalSize > 560) {
-	        totalSize = 0;
-            for(String [] data : inputData) {
-                float newScale = Float.parseFloat(data[0])/max;
-                data[0] = String.valueOf(newScale);
+    	} 
+        else if(max > 1.0f) {
+              for(String [] data : inputData) {
+                    float newScale = Float.parseFloat(data[0])/max;
+                    data[0] = String.valueOf(newScale);
+             }
+        }
+        else if(totalSize > 560) {
+            for(int i = 1; totalSize > 560; i++) {
+                totalSize = 0;
+                for(String [] data : inputData) {
+                    float newScale = Float.parseFloat(data[0])-0.01f;
+                    data[0] = String.valueOf(newScale);
+                    
+                    int newSize = (int)(size * newScale);
+                    totalSize += newSize;
+                }
             }
     	}
+        System.out.println("Total " + totalSize);
     }
 
     public void generateSquares() {
@@ -79,12 +89,12 @@ class DisplayPanel extends JPanel {
         for(String[] data : inputData) {
 
 			float scale = Float.parseFloat(data[0]);
-  //          System.out.println(scale);
+
 			int r = Integer.parseInt(data[1]);
 			int g = Integer.parseInt(data[2]);
 			int b = Integer.parseInt(data[3]);
 			int newSize = (int)((float)size * scale);
-//System.out.println(newSize);
+            System.out.println(scale);
 			// if the square we are adding is an initial square.
 	    	if(squares.size() == 0) {
 		    	int x = INITIAL_SIZE/2 - newSize/2;
@@ -92,38 +102,35 @@ class DisplayPanel extends JPanel {
 
 		    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
 		    	nextCorners.add(new Position(x, y));
-                System.out.println(x + " " + y);
                 prevSize = newSize;
 	    	} else {
 	    		
 	    		List<Position> newCorners = new ArrayList<Position>();
 	    		for(Position prevCorner : nextCorners) {
-//                    System.out.println("previous size "+prevCorner.x + " " + prevCorner.y);
+
 		    		// top left corner.
 		    		int x = prevCorner.x - newSize/2;
 		    		int y = prevCorner.y - newSize/2;
 			    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
-			    	newCorners.add(new Position(x, y));
-//System.out.println("Top left " + x + " " + y);
-		    		// bot left corner.    		
+                    newCorners.add(new Position(x, y));
+		    		
+                    // bot left corner.    		
 		    		x = prevCorner.x - newSize/2;
 		    		y = (prevCorner.y+prevSize) - newSize/2;
 			    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
 		    		newCorners.add(new Position(x, y));
-//System.out.println("bot left " +x + " " + y);
+
 		    		// top right corner.
 		    		x = (prevCorner.x+prevSize)- newSize/2;
 		    		y = prevCorner.y - newSize/2;
 			    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
 			    	newCorners.add(new Position(x, y));
-//System.out.println("top right " +x + " " + y);
+
 		    		// bot right corner.    		
 		    		x = prevCorner.x+prevSize-newSize/2;
 		    		y = prevCorner.y+prevSize-newSize/2;
 			    	squares.add(new Square(new Color(r,g,b), x, y, newSize));
 			    	newCorners.add(new Position(x, y));
-//                    System.out.println("bottom right " +x + " " + y);
-//                                    System.out.println();
 	    		}
                 prevSize = newSize;
 
