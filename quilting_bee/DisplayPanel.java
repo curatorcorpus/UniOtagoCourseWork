@@ -35,6 +35,7 @@ class DisplayPanel extends JPanel {
         setBackground(Color.WHITE);
     }
     private float max = 0;
+    private float min = 0;
     public void addSquareData(String[] data) {
     	
     	float scale = Float.parseFloat(data[0]);
@@ -45,29 +46,51 @@ class DisplayPanel extends JPanel {
         if(scale > max) {
             max = scale;
         }
+        if(scale < min) {
+            min = scale;
+        }
     }
 
     public void determineBestSize() {
 
-        if(totalSize < 560) {
-    		for(int i = 1; totalSize < 560; i++) {
-    			totalSize = 0;
-    			for(String [] data : inputData) {
-                    float newScale = Float.parseFloat(data[0])+0.01f;
+        if(min < 0.1f) {
+            for(int i = 1; totalSize < 560; i++) {
+                totalSize = 0;
+                for(String [] data : inputData) {
+                    float newScale = Float.parseFloat(data[0])*10.0f;
                     data[0] = String.valueOf(newScale);
-    				
                     int newSize = (int)(size * newScale);
                     totalSize += newSize;
-    			}
-    		}
-    	} 
-        else if(max > 1.0f) {
+                    if(newScale > max) {
+                        max = newScale;
+                    }
+                    if(newScale < min) {
+                        min = newScale;
+                    }
+                }
+            }
+        }
+        if(max > 1.0f) {
+                totalSize = 0;
               for(String [] data : inputData) {
                     float newScale = Float.parseFloat(data[0])/max;
                     data[0] = String.valueOf(newScale);
+                    int newSize = (int)(size * newScale);
+                    totalSize += newSize;
              }
         }
-        else if(totalSize > 560) {
+        if(totalSize < 560) {
+            for(int i = 1; totalSize < 560; i++) {
+                totalSize = 0;
+                for(String [] data : inputData) {
+                    float newScale = Float.parseFloat(data[0])+0.01f;
+                    data[0] = String.valueOf(newScale);
+                    int newSize = (int)(size * newScale);
+                    totalSize += newSize;
+                }
+            }
+        } 
+        if(totalSize > 560) {
             for(int i = 1; totalSize > 560; i++) {
                 totalSize = 0;
                 for(String [] data : inputData) {
@@ -76,10 +99,10 @@ class DisplayPanel extends JPanel {
                     
                     int newSize = (int)(size * newScale);
                     totalSize += newSize;
+                    System.out.println(newScale);
                 }
             }
     	}
-        System.out.println("Total " + totalSize);
     }
 
     public void generateSquares() {
@@ -94,7 +117,7 @@ class DisplayPanel extends JPanel {
 			int g = Integer.parseInt(data[2]);
 			int b = Integer.parseInt(data[3]);
 			int newSize = (int)((float)size * scale);
-            System.out.println(scale);
+
 			// if the square we are adding is an initial square.
 	    	if(squares.size() == 0) {
 		    	int x = INITIAL_SIZE/2 - newSize/2;
