@@ -71,13 +71,13 @@ class DisplayPanel extends JPanel {
             }
         }
         if(max > 1.0f) {
-                totalSize = 0;
-              for(String [] data : inputData) {
-                    float newScale = Float.parseFloat(data[0])/max;
-                    data[0] = String.valueOf(newScale);
-                    int newSize = (int)(size * newScale);
-                    totalSize += newSize;
-             }
+            totalSize = 0;
+            for(String [] data : inputData) {
+                float newScale = Float.parseFloat(data[0])/max;
+                data[0] = String.valueOf(newScale);
+                int newSize = (int)(size * newScale);
+                totalSize += newSize;
+            }
         }
         if(totalSize < 560) {
             for(int i = 1; totalSize < 560; i++) {
@@ -99,7 +99,6 @@ class DisplayPanel extends JPanel {
                     
                     int newSize = (int)(size * newScale);
                     totalSize += newSize;
-                    System.out.println(newScale);
                 }
             }
     	}
