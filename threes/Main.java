@@ -26,8 +26,8 @@ public class Main {
 					if(gcd(x,y) != 1) continue;
 					if(gcd(z,y) != 1) continue;
 
-					count++;
 					if(z < x && x < y) {
+						count++;
 						System.out.println(count + " " + x + " " + y + " " + z);
 					}
 				}
@@ -57,8 +57,8 @@ public class Main {
 					if(gcd(x,y) != 1) continue;
 					if(gcd(z,y) != 1) continue;
 
-					count++;
 					if(z < x && x < y) {
+						count++;
 						System.out.println(count + " " + x + " " + y + " " + z);
 					}
 				}
