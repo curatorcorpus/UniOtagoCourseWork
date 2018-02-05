@@ -2,6 +2,7 @@
 *	@Author: Jung Woo (Noel) Park 
 *	Student ID: 1162424
 */
+import java.util.Random;
 
 public class NumbersMath {
 
@@ -46,12 +47,13 @@ public class NumbersMath {
 
 		return harmonicNumber;
 	}	
-
+	private static float offsetF = 10000.0f;
+	private static double offsetD = 10000.0;
 	public static float stdDevMeanF(int n) {
 		float mean = 0.0f;
 
 		for(float i = 1.0f; i <= (float)n; i++) {
-			mean += (float) i;
+			mean += (i+offsetF);
 		}
 
 		mean /= (float)n;
@@ -59,7 +61,7 @@ public class NumbersMath {
 		float stdDev = 0.0f;
 
 		for(float i = 1.0f; i <= ((float)n); i++) {
-			stdDev += (float)Math.pow((i - mean), 2);
+			stdDev += (float)Math.pow(((i+offsetF) - mean), 2);
 		}
 
 		stdDev = (float)Math.sqrt(stdDev / (float)n);
@@ -68,24 +70,18 @@ public class NumbersMath {
 	}
 
 	public static float stdDevNonMeanF(int n) {
-		float mean = 0.0f;
+		float sum = 0.0f;
+		float squaredSum = 0.0f;
 
 		for(float i = 1.0f; i <= (float)n; i++) {
-			mean += (float) i;
+			sum += i+offsetF;
+			squaredSum += (i+offsetF)*(i+offsetF);
+		//			System.out.println(squaredSum + " " + sum);
 		}
-
-		float sqrSum = 0.0f;
-
-		for(int i = 1; i <= n; i++) {
-			sqrSum += (float)Math.pow(i, 2);
-		}
-
-		mean = (float)Math.pow(mean, 2);
-		mean /= (float)n;
-
-		float stdDev = (float)Math.sqrt(((sqrSum - mean) / (float)n));
-
-		return stdDev;
+		sum = sum*sum;
+		sum /= (float)n;
+		//System.out.println(squaredSum + " " + sum);
+		return (float)Math.sqrt((squaredSum - sum) / (float)n);
 	}
 
 	public static double stdDevMeanD(int n) {
@@ -93,15 +89,13 @@ public class NumbersMath {
 		double mean = 0.0;
 
 		for(double i = 1.0; i <= (double)n; i++) {
-			mean += (double) i;
+			mean += (i+offsetD);
 		}
-
 		mean /= (double)n;
 
 		double stdDev = 0.0;
-
 		for(double i = 1.0; i <= ((double)n); i++) {
-			stdDev += Math.pow((i - mean), 2);
+			stdDev += Math.pow(((i+offsetD)+ - mean), 2);
 		}
 
 		stdDev = Math.sqrt(stdDev / (double)n);
@@ -110,24 +104,17 @@ public class NumbersMath {
 	}
 
 	public static double stdDevNonMeanD(int n) {
-		double mean = 0.0;
+		double sum = 0.0;
+		double squaredSum = 0.0;
 
 		for(double i = 1.0; i <= (double)n; i++) {
-			mean += (double) i;
+			sum += (i+offsetD);
+			squaredSum += (i+offsetD)*(i+offsetD);
 		}
+		sum = sum*sum;
+		sum /= (double)n;
 
-		double sqrSum = 0;
-
-		for(int i = 1; i <= n; i++) {
-			sqrSum += Math.pow(i, 2);
-		}
-
-		mean = Math.pow(mean, 2);
-		mean /= (double)n;
-
-		double stdDev = Math.sqrt(((sqrSum - mean) / (double)n));
-
-		return stdDev;
+		return Math.sqrt((squaredSum - sum) / (double)n);
 	}
 
 	public static boolean identity(double x, double y) {
@@ -138,7 +125,7 @@ public class NumbersMath {
 
 		double identity = x;
 
-		double result = (((double) x / (double)y) - x * y) * y + x * y *y;
+		double result = ((x / y) - x * y) * y + x * y *y;
 
 		return (identity == result);
 	}
