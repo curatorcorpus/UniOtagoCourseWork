@@ -3,6 +3,7 @@
 *	Student ID: 1162424
 */
 import java.util.Random;
+import java.math.BigDecimal;
 
 public class NumbersMath {
 
@@ -27,6 +28,17 @@ public class NumbersMath {
 		return harmonicNumber;
 	}	
 
+	public static BigDecimal harmonicNumbersBD(int n) {
+
+		BigDecimal harmonicNumber = new BigDecimal(0.0);
+
+		for(double i = 1.0; i <= (double)n; i++) {
+			harmonicNumber = harmonicNumber.add(new BigDecimal(1.0/i));
+		}
+
+		return harmonicNumber;
+	}	
+
 	public static float reverseHarmonicNumbersF(int n) {
 		float harmonicNumber = 0.0f;
 
@@ -43,6 +55,17 @@ public class NumbersMath {
 
 		for(double i = n; i > 0.0; i--) {
 			harmonicNumber += 1.0/i;
+		}
+
+		return harmonicNumber;
+	}	
+
+	public static BigDecimal reverseHarmonicNumbersBD(int n) {
+
+		BigDecimal harmonicNumber = new BigDecimal(0.0);
+
+		for(double i = n; i > 0.0; i--) {
+			harmonicNumber = harmonicNumber.add(new BigDecimal(1.0/i));
 		}
 
 		return harmonicNumber;
