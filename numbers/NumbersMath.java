@@ -148,8 +148,8 @@ public class NumbersMath {
 
 		double identity = x;
 
-		double result = ((x / y) - x * y) * y + x * y *y;
+		double result = ((x/y)-x*y)*y+x*y*y;
 
-		return (identity == result);
+		return (identity == (int)result);
 	}
 }

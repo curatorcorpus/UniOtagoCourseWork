@@ -23,11 +23,12 @@ public class Main {
 		*/
 
 			for(int x = 1; x < 1000; x++) {
-				for(int y = 1; y < 1000; y++) {
+				for(int y = 1; y < 10; y++) {
 					boolean s = NumbersMath.identity(x,y);
 					if(!s) {
 						//System.out.println(x + " " + y + " " + x/(double)y + " " + x*y);
-						System.out.println("Result: " + (((x / y) - x * y) * y + x * y *y) + " Expected Result: " + x + " Current y: " + y);
+						int result = (int)((((double)x / (double)y) - x * y) * y + x * y *y);
+						System.out.println(result + ", " + x);
 					}
 				}
 			}
