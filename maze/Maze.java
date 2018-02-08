@@ -76,7 +76,7 @@ public class Maze {
 					
 					Penny newZero = zero.clone();
 					Penny newOne = one.clone();	
-				//		System.out.println("1 passed");
+
 					newSequence.add(new Move("passed",newZero, newOne,true, true));
 					q.add(newSequence);
 				
@@ -84,13 +84,10 @@ public class Maze {
 					for (Move move : validMoves) {
 						LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
 
-					//	System.out.println("1 " + move);
 						newSequence.add(move);
 						
-					//	if (!visited.contains(newSequence.peekLast().toString())) {
-							q.add(newSequence);
-							visited.add(newSequence.peekLast().toString());
-						//}
+						q.add(newSequence);
+						visited.add(newSequence.peekLast().toString());
 					}
 				}
 			} else {
@@ -112,8 +109,8 @@ public class Maze {
 
 						newSequence.add(move);
 						
-							q.add(newSequence);
-							visited.add(newSequence.peekLast().toString());
+						q.add(newSequence);
+						visited.add(newSequence.peekLast().toString());
 					}
 				}
 			}
