@@ -111,13 +111,14 @@ public class Main {
 				height = 0;
 			}
 			else if(line.equals("")) {
-
-				boards.add(new Board(board.toString(),width,height, pents, requirement.split(" "),isRestricted));
-				width = 0;
-				height = 0;
-				board = new StringBuilder();
-				requirement = "";
-				isRestricted = false;
+				if(board.length() != 0) {
+					boards.add(new Board(board.toString(),width,height, pents, requirement.split(" "),isRestricted));
+					width = 0;
+					height = 0;
+					board = new StringBuilder();
+					requirement = "";
+					isRestricted = false;
+				}
 			}
 			// Otherwise it is a board representation.
 			else {
