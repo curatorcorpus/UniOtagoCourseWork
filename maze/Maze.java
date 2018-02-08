@@ -12,12 +12,34 @@ public class Maze {
 
 	private Spot[][] maze;
 
+	private Penny p0,p1;	
+
 	public Maze(String[] routes) {
 
 		this.maze = new Spot[SIZE][SIZE];
 
+		this.p0 = new Penny(0,0, "p0");
+		this.p1 = new Penny(2,2, "p1");
+
 		setupSpots();
 		setupDirections(routes);
+	}
+
+	public void bfs() {
+
+		// queue
+		// list of states
+
+
+		// while queue is not empty
+
+		// 		check if a penny is finished:
+					//return or print all states.
+
+			// if move is even, then its penny 0 turn.
+
+
+			// else if move is odd, the its penny 1 turn. 
 	}
 
 	private void setupSpots() {
@@ -38,12 +60,8 @@ public class Maze {
 		for(int i = 0; i < totalSize; i++) {
 
 			String[] directions = routes[i].split(" ");
-
-			for(int j = 0; j < directions.length; j++) {
-
-				String moveName = directions[j];
-				maze[y][x].addMove(moveName);
-			}
+			maze[y][x].addDirections(directions);
+			
 			x++;
 
 			if(x == SIZE) {
@@ -52,7 +70,7 @@ public class Maze {
 			}
 		}
 	}
-
+/*
 	public void printAllRoutes() {
 
 		for(int y = 0; y < SIZE; y++) {
@@ -67,7 +85,7 @@ public class Maze {
 				}
 			}
 		}
-	}
+	}*/
 
 	public String toString() {
 

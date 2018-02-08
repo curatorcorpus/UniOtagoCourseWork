@@ -19,7 +19,7 @@ public class FalveyMaze {
 	
 		FalveyMaze m = new FalveyMaze();
 		// FalveyMaze 1
-		m.addSpot(0, 0, new FalveyMove[]{FalveyMove.N, FalveyMove.S});
+		/*m.addSpot(0, 0, new FalveyMove[]{FalveyMove.N, FalveyMove.S});
 		m.addSpot(0, 1, new FalveyMove[]{FalveyMove.SE, FalveyMove.S});
 		m.addSpot(0, 2, new FalveyMove[]{FalveyMove.N, FalveyMove.S, FalveyMove.SW});
 		m.addSpot(1, 0, new FalveyMove[]{FalveyMove.NE, FalveyMove.E});
@@ -28,9 +28,9 @@ public class FalveyMaze {
 		m.addSpot(2, 0, new FalveyMove[]{FalveyMove.W, FalveyMove.SE});
 		m.addSpot(2, 1, new FalveyMove[]{FalveyMove.N, FalveyMove.SE, FalveyMove.NW});
 		m.addSpot(2, 2, new FalveyMove[]{FalveyMove.S, FalveyMove.SW, FalveyMove.W});
-		
+		*/
 		// FalveyMaze 2
-		/*m.addSpot(0, 0, new FalveyMove[]{FalveyMove.N, FalveyMove.S, FalveyMove.SW});
+		m.addSpot(0, 0, new FalveyMove[]{FalveyMove.N, FalveyMove.S, FalveyMove.SW});
 		m.addSpot(0, 1, new FalveyMove[]{FalveyMove.NE, FalveyMove.E, FalveyMove.S, FalveyMove.SW});
 		m.addSpot(0, 2, new FalveyMove[]{FalveyMove.N, FalveyMove.NE, FalveyMove.S, FalveyMove.SW});
 		m.addSpot(1, 0, new FalveyMove[]{FalveyMove.NE, FalveyMove.S, FalveyMove.SW, FalveyMove.NW});
@@ -39,7 +39,7 @@ public class FalveyMaze {
 		m.addSpot(2, 0, new FalveyMove[]{FalveyMove.N, FalveyMove.W, FalveyMove.NW});
 		m.addSpot(2, 1, new FalveyMove[]{FalveyMove.NE, FalveyMove.SW, FalveyMove.NW});
 		m.addSpot(2, 2, new FalveyMove[]{FalveyMove.N, FalveyMove.E, FalveyMove.NW});
-*/
+
 		m.findShortestPath();
 	}
 
@@ -113,7 +113,6 @@ public class FalveyMaze {
 				}
 			}
 		}
-		
 	}
 	
 	void printLinkedList(LinkedList<BoardState> visited) {

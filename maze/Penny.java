@@ -5,15 +5,21 @@
 
 public class Penny {
 	
-	private Position p;
-	
-	public Penny(Position p) { 
+	public String name;
 
-		this.p = p; 
-	}
+	public Position p;
 	
-	public Penny clone() {
-		
-		return new Penny(p);
+	public Penny(int x, int y, String name) { 
+
+		this.p = new Position(x,y);
+		this.name = name;
+	}
+
+	public boolean isFinished() {
+
+		if(p.x == 1 && p.y == 1) {
+			return true;
+		}
+		return false;
 	}
 }

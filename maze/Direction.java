@@ -5,17 +5,19 @@
 
 public class Direction {
 
+	public Penny penny;
 	public String name;
 	public Position p;
 
-	public Direction(String name, Position p) {
+	public Direction(String name, Position p, Penny penny) {
 
 		this.name = name;
 		this.p = p;
+		this.penny = penny;
 	}
 
 	public String toString() {
 
-		return name + " " + p.toString();
+		return penny.name + " moved " + name + " to position " + p.toString();
 	}
 }

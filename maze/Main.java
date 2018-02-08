@@ -10,7 +10,7 @@ public class Main {
 
 		String[] routes = readMazePuzzle();
 		Maze maze = new Maze(routes);
-		maze.printAllRoutes();
+
 	}
 
 	private static String[] readMazePuzzle() {
