@@ -163,9 +163,11 @@ public class DancingLinksX {
 
 		return aSolution.clone();
 	}
-
+	private static boolean isSolution = false;
 	public void clearSolution() {
+
 		solution = new ArrayDeque<Node>();
+		isSolution = false;
 	}
 
 	public void searchSolution(int n) {
@@ -173,7 +175,7 @@ public class DancingLinksX {
 		// If all columns are covered, then we must have found a solution.
 		if(root.equals(root.right)) {
 			aSolution = solution.clone();
-
+			isSolution = true;
 			return;
 		}
 		Node minColumn = getMinColumn();
@@ -190,6 +192,9 @@ public class DancingLinksX {
 
 			// search another level down the nodes.
 			searchSolution(n+1);
+			if(isSolution) {
+				break;
+			}
 
 			// if solution is not possible, backtrack and uncover rowNode. Plus remove row Node from solution.
 			solution.pop();
