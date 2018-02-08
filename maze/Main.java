@@ -2,6 +2,7 @@
 *	@author Jung Woo (Noel) Park
 *	Student ID: 1162424
 */
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
 
 		String[] routes = readMazePuzzle();
 		Maze maze = new Maze(routes);
-
+		maze.bfs();
 	}
 
 	private static String[] readMazePuzzle() {

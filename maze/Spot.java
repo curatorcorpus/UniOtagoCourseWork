@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Spot {
 
-	private String[] directions;
+	private String[] moves;
 
 	private Position p;
 
@@ -16,67 +16,87 @@ public class Spot {
 		this.p = new Position(x,y);
 	}
 
-	public List<Direction> computeValidMoves(Penny penny) {
+	public List<Move> computeValidMoves(Penny p0, Penny p1, boolean isZeroMove) {
 
-		List<Direction> vaildMoves = new ArrayList<Direction>();
-
-		Position p = penny.p;
-
-		for(int i = 0; i < directions.length; i++) {
-			String moveName = directions[i];
-			Position newPos = getNewLocation(moveName, p);
+		List<Move> vaildMoves = new ArrayList<Move>();
+		
+		Position currentPos;
+		if(isZeroMove) {
+			currentPos = p0.p;
+		} else {
+			currentPos = p1.p;
+		}
+		//System.out.println(currentPos);
+		for(int i = 0; i < moves.length; i++) {
+			String moveName = moves[i];
+			Position newPos = getNewLocation(moveName, currentPos, p0, p1, isZeroMove);
 			if(newPos != null) {
-				vaildMoves.add(new Direction(moveName, new Position(newPos.x, newPos.y),penny));
+				Penny newPenny;
+				if(isZeroMove){
+					newPenny = p0.clone();
+				}	else {
+					newPenny = p1.clone();
+				}
+
+				newPenny.p.x = newPos.x;
+				newPenny.p.y = newPos.y;
+
+				if(isZeroMove) {
+					vaildMoves.add(new Move(moveName,newPenny,p1,isZeroMove));
+				} else {
+
+					vaildMoves.add(new Move(moveName,p0,newPenny,isZeroMove));
+				}
 			}
 		}
-		return vaildMoves;	
+		return vaildMoves;
 	}
 
-	public void addDirections(String[] directions) {
+	public void addMoves(String[] moves) {
 
-		this.directions = directions;
+		this.moves = moves;
 	}
 
-	public Position getNewLocation(String moveName, Position p) {
+	public Position getNewLocation(String moveName, Position p, Penny p0, Penny p1, boolean isZeroMove) {
 
 		Position newPos = new Position(p.x, p.y);
 
 		switch(moveName) {
 			case "N":
-				newPos.x += Move.N.xOffset;
-				newPos.y += Move.N.yOffset;
+				newPos.x += Move.Moves.N.xOffset;
+				newPos.y += Move.Moves.N.yOffset;
 				break;
 			case "S":
-				newPos.x += Move.S.xOffset;
-				newPos.y += Move.S.yOffset;			
+				newPos.x += Move.Moves.S.xOffset;
+				newPos.y += Move.Moves.S.yOffset;			
 				break;
 			case "E":
-				newPos.x += Move.E.xOffset;
-				newPos.y += Move.E.yOffset;			
+				newPos.x += Move.Moves.E.xOffset;
+				newPos.y += Move.Moves.E.yOffset;			
 				break;
 			case "W":
-				newPos.x += Move.W.xOffset;
-				newPos.y += Move.W.yOffset;			
+				newPos.x += Move.Moves.W.xOffset;
+				newPos.y += Move.Moves.W.yOffset;			
 				break;												
 			case "NE":
-				newPos.x += Move.NE.xOffset;
-				newPos.y += Move.NE.yOffset;
+				newPos.x += Move.Moves.NE.xOffset;
+				newPos.y += Move.Moves.NE.yOffset;
 				break;
 			case "NW":
-				newPos.x += Move.NW.xOffset;
-				newPos.y += Move.NW.yOffset;			
+				newPos.x += Move.Moves.NW.xOffset;
+				newPos.y += Move.Moves.NW.yOffset;			
 				break;
 			case "SE":
-				newPos.x += Move.SE.xOffset;
-				newPos.y += Move.SE.yOffset;			
+				newPos.x += Move.Moves.SE.xOffset;
+				newPos.y += Move.Moves.SE.yOffset;			
 				break;
 			case "SW":
-				newPos.x += Move.SW.xOffset;
-				newPos.y += Move.SW.yOffset;			
+				newPos.x += Move.Moves.SW.xOffset;
+				newPos.y += Move.Moves.SW.yOffset;			
 				break;
 		}
 
-		if(isValidMove(newPos.x, newPos.y)) {
+		if(isValidMove(newPos.x, newPos.y, p0,p1, isZeroMove)) {
 			return newPos;
 		} /*else {
 			System.out.println("invalid move "+  newPos.x + " " + newPos.y);
@@ -84,13 +104,22 @@ public class Spot {
 		return null;
 	}
 
-	private boolean isValidMove(int newX, int newY) {
+	private boolean isValidMove(int newX, int newY,Penny p0, Penny p1, boolean isZeroMove) {
 
 		if(newX < 0 || Maze.SIZE <= newX) return false;
 		if(newY < 0 || Maze.SIZE <= newY) return false;
+		if(isZeroMove) {
+			if(newX == p1.p.x && newY == p1.p.y) {
+				return false;
+			}
+		} else {
+			if(newX == p0.p.x && newY == p0.p.y) {
+				return false;
+			}
+		}
 		return true;
 	}
-	
+
 	public String toString() {
 
 		return p.x + "," + p.y;

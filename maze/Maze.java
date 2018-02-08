@@ -4,9 +4,26 @@
 */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.HashSet;
 
 public class Maze {
+
+	private class StateSequenceComparator implements Comparator<LinkedList<Move>> {
+
+		public int compare(LinkedList<Move> o1, LinkedList<Move> o2) {
+			if (o1.size() > o2.size()) {
+				return 1;
+			} else if (o1.size() < o2.size()) {
+				return -1;
+			} 
+			return 0;
+		} 
+	}
 
 	public static final int SIZE = 3;
 
@@ -14,7 +31,9 @@ public class Maze {
 
 	private Penny p0,p1;	
 
-	public Maze(String[] routes) {
+	private HashSet<String> visited = new HashSet<String>();
+
+	public Maze(String[] moves) {
 
 		this.maze = new Spot[SIZE][SIZE];
 
@@ -22,24 +41,85 @@ public class Maze {
 		this.p1 = new Penny(2,2, "p1");
 
 		setupSpots();
-		setupDirections(routes);
+		setupMoves(moves);
 	}
 
-	public void bfs() {
+	public LinkedList<Move> bfs() {
 
-		// queue
-		// list of states
+		LinkedList<Move> bestPath = new LinkedList<Move>();
 
+		PriorityQueue<LinkedList<Move>> q = new PriorityQueue<LinkedList<Move>>(100, new StateSequenceComparator());
+		Move initialMove = new Move("Start", p0, p1,true);
+		LinkedList<Move> initialState = new LinkedList<Move>();
+		initialState.add(initialMove);
 
-		// while queue is not empty
+		q.add(new LinkedList<Move>(initialState));
+		while (!q.isEmpty()) {
+			LinkedList<Move> sequence = q.poll();
+			int moveCount = sequence.size() - 1;
 
-		// 		check if a penny is finished:
-					//return or print all states.
+			Penny zero = sequence.peekLast().pennyMoved;
+			Penny one = sequence.peekLast().pennyRelative;
 
-			// if move is even, then its penny 0 turn.
+			if (zero.isFinished() || one.isFinished()) {
+				System.out.println("Finished");
+				printSequence(sequence);
+				break;
+			} 
 
+			if (moveCount % 2 == 0) {
 
-			// else if move is odd, the its penny 1 turn. 
+				List<Move> validMoves = maze[one.p.y][one.p.x].computeValidMoves(zero, one, true);
+				
+				if (validMoves.isEmpty()) {
+					LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
+					
+					Penny newZero = zero.clone();
+					Penny newOne = one.clone();	
+				//		System.out.println("1 passed");
+					newSequence.add(new Move("passed",newZero, newOne,true));
+					q.add(newSequence);
+				
+				} else {
+					for (Move move : validMoves) {
+						LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
+
+					//	System.out.println("1 " + move);
+						newSequence.add(move);
+						
+					//	if (!visited.contains(newSequence.peekLast().toString())) {
+							q.add(newSequence);
+							visited.add(newSequence.peekLast().toString());
+						//}
+					}
+				}
+			} else {
+
+				List<Move> validMoves = maze[zero.p.y][zero.p.x].computeValidMoves(zero, one, false);
+				
+				if (validMoves.isEmpty()) {
+					LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
+					
+					Penny newZero = zero.clone();
+					Penny newOne = one.clone();	
+
+					newSequence.add(new Move("passed", newZero, newOne,false));
+					q.add(newSequence);
+				
+				} else {
+					for (Move move : validMoves) {
+						LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
+
+						newSequence.add(move);
+						
+							q.add(newSequence);
+							visited.add(newSequence.peekLast().toString());
+					}
+				}
+			}
+		}
+
+		return bestPath;
 	}
 
 	private void setupSpots() {
@@ -49,18 +129,18 @@ public class Maze {
 		for(int x = 0; x < SIZE; x++) {
 			for(int y = 0; y < SIZE; y++) {
 				maze[y][x] = new Spot(x,y);
-			}		
+			}
 		}
 	}
 
-	private void setupDirections(String[] routes) {
+	private void setupMoves(String[] routes) {
 
 		int totalSize = SIZE*SIZE;
 		int x = 0, y = 0;
 		for(int i = 0; i < totalSize; i++) {
 
-			String[] directions = routes[i].split(" ");
-			maze[y][x].addDirections(directions);
+			String[] moves = routes[i].split(" ");
+			maze[y][x].addMoves(moves);
 			
 			x++;
 
@@ -77,15 +157,22 @@ public class Maze {
 			for(int x = 0; x < SIZE; x++) {
 				Spot s = maze[y][x];
 
-				List<Direction> moves = s.getMoves();
+				List<Direction> movess = s.getmovess();
 
-				for(Direction d : moves) {
+				for(Direction d : movess) {
 
 					System.out.println(s + " " + d);
 				}
 			}
 		}
 	}*/
+
+	private void printSequence(LinkedList<Move> bestPath) {
+
+		for(Move m : bestPath) {
+			System.out.println(m);
+		}
+	}
 
 	public String toString() {
 

@@ -15,11 +15,19 @@ public class Penny {
 		this.name = name;
 	}
 
+	public Penny clone() {
+		return new Penny(p.x,p.y,name);
+	}
+
 	public boolean isFinished() {
 
 		if(p.x == 1 && p.y == 1) {
 			return true;
 		}
 		return false;
+	}
+
+	public String toString() {
+		return name + " " + p;
 	}
 }
