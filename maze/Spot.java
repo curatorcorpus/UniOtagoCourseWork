@@ -59,9 +59,9 @@ public class Spot {
 		if(isValidMove(newX, newY)) {
 
 			vaildMoves.add(new Direction(moveName, new Position(newX, newY)));
-		} else {
+		} /*else {
 			System.out.println("invalid move "+  newX + " " + newY);
-		}
+		}*/
 	}
 
 	private boolean isValidMove(int newX, int newY) {

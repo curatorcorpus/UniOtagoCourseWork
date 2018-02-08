@@ -13,4 +13,9 @@ public class Direction {
 		this.name = name;
 		this.p = p;
 	}
+
+	public String toString() {
+
+		return name + " " + p.toString();
+	}
 }

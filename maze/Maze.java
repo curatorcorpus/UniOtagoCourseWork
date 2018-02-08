@@ -3,6 +3,9 @@
 *	Student ID: 1162424
 */
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Maze {
 
 	public static final int SIZE = 3;
@@ -46,6 +49,22 @@ public class Maze {
 			if(x == SIZE) {
 				x = 0;
 				y++;
+			}
+		}
+	}
+
+	public void printAllRoutes() {
+
+		for(int y = 0; y < SIZE; y++) {
+			for(int x = 0; x < SIZE; x++) {
+				Spot s = maze[y][x];
+
+				List<Direction> moves = s.getMoves();
+
+				for(Direction d : moves) {
+
+					System.out.println(s + " " + d);
+				}
 			}
 		}
 	}
