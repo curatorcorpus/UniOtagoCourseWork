@@ -49,7 +49,7 @@ public class Maze {
 		LinkedList<Move> bestPath = new LinkedList<Move>();
 
 		PriorityQueue<LinkedList<Move>> q = new PriorityQueue<LinkedList<Move>>(100, new StateSequenceComparator());
-		Move initialMove = new Move("Start", p0, p1,true);
+		Move initialMove = new Move("Start", p0, p1,true, true);
 		LinkedList<Move> initialState = new LinkedList<Move>();
 		initialState.add(initialMove);
 
@@ -77,7 +77,7 @@ public class Maze {
 					Penny newZero = zero.clone();
 					Penny newOne = one.clone();	
 				//		System.out.println("1 passed");
-					newSequence.add(new Move("passed",newZero, newOne,true));
+					newSequence.add(new Move("passed",newZero, newOne,true, true));
 					q.add(newSequence);
 				
 				} else {
@@ -103,7 +103,7 @@ public class Maze {
 					Penny newZero = zero.clone();
 					Penny newOne = one.clone();	
 
-					newSequence.add(new Move("passed", newZero, newOne,false));
+					newSequence.add(new Move("passed", newZero, newOne,false, true));
 					q.add(newSequence);
 				
 				} else {

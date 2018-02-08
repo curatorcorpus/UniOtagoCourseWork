@@ -31,14 +31,20 @@ public class Move {
 
 	public Penny pennyMoved, pennyRelative;
 	public String name;
-	public boolean isZeroMove;
+	public boolean isZeroMove,hasStartedorFinished;
 
 	public Move(String name, Penny pennyMoved, Penny pennyRelative, boolean isZeroMove) {
+
+		this(name, pennyMoved, pennyRelative, isZeroMove, false);
+	}
+
+	public Move(String name, Penny pennyMoved, Penny pennyRelative, boolean isZeroMove, boolean hasStartedorFinished) {
 
 		this.name = name;
 		this.pennyMoved = pennyMoved;
 		this.pennyRelative = pennyRelative;
 		this.isZeroMove = isZeroMove;
+		this.hasStartedorFinished = hasStartedorFinished;
 	}
 
 	public String toString() {
@@ -46,6 +52,14 @@ public class Move {
 		/*if((p.x == -1) && (p.y == -1)) {
 			return pennyMoved.name + " stayed at same position " + p.toString();
 		}*/
+
+		if(hasStartedorFinished) {
+			if(!isZeroMove) {
+				return pennyRelative.name + " has " + name;
+			} else {
+				return pennyMoved.name + " has " + name;
+			}
+		}
 
 		if(!isZeroMove) {
 			return pennyRelative.name + " moved " + name + " to position " + pennyRelative.toString();
