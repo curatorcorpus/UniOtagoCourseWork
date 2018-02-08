@@ -18,8 +18,8 @@ public class Maze {
 	public static void main(String[] args) {
 	
 		Maze m = new Maze();
-		/* Maze 1
-		m.addSpot(0, 0, new Move[]{Move.N, Move.S});
+		// Maze 1
+		/*m.addSpot(0, 0, new Move[]{Move.N, Move.S});
 		m.addSpot(0, 1, new Move[]{Move.SE, Move.S});
 		m.addSpot(0, 2, new Move[]{Move.N, Move.S, Move.SW});
 		m.addSpot(1, 0, new Move[]{Move.NE, Move.E});
@@ -40,11 +40,9 @@ public class Maze {
 		m.addSpot(2, 0, new Move[]{Move.N, Move.W, Move.NW});
 		m.addSpot(2, 1, new Move[]{Move.NE, Move.SW, Move.NW});
 		m.addSpot(2, 2, new Move[]{Move.N, Move.E, Move.NW});
-		
 
 		m.findShortestPath();
 	}
-
 
 	void findShortestPath() {
 		Penny zero = new Penny(spots[0][0]);
@@ -249,6 +247,7 @@ public class Maze {
 }
 
 enum Move {
+	
 	N("N", -1, 0),
 	NE("NE", -1, 1),
 	E("E", 0, 1),
