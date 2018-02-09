@@ -193,7 +193,7 @@ public class Board {
 					}
 				}
 			}
-		}
+		}System.out.println(noOfPlacements);
 	}
 
 	public boolean[][] generateExactCoverProblem() {

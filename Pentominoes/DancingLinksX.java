@@ -181,14 +181,13 @@ public class DancingLinksX {
 			return;
 		}
 		Node minColumn = getMinColumn();
-
 		cover(minColumn);
-		for(Node rowNode = minColumn.down; rowNode != minColumn; rowNode = rowNode.down) {
 
+		for(Node rowNode = minColumn.down; !rowNode.equals(minColumn); rowNode = rowNode.down) {
 			solution.push(rowNode);
 
 			// Remove all overlapping column and rows.
-			for(Node rightNode = rowNode.right; rightNode != rowNode; rightNode = rightNode.right) {
+			for(Node rightNode = rowNode.right; !rightNode.equals(rowNode); rightNode = rightNode.right) {
 				cover(rightNode);
 			}
 
@@ -202,7 +201,7 @@ public class DancingLinksX {
 			solution.pop();
 
 			minColumn = rowNode.columnNode;
-			for(Node leftNode = rowNode.left; leftNode != rowNode; leftNode = leftNode.left) {
+			for(Node leftNode = rowNode.left; !leftNode.equals(rowNode); leftNode = leftNode.left) {
 				uncover(leftNode);
 			}
 		}
@@ -223,9 +222,9 @@ public class DancingLinksX {
 		colNode.right.left = colNode.left;  // assigns target node, right's left neigbour to target's left.
 
 		// Move down the column and remove each row by traversing right.
-		for(Node row = colNode.down; row != colNode; row = row.down) {
+		for(Node row = colNode.down; !row.equals(colNode); row = row.down) {
 
-			for(Node rightNode = row.right; rightNode != row; rightNode = rightNode.right) {
+			for(Node rightNode = row.right; !rightNode.equals(row); rightNode = rightNode.right) {
 				rightNode.up.down = rightNode.down;
 				rightNode.down.up = rightNode.up;
 
@@ -241,9 +240,9 @@ public class DancingLinksX {
 		Node colNode = targetNode.columnNode;
 
 		// Move down the column and link back each row by traversing left.
-		for(Node rowNode = colNode.up; rowNode != colNode; rowNode = rowNode.up) {
+		for(Node rowNode = colNode.up; !rowNode.equals(colNode); rowNode = rowNode.up) {
 
-			for(Node leftNode = rowNode.left; leftNode != rowNode; leftNode = leftNode.left) {
+			for(Node leftNode = rowNode.left; !leftNode.equals(rowNode); leftNode = leftNode.left) {
 
 				leftNode.up.down = leftNode;
 				leftNode.down.up = leftNode;
@@ -267,7 +266,7 @@ public class DancingLinksX {
 				minColumn = currentNode;
 			}
 			currentNode = currentNode.right;
-		} while(currentNode != root);
+		} while(!currentNode.equals(root));
 
 		return minColumn;
 	}
