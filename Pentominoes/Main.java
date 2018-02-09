@@ -37,16 +37,21 @@ public class Main {
 		readBoard();
 
 		for(Board b : boards) {
-			b.calculateTotalPlacements();
-			boolean[][] ecm = b.generateExactCoverProblem();
-			
-			DancingLinksX dlx = new DancingLinksX(ecm);
 
-			dlx.searchSolution(0);
-			Deque<Node> solution = dlx.getSolution();
-			solutions.add(solution);
-			dlx.clearSolution();
-			DancingLinksX.aSolution = new ArrayDeque<Node>();
+			if(b.checkBoardValidity()) {
+				b.calculateTotalPlacements();
+				boolean[][] ecm = b.generateExactCoverProblem();
+				
+				DancingLinksX dlx = new DancingLinksX(ecm);
+
+				dlx.searchSolution(0);
+				Deque<Node> solution = dlx.getSolution();
+				solutions.add(solution);
+				dlx.clearSolution();
+				DancingLinksX.aSolution = new ArrayDeque<Node>();
+			} else {
+				solutions.add(new ArrayDeque<Node>());
+			}
 		}
 
 		StringBuilder sb = new StringBuilder();

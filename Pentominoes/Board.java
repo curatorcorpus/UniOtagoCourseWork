@@ -16,6 +16,7 @@ public class Board {
 	private List<Pentomino> pents;
 
 	private int width, height;
+	private int noOfValidSquares;
 	private int noOfPlacements;
 
 	private String stringBoard;
@@ -76,6 +77,8 @@ public class Board {
 
 				if(symbol.equals("*")) {
 					restrictedIndices.add(new Point(col,row));
+				} else {
+					++noOfValidSquares;
 				}
 			}
 		}
@@ -94,6 +97,11 @@ public class Board {
 		sb.deleteCharAt(sb.length()-1);
 
 		return sb.toString();
+	}
+
+	public boolean checkBoardValidity() {
+		
+		return (noOfValidSquares % 5) == 0;
 	}
 
 	/**
