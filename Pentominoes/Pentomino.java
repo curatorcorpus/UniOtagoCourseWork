@@ -12,6 +12,51 @@ public class Pentomino {
 		O,P,Q,R,S,T,U,V,W,X,Y,Z
 	} // List of Conway's Pentominoes types.
 
+	public static Type getEnumType(String type) {
+
+		String upperChar = type.toUpperCase();
+		Type pentoType = null;
+		switch(upperChar) {
+			case "O":
+				pentoType = Type.O;
+				break;
+			case "P":
+				pentoType = Type.P;			
+				break;
+			case "Q":
+				pentoType = Type.Q;			
+				break;
+			case "R":
+				pentoType = Type.R;			
+				break;
+			case "S":
+				pentoType = Type.S;			
+				break;
+			case "T":
+				pentoType = Type.T;
+				break;
+			case "U":
+				pentoType = Type.U;			
+				break;
+			case "V":
+				pentoType = Type.V;			
+				break;
+			case "W":
+				pentoType = Type.W;			
+				break;
+			case "X":
+				pentoType = Type.X;			
+				break;				
+			case "Y":
+				pentoType = Type.Y;			
+				break;
+			case "Z":
+				pentoType = Type.Z;			
+				break;
+		}
+		return pentoType;
+	}
+
 	private Type type;	   // The pentominoes type from the Conway's Pentominoes encoding [O-Z].
 	private	Point[] shape; // The shape will also start from the most LHS possible.
 

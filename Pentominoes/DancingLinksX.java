@@ -46,7 +46,7 @@ public class DancingLinksX {
 		matrix[0][cols-1].right = root;
 		//checkForNullNeighbours();
 		//root.printAll(root, root.right);
-	//	printAllColumnNodeCounts(root, root.right);
+		//printAllColumnNodeCounts(root, root.right);
 	}
 
 	// Setup Methods.
@@ -115,13 +115,10 @@ public class DancingLinksX {
 			for(int col = 0; col < cols; col++) {
 
 				// If true at position row and col then we create a node.
-				if(problemMatrix[row-1][col]) {
+				if(matrix[row][col] != null) {
 
-					// increment node count of a column header.
-					matrix[0][col].nodeCount += 1;
-
-					// Link the column head to this row node.
-					matrix[row][col].columnNode = matrix[0][col];
+					matrix[0][col].nodeCount += 1; 				  // increment node count of a column header.
+					matrix[row][col].columnNode = matrix[0][col]; // Link the column head to this row node.
 
 					// Link all row neighbours.
 
@@ -182,7 +179,7 @@ public class DancingLinksX {
 		}
 		Node minColumn = getMinColumn();
 		cover(minColumn);
-
+		//	System.out.println(matrix.length + " " matrix[0].length);
 		for(Node rowNode = minColumn.down; !rowNode.equals(minColumn); rowNode = rowNode.down) {
 			solution.push(rowNode);
 

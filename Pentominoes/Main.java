@@ -111,7 +111,6 @@ public class Main {
 		while(sc.hasNextLine()) {
 
 			String line = sc.nextLine();
-			System.out.println(line);
 			if(line.matches(".*[a-z].*")) {
 				requirement = line;
 				isRestricted = true;

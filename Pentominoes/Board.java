@@ -5,8 +5,9 @@
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class Board {
@@ -38,6 +39,7 @@ public class Board {
 		this.availablePlacements = new ArrayList<Pentomino>();
 		this.pents = pents;
 		this.restrictedIndices = new ArrayList<Point>();
+		this.typeRequirement = new ArrayList<String>();
 
 		// apply pentominoes type requriement filter.
 		if(isRestricted) {
@@ -193,13 +195,17 @@ public class Board {
 					}
 				}
 			}
-		}System.out.println(noOfPlacements);
+		}
 	}
 
 	public boolean[][] generateExactCoverProblem() {
 
 		int ecWidth = DEFAULT_PENTS+width*height-restrictedIndices.size();
 		int ecHeight = noOfPlacements;
+
+		if(typeRequirement.size() != 0) {
+			ecWidth = typeRequirement.size()+width*height-restrictedIndices.size();
+		}
 
 		boolean[][] ecProblemMatrix = new boolean[ecHeight][ecWidth];
 		for(int row = 0; row < ecHeight; row++) {
@@ -244,6 +250,10 @@ public class Board {
 		this.pointToSquareIDLookup = new Hashtable<String, Integer>();
 
 		int squareID = DEFAULT_PENTS;
+
+		if(typeRequirement.size() != 0) {
+			squareID = typeRequirement.size();
+		}
 		for(int row = 0; row < height; row++) {
 			for(int col = 0; col < width; col++) {
 				// For restricted indices, don't give square ID.
@@ -278,8 +288,15 @@ public class Board {
 
 		this.pentoTypeToECIDLookup = new Hashtable<Pentomino.Type, Integer>();
 		int i = 0;
-		for(Pentomino.Type t : Pentomino.Type.values()) {
-			pentoTypeToECIDLookup.put(t,i++);
+		
+		if(typeRequirement.size() == 0) {
+			for(Pentomino.Type t : Pentomino.Type.values()) {
+				pentoTypeToECIDLookup.put(t,i++);
+			}
+		} else {
+			for(String s : typeRequirement) {
+				pentoTypeToECIDLookup.put(Pentomino.getEnumType(s),i++);
+			}
 		}
 	}
 
@@ -331,4 +348,24 @@ public class Board {
 			board[idx5.y][idx5.x] = type.name();
 		}
 	}
+
+	private void printPlacements(Point[] shape) {
+
+		for(int i = 0; i < shape.length; i++) {
+			System.out.print(shape[i]+" ");
+		}
+		System.out.println();
+	}
+/*
+	private void printHashTable(Hashtable<T, E> table) {
+
+		Set<T> keys = table.keySet();
+		 
+		// Obtaining iterator over set entries
+		Iterator<T> itr = keys.iterator();
+
+		while(itr.hasNext()) {
+			System.out.println(itr.next());
+		}		
+	}*/
 }

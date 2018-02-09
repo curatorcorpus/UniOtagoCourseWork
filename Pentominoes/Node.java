@@ -32,7 +32,7 @@ public class Node {
 		if(original.equals(next)) {
 			return;
 		}else {
-			System.out.println(next.row+" "+next.col);
+			System.out.println(next);
 		}
 		next.printDown(original, next.down);
 	}
@@ -43,5 +43,9 @@ public class Node {
 		}
 		next.printDown(next,next.down);
 		next.printAll(original, next.right);
+	}
+
+	public String toString() {
+		return "row:"+this.row+",col:"+this.col;
 	}
 }
