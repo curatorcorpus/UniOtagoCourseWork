@@ -14,8 +14,7 @@ public class Move {
 		S("S", 	 0, 1),
 		SW("SW",-1, 1),
 		W("W",  -1, 0),
-		NW("NW",-1,-1),
-		F("F",   0, 0);
+		NW("NW",-1,-1);
 
 		public String moveName;
 		public int xOffset;

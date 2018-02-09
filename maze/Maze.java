@@ -26,12 +26,8 @@ public class Maze {
 	}
 
 	public static final int SIZE = 3;
-
 	private Spot[][] maze;
-
 	private Penny p0,p1;	
-
-	private HashSet<String> visited = new HashSet<String>();
 
 	public Maze(String[] moves) {
 
@@ -67,9 +63,11 @@ public class Maze {
 				break;
 			} 
 
+			List<Move> validMoves;
+
 			if (moveCount % 2 == 0) {
 
-				List<Move> validMoves = maze[one.p.y][one.p.x].computeValidMoves(zero, one, true);
+				validMoves = maze[one.p.y][one.p.x].computeValidMoves(zero, one, true);
 				
 				if (validMoves.isEmpty()) {
 					LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
@@ -80,19 +78,10 @@ public class Maze {
 					newSequence.add(new Move("passed",newZero, newOne,true, true));
 					q.add(newSequence);
 				
-				} else {
-					for (Move move : validMoves) {
-						LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
-
-						newSequence.add(move);
-						
-						q.add(newSequence);
-						visited.add(newSequence.peekLast().toString());
-					}
 				}
 			} else {
 
-				List<Move> validMoves = maze[zero.p.y][zero.p.x].computeValidMoves(zero, one, false);
+				validMoves = maze[zero.p.y][zero.p.x].computeValidMoves(zero, one, false);
 				
 				if (validMoves.isEmpty()) {
 					LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
@@ -103,15 +92,17 @@ public class Maze {
 					newSequence.add(new Move("passed", newZero, newOne,false, true));
 					q.add(newSequence);
 				
-				} else {
-					for (Move move : validMoves) {
-						LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
+				}
+			}
 
-						newSequence.add(move);
-						
-						q.add(newSequence);
-						visited.add(newSequence.peekLast().toString());
-					}
+			if(!validMoves.isEmpty()) {
+				for (Move move : validMoves) {
+					LinkedList<Move> newSequence = (LinkedList<Move>) sequence.clone();
+
+					newSequence.add(move);
+					
+					q.add(newSequence);
+				//	visited.add(newSequence.peekLast().toString());
 				}
 			}
 		}
