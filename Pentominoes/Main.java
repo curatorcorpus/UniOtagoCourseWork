@@ -111,6 +111,7 @@ public class Main {
 		while(sc.hasNextLine()) {
 
 			String line = sc.nextLine();
+			System.out.println(line);
 			if(line.matches(".*[a-z].*")) {
 				requirement = line;
 				isRestricted = true;
@@ -126,7 +127,7 @@ public class Main {
 				// This mean a board is finished.
 				if(line.contains(" ") || line.contains("")) {
 					// check that the board string is not empty.
-					if(board.toString().contains(".") || board.toString().contains("*")) {
+					if((board.toString().contains(".") || board.toString().contains("*")) && !board.toString().contains(" ")) {
 						boards.add(new Board(board.toString(),width,height, pents, requirement.split(" "),isRestricted));
 					}
 				}
