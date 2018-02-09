@@ -79,6 +79,21 @@ public class Board {
 		}
 	}
 
+
+	public String getMatrix() {
+
+		StringBuilder sb = new StringBuilder();
+		for(int row = 0; row < height; row++) {
+			for(int col = 0; col < width; col++) {
+				sb.append(board[row][col]);
+			}
+			sb.append("\n");
+		}
+		sb.deleteCharAt(sb.length()-1);
+
+		return sb.toString();
+	}
+
 	/**
 	*	Method for printing current board matrix.
 	*/
@@ -100,17 +115,16 @@ public class Board {
 		return width + "x" + height + "\n" + stringBoard;
 	}
 
-	public void printSolution(Deque<Node> solution) {
+	public String getSolution(Deque<Node> solution) {
 
 		if(solution.size() == 0) {
-			System.out.println("No Solution");
-			return;
+			return "No Solution";
 		}
 		
 		ArrayList<Pentomino> rowSolution = new ArrayList<Pentomino>();
 
 		for(Node n : solution) {
-			rowSolution.add(availablePlacements.get(n.row-1));
+			rowSolution.add(availablePlacements.get(n.row-1)); // get solutions from rows in ecm.
 		}
 
 		// Iterate through solution and generate string representation.
@@ -136,7 +150,7 @@ public class Board {
 			board[idx3.y][idx3.x] = type.name();
 			board[idx4.y][idx4.x] = type.name();
 		}
-		printMatrix();
+		return getMatrix();
 	}
 
 	/**

@@ -49,12 +49,19 @@ public class Main {
 			DancingLinksX.aSolution = new ArrayDeque<Node>();
 		}
 
-		Board b1 = boards.get(0);
-		Board b2 = boards.get(1);
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < boards.size(); i++) {
+			
+			Board b = boards.get(i);
+			Deque<Node> aSoultion = solutions.get(i);
 
-		b1.printSolution(solutions.get(0));
-		System.out.println();
-		b2.printSolution(solutions.get(1));
+			sb.append(b.getSolution(aSoultion));
+			sb.append("\n\n");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		sb.deleteCharAt(sb.length()-1);
+
+		System.out.println(sb);
 	}
 
 	/**
@@ -104,7 +111,6 @@ public class Main {
 		while(sc.hasNextLine()) {
 
 			String line = sc.nextLine();
-			// TODO: not the most generic way to read in pentomino requirement.
 			if(line.matches(".*[a-z].*")) {
 				requirement = line;
 				isRestricted = true;
@@ -132,7 +138,7 @@ public class Main {
 				isRestricted = false;
 			}
 		}
-	//	boards.add(new Board(board.toString(),width,height, pents,requirement.split(" "),isRestricted));
+		boards.add(new Board(board.toString(),width,height, pents,requirement.split(" "),isRestricted));
 	}
 
 	/**
