@@ -110,24 +110,29 @@ public class Main {
 				isRestricted = true;
 				height = 0;
 			}
-			else if(line.equals("")) {
-				if(board.length() != 0) {
-					boards.add(new Board(board.toString(),width,height, pents, requirement.split(" "),isRestricted));
-					width = 0;
-					height = 0;
-					board = new StringBuilder();
-					requirement = "";
-					isRestricted = false;
-				}
-			}
-			// Otherwise it is a board representation.
-			else {
+			else if(line.contains(".") || line.contains("*")) {
+
 				board.append(line);
 				++height;
 				width = line.length();
 			}
+			else {
+				// This mean a board is finished.
+				if(line.contains(" ") || line.contains("")) {
+					// check that the board string is not empty.
+					if(board.toString().contains(".") || board.toString().contains("*")) {
+						boards.add(new Board(board.toString(),width,height, pents, requirement.split(" "),isRestricted));
+					}
+				}
+
+				width = 0;
+				height = 0;
+				board = new StringBuilder();
+				requirement = "";
+				isRestricted = false;
+			}
 		}
-		boards.add(new Board(board.toString(),width,height, pents,requirement.split(" "),isRestricted));
+	//	boards.add(new Board(board.toString(),width,height, pents,requirement.split(" "),isRestricted));
 	}
 
 	/**

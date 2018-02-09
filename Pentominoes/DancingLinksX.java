@@ -7,6 +7,8 @@ import java.util.Deque;
 
 public class DancingLinksX {
 
+	private static boolean isSolution = false;
+
 	private int rows, cols;
 
 	private boolean[][] problemMatrix;
@@ -163,7 +165,7 @@ public class DancingLinksX {
 
 		return aSolution.clone();
 	}
-	private static boolean isSolution = false;
+
 	public void clearSolution() {
 
 		solution = new ArrayDeque<Node>();
