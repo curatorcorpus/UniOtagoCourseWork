@@ -25,7 +25,6 @@ public class Board {
 	private List<String> typeRequirement;
 	private List<Point> restrictedIndices;
 	private List<Pentomino> availablePlacements;
-	private Hashtable<Pentomino.Type, Integer> pentoTypeToECIDLookup;
 	private Hashtable<String, Integer> pointToSquareIDLookup;
 
 	/**
@@ -47,20 +46,23 @@ public class Board {
 			this.typeRequirement = Arrays.asList(requirement);
 			List<Pentomino> restrictedList = new ArrayList<Pentomino>();
 
+			int i = 0;
 			for(String t : typeRequirement) {
 				for(Pentomino p : pents) {
 
 					if(t.equals(p.getType().name().toLowerCase())) {
-						restrictedList.add(p);
+						Pentomino pentoCopy = p.clone();
+						pentoCopy.setPentTypeIndex(i);
+						restrictedList.add(pentoCopy);
 					}
 				}
+				++i;
 			}
 			this.pents = restrictedList;
 		}
 
 		setupMatrix();
 		generateIndexToSquareLookup();
-		generatePentoTypeToECIDLookup();
 	}
 
 	/**
@@ -100,7 +102,7 @@ public class Board {
 	}
 
 	public boolean checkBoardValidity() {
-		
+
 		return (noOfValidSquares % 5) == 0;
 	}
 
@@ -160,6 +162,7 @@ public class Board {
 			board[idx3.y][idx3.x] = type.name();
 			board[idx4.y][idx4.x] = type.name();
 		}
+
 		return getMatrix();
 	}
 
@@ -199,7 +202,7 @@ public class Board {
 						newShapeIdx[4] = idx4;
 
 						noOfPlacements++;
-						availablePlacements.add(new Pentomino(newShapeIdx, p.getType())); // contains new indices for creating exact cover matrix.
+						availablePlacements.add(new Pentomino(newShapeIdx, p.getType(), p.getPentTypeIndex())); // contains new indices for creating exact cover matrix.
 					}
 				}
 			}
@@ -216,6 +219,7 @@ public class Board {
 		}
 
 		boolean[][] ecProblemMatrix = new boolean[ecHeight][ecWidth];
+		int i = 0;
 		for(int row = 0; row < ecHeight; row++) {
 
 			Pentomino p = availablePlacements.get(row);
@@ -223,8 +227,8 @@ public class Board {
 
 			// get the pentomino type and extract index in exact cover matrix.
 			Pentomino.Type t = p.getType();
-			int ecmPentoConstraint = pentoTypeToECIDLookup.get(t);
-
+			int ecmPentoConstraint = p.getPentTypeIndex();
+			//System.out.println("row: 0"+"col:"+ecmPentoConstraint);
 			// get the index of available squares based on available pentominoes placement.
 			Point idx1 = shape[0];
 			Point idx2 = shape[1];
@@ -262,6 +266,7 @@ public class Board {
 		if(typeRequirement.size() != 0) {
 			squareID = typeRequirement.size();
 		}
+
 		for(int row = 0; row < height; row++) {
 			for(int col = 0; col < width; col++) {
 				// For restricted indices, don't give square ID.
@@ -285,25 +290,6 @@ public class Board {
 				} else {
 					pointToSquareIDLookup.put((row+" "+col),squareID++);
 				}
-			}
-		}
-	}
-
-	/**
-	*
-	*/
-	private void generatePentoTypeToECIDLookup() {
-
-		this.pentoTypeToECIDLookup = new Hashtable<Pentomino.Type, Integer>();
-		int i = 0;
-		
-		if(typeRequirement.size() == 0) {
-			for(Pentomino.Type t : Pentomino.Type.values()) {
-				pentoTypeToECIDLookup.put(t,i++);
-			}
-		} else {
-			for(String s : typeRequirement) {
-				pentoTypeToECIDLookup.put(Pentomino.getEnumType(s),i++);
 			}
 		}
 	}

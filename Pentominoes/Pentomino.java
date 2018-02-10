@@ -57,6 +57,8 @@ public class Pentomino {
 		return pentoType;
 	}
 
+	private int pentTypeIndex = 0;
+
 	private Type type;	   // The pentominoes type from the Conway's Pentominoes encoding [O-Z].
 	private	Point[] shape; // The shape will also start from the most LHS possible.
 
@@ -66,10 +68,20 @@ public class Pentomino {
 	*	@param accepts shapes - list of points (starting point and offsets that represent the shape).
 	*	@param accepts type of pentominoes being instantiated.
 	*/
-	public Pentomino(Point[] shape, Type type) {
+	public Pentomino(Point[] shape, Type type, int pentTypeIndex) {
 
 		this.type = type;
 		this.shape = shape;
+		this.pentTypeIndex = pentTypeIndex;
+	}
+
+	public int getPentTypeIndex() {
+		return pentTypeIndex;
+	}
+
+	public void setPentTypeIndex(int pentTypeIndex) {
+
+		this.pentTypeIndex = pentTypeIndex;
 	}
 
 	/**
@@ -152,5 +164,9 @@ public class Pentomino {
 		sb.deleteCharAt(sb.length()-1); // removes the last spacing.
 
 		return sb.toString();
+	}
+
+	public Pentomino clone() {
+		return new Pentomino(this.shape, this.type, this.pentTypeIndex);
 	}
 }

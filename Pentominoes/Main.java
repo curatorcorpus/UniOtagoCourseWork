@@ -74,8 +74,11 @@ public class Main {
 	*/
 	public static void readDataFile() {
 
+		List<String> exisitingTypes = new ArrayList<String>();
+
 		try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 
+			int pentCount = 0;
 			String line;
 			while ((line = br.readLine()) != null) {
 				if(line.equals("")) { 
@@ -85,6 +88,13 @@ public class Main {
 				String[] pentoData = line.replaceAll(",", " ").split(" ");
 				String pentoType = pentoData[0];
 
+				if(!exisitingTypes.contains(pentoType)) {
+					if(exisitingTypes.size() != 0) {
+						++pentCount;
+					}
+					exisitingTypes.add(pentoType);
+				}
+
 				Point[] pentoShape = new Point[5];
 				for(int i = 1; i < pentoData.length; i+=2) {
 					int x = Integer.parseInt(pentoData[i]);
@@ -92,7 +102,7 @@ public class Main {
 
 					pentoShape[i/2] = new Point(x,y);
 				}
-				pents.add(new Pentomino(pentoShape, Pentomino.Type.valueOf(pentoType)));
+				pents.add(new Pentomino(pentoShape, Pentomino.Type.valueOf(pentoType),pentCount));
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

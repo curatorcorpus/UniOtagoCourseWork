@@ -9,12 +9,14 @@ public class DancingLinksX {
 
 	private static boolean isSolution = false;
 
+	public static ArrayDeque<Node> aSolution = new ArrayDeque<Node>();
+
 	private int rows, cols;
 
 	private boolean[][] problemMatrix;
 
 	private Node root;
-	public static ArrayDeque<Node> aSolution = new ArrayDeque<Node>();
+
 	private ArrayDeque<Node> solution;
 	private Node[][] matrix;
 
@@ -179,7 +181,7 @@ public class DancingLinksX {
 		}
 		Node minColumn = getMinColumn();
 		cover(minColumn);
-		//	System.out.println(matrix.length + " " matrix[0].length);
+
 		for(Node rowNode = minColumn.down; !rowNode.equals(minColumn); rowNode = rowNode.down) {
 			solution.push(rowNode);
 
