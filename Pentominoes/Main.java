@@ -132,7 +132,6 @@ public class Main {
 				height = 0;
 			}
 			else if(line.contains(".") || line.contains("*")) {
-
 				board.append(line);
 				++height;
 				width = line.length();
@@ -153,7 +152,9 @@ public class Main {
 				isRestricted = false;
 			}
 		}
-		boards.add(new Board(board.toString(),width,height, pents,requirement.split(" "),isRestricted));
+		if(board.length() != 0) {
+			boards.add(new Board(board.toString(),width,height, pents,requirement.split(" "),isRestricted));
+		}
 	}
 
 	/**
