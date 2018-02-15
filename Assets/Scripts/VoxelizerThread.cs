@@ -76,9 +76,9 @@ public class VoxelizerThread
 			Vector3 p2 = verts[tris[i + 1]];
 			Vector3 p3 = verts[tris[i + 2]];
 
-            p1 = matrix.MultiplyPoint(p1);
-            p2 = matrix.MultiplyPoint(p2);
-            p3 = matrix.MultiplyPoint(p3);
+//            p1 = matrix.MultiplyPoint(p1);
+//            p2 = matrix.MultiplyPoint(p2);
+//            p3 = matrix.MultiplyPoint(p3);
 
             // Create the axis aligned bounding box around the triangle
             float minX = MathUtils.ClipToVoxelGrid(Mathf.Min(p1.x, p2.x, p3.x), voxelSize, true);
@@ -98,10 +98,15 @@ public class VoxelizerThread
 					{
 						Vector3 currentVoxel = new Vector3(x, y, z);
 						
+//						if (MathUtils.IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
+//						{
+//                            voxelsToAdd.Push(currentVoxel);
+//                            iCount++;
+//						}
 						if (MathUtils.IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
 						{
-                            voxelsToAdd.Push(currentVoxel);
-                            iCount++;
+							voxelsToAdd.Push(matrix.MultiplyPoint3x4(currentVoxel));
+							iCount++;
 						}
 						niCount++;
 					}

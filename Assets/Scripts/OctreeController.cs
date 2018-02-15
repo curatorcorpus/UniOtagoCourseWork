@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
 /*
@@ -31,6 +32,7 @@ public class OctreeController : MonoBehaviour
     [Header("Debug Tools")]
     [SerializeField] private bool debugMeshes = false;
     [SerializeField] private bool debugOctree = false;
+    [SerializeField] private bool drawVoxelGrid = false;
 
     private bool updated = false;
 
@@ -53,7 +55,9 @@ public class OctreeController : MonoBehaviour
             // throw error if debugger is turned on without starting program.
             if (tree == null)
             {
-                throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
+                // Look, we've caught it, but there is really no good reason to spam console so we'll leave it at that
+
+                //throw new System.Exception("[DEBUG::CONTROL::GIZMO] Null Reference to tree for debugging!");
             }
             else
             {
@@ -81,9 +85,15 @@ public class OctreeController : MonoBehaviour
             return;
         }
 
-        foreach (var child in node.Children)
+        if (node.Children != null)
         {
-            GizmosDrawNode(child);
+            foreach (var child in node.Children)
+            {
+                if (child != null)
+                {
+                    GizmosDrawNode(child);
+                }
+            }
         }
     }
 
@@ -193,8 +203,26 @@ public class OctreeController : MonoBehaviour
                     Matrix4x4 localToWorldMatrix = meshTransform.localToWorldMatrix;
 
                     // obtain mesh and mesh colour.
-                    Material material = meshObject.GetComponent<MeshRenderer>().material;
-                    MeshFilter meshFilter = meshObject.GetComponent<MeshFilter>();
+                    Material material;
+                    try
+                    {
+                        material = meshObject.GetComponent<MeshRenderer>().material;
+                    }
+                    catch (MissingComponentException)
+                    {
+                        meshObject.AddComponent<MeshRenderer>();
+                        material = meshObject.GetComponent<MeshRenderer>().material;
+                    }
+                    MeshFilter meshFilter;
+                    try
+                    {
+                        meshFilter = meshObject.GetComponent<MeshFilter>();
+                    }
+                    catch (MissingComponentException)
+                    {
+                        meshObject.AddComponent<MeshFilter>();
+                        meshFilter = meshObject.GetComponent<MeshFilter>();
+                    }
                     Color32 matColor = material.color;
 
                     // remember mesh colour for adding to octree.

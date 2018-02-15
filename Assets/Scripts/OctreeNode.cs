@@ -129,12 +129,25 @@ public class OctreeNode<TType> {
         return this.children[bestSSIdx].Add(pos, color, minVoxelSize);
     }
 
-    public void AddFill(float minVoxelSize)
+    public void AddFill(float minVoxelSize, int count = 0)
     {
+        Color32 nodeColour;
+        
+        if (count == 7)
+        {
+            nodeColour = new Color32(255, 0, 0, 1);
+        }
+        else
+        {
+            nodeColour = new Color32(100, 0, 255, 1);
+        }
+        
+        
         if (subspaceSize <= minVoxelSize)
         {
             isLeafVoxel = true;
-            clr = Random.ColorHSV();
+//            clr = Random.ColorHSV();
+            clr = nodeColour;
             
             return;
         }
@@ -146,7 +159,7 @@ public class OctreeNode<TType> {
 
         for (int i = 0; i < DEGREE; i++)
         {
-            children[i].AddFill(minVoxelSize);
+            children[i].AddFill(minVoxelSize, i);
         }
     }
     
