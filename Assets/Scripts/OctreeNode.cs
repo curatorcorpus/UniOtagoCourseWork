@@ -146,8 +146,8 @@ public class OctreeNode<TType> {
         if (subspaceSize <= minVoxelSize)
         {
             isLeafVoxel = true;
-//            clr = Random.ColorHSV();
-            clr = nodeColour;
+            clr = Random.ColorHSV();
+//            clr = nodeColour;
             
             return;
         }

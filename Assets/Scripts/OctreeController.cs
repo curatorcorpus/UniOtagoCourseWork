@@ -19,7 +19,7 @@ public class OctreeController : MonoBehaviour
     
     [Header("Voxel Settings")]
     [SerializeField] private int voxelSpaceSize = 2048;
-    [SerializeField] private int voxelSize = 1;
+    [SerializeField] private float voxelSize = 1.0f;
 
     [Header("Voxelizer Features")]
     [SerializeField] private bool useBasicVoxelization = false;
@@ -150,14 +150,20 @@ public class OctreeController : MonoBehaviour
 
             voxelSpaceSize = closestVSS;
         }
-        if((voxelSize & (voxelSize - 1)) != 0)
-        {
-            int closestVS = MathUtils.ClosetPow2(voxelSize);
+        
+  
+        
+        
+        
+//        if((voxelSize & (voxelSize - 1.0f)) != 0.0f)
+//        {
+//            float closestVS = MathUtils.ClosetPow2(voxelSize);
+//
+//            Debug.Log("Voxel Settings not powers of 2.\nVoxel Size rounded from " + voxelSize + " to " + closestVS + ".");
+//
+//            voxelSize = MathUtils.ClosetPow2(voxelSize);
+//        }
 
-            Debug.Log("Voxel Settings not powers of 2.\nVoxel Size rounded from " + voxelSize + " to " + closestVS + ".");
-
-            voxelSize = MathUtils.ClosetPow2(voxelSize);
-        }
     }
     
     /*

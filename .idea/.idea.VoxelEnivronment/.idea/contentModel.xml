@@ -1,5 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\reiol787\.Rider2017.3\system\resharper-host\local\Transient\ReSharperHost\v11\SolutionCaches\_VoxelEnivronment.2121187799.00" t="ExcludeRecursive" />
+    <e p="H:\dev\VoxelEnviroment" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="OVR" t="Include">
+          <e p="Editor" t="Include">
+            <e p="AndroidManifest.OVRSubmission.xml" t="Include" />
+            <e p="OVRBuild.cs" t="Include" />
+            <e p="OVRManifestPreprocessor.cs" t="Include" />
+            <e p="OVRMoonlightLoader.cs" t="Include" />
+            <e p="OVRPluginUpdater.cs" t="Include" />
+            <e p="OVRPluginUpdaterStub.cs" t="Include" />
+            <e p="OVRScreenshotWizard.cs" t="Include" />
+          </e>
+          <e p="Plugins" t="Include">
+            <e p="placeholder.txt" t="Include" />
+          </e>
+          <e p="Resources" t="Include">
+            <e p="Alpha Premultiply.shader" t="Include" />
+            <e p="OVRMRCameraFrame.shader" t="Include" />
+            <e p="OVRMRClipPlane.shader" t="Include" />
+            <e p="Underlay Impostor.shader" t="Include" />
+            <e p="Underlay Transparent Occluder.shader" t="Include" />
+            <e p="Unlit Transparent Color.shader" t="Include" />
+          </e>
+          <e p="Shaders" t="Include">
+            <e p="OVRColorRampAlpha.shader" t="Include" />
+            <e p="Unlit Crosshair.shader" t="Include" />
+          </e>
+        </e>
+        <e p="Resources" t="Include">
+          <e p="Models" t="Include">
+            <e p="Cup" t="Include">
+              <e p="archibase.net.txt" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="MathUtils.cs" t="Include" />
+          <e p="Octree.cs" t="Include" />
+          <e p="OctreeController.cs" t="Include" />
+          <e p="OctreeNode.cs" t="Include" />
+          <e p="VoxelizerThread.cs" t="Include" />
+          <e p="VoxelSerializer.cs" t="Include" />
+        </e>
+        <e p="Shaders" t="Include">
+          <e p="Geometry.shader" t="Include" />
+          <e p="GeometryLit.shader" t="Include" />
+          <e p="GeometryPhong.shader" t="Include" />
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+      <e p="VoxelEnivronment.sln" t="IncludeFlat" />
+    </e>
+  </component>
   <component name="RiderRiderContentModelStore">
     <excludedPaths />
   </component>

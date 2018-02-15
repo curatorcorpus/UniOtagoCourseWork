@@ -181,6 +181,19 @@ public class MathUtils
 		
 		return (axisBound + voxelSize);
 	}
+
+	public static float ClosetPow2(float size)
+	{
+		float ceil = Mathf.Pow(2, Mathf.Ceil(Mathf.Log(size)/Mathf.Log(2)));
+		float floor = Mathf.Pow(2, Mathf.Floor(Mathf.Log(size)/Mathf.Log(2)));
+
+		if ((size - floor) < (ceil - size))
+		{
+			return (float) floor;
+            
+		}
+		return (float) ceil;
+	} 
 	
 	public static int ClosetPow2(int size)
 	{
