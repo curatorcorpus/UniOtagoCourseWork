@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.PlaymodeTests;
 using UnityEngine.VR.WSA;
 
 public class Octree<TType>
@@ -47,7 +48,7 @@ public class Octree<TType>
     /*
      * Method for adding a new node to data structure.
      */
-    public bool Add(Vector3 pos, Color32 color)
+    public bool Add(Vector3 pos, Color32 color, bool test = false)
     {
         // if (pos.x <= maxPoint && pos.x >= -maxPoint &&
         //      pos.y <= maxPoint && pos.y >= -maxPoint &&

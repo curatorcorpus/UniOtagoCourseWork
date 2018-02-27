@@ -2,9 +2,11 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using Debug = UnityEngine.Debug;
 
 /*
  * Fixed Noel and mine's broken code.
@@ -28,6 +30,10 @@ public class OctreeController : MonoBehaviour
     [SerializeField] private bool saveVoxelModel = false;
     [SerializeField] private bool loadVoxelModel = false;
     [SerializeField] private UnityEngine.Object filePath;
+
+    [Header("Large Model Settings")] 
+    [SerializeField] private bool writeToDiscOnTheFly = false;
+    [SerializeField] private bool onlyCountVoxels = false;
     
     [Header("Debug Tools")]
     [SerializeField] private bool debugMeshes = false;
@@ -44,6 +50,8 @@ public class OctreeController : MonoBehaviour
     private List<Color32> clrs;
 
     private List<int> indices;
+    private ulong uVoxelCount;
+    private int voxelCount;
 
     private List<GameObject> models = new List<GameObject>();
 
@@ -150,11 +158,6 @@ public class OctreeController : MonoBehaviour
 
             voxelSpaceSize = closestVSS;
         }
-        
-  
-        
-        
-        
 //        if((voxelSize & (voxelSize - 1.0f)) != 0.0f)
 //        {
 //            float closestVS = MathUtils.ClosetPow2(voxelSize);
@@ -164,6 +167,8 @@ public class OctreeController : MonoBehaviour
 //            voxelSize = MathUtils.ClosetPow2(voxelSize);
 //        }
 
+        voxelSize = MathUtils.ClosetPow2(voxelSize);
+
     }
     
     /*
@@ -171,6 +176,12 @@ public class OctreeController : MonoBehaviour
      */
     private void Setup()
     {
+        // Start timer
+        Stopwatch stopwatch = Stopwatch.StartNew();
+
+        this.uVoxelCount = 0;
+        this.voxelCount = 0;
+        
         voxelMat = Resources.Load("Materials/VoxelMat") as Material;
         if (voxelMat == null)
             throw new System.Exception("Material File wasn't loaded!"); // check that materials were loaded successfully
@@ -251,8 +262,8 @@ public class OctreeController : MonoBehaviour
                         int[] tris = mesh.triangles;
 
                         // setup thread for voxelizing current mesh. 
-                        threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix,
-                            (float) voxelSize / MM_FACTOR));
+                        threads.Add(new VoxelizerThread(ref verts, ref tris, localToWorldMatrix, 
+                            ((float) voxelSize / MM_FACTOR), writeToDiscOnTheFly, onlyCountVoxels));
                         threads[i].Start(); // start voxelizing.
                     }
                     else if (useFillSpace)
@@ -265,7 +276,6 @@ public class OctreeController : MonoBehaviour
 
                 // main worker thread for adding thread voxels to octree.
                 int idx = 0;
-                int voxelCount = 0;
                 while (idx < threads.Count)
                 {
                     VoxelizerThread currThread = threads[idx];
@@ -287,11 +297,25 @@ public class OctreeController : MonoBehaviour
                             if (saveVoxelModel && isAdded)
                             {
                                 voxelData.AddToVoxelList(voxelPos);
-                                ++voxelCount;
+                            }
+
+                            if (isAdded)
+                            {
+                                ++this.voxelCount;
+                                this.uVoxelCount++;
                             }
                         }
 
-                        voxelData.AddToColorSwitch(idx, voxelCount);
+                        voxelData.AddToColorSwitch(idx, this.voxelCount);   
+
+                        if (this.onlyCountVoxels)
+                        {
+                            // Clear memory
+                            tree = new Octree<int>(this.transform.position, (float) voxelSpaceSize / MM_FACTOR,
+                                (float) voxelSize / MM_FACTOR);
+                            voxelData = new VoxelData(threads.Count);
+                            GC.Collect();
+                        }
 
                         // only jump to next thread once we finished extracting all voxels.
                         ++idx;
@@ -351,10 +375,19 @@ public class OctreeController : MonoBehaviour
                 currModel.SetActive(false);
             }
         }
+        
+        Debug.Log("Total Voxel Count 1: " + this.voxelCount);
+        Debug.Log("Total Voxel Count 2: " + this.uVoxelCount);
+
+        stopwatch.Stop();
+        Debug.Log("Total time: " + (float) stopwatch.ElapsedMilliseconds + " milliseconds");
     }
 
     private void InitMeshes(int voxelCount)
-    {//Debug.Log("Total Voxel Count " + voxelCount);
+    {
+        Debug.Log("Total Voxel Count: " + voxelCount);
+        Debug.Log("Total Voxels: " + this.uVoxelCount);
+        
         if (voxelCount > MAX_VERTS)
         {
             int divisor = Mathf.CeilToInt((float)voxelCount / MAX_VERTS);

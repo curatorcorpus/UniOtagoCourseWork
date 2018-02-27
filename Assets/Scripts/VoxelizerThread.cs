@@ -2,8 +2,10 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
+//using CsvHelper;
 
 public class VoxelizerThread
 {
@@ -11,6 +13,9 @@ public class VoxelizerThread
 	private bool locked = false;
     private float voxelSize;
     private int[] tris;
+	private ulong voxelCount;
+	private bool writeDisc;
+	private bool onlyCountVoxels;
 
     private Matrix4x4 matrix;
     private Stack<Vector3> voxelsToAdd;
@@ -38,14 +43,33 @@ public class VoxelizerThread
         get { return thread; }
         set { this.thread = value; }
     }
+	public ulong VoxelCount
+	{
+		get { return voxelCount; }
+		set { voxelCount = value; }
+	}
+	public bool WriteDisc
+	{
+		get { return writeDisc; }
+		set { writeDisc = value; }
+	}
+	public bool OnlyCountVoxels
+	{
+		get { return onlyCountVoxels; }
+		set { onlyCountVoxels = value; }
+	}
 
-    public VoxelizerThread(ref Vector3[] verts, ref int[] tris, Matrix4x4 matrix, float voxelSize)
+	public VoxelizerThread(ref Vector3[] verts, ref int[] tris, Matrix4x4 matrix, float voxelSize, bool writeDisc, 
+		bool onlyCountVoxels)
     {
         this.verts = verts;
         this.tris = tris;
         this.matrix = matrix;
         this.voxelSize = voxelSize;
+	    this.writeDisc = writeDisc;
+	    this.onlyCountVoxels = onlyCountVoxels;
         this.voxelsToAdd = new Stack<Vector3>();
+	    this.voxelCount = 0;
 
         thread = new Thread(new ThreadStart(this.VoxelizeMesh));
     }
@@ -105,7 +129,23 @@ public class VoxelizerThread
 //						}
 						if (MathUtils.IntersectsBox(p1, p2, p3, currentVoxel, voxelExtends))
 						{
-							voxelsToAdd.Push(matrix.MultiplyPoint3x4(currentVoxel));
+							if (this.writeDisc)
+							{
+								// Write CSV
+//								StreamWriter write = new StreamWriter(Server.MapPath(@"voxels.csv"));
+//								var csv = new CsvWriter(write);
+								
+//								csv.WriteRecord();
+							}
+							else
+							{
+//								if (!this.onlyCountVoxels)
+//								{
+									voxelsToAdd.Push(matrix.MultiplyPoint3x4(currentVoxel));
+//								}
+							}
+							
+							this.voxelCount++;
 							iCount++;
 						}
 						niCount++;

@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\reiol787\.Rider2017.3\system\resharper-host\local\Transient\ReSharperHost\v11\SolutionCaches\_VoxelEnviroment.1146458983.00" t="ExcludeRecursive" />
+    <e p="H:\dev\VoxelEnviroment" t="IncludeRecursive">
+      <e p="Assembly-CSharp-Editor-firstpass.csproj" t="IncludeRecursive" />
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Plugins" t="Include">
+          <e p="Editor" t="Include">
+            <e p="JetBrains" t="Include">
+              <e p="Unity3DRider.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Resources" t="Include">
+          <e p="Models" t="Include">
+            <e p="Cup" t="Include">
+              <e p="archibase.net.txt" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Scripts" t="Include">
+          <e p="MathUtils.cs" t="Include" />
+          <e p="Octree.cs" t="Include" />
+          <e p="OctreeController.cs" t="Include" />
+          <e p="OctreeNode.cs" t="Include" />
+          <e p="VoxelizerThread.cs" t="Include" />
+          <e p="VoxelSerializer.cs" t="Include" />
+        </e>
+        <e p="Shaders" t="Include">
+          <e p="Geometry.shader" t="Include" />
+          <e p="GeometryLit.shader" t="Include" />
+          <e p="GeometryPhong.shader" t="Include" />
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+      <e p="VoxelEnviroment.sln" t="IncludeFlat" />
+    </e>
+  </component>
   <component name="RiderRiderContentModelStore">
     <excludedPaths>
       <Path>Temp</Path>
