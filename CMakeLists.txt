@@ -1,16 +1,41 @@
-cmake_minimum_required(VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+PROJECT(planeFinder)
 
-include_directories(/home/cshome/s/steven/Public/Eigen/)
+IF(UNIX)
+  FIND_PACKAGE(PkgConfig REQUIRED)
+ENDIF(UNIX)
 
-project(planeFinder)
-add_executable(planeFinder
-planeFinder.cpp
-SimplePly.h
-SimplePly.cpp
-rply.h
-rply.c
+# Enable C++11 compiler
+INCLUDE(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+  IF(COMPILER_SUPPORTS_CXX11)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+    SET(LIBFREENECT2_WITH_CXX11_SUPPORT 1)
+    SET(HAVE_CXX11 yes)
+  ELSEIF(COMPILER_SUPPORTS_CXX0X)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+    SET(HAVE_CXX11 c++0x)
+  ELSE()
+    SET(HAVE_CXX11 no)
+    MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+ENDIF()
+
+# CMake Settings
+SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
+
+FIND_PACKAGE(Eigen3 REQUIRED)
+
+INCLUDE_DIRECTORIES(
+
+	${EIGEN3_INCLUDE_DIR}
 )
 
+ADD_EXECUTABLE(planeFinder
 
-
-
+	planeFinder.cpp
+	SimplePly.h
+	SimplePly.cpp
+	rply.h
+	rply.c
+)

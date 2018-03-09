@@ -63,6 +63,7 @@ bool SimplePly::read(const std::string& filename) {
 }
 
 bool SimplePly::write(const std::string& filename) {
+  
   std::ofstream fout(filename);
   if (!fout) {
     std::cerr << "Failed to open PLY file " << filename << " for writing" << std::endl;

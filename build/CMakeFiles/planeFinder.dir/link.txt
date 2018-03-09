@@ -1,0 +1,1 @@
+/usr/bin/c++    -std=c++11   CMakeFiles/planeFinder.dir/planeFinder.cpp.o CMakeFiles/planeFinder.dir/SimplePly.cpp.o CMakeFiles/planeFinder.dir/rply.c.o  -o planeFinder -rdynamic 
