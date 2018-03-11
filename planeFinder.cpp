@@ -1,13 +1,19 @@
 #include "SimplePly.h"
+
 #include <iostream>
+#include <Eigen/Geometry>
+
+using namespace std;
+using namespace Eigen;
 
 int main (int argc, char *argv[]) {
 
   // Check the commandline arguments.
-  if (argc != 6) {
+  /*if (argc != 6) {
     std::cout << "Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>" << std::endl;
     return -1;
   }
+
   int nPlanes = atoi(argv[3]);
   double threshold = atof(argv[4]);
   int nTrials = atoi(argv[5]);
@@ -16,7 +22,7 @@ int main (int argc, char *argv[]) {
   std::cout << "Using a point-plane threshold of " << threshold << " units" << std::endl;
   std::cout << "Applying RANSAC with " << nTrials << " trials" << std::endl;  
 
-  // Storage for the point cloud.
+  // Storage for the point cloud.ll
   SimplePly ply;
 
   // Read in the data from a PLY file
@@ -30,6 +36,7 @@ int main (int argc, char *argv[]) {
   // Recolour points - here we are just doing colour based on index
   std::cout << "Recolouring points" << std::endl;
   std::vector<Eigen::Vector3i> colours;
+
   colours.push_back(Eigen::Vector3i(255,0,0));
   colours.push_back(Eigen::Vector3i(0,255,0));
   colours.push_back(Eigen::Vector3i(0,0,255));
@@ -47,7 +54,24 @@ int main (int argc, char *argv[]) {
   if (!ply.write(argv[2])) {
     std::cout << "Could not write PLY data to file " << argv[2] << std::endl;
     return -2;
-  }
+  }*/
+
+  Vector3f a;
+  Vector3f b;
+  Vector3f c;
+
+  a << 1,2,-2;
+  b << 3,-2,1;
+  c << 5,1,-4;
+
+  Vector3f ab = b-a;
+  Vector3f ac = c-a;
+
+  Vector3f cross = ab.cross(ac);
+  float d = -(cross.dot(a));
+
+  cout << cross << endl;
+  cout << d << endl;
 
   return 0;
 }
