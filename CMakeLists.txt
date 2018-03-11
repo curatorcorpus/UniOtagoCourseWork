@@ -33,6 +33,8 @@ INCLUDE_DIRECTORIES(
 
 ADD_EXECUTABLE(planeFinder
 
+	plane.hpp
+	plane.cpp
 	planeFinder.cpp
 	SimplePly.h
 	SimplePly.cpp

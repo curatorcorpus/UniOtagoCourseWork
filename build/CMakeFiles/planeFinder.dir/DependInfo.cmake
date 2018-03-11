@@ -15,6 +15,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   )
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/curator/Repository/plane_finder/SimplePly.cpp" "/home/curator/Repository/plane_finder/build/CMakeFiles/planeFinder.dir/SimplePly.cpp.o"
+  "/home/curator/Repository/plane_finder/plane.cpp" "/home/curator/Repository/plane_finder/build/CMakeFiles/planeFinder.dir/plane.cpp.o"
   "/home/curator/Repository/plane_finder/planeFinder.cpp" "/home/curator/Repository/plane_finder/build/CMakeFiles/planeFinder.dir/planeFinder.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

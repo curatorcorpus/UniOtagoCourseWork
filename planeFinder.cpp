@@ -1,4 +1,5 @@
 #include "SimplePly.h"
+#include "plane.hpp"
 
 #include <iostream>
 #include <Eigen/Geometry>
@@ -37,28 +38,15 @@ int main (int argc, char *argv[]) {
   // Recolour points - here we are just doing colour based on index
   std::cout << "Recolouring points" << std::endl;
   std::vector<Eigen::Vector3i> colours;
-
+cout << ply.size() << endl;
   vector<PlyPoint>* points = ply.get_points();
-
+/*
   for(PlyPoint point : *points) {
     cout << point.location << endl;
-  }
+  }*/
 
-  
-Vector3f a;
-  Vector3f b;
-  Vector3f c;
-
-  a << 1,2,-2;
-  b << 3,-2,1;
-  c << 5,1,-4;
-
-  Vector3f ab = b-a;
-  Vector3f ac = c-a;
-
-  Vector3f cross = ab.cross(ac);
-  float d = -(cross.dot(a));
-
+  Vector4d plane = Plane::get_plane((*points)[0].location, (*points)[1].location, (*points)[2].location);
+cout << plane << endl;
   colours.push_back(Eigen::Vector3i(255,0,0));
   colours.push_back(Eigen::Vector3i(0,255,0));
   colours.push_back(Eigen::Vector3i(0,0,255));

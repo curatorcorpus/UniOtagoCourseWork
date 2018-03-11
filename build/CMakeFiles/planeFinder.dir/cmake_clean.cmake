@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/planeFinder.dir/plane.cpp.o"
   "CMakeFiles/planeFinder.dir/planeFinder.cpp.o"
   "CMakeFiles/planeFinder.dir/SimplePly.cpp.o"
   "CMakeFiles/planeFinder.dir/rply.c.o"

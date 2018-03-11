@@ -150,6 +150,33 @@ SimplePly.cpp.s:
 	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/SimplePly.cpp.s
 .PHONY : SimplePly.cpp.s
 
+plane.o: plane.cpp.o
+
+.PHONY : plane.o
+
+# target to build an object file
+plane.cpp.o:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/plane.cpp.o
+.PHONY : plane.cpp.o
+
+plane.i: plane.cpp.i
+
+.PHONY : plane.i
+
+# target to preprocess a source file
+plane.cpp.i:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/plane.cpp.i
+.PHONY : plane.cpp.i
+
+plane.s: plane.cpp.s
+
+.PHONY : plane.s
+
+# target to generate assembly for a file
+plane.cpp.s:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/plane.cpp.s
+.PHONY : plane.cpp.s
+
 planeFinder.o: planeFinder.cpp.o
 
 .PHONY : planeFinder.o
@@ -216,6 +243,9 @@ help:
 	@echo "... SimplePly.o"
 	@echo "... SimplePly.i"
 	@echo "... SimplePly.s"
+	@echo "... plane.o"
+	@echo "... plane.i"
+	@echo "... plane.s"
 	@echo "... planeFinder.o"
 	@echo "... planeFinder.i"
 	@echo "... planeFinder.s"
