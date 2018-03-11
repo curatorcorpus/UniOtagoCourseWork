@@ -87,3 +87,8 @@ bool SimplePly::write(const std::string& filename) {
   fout.close();
   return true;
 }
+
+std::vector<PlyPoint>* SimplePly::get_points()
+{
+  return &points_;
+}

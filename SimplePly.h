@@ -32,6 +32,8 @@ class SimplePly {
   // Since a const reference is returned, no modification is allowed.
   const PlyPoint& operator[](size_t ix) const { return points_[ix]; }
 
+  std::vector<PlyPoint>* get_points();
+
  private:
 
   std::vector<PlyPoint> points_; // Internal storage of the point cloud.

@@ -12,8 +12,8 @@ int main (int argc, char *argv[]) {
   /*if (argc != 6) {
     std::cout << "Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>" << std::endl;
     return -1;
-  }
-
+  }*/
+/*
   int nPlanes = atoi(argv[3]);
   double threshold = atof(argv[4]);
   int nTrials = atoi(argv[5]);
@@ -21,6 +21,7 @@ int main (int argc, char *argv[]) {
   std::cout << "Searching for " << nPlanes << " planes" << std::endl;
   std::cout << "Using a point-plane threshold of " << threshold << " units" << std::endl;
   std::cout << "Applying RANSAC with " << nTrials << " trials" << std::endl;  
+*/
 
   // Storage for the point cloud.ll
   SimplePly ply;
@@ -37,26 +38,14 @@ int main (int argc, char *argv[]) {
   std::cout << "Recolouring points" << std::endl;
   std::vector<Eigen::Vector3i> colours;
 
-  colours.push_back(Eigen::Vector3i(255,0,0));
-  colours.push_back(Eigen::Vector3i(0,255,0));
-  colours.push_back(Eigen::Vector3i(0,0,255));
-  // Can add more colours as needed
+  vector<PlyPoint>* points = ply.get_points();
 
-  size_t planeSize = ply.size()/nPlanes;
-  for (size_t ix = 0; ix < ply.size(); ++ix) {
-    size_t planeIx = ix / planeSize;
-    size_t colourIx = planeIx % colours.size(); // May need to recycle colours
-    ply[ix].colour = colours[colourIx];
+  for(PlyPoint point : *points) {
+    cout << point.location << endl;
   }
 
-  // Write the resulting (re-coloured) point cloud to a PLY file.
-  std::cout << "Writing PLY data to " << argv[2] << std::endl;
-  if (!ply.write(argv[2])) {
-    std::cout << "Could not write PLY data to file " << argv[2] << std::endl;
-    return -2;
-  }*/
-
-  Vector3f a;
+  
+Vector3f a;
   Vector3f b;
   Vector3f c;
 
@@ -70,8 +59,24 @@ int main (int argc, char *argv[]) {
   Vector3f cross = ab.cross(ac);
   float d = -(cross.dot(a));
 
-  cout << cross << endl;
-  cout << d << endl;
+  colours.push_back(Eigen::Vector3i(255,0,0));
+  colours.push_back(Eigen::Vector3i(0,255,0));
+  colours.push_back(Eigen::Vector3i(0,0,255));
+  // Can add more colours as needed
+/*
+  size_t planeSize = ply.size()/nPlanes;
+  for (size_t ix = 0; ix < ply.size(); ++ix) {
+    size_t planeIx = ix / planeSize;
+    size_t colourIx = planeIx % colours.size(); // May need to recycle colours
+    ply[ix].colour = colours[colourIx];
+  }
+*//*
+  // Write the resulting (re-coloured) point cloud to a PLY file.
+  std::cout << "Writing PLY data to " << argv[2] << std::endl;
+  if (!ply.write(argv[2])) {
+    std::cout << "Could not write PLY data to file " << argv[2] << std::endl;
+    return -2;
+  }*/
 
   return 0;
 }
