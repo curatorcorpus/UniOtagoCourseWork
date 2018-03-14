@@ -16,8 +16,14 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
     _point[2] = point[2];
     _point[3] = plane[3];
 
+    Vector3d normal;
+
+    normal[0] = plane[0];
+    normal[1] = plane[1];
+    normal[2] = plane[2];
+
     double nominator   = plane.dot(_point);
-    double denominator = std::sqrt(plane.dot(plane));
+    double denominator = std::sqrt(normal.dot(normal));
 
     return nominator / denominator;
 }
