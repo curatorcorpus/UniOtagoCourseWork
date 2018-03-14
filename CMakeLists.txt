@@ -36,6 +36,8 @@ ADD_EXECUTABLE(planeFinder
 	plane.hpp
 	plane.cpp
 	planeFinder.cpp
+  ransac.hpp
+  ransac.cpp
 	SimplePly.h
 	SimplePly.cpp
 	rply.h

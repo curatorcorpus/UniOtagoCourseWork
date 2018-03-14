@@ -204,6 +204,33 @@ planeFinder.cpp.s:
 	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/planeFinder.cpp.s
 .PHONY : planeFinder.cpp.s
 
+ransac.o: ransac.cpp.o
+
+.PHONY : ransac.o
+
+# target to build an object file
+ransac.cpp.o:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/ransac.cpp.o
+.PHONY : ransac.cpp.o
+
+ransac.i: ransac.cpp.i
+
+.PHONY : ransac.i
+
+# target to preprocess a source file
+ransac.cpp.i:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/ransac.cpp.i
+.PHONY : ransac.cpp.i
+
+ransac.s: ransac.cpp.s
+
+.PHONY : ransac.s
+
+# target to generate assembly for a file
+ransac.cpp.s:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/ransac.cpp.s
+.PHONY : ransac.cpp.s
+
 rply.o: rply.c.o
 
 .PHONY : rply.o
@@ -249,6 +276,9 @@ help:
 	@echo "... planeFinder.o"
 	@echo "... planeFinder.i"
 	@echo "... planeFinder.s"
+	@echo "... ransac.o"
+	@echo "... ransac.i"
+	@echo "... ransac.s"
 	@echo "... rply.o"
 	@echo "... rply.i"
 	@echo "... rply.s"
