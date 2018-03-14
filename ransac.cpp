@@ -1,5 +1,5 @@
 #include "ransac.hpp"
-
+#include <map>
 /**
 *   Method for computing the distance from plane to a point.
 *   Formula for distance between point and plane:
@@ -35,14 +35,13 @@ void Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double th
 {   
     // make deep copy
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
-
     // for each plane count until max number of planes.
     for(int p = 0; p < no_planes; p++) 
     {
         int pc_size = pc_cpy.size();
 
         Vector4d best_plane;
-        std::vector<int> best_points;
+        std::map<int, bool> best_points;
 
         // for each ransac trial until max number of ransac trials.
         for(int r = 0; r < no_ransac_trials; r++)
@@ -51,16 +50,15 @@ void Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double th
             Vector4d plane = Plane::compute_plane(pc_cpy[rand()%pc_size].location,
                                                   pc_cpy[rand()%pc_size].location, 
                                                   pc_cpy[rand()%pc_size].location);
-            std::vector<int> curr_pc;
+            std::map<int, bool> curr_pc;
             // for each point in the point cloud.
             for(int i = 0; i < pc_size; i++) 
             {
                 Vector3d point = pc_cpy[i].location;
-
                 // if point distance to plane is less than threshold distance.
                 if(distance_to_plane(plane, point) < threshold_distance) 
                 {
-                    curr_pc.push_back(i);
+                    curr_pc[i] = true;
                 }
             }
 
@@ -70,12 +68,16 @@ void Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double th
                 best_points = curr_pc;
             }
         }
-        std::cout << best_points.size() << std::endl;
-std::cout << "TEST" << std::endl;
+
+        std::vector<PlyPoint> new_pc;
         // remove best pc from point cloud copy.
-        for(int i = 0; i < best_points.size(); i++) 
-        {std::cout << pc_cpy.capacity() << std::endl; 
-            pc_cpy.erase(pc_cpy.begin() +best_points[i]);
+        for(int i = 0; i < pc_cpy.size(); i++) 
+        {   
+            if(!best_points[i])
+                new_pc.push_back(pc_cpy[i]);
+
         }
+        pc_cpy = new_pc;
+        std::cout << "Remain points: " << new_pc.size() << std::endl;
     }
 }

@@ -45,7 +45,7 @@ int main (int argc, char *argv[]) {
     for(PlyPoint point : *points) {
         cout << point.location << endl;
     }*/
-Ransac::search(point_cloud, 2, 0.05, 2);
+Ransac::search(point_cloud, 2, 0.05, 10);
     //Vector4d plane = Plane::get_plane((*points)[0].location, (*points)[1].location, (*points)[2].location);
     //Vector4d plane = Plane::compute_plane(Vector3d(0,0,0), Vector3d(1,2,3), Vector3d(3,2,1));
     /*cout << plane << endl << endl;

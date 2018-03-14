@@ -47,6 +47,8 @@ Eigen/Geometry
 /home/curator/Repository/plane_finder/ransac.cpp
 ransac.hpp
 /home/curator/Repository/plane_finder/ransac.hpp
+map
+-
 
 /home/curator/Repository/plane_finder/ransac.hpp
 iostream
