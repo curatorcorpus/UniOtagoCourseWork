@@ -35,8 +35,6 @@ Eigen/Geometry
 -
 
 /home/curator/Repository/plane_finder/planeFinder.cpp
-SimplePly.h
-/home/curator/Repository/plane_finder/SimplePly.h
 plane.hpp
 /home/curator/Repository/plane_finder/plane.hpp
 ransac.hpp
@@ -53,10 +51,16 @@ ransac.hpp
 /home/curator/Repository/plane_finder/ransac.hpp
 iostream
 -
+vector
+-
 Eigen/Core
 -
 Eigen/Geometry
 -
+SimplePly.h
+/home/curator/Repository/plane_finder/SimplePly.h
+plane.hpp
+/home/curator/Repository/plane_finder/plane.hpp
 
 /home/curator/Repository/plane_finder/rply.h
 

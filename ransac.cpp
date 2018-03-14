@@ -28,7 +28,25 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
     return nominator / denominator;
 }
 
-void Ransac::search()
-{
+/**
+*   Method for 
+*/
+void Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials)
+{   
+    int pc_size = (*point_cloud).size();
 
+    // for each plane count until max number of planes.
+    for(int p = 0; p < no_planes; p++) 
+    {
+        // for each ransac trial until max number of ransac trials.
+        for(int r = 1; r < no_ransac_trials; r++)
+        {
+            // generate plane from three random points
+            Vector4d plane = Plane::compute_plane((*point_cloud)[rand()%pc_size].location,
+                                              (*point_cloud)[rand()%pc_size].location, 
+                                              (*point_cloud)[rand()%pc_size].location);
+
+
+        }
+    }
 }

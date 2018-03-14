@@ -14,7 +14,7 @@ private:
 
 public:
 
-	static Vector4d get_plane(Vector3d a, Vector3d b, Vector3d c);
+	static Vector4d compute_plane(Vector3d a, Vector3d b, Vector3d c);
 };
 
 #endif

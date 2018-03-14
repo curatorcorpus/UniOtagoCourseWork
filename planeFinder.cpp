@@ -1,4 +1,4 @@
-#include "SimplePly.h"
+
 #include "plane.hpp"
 #include "ransac.hpp"
 
@@ -47,7 +47,7 @@ int main (int argc, char *argv[]) {
     }*/
 
     //Vector4d plane = Plane::get_plane((*points)[0].location, (*points)[1].location, (*points)[2].location);
-    Vector4d plane = Plane::get_plane(Vector3d(0,0,0), Vector3d(1,2,3), Vector3d(3,2,1));
+    Vector4d plane = Plane::compute_plane(Vector3d(0,0,0), Vector3d(1,2,3), Vector3d(3,2,1));
     /*cout << plane << endl << endl;
     cout << (*points)[0].location << endl << endl;
     double dist = Ransac::distance_to_plane(plane, (*points)[0].location);

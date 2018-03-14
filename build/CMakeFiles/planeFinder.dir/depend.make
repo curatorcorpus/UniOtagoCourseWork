@@ -489,6 +489,8 @@ CMakeFiles/planeFinder.dir/planeFinder.cpp.o: /usr/include/eigen3/Eigen/src/plug
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
+CMakeFiles/planeFinder.dir/ransac.cpp.o: ../SimplePly.h
+CMakeFiles/planeFinder.dir/ransac.cpp.o: ../plane.hpp
 CMakeFiles/planeFinder.dir/ransac.cpp.o: ../ransac.cpp
 CMakeFiles/planeFinder.dir/ransac.cpp.o: ../ransac.hpp
 CMakeFiles/planeFinder.dir/ransac.cpp.o: /usr/include/eigen3/Eigen/Cholesky

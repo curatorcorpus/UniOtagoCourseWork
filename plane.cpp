@@ -4,7 +4,7 @@
 *	Method for ...
 * 	Plane equation: ax + by + cz + d = 0
 */
-Vector4d Plane::get_plane(Vector3d a, Vector3d b, Vector3d c) {
+Vector4d Plane::compute_plane(Vector3d a, Vector3d b, Vector3d c) {
 
 	Vector4d plane;
 
