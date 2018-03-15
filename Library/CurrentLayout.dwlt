@@ -115,7 +115,7 @@ MonoBehaviour:
   m_MinSize: {x: 509, y: 471}
   m_MaxSize: {x: 14004, y: 14021}
   vertical: 0
-  controlID: 115
+  controlID: 74
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -280,7 +280,7 @@ MonoBehaviour:
   m_MinSize: {x: 232, y: 471}
   m_MaxSize: {x: 10002, y: 14021}
   vertical: 1
-  controlID: 53
+  controlID: 75
 --- !u!114 &13
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -320,18 +320,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Materials
+    - Assets
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Materials
+  - Assets
   m_LastFoldersGridSize: -1
-  m_LastProjectPath: C:\Users\HCI\Downloads\INFO490_Testing\INFO490_Testing
+  m_LastProjectPath: C:\Users\HCI\Desktop\Github\INFO490
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 86270000
-    m_LastClickedID: 10118
+    m_SelectedIDs: 5e270000
+    m_LastClickedID: 10078
     m_ExpandedIDs: 000000005e270000d228000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -536,9 +536,9 @@ MonoBehaviour:
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 27.184107, y: 0.08704543, z: -1.5664799}
+    m_Target: {x: 23.914322, y: -1.0005946, z: -3.737587}
     speed: 2
-    m_Value: {x: 27.184107, y: 0.08704543, z: -1.5664799}
+    m_Value: {x: 23.914322, y: -1.0005946, z: -3.737587}
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -562,13 +562,13 @@ MonoBehaviour:
       speed: 2
       m_Value: 0
   m_Rotation:
-    m_Target: {x: -0.011653712, y: -0.7680388, z: 0.014119557, w: -0.6401556}
+    m_Target: {x: -0.038634546, y: -0.87619776, z: 0.07144227, w: -0.47507897}
     speed: 2
-    m_Value: {x: 0.011653712, y: 0.76803875, z: -0.014119557, w: 0.6401556}
+    m_Value: {x: -0.038634177, y: -0.8761894, z: 0.07144159, w: -0.47507444}
   m_Size:
-    m_Target: 27.016275
+    m_Target: 15.736203
     speed: 2
-    m_Value: 27.016275
+    m_Value: 15.736203
   m_Ortho:
     m_Target: 0
     speed: 2
