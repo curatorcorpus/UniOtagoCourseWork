@@ -92,3 +92,8 @@ std::vector<PlyPoint>* SimplePly::get_points()
 {
   return &points_;
 }
+
+void SimplePly::add_point_cloud(PlyPoint pc) 
+{
+  points_.push_back(pc);
+}

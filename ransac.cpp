@@ -31,8 +31,10 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
 /**
 *   Method for 
 */
-void Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials)
+std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials)
 {   
+    std::vector<std::vector<PlyPoint>> results;
+
     // make deep copy
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
     // for each plane count until max number of planes.
@@ -69,15 +71,24 @@ void Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double th
             }
         }
 
+        std::vector<PlyPoint> tmp;
         std::vector<PlyPoint> new_pc;
         // remove best pc from point cloud copy.
         for(int i = 0; i < pc_cpy.size(); i++) 
         {   
             if(!best_points[i])
                 new_pc.push_back(pc_cpy[i]);
-
+            else 
+                tmp.push_back(pc_cpy[i]);
         }
+        results.push_back(tmp);
+
         pc_cpy = new_pc;
-        std::cout << "Remain points: " << new_pc.size() << std::endl;
+
+        std::cout << std::endl;
+        std::cout << "Plane Equation: " << best_plane[0] << "x + " << best_plane[1] << "y + " 
+                                        << best_plane[2] << "z + " << best_plane[3] << " = 0" << std::endl;
+        std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
     }
+    return results;
 }

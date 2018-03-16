@@ -1,4 +1,4 @@
-#include <Eigen/Core>
+#include <Eigen/Core>  
 
 #include <vector>
 #include <string>
@@ -33,6 +33,7 @@ class SimplePly {
   const PlyPoint& operator[](size_t ix) const { return points_[ix]; }
 
   std::vector<PlyPoint>* get_points();
+  void add_point_cloud(PlyPoint pc);
 
  private:
 

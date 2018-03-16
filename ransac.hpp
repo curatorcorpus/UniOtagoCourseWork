@@ -20,7 +20,7 @@ class Ransac
 
     public:
 
-        static void search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials);
+        static std::vector<std::vector<PlyPoint>> search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials);
 };
 
 #endif
