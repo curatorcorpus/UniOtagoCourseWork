@@ -12,11 +12,11 @@ using namespace Eigen;
 int main (int argc, char *argv[]) {
 
     // Check the commandline arguments.
-    if(argc != 6) 
+    /*if(argc != 6) 
     {
         std::cout << "Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>" << std::endl;
         return -1;
-    }
+    }*/
 /*
     int n_planes = atoi(argv[3]);
     double threshold = atof(argv[4]);
@@ -27,8 +27,8 @@ int main (int argc, char *argv[]) {
     std::cout << "Applying RANSAC with " << nTrials << " trials" << std::endl;*/
     
     int n_planes = 1;
-    double threshold = 1;
-    int n_trials = 10;
+    double threshold = 3;
+    int n_trials = 1000;
 
     // Storage for the point cloud.ll
     SimplePly ply;
@@ -66,19 +66,25 @@ int main (int argc, char *argv[]) {
         }
     }
 
+    int total_filtered_pts = 0;
+
     SimplePly new_ply;
     for(int p = 0; p < n_planes; p++) 
     {
         Vector3i col = colours[p];
         vector<PlyPoint> plane_pc = results[p];
     
-        int size = plane_pc.size();cout<<size<<endl;
+        int size = plane_pc.size();
+        total_filtered_pts += size;
         for(int i = 0; i < size; i++) 
         {
             plane_pc[i].colour = col;
             new_ply.add_point_cloud(plane_pc[i]);
         }
     }
+
+    cout << "Total Points Remaining Points: " << total_filtered_pts << endl;
+    cout << "Filtered Noise Points: " << (ply.size() - total_filtered_pts) << endl;
 
     // Write the resulting (re-coloured) point cloud to a PLY file.
     std::cout << "Writing PLY data to " << argv[2] << std::endl;
@@ -104,7 +110,7 @@ SimplePly generate_plane_data(int sigma)
         for(int z = -100; z < 100; z++) 
         { 
             PlyPoint point;
-            
+
             point.location = Vector3d(x,dist(generator),z);
             point.colour = Vector3i(std::rand()%255,std::rand()%255,std::rand()%255);
             plane_pc.add_point_cloud(point);
