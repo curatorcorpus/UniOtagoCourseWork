@@ -59,7 +59,7 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
                 Vector3d point = pc_cpy[i].location;
                 // if point distance to plane is less than threshold distance.
                 if(distance_to_plane(plane, point) < threshold_distance) 
-                {
+                {std::cout << distance_to_plane(plane, point) << std::endl;
                     curr_pc[i] = true;
                 }
             }
