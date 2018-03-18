@@ -16,7 +16,7 @@ int main (int argc, char *argv[]) {
 
     bool run_raw = false;
     double threshold, success_rate;
-    int n_planes, n_trials;
+    int no_planes, n_trials;
 
     std::string input, output;
 
@@ -28,13 +28,13 @@ int main (int argc, char *argv[]) {
 
     if(p.isOptSet("r")) 
     {
-        n_planes  = atoi(argv[3]);
+        no_planes  = atoi(argv[3]);
         threshold = atof(argv[4]);
         n_trials  = atoi(argv[5]);
 
         run_raw = true;
 
-        std::cout << "Searching for " << n_planes << " planes" << std::endl;
+        std::cout << "Searching for " << no_planes << " planes" << std::endl;
         std::cout << "Using a point-plane threshold of " << threshold << " units" << std::endl;
         std::cout << "Applying RANSAC with " << n_trials << " trials" << std::endl;
     }
@@ -74,7 +74,7 @@ int main (int argc, char *argv[]) {
 
     if(run_raw) 
     {
-        results = Ransac::search(point_cloud, n_planes, threshold, n_trials);
+        results = Ransac::search(point_cloud, no_planes, threshold, n_trials);
     } else 
     {
         results = Ransac::auto_param_search(point_cloud, success_rate);
@@ -87,7 +87,7 @@ int main (int argc, char *argv[]) {
     colours.push_back(Eigen::Vector3i(0,255,0));
     colours.push_back(Eigen::Vector3i(0,0,255));
     
-    int no_planes = Ransac::no_planes;
+    no_planes = Ransac::no_planes;
 
     if(no_planes > 3)
     {
@@ -103,7 +103,7 @@ int main (int argc, char *argv[]) {
     int total_filtered_pts = 0;
 
     SimplePly new_ply;
-    for(int p = 0; p < n_planes; p++) 
+    for(int p = 0; p < no_planes; p++) 
     {
         Vector3i col = colours[p];
         vector<PlyPoint> plane_pc = results[p];
