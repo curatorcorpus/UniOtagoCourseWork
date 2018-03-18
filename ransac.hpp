@@ -17,7 +17,7 @@ class Ransac
     private:
 
         static double distance_to_plane(Vector4d plane, Vector3d point);
-        static int compute_trials(double success_rate, double no_inliers, int sample_size, double total_size);
+        static long compute_trials(double success_rate, double no_inliers, int sample_size, double total_size);
 
     public:
 

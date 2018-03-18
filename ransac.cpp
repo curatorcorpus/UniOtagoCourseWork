@@ -39,6 +39,10 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
 
     // make deep copy
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
+    int size = pc_cpy.size();
+
+    long s = compute_trials(0.99, 3.0, 3, (double)pc_cpy.size());
+    std::cout << s << std::endl;
     // for each plane count until max number of planes.
     for(int p = 0; p < no_planes; p++) 
     {
@@ -108,7 +112,7 @@ int Ransac::estimate_trials(std::vector<PlyPoint>* point_cloud, double success_r
 }
 
 
-int Ransac::compute_trials(double success_rate, double no_inliers, int sample_size, double total_size)
+long Ransac::compute_trials(double success_rate, double no_inliers, int sample_size, double total_size)
 {
     double neumerator  = log(1-success_rate);
     double demoninator = log(1-pow((no_inliers/total_size), sample_size));
