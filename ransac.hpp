@@ -17,10 +17,13 @@ class Ransac
     private:
 
         static double distance_to_plane(Vector4d plane, Vector3d point);
+        static int compute_trials(double success_rate, double no_inliers, int sample_size, double total_size);
 
     public:
 
         static std::vector<std::vector<PlyPoint>> search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials);
+        static std::vector<std::vector<PlyPoint>> prob_search();
+        static int estimate_trials(std::vector<PlyPoint>* point_cloud, double success_rate);
 };
 
 #endif

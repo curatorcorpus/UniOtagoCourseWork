@@ -51,6 +51,8 @@ ransac.hpp
 /home/curator/Repository/plane_finder/ransac.hpp
 map
 -
+cmath
+-
 
 /home/curator/Repository/plane_finder/ransac.hpp
 iostream

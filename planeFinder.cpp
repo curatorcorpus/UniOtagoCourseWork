@@ -9,6 +9,9 @@
 using namespace std;
 using namespace Eigen;
 
+/**
+*   Main method.
+*/
 int main (int argc, char *argv[]) {
 
     // Check the commandline arguments.
@@ -96,6 +99,9 @@ int main (int argc, char *argv[]) {
     return 0;
 }
 
+/**
+*   Utility Method for generating plane point cloud data.
+*/
 SimplePly generate_plane_data(int sigma)
 {
     SimplePly plane_pc;

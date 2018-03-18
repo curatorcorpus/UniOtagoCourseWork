@@ -1,5 +1,7 @@
 #include "ransac.hpp"
 #include <map>
+#include <cmath>
+
 /**
 *   Method for computing the distance from plane to a point.
 *   Formula for distance between point and plane:
@@ -93,4 +95,23 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
         std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
     }
     return results;
+}
+
+
+int Ransac::estimate_trials(std::vector<PlyPoint>* point_cloud, double success_rate)
+{
+    int sample_size = 3;
+    int init_inliers = sample_size;
+    int no_trials = compute_trials(success_rate, (double)init_inliers, sample_size, (double)point_cloud->size());
+
+    return no_trials;
+}
+
+
+int Ransac::compute_trials(double success_rate, double no_inliers, int sample_size, double total_size)
+{
+    double neumerator  = log(1-success_rate);
+    double demoninator = log(1-pow((no_inliers/total_size), sample_size));
+
+    return neumerator / demoninator;
 }
