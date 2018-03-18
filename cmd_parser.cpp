@@ -1,4 +1,4 @@
-#include "CMDParser.hpp"
+#include "cmd_parser.hpp"
 #include <iostream>
 #include <stdlib.h>
 
@@ -35,7 +35,7 @@ void CMDParser::addOpt(std::string opt, int numValues, std::string optlong, std:
     for (int i=0; i<numValues; ++i)
       _help += " <value>";
   if(numValues == 0)
-    _help += " <value0> ... <valueN>";
+    _help += "";
   _help += "\n\t\t" + help + "\n";
 }
 

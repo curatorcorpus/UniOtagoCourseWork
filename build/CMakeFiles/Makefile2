@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/curator/Repository/plane_finder/build
 CMakeFiles/planeFinder.dir/all:
 	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/depend
 	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target planeFinder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target planeFinder"
 .PHONY : CMakeFiles/planeFinder.dir/all
 
 # Include target in all.
@@ -76,7 +76,7 @@ all: CMakeFiles/planeFinder.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/planeFinder.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curator/Repository/plane_finder/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/curator/Repository/plane_finder/build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/planeFinder.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/curator/Repository/plane_finder/build/CMakeFiles 0
 .PHONY : CMakeFiles/planeFinder.dir/rule

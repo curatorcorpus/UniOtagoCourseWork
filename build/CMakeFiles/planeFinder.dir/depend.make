@@ -135,6 +135,9 @@ CMakeFiles/planeFinder.dir/SimplePly.cpp.o: /usr/include/eigen3/Eigen/src/plugin
 CMakeFiles/planeFinder.dir/SimplePly.cpp.o: /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseBinaryOps.h
 CMakeFiles/planeFinder.dir/SimplePly.cpp.o: /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
+CMakeFiles/planeFinder.dir/cmd_parser.cpp.o: ../cmd_parser.cpp
+CMakeFiles/planeFinder.dir/cmd_parser.cpp.o: ../cmd_parser.hpp
+
 CMakeFiles/planeFinder.dir/plane.cpp.o: ../plane.cpp
 CMakeFiles/planeFinder.dir/plane.cpp.o: ../plane.hpp
 CMakeFiles/planeFinder.dir/plane.cpp.o: /usr/include/eigen3/Eigen/Cholesky
@@ -312,6 +315,7 @@ CMakeFiles/planeFinder.dir/plane.cpp.o: /usr/include/eigen3/Eigen/src/plugins/Ma
 CMakeFiles/planeFinder.dir/plane.cpp.o: /usr/include/eigen3/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: ../SimplePly.h
+CMakeFiles/planeFinder.dir/planeFinder.cpp.o: ../cmd_parser.hpp
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: ../plane.hpp
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: ../planeFinder.cpp
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: ../ransac.hpp

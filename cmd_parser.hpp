@@ -1,5 +1,5 @@
-#ifndef RGBD_CALIB_CMDPARSER_HPP
-#define RGBD_CALIB_CMDPARSER_HPP
+#ifndef CMDPARSER_HPP_
+#define CMDPARSER_HPP_
 
 #include <string>
 #include <vector>
@@ -34,4 +34,4 @@ class CMDParser
         std::string _help;
         std::string _arguments;
 };
-#endif //#ifndef RGBD_CALIB_CMDPARSER_HPP
+#endif

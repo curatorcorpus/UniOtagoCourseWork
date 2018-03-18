@@ -150,6 +150,33 @@ SimplePly.cpp.s:
 	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/SimplePly.cpp.s
 .PHONY : SimplePly.cpp.s
 
+cmd_parser.o: cmd_parser.cpp.o
+
+.PHONY : cmd_parser.o
+
+# target to build an object file
+cmd_parser.cpp.o:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/cmd_parser.cpp.o
+.PHONY : cmd_parser.cpp.o
+
+cmd_parser.i: cmd_parser.cpp.i
+
+.PHONY : cmd_parser.i
+
+# target to preprocess a source file
+cmd_parser.cpp.i:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/cmd_parser.cpp.i
+.PHONY : cmd_parser.cpp.i
+
+cmd_parser.s: cmd_parser.cpp.s
+
+.PHONY : cmd_parser.s
+
+# target to generate assembly for a file
+cmd_parser.cpp.s:
+	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/cmd_parser.cpp.s
+.PHONY : cmd_parser.cpp.s
+
 plane.o: plane.cpp.o
 
 .PHONY : plane.o
@@ -270,6 +297,9 @@ help:
 	@echo "... SimplePly.o"
 	@echo "... SimplePly.i"
 	@echo "... SimplePly.s"
+	@echo "... cmd_parser.o"
+	@echo "... cmd_parser.i"
+	@echo "... cmd_parser.s"
 	@echo "... plane.o"
 	@echo "... plane.i"
 	@echo "... plane.s"

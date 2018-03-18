@@ -33,6 +33,8 @@ INCLUDE_DIRECTORIES(
 
 ADD_EXECUTABLE(planeFinder
 
+  cmd_parser.hpp
+  cmd_parser.cpp
 	plane.hpp
 	plane.cpp
 	planeFinder.cpp

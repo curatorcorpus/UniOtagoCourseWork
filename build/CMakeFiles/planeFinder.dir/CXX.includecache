@@ -24,6 +24,22 @@ vector
 string
 -
 
+/home/curator/Repository/plane_finder/cmd_parser.cpp
+cmd_parser.hpp
+/home/curator/Repository/plane_finder/cmd_parser.hpp
+iostream
+-
+stdlib.h
+-
+
+/home/curator/Repository/plane_finder/cmd_parser.hpp
+string
+-
+vector
+-
+map
+-
+
 /home/curator/Repository/plane_finder/plane.cpp
 plane.hpp
 /home/curator/Repository/plane_finder/plane.hpp
@@ -35,6 +51,8 @@ Eigen/Geometry
 -
 
 /home/curator/Repository/plane_finder/planeFinder.cpp
+cmd_parser.hpp
+/home/curator/Repository/plane_finder/cmd_parser.hpp
 plane.hpp
 /home/curator/Repository/plane_finder/plane.hpp
 ransac.hpp

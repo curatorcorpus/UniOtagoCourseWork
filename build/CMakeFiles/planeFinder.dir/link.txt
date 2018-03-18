@@ -1,1 +1,1 @@
-/usr/bin/c++    -std=c++11   CMakeFiles/planeFinder.dir/plane.cpp.o CMakeFiles/planeFinder.dir/planeFinder.cpp.o CMakeFiles/planeFinder.dir/ransac.cpp.o CMakeFiles/planeFinder.dir/SimplePly.cpp.o CMakeFiles/planeFinder.dir/rply.c.o  -o planeFinder -rdynamic 
+/usr/bin/c++    -std=c++11   CMakeFiles/planeFinder.dir/cmd_parser.cpp.o CMakeFiles/planeFinder.dir/plane.cpp.o CMakeFiles/planeFinder.dir/planeFinder.cpp.o CMakeFiles/planeFinder.dir/ransac.cpp.o CMakeFiles/planeFinder.dir/SimplePly.cpp.o CMakeFiles/planeFinder.dir/rply.c.o  -o planeFinder -rdynamic 
