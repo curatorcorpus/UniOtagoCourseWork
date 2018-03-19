@@ -86,7 +86,11 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
     int p = 0;
 
     // for each plane count until max number of planes.
-    int target_remain_pc = pc_cpy.size()*(1-success_rate);
+    int target_remain_pc = pc_cpy.size()*(1-0.9);
+
+    double threshold_distance = estimate_trials_thresh_distance(point_cloud);
+
+    std::cout << "Estimate Threshold Distance: " << threshold_distance << std::endl;
 
     while(pc_cpy.size() > target_remain_pc)
     {
@@ -101,8 +105,6 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
             trials = 1000000;
         }
 
-        double threshold_distance = estimate_trials_thresh_distance(point_cloud);
-        std::cout << "Estimate Threshold Distance: " << threshold_distance << std::endl;
         // for each ransac trial until max number of ransac trials.
         for(int r = 0; r < trials; r++)
         {
@@ -129,13 +131,15 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
                 best_plane  = plane;
                 best_points = curr_pc;
 
-                inliers = curr_pc.size();
+                inliers = curr_pc.size()+results.size();
                 trials = estimate_trials(success_rate, double(inliers), 3, (double)pc_cpy.size());
 
                 if(trials < 0) 
                 {
                     trials = 1000000;
                 }
+                std::cout << "Estimate Trials: " << trials << std::endl;
+                r = 0;
             }
         }
 
@@ -189,7 +193,7 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
     _point[0] = point[0]; 
     _point[1] = point[1];
     _point[2] = point[2];
-    _point[3] = plane[3];
+    _point[3] = 1;
 
     Vector3d normal;
 
@@ -218,24 +222,25 @@ double Ransac::point_to_point_dist(Vector3d a, Vector3d b)
 
 double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud)
 {
-    int no_points = 100;
-
     // make deep copy
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
 
-    double max = 0.0;
+    double max = 0;
 
-    for(int i = 0; i < no_points; i++) 
+    int index = rand()%pc_cpy.size();
+    Vector4d plane = Plane::compute_plane(pc_cpy[index].location,
+                                          pc_cpy[index+1].location, 
+                                          pc_cpy[index+2].location);
+    // for each point in the point cloud.
+    for(int i = index+3; i < index+pc_cpy.size()/5; i++) 
     {
-        PlyPoint curr_pc = pc_cpy[i];
-
-        for(int j = 0; j < no_points; j++) 
-        {
-            double dist = point_to_point_dist(curr_pc.location, pc_cpy[j].location);
-
-            if(dist > max) {
-                max = dist;
-            }
+        Vector3d point = pc_cpy[i].location;
+        
+        //std::cout << distance_to_plane(plane, point) << std::endl;
+        // if point distance to plane is less than threshold distance.
+        double dist = distance_to_plane(plane, point);
+        if(dist > max) {
+            max = dist;
         }
     }
 
