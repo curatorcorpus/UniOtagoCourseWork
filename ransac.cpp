@@ -92,6 +92,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
 
     std::cout << "Estimate Threshold Distance: " << threshold_distance << std::endl;
 
+    std::cout << std::endl;
     while(pc_cpy.size() > target_remain_pc)
     {
         int pc_size = pc_cpy.size();
@@ -158,8 +159,6 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
         pc_cpy = new_pc;
 
         ++p;
-
-        std::cout << std::endl;
         std::cout << "Plane Equation: " << best_plane[0] << "x + " << best_plane[1] << "y + " 
                                         << best_plane[2] << "z + " << best_plane[3] << " = 0" << std::endl;
         std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
@@ -188,21 +187,8 @@ int Ransac::estimate_trials(double success_rate, double no_inliers, int sample_s
 */
 double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
 {
-    Vector4d _point;
-
-    _point[0] = point[0]; 
-    _point[1] = point[1];
-    _point[2] = point[2];
-    _point[3] = 1;
-
-    Vector3d normal;
-
-    normal[0] = plane[0];
-    normal[1] = plane[1];
-    normal[2] = plane[2];
-
-    double nominator   = std::abs(plane.dot(_point));
-    double denominator = std::sqrt(normal.dot(normal));
+    double nominator   = std::abs(plane[0]*point[0]+plane[1]*point[1]+plane[2]*point[2]+plane[3]);
+    double denominator = std::sqrt(plane[0]*plane[0]+plane[1]*plane[1]+plane[2]*plane[2]);
 
     return nominator / denominator;
 }
@@ -212,24 +198,27 @@ double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_clou
     // make deep copy
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
 
-    double max = 1000000000;
-
-    int index = rand()%pc_cpy.size();
-    Vector4d plane = Plane::compute_plane(pc_cpy[0].location,
-                                          pc_cpy[1].location, 
-                                          pc_cpy[2].location);
+    double max = 0;
+double tot = 0;
+    int index = 0.1*pc_cpy.size();
+    std::cout << index << std::endl;
+    Vector4d plane = Plane::compute_plane(pc_cpy[index+0+pc_cpy.size()/2].location,
+                                          pc_cpy[index+1+pc_cpy.size()/2].location, 
+                                          pc_cpy[index+2+pc_cpy.size()/2].location);
     // for each point in the point cloud.
-    for(int i = 3; i < index+pc_cpy.size()/100; i++) 
+    for(int i = index+3+pc_cpy.size()/2; i < index*2+3+pc_cpy.size()/2; i++) 
     {
         Vector3d point = pc_cpy[i].location;
         
         //std::cout << distance_to_plane(plane, point) << std::endl;
         // if point distance to plane is less than threshold distance.
         double dist = distance_to_plane(plane, point);
-        if(dist < max) {
+        tot+=dist;
+            std::cout << dist << std::endl;
+        if(dist > max) {
+
             max = dist;
         }
-    }
-
-    return max+1;
+    }            std::cout <<"aavg " << tot/index << std::endl;
+    return max;
 }

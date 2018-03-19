@@ -123,6 +123,7 @@ int main (int argc, char *argv[]) {
 
     cout << "Total Points Remaining Points: " << total_filtered_pts << endl;
     cout << "Filtered Noise Points: " << (ply.size() - total_filtered_pts) << endl;
+    cout << "Total Planes Found: " << no_planes << endl;
 
     // Write the resulting (re-coloured) point cloud to a PLY file.
     std::cout << "Writing PLY data to " << output << std::endl;
