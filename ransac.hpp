@@ -17,7 +17,6 @@ class Ransac
     private:
 
         static double distance_to_plane(Vector4d plane, Vector3d point);
-        static double point_to_point_dist(Vector3d a, Vector3d b);
         static double estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud);
         static int estimate_trials(double success_rate, double no_inliers, int sample_size, double total_size);
 

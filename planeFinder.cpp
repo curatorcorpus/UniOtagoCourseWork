@@ -86,10 +86,14 @@ int main (int argc, char *argv[]) {
     colours.push_back(Eigen::Vector3i(255,0,0));
     colours.push_back(Eigen::Vector3i(0,255,0));
     colours.push_back(Eigen::Vector3i(0,0,255));
-    
+    colours.push_back(Eigen::Vector3i(255,255,0));
+    colours.push_back(Eigen::Vector3i(255,0,255));
+    colours.push_back(Eigen::Vector3i(0,255,255));
+    colours.push_back(Eigen::Vector3i(255,255,255));
+
     no_planes = Ransac::no_planes;
 
-    if(no_planes > 3)
+    if(no_planes > colours.size())
     {
         int r = rand() % 255 + 1;
         int g = rand() % 255 + 1;
