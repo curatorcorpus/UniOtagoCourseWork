@@ -86,7 +86,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
     int p = 0;
 
     // for each plane count until max number of planes.
-    int target_remain_pc = pc_cpy.size()*(1-0.9);
+    int target_remain_pc = pc_cpy.size()*0.1;
 
     double threshold_distance = estimate_trials_thresh_distance(point_cloud);
 
@@ -103,7 +103,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
         int trials = estimate_trials(success_rate, double(inliers), 3, (double)pc_cpy.size());
         if(trials < 0) 
         {
-            trials = 1000000;
+            trials = 1942806191;
         }
 
         // for each ransac trial until max number of ransac trials.
@@ -198,27 +198,29 @@ double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_clou
     // make deep copy
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
 
-    double max = 0;
-double tot = 0;
-    int index = 0.1*pc_cpy.size();
-    std::cout << index << std::endl;
-    Vector4d plane = Plane::compute_plane(pc_cpy[index+0+pc_cpy.size()/2].location,
-                                          pc_cpy[index+1+pc_cpy.size()/2].location, 
-                                          pc_cpy[index+2+pc_cpy.size()/2].location);
-    // for each point in the point cloud.
-    for(int i = index+3+pc_cpy.size()/2; i < index*2+3+pc_cpy.size()/2; i++) 
+    double max = 0.0;
+    int subset = 0.01*pc_cpy.size();
+double wtf = 0.0;
+    for(int i = 1; i <= 10; i++) 
     {
-        Vector3d point = pc_cpy[i].location;
-        
-        //std::cout << distance_to_plane(plane, point) << std::endl;
-        // if point distance to plane is less than threshold distance.
-        double dist = distance_to_plane(plane, point);
-        tot+=dist;
-            std::cout << dist << std::endl;
-        if(dist > max) {
+        int lower = subset*(i-1), upper = subset * i;
+        Vector4d plane = Plane::compute_plane(pc_cpy[rand()%pc_cpy.size()].location,
+                                              pc_cpy[rand()%pc_cpy.size()].location, 
+                                              pc_cpy[rand()%pc_cpy.size()].location);
 
-            max = dist;
+        double max = 0;
+        for(int idx = lower; idx < upper; idx++) 
+        {
+            double dist = distance_to_plane(plane, pc_cpy[idx].location);
+            //if(dist > max) {
+              //  max = dist;
+            //}
+            max+=dist;
+            //std::cout << (int)dist << std::endl; 
         }
-    }            std::cout <<"aavg " << tot/index << std::endl;
-    return max;
+wtf += max/upper;
+        std::cout << max/upper << std::endl; 
+    }
+            std::cout << wtf/10 << std::endl; 
+    return wtf/10-0.068;
 }
