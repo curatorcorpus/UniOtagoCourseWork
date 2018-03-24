@@ -6,9 +6,16 @@
 int Ransac::no_planes;
 
 /**
-*   Method for 
+*   Method for applying basic RANSAC search for finding points to closest planes. 
+*   RANSAC parameters are manually determined by the user.
+*
+*   @param *point_cloud is the point cloud data. 
+*   @param no_planes is the number of planes in the scene.
+*   @param threshold is the threshold point-plane distance.
+*   @param no_ransac_trials is the number of ransac trials per plane.
+*   @return list of points grouped into planes.
 */
-std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials)
+std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold, int no_ransac_trials)
 {   
     std::vector<std::vector<PlyPoint>> results;
 
@@ -39,7 +46,7 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
                 
                 //std::cout << distance_to_plane(plane, point) << std::endl;
                 // if point distance to plane is less than threshold distance.
-                if(distance_to_plane(plane, point) < threshold_distance) 
+                if(distance_to_plane(plane, point) < threshold) 
                 {
                     curr_pc[i] = true;
                 }
@@ -74,23 +81,36 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
     return results;
 }
 
+/**
+*   Method for applying auto parameter RANSAC search for finding points to closest planes. 
+*   The following RANSAC parameters are determined algorithmically:
+*       no_trials - the number of ransac trials is determined using formula: log(1-success_rate) / log(1-pow((no_inliers/total_size), sample_size));
+*       threshold - the threshold point-plane distance that indicates the point is part of plane. 
+*       no_planes - the number of planes, we continue to apply ransac until majority of point clouds are explained by planes.
+*   
+*   @param *point_cloud is the point cloud data. 
+*   @param success_rate is the probability you will pick all inliers for each sample points [TODO: revise on definition].
+*   @return list of points grouped into planes.
+*/
 std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate)
 {
     std::vector<std::vector<PlyPoint>> results;
 
-    // make deep copy
+    // dereference point cloud pointer.
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
-    int size = pc_cpy.size();
 
+    int size = pc_cpy.size();
     int inliers = 3;
     int p = 0;
 
     // for each plane count until max number of planes.
     int target_remain_pc = pc_cpy.size()*0.1;
 
-    double threshold_distance = estimate_trials_thresh_distance(point_cloud);
+    //double threshold = estimate_trials_thresh_distance(point_cloud);
 
-    std::cout << "Estimate Threshold Distance: " << threshold_distance << std::endl;
+    double threshold = compute_threshold(point_cloud);
+
+    std::cout << "Estimate Threshold Distance: " << threshold << std::endl;
 
     std::cout << std::endl;
     while(pc_cpy.size() > target_remain_pc)
@@ -121,7 +141,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
                 
                 //std::cout << distance_to_plane(plane, point) << std::endl;
                 // if point distance to plane is less than threshold distance.
-                if(distance_to_plane(plane, point) < threshold_distance) 
+                if(distance_to_plane(plane, point) < threshold) 
                 {
                     curr_pc[i] = true;
                 }
@@ -139,7 +159,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
                 {
                     trials = 1942806191;
                 }
-                std::cout << "Estimate Trials: " << trials << std::endl;
+                std::cout << "Trials Remaining: " << trials << std::endl;
                 r = 0;
             }
         }
@@ -193,6 +213,85 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
     return nominator / denominator;
 }
 
+double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud) 
+{
+    double best_thresh = std::numeric_limits<float>::max();
+
+    std::vector<PlyPoint> pc_cpy = (*point_cloud);
+
+    for(int i = 0; i < 40; i++) 
+    {
+        int pi1 = std::rand() % pc_cpy.size();
+        int pi2 = std::rand() % pc_cpy.size();
+        int pi3 = std::rand() % pc_cpy.size();
+
+        Vector4d plane = Plane::compute_plane(pc_cpy[pi1].location, pc_cpy[pi2].location, pc_cpy[pi3].location);
+        double possible_thresh = estimate_trials_thresh_distance(point_cloud, plane);
+
+        if(possible_thresh < best_thresh) 
+        {
+            best_thresh = possible_thresh;
+        }
+        std::cout << "Sampling Local Groups " << i+1 << " Best Threshold: " << best_thresh << std::endl;
+    }
+    return best_thresh;
+}
+
+double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane)
+{
+
+    std::vector<PlyPoint> pc_cpy = (*point_cloud);
+    std::vector<double> buckets;
+
+    double max_dist = max_distance(point_cloud, plane);
+
+    int num_jumps = 10000;
+    int point_count = 0;
+    int  place_hold = 0;
+    int req_points = std::ceil(pc_cpy.size()*0.225);
+
+    double jump_size = max_dist / (num_jumps-1);
+
+    for(int i = 0; i < num_jumps; i++) 
+    {
+        buckets.push_back(0);
+    }
+
+    for(int i = 0; i < pc_cpy.size(); i++) 
+    {
+        double dist = distance_to_plane(plane, pc_cpy[i].location);
+        buckets[std::floor(dist / jump_size)]++;
+    }
+
+    while(point_count < req_points) 
+    {
+        point_count += buckets[place_hold];
+        place_hold++;
+    }
+
+    double threshold = (place_hold+1)*jump_size;
+
+    return threshold;
+}
+
+double Ransac::max_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane)
+{
+    double max_dist = 0.0, curr_dist = 0.0;
+
+    std::vector<PlyPoint> pc_cpy = (*point_cloud);
+
+    for(int i = 0; i < pc_cpy.size(); i++) 
+    {
+        if((curr_dist = distance_to_plane(plane, pc_cpy[i].location)) > max_dist)
+        {
+            max_dist = curr_dist;
+        }
+    }
+
+    return max_dist;
+}
+
+/*
 double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud)
 {
     // make deep copy
@@ -223,4 +322,4 @@ wtf += max/upper;
     }
             std::cout << wtf/10 << std::endl; 
     return wtf/10-0.068;
-}
+}*/
