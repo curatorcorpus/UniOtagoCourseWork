@@ -17,9 +17,9 @@ class Ransac
     private:
 
         static double distance_to_plane(Vector4d plane, Vector3d point);
-        static double estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane);
+        static double sample_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane, double thresh_prob);
         static int estimate_trials(double success_rate, double no_inliers, int sample_size, double total_size);
-        static double compute_threshold(std::vector<PlyPoint>* point_cloud);
+        static double compute_threshold(std::vector<PlyPoint>* point_cloud, double thresh_prob);
         static double max_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane);
 
     public:
@@ -27,7 +27,7 @@ class Ransac
         static int no_planes;
 
         static std::vector<std::vector<PlyPoint>> search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials);
-        static std::vector<std::vector<PlyPoint>> auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate);
+        static std::vector<std::vector<PlyPoint>> auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate, double thresh_prob);
 };
 
 #endif

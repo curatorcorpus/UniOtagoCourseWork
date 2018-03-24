@@ -15,12 +15,12 @@ using namespace Eigen;
 int main (int argc, char *argv[]) {
 
     bool run_raw = false;
-    double threshold, success_rate;
+    double threshold, success_rate, thresh_prob;
     int no_planes, n_trials;
 
     std::string input, output;
 
-    CMDParser p("<input file> <output file> <success rate>");
+    CMDParser p("<input file> <output file> <success rate> <threshold probability>");
 
     p.addOpt("r", 5, "raw", "[Raw RANSAC Method] Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>");
 
@@ -48,12 +48,8 @@ int main (int argc, char *argv[]) {
     input = argv[1];
     output = argv[2];
     success_rate = atof(argv[3]);
+    thresh_prob = atof(argv[4]);
 
-    /*
-    int n_planes = 1;
-    double threshold = 3;
-    int n_trials = 1000;
-*/
     // Storage for the point cloud.ll
     SimplePly ply;
 
@@ -77,7 +73,7 @@ int main (int argc, char *argv[]) {
         results = Ransac::search(point_cloud, no_planes, threshold, n_trials);
     } else 
     {
-        results = Ransac::auto_param_search(point_cloud, success_rate);
+        results = Ransac::auto_param_search(point_cloud, success_rate, thresh_prob);
     }
 
     // Generate plane colours
@@ -136,7 +132,7 @@ int main (int argc, char *argv[]) {
 }
 
 /**
-*   Utility Method for generating plane point cloud data.
+*   Utility Method for generating plane point cloud data - only a single plane.
 */
 SimplePly generate_plane_data(int sigma)
 {

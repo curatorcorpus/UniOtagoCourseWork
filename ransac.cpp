@@ -74,8 +74,8 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
         pc_cpy = new_pc;
 
         std::cout << std::endl;
-        std::cout << "Plane Equation: " << best_plane[0] << "x + " << best_plane[1] << "y + " 
-                                        << best_plane[2] << "z + " << best_plane[3] << " = 0" << std::endl;
+        std::cout << "Plane Equation: (" << best_plane[0] << ")x + (" << best_plane[1] << ")y + (" 
+                                        << best_plane[2] << ")z + (" << best_plane[3] << ") = 0" << std::endl;
         std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
     }
     return results;
@@ -92,7 +92,7 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
 *   @param success_rate is the probability you will pick all inliers for each sample points [TODO: revise on definition].
 *   @return list of points grouped into planes.
 */
-std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate)
+std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate, double thresh_prob)
 {
     std::vector<std::vector<PlyPoint>> results;
 
@@ -108,7 +108,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
 
     //double threshold = estimate_trials_thresh_distance(point_cloud);
 
-    double threshold = compute_threshold(point_cloud);
+    double threshold = compute_threshold(point_cloud, thresh_prob);
 
     std::cout << "Estimate Threshold Distance: " << threshold << std::endl;
 
@@ -123,7 +123,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
         int trials = estimate_trials(success_rate, double(inliers), 3, (double)pc_cpy.size());
         if(trials < 0) 
         {
-            trials = 1942806191;
+            trials = std::numeric_limits<int>::max();
         }
 
         // for each ransac trial until max number of ransac trials.
@@ -157,7 +157,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
 
                 if(trials < 0) 
                 {
-                    trials = 1942806191;
+                    trials = std::numeric_limits<int>::max();
                 }
                 std::cout << "Trials Remaining: " << trials << std::endl;
                 r = 0;
@@ -213,20 +213,24 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
     return nominator / denominator;
 }
 
-double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud) 
+/**
+*
+*/
+double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud, double thresh_prob) 
 {
-    double best_thresh = std::numeric_limits<float>::max();
+    double best_thresh = std::numeric_limits<double>::max();
+    int max_samples = 40;
 
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
 
-    for(int i = 0; i < 40; i++) 
+    for(int i = 0; i < max_samples; i++) 
     {
         int pi1 = std::rand() % pc_cpy.size();
         int pi2 = std::rand() % pc_cpy.size();
         int pi3 = std::rand() % pc_cpy.size();
 
         Vector4d plane = Plane::compute_plane(pc_cpy[pi1].location, pc_cpy[pi2].location, pc_cpy[pi3].location);
-        double possible_thresh = estimate_trials_thresh_distance(point_cloud, plane);
+        double possible_thresh = sample_thresh_distance(point_cloud, plane, thresh_prob);
 
         if(possible_thresh < best_thresh) 
         {
@@ -237,7 +241,15 @@ double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud)
     return best_thresh;
 }
 
-double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane)
+/**
+*   Method for estimating the threshold distance for points to be classified as part of a plane. 
+*   
+*   @param point cloud is the list of points.
+*   @param plane is the plane we using to compute point-plane distance of. 
+*   @param thresh_prob is the percentage of points required to determine the threshold distance. 
+*   @return the threshold distance based on the probability of points to define the threshold distance.
+*/
+double Ransac::sample_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane, double thresh_prob)
 {
 
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
@@ -248,7 +260,7 @@ double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_clou
     int num_jumps = 10000;
     int point_count = 0;
     int  place_hold = 0;
-    int req_points = std::ceil(pc_cpy.size()*0.225);
+    int req_points = std::ceil(pc_cpy.size()*0.21);
 
     double jump_size = max_dist / (num_jumps-1);
 
@@ -274,6 +286,13 @@ double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_clou
     return threshold;
 }
 
+/**
+*   Method for finding the maximum distance from a random plane. 
+*   
+*   @param point cloud is the list of points.
+*   @param plane is the plane we are using to measure the point-plane distance.
+*   @return maximum point-plane based on plane parameter.
+*/
 double Ransac::max_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane)
 {
     double max_dist = 0.0, curr_dist = 0.0;
@@ -290,36 +309,3 @@ double Ransac::max_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane)
 
     return max_dist;
 }
-
-/*
-double Ransac::estimate_trials_thresh_distance(std::vector<PlyPoint>* point_cloud)
-{
-    // make deep copy
-    std::vector<PlyPoint> pc_cpy = (*point_cloud);
-
-    double max = 0.0;
-    int subset = 0.01*pc_cpy.size();
-double wtf = 0.0;
-    for(int i = 1; i <= 10; i++) 
-    {
-        int lower = subset*(i-1), upper = subset * i;
-        Vector4d plane = Plane::compute_plane(pc_cpy[rand()%pc_cpy.size()].location,
-                                              pc_cpy[rand()%pc_cpy.size()].location, 
-                                              pc_cpy[rand()%pc_cpy.size()].location);
-
-        double max = 0;
-        for(int idx = lower; idx < upper; idx++) 
-        {
-            double dist = distance_to_plane(plane, pc_cpy[idx].location);
-            //if(dist > max) {
-              //  max = dist;
-            //}
-            max+=dist;
-            //std::cout << (int)dist << std::endl; 
-        }
-wtf += max/upper;
-        std::cout << max/upper << std::endl; 
-    }
-            std::cout << wtf/10 << std::endl; 
-    return wtf/10-0.068;
-}*/
