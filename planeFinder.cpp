@@ -14,7 +14,7 @@ using namespace Eigen;
 */
 int main (int argc, char *argv[]) {
 
-    bool run_raw = false;
+    bool run_raw = false, filter_outliers = false;
     double threshold, success_rate, thresh_prob;
     int no_planes, n_trials;
 
@@ -22,10 +22,15 @@ int main (int argc, char *argv[]) {
 
     CMDParser p("<input file> <output file> <success rate> <threshold probability>");
 
+    p.addOpt("f", 0, "f_out, [Filters out outliers in write out file].");
     p.addOpt("r", 5, "raw", "[Raw RANSAC Method] Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>");
 
     p.init(argc, argv);
 
+    if(p.isOptSet("f"))
+    {
+        filter_outliers = true;
+    }
     if(p.isOptSet("r")) 
     {
         no_planes  = atoi(argv[3]);
@@ -39,7 +44,7 @@ int main (int argc, char *argv[]) {
         std::cout << "Applying RANSAC with " << n_trials << " trials" << std::endl;
     }
 
-    if(argc != 4) 
+    if(argc != 5) 
     {   
         p.showHelp();
         return 0;
@@ -100,7 +105,7 @@ int main (int argc, char *argv[]) {
         }
     }
 
-    int total_filtered_pts = 0;
+    int total_inlier_pts = 0;
 
     SimplePly new_ply;
     for(int p = 0; p < no_planes; p++) 
@@ -109,7 +114,7 @@ int main (int argc, char *argv[]) {
         vector<PlyPoint> plane_pc = results[p];
     
         int size = plane_pc.size();
-        total_filtered_pts += size;
+        total_inlier_pts += size;
         for(int i = 0; i < size; i++) 
         {
             plane_pc[i].colour = col;
@@ -117,9 +122,25 @@ int main (int argc, char *argv[]) {
         }
     }
 
-    cout << "Total Points Remaining Points: " << total_filtered_pts << endl;
-    cout << "Filtered Noise Points: " << (ply.size() - total_filtered_pts) << endl;
-    cout << "Total Planes Found: " << no_planes << endl;
+    // Add remaining Colors.
+    if(filter_outliers) 
+    {
+        for(int p = no_planes; p < results.size(); p++) 
+        {
+            Vector3i col = colours[p];
+            vector<PlyPoint> plane_pc = results[p];
+        
+            int size = plane_pc.size();
+            for(int i = 0; i < size; i++) 
+            {
+                new_ply.add_point_cloud(plane_pc[i]);
+            }
+        }
+    }
+
+    cout << "Total Inlier Points:  " << total_inlier_pts << endl;
+    cout << "Total Outlier Points: " << (ply.size() - total_inlier_pts) << endl;
+    cout << "Total Planes Found:   " << no_planes << endl << endl;
 
     // Write the resulting (re-coloured) point cloud to a PLY file.
     std::cout << "Writing PLY data to " << output << std::endl;

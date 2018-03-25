@@ -184,12 +184,24 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
         std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
     }
 
+    // Add remaining Points.
+    results.push_back(pc_cpy);
+
     no_planes = p;
 
-    std::cout << "finished" << std::endl;
+    std::cout << "RANSAC Search Finished!" << std::endl;
     return results;
 }
 
+/**
+*   Method for estimating the number of RANSAC trials. 
+*   
+*   @param success_rate 
+*   @param no_inliers 
+*   @param sample_size
+*   @param total_size
+*   @return the number of trials. (Limited to integer data type max). 
+*/
 int Ransac::estimate_trials(double success_rate, double no_inliers, int sample_size, double total_size)
 {
     double neumerator  = log(1-success_rate);
@@ -204,6 +216,10 @@ int Ransac::estimate_trials(double success_rate, double no_inliers, int sample_s
 *       P = (x,y,z)
 *       Plane = (a,b,c,d)
 *       D = (|ax+by+cz+d|/sqrt(pow(a,2)+pow(b,2)+pow(c,2)))
+*   
+*   @param plane is the plane we want to measure the point from. 
+*   @param point is the point we want to measure the point to.
+*   @return the point-plane distance.
 */
 double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
 {
@@ -214,7 +230,8 @@ double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
 }
 
 /**
-*
+*   Method that guesses the threshold point-plane distance to classify a point is part of a plane. 
+*   The method samples 40 random planes, searches 
 */
 double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud, double thresh_prob) 
 {
@@ -222,6 +239,9 @@ double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud, double thre
     int max_samples = 40;
 
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
+
+    std::cout << std::endl;
+    std::cout << "Sampling " << max_samples << " random planes." << std::endl;
 
     for(int i = 0; i < max_samples; i++) 
     {
@@ -236,14 +256,32 @@ double Ransac::compute_threshold(std::vector<PlyPoint>* point_cloud, double thre
         {
             best_thresh = possible_thresh;
         }
-        std::cout << "Sampling Local Groups " << i+1 << " Best Threshold: " << best_thresh << std::endl;
+        std::cout << "Sampling Random Plane " << i+1 << ", Best Threshold: " << best_thresh << std::endl;
     }
     return best_thresh;
 }
 
 /**
-*   Method for estimating the threshold distance for points to be classified as part of a plane. 
+*   Method for estimating the threshold distance for points to be classified as part of a plane.
+*   The method first finds the maximum distance of all point-plane distance for a random plane. 
+*   Then for the given maximum distance, we have 10000 buckets to represent each subdistance of 
+*   of the maximum distance: 
+*       bucket 0    -> max_distance/10000
+*       bucket 9999 -> max_distance
 *   
+*   The distances of all points are computed and allocated to each bucket group. Now we have count of all 
+*   points of the same point-plane distance foreach bucket. The user will determine the percentage of points 
+*   that's forms one plane. If the user underestimates percentage of points, the threshold estimates will be small
+*   and therefore the RANSAC algorithm will be more pedantic - will over approximate. Else if the user overestimates percentage 
+*   of points, the threshold estimates will be large and therefore the RANSAC algorithm will be relaxed. But
+*   that means, it will under approximate. 
+*   
+*   Another way to look at this is if there are lots of points in the earlier buckets, then that indicates 
+*   there local group of points that fall below half the maximum distance. If there are lots of points 
+*   in the later buckets, then there are local group of points that are above half the maximum distance. 
+*   
+*   This method assumes for a small region of points it can be approximated to a plane. 
+*
 *   @param point cloud is the list of points.
 *   @param plane is the plane we using to compute point-plane distance of. 
 *   @param thresh_prob is the percentage of points required to determine the threshold distance. 
@@ -255,33 +293,30 @@ double Ransac::sample_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
     std::vector<double> buckets;
 
-    double max_dist = max_distance(point_cloud, plane);
-
-    int num_jumps = 10000;
+    int no_buckets = 10000;
     int point_count = 0;
-    int  place_hold = 0;
-    int req_points = std::ceil(pc_cpy.size()*0.21);
+    int bucket_count = 0;
+    int req_points = std::ceil(pc_cpy.size()*thresh_prob);
 
-    double jump_size = max_dist / (num_jumps-1);
+    double max_dist = max_distance(point_cloud, plane);
+    double bucket_interval = max_dist / (no_buckets-1);
 
-    for(int i = 0; i < num_jumps; i++) 
-    {
+    // Initialize buckets.
+    for(int i = 0; i < no_buckets; i++) 
         buckets.push_back(0);
-    }
 
+    // Computes point-plane distance and counts number of points in local bucket group.
     for(int i = 0; i < pc_cpy.size(); i++) 
     {
         double dist = distance_to_plane(plane, pc_cpy[i].location);
-        buckets[std::floor(dist / jump_size)]++;
+        buckets[std::floor(dist / bucket_interval)]++;
     }
 
+    // Sums point count in buckets until it exceeds user point count estimate for one plane. 
     while(point_count < req_points) 
-    {
-        point_count += buckets[place_hold];
-        place_hold++;
-    }
+        point_count += buckets[bucket_count++];
 
-    double threshold = (place_hold+1)*jump_size;
+    double threshold = (bucket_count+1)*bucket_interval;
 
     return threshold;
 }
