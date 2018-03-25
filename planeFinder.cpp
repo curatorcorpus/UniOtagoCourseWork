@@ -14,22 +14,32 @@ using namespace Eigen;
 */
 int main (int argc, char *argv[]) {
 
-    bool run_raw = false, filter_outliers = false;
-    double threshold, success_rate, thresh_prob;
+    bool run_raw = false, filter_outliers = false, percent_thresh_altered = false;
+    double threshold, success_rate, thresh_prob = 0.2;
     int no_planes, n_trials;
 
     std::string input, output;
 
-    CMDParser p("<input file> <output file> <success rate> <threshold probability>");
+    CMDParser p("<input file> <output file> <success rate>");
 
-    p.addOpt("f", 0, "f_out, [Filters out outliers in write out file].");
+    p.addOpt("f", -1, "fout, [Filters out outliers in write out file].");
     p.addOpt("r", 5, "raw", "[Raw RANSAC Method] Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>");
+    p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.2");
 
     p.init(argc, argv);
+        
+    input = argv[1];
+    output = argv[2];
+    success_rate = atof(argv[3]);
 
     if(p.isOptSet("f"))
     {
         filter_outliers = true;
+    }
+    if(p.isOptSet("t"))
+    {
+        percent_thresh_altered = true;
+        thresh_prob = atof(p.getOptsString("t")[0].c_str());
     }
     if(p.isOptSet("r")) 
     {
@@ -43,17 +53,10 @@ int main (int argc, char *argv[]) {
         std::cout << "Using a point-plane threshold of " << threshold << " units" << std::endl;
         std::cout << "Applying RANSAC with " << n_trials << " trials" << std::endl;
     }
-
-    if(argc != 5) 
-    {   
-        p.showHelp();
-        return 0;
+    if(!filter_outliers)  
+    {
+        thresh_prob = atof(argv[5]);
     }
-
-    input = argv[1];
-    output = argv[2];
-    success_rate = atof(argv[3]);
-    thresh_prob = atof(argv[4]);
 
     // Storage for the point cloud.ll
     SimplePly ply;
