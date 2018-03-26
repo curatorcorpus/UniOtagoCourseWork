@@ -67,6 +67,8 @@ Eigen/Geometry
 /home/curator/Repository/plane_finder/ransac.cpp
 ransac.hpp
 /home/curator/Repository/plane_finder/ransac.hpp
+plane.hpp
+/home/curator/Repository/plane_finder/plane.hpp
 map
 -
 cmath

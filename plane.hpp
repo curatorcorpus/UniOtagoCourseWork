@@ -18,6 +18,7 @@ private:
 
 public:
 
+    static double pt_to_pl_dist(Vector4d plane, Vector3d point);
 	static Vector4d compute_plane(Vector3d a, Vector3d b, Vector3d c);
 };
 

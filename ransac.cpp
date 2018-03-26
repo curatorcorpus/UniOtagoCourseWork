@@ -3,6 +3,7 @@
 */
 
 #include "ransac.hpp"
+#include "plane.hpp"
 
 #include <map>
 #include <cmath>
@@ -48,9 +49,9 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
             {
                 Vector3d point = pc_cpy[i].location;
                 
-                //std::cout << distance_to_plane(plane, point) << std::endl;
+                //std::cout << Plane::pt_to_pl_dist(plane, point) << std::endl;
                 // if point distance to plane is less than threshold distance.
-                if(distance_to_plane(plane, point) < threshold) 
+                if(Plane::pt_to_pl_dist(plane, point) < threshold) 
                 {
                     curr_pc[i] = true;
                 }
@@ -147,9 +148,9 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
             {
                 Vector3d point = pc_cpy[i].location;
                 
-                //std::cout << distance_to_plane(plane, point) << std::endl;
+                //std::cout << Plane::pt_to_pl_dist(plane, point) << std::endl;
                 // if point distance to plane is less than threshold distance.
-                if(distance_to_plane(plane, point) < threshold) 
+                if(Plane::pt_to_pl_dist(plane, point) < threshold) 
                 {
                     curr_pc[i] = true;
                 }
@@ -216,25 +217,6 @@ int Ransac::estimate_trials(double success_rate, double no_inliers, int sample_s
     double demoninator = log(1-pow((no_inliers/total_size), sample_size));
 
     return std::ceil(neumerator / demoninator); // ceil used to prevent infinite loops when trial value becomes less than 1.
-}
-
-/**
-*   Method for computing the distance from plane to a point.
-*   Formula for distance between point and plane:
-*       P = (x,y,z)
-*       Plane = (a,b,c,d)
-*       D = (|ax+by+cz+d|/sqrt(pow(a,2)+pow(b,2)+pow(c,2)))
-*   
-*   @param plane is the plane we want to measure the point from. 
-*   @param point is the point we want to measure the point to.
-*   @return the point-plane distance.
-*/
-double Ransac::distance_to_plane(Vector4d plane, Vector3d point)
-{
-    double nominator   = std::abs(plane[0]*point[0]+plane[1]*point[1]+plane[2]*point[2]+plane[3]);
-    double denominator = std::sqrt(plane[0]*plane[0]+plane[1]*plane[1]+plane[2]*plane[2]);
-
-    return nominator / denominator;
 }
 
 /**
@@ -316,7 +298,7 @@ double Ransac::sample_thresh_distance(std::vector<PlyPoint>* point_cloud, Vector
     // Computes point-plane distance and counts number of points in local bucket group.
     for(int i = 0; i < pc_cpy.size(); i++) 
     {
-        double dist = distance_to_plane(plane, pc_cpy[i].location);
+        double dist = Plane::pt_to_pl_dist(plane, pc_cpy[i].location);
         buckets[std::floor(dist / bucket_interval)]++;
     }
 
@@ -344,7 +326,7 @@ double Ransac::max_distance(std::vector<PlyPoint>* point_cloud, Vector4d plane)
 
     for(int i = 0; i < pc_cpy.size(); i++) 
     {
-        if((curr_dist = distance_to_plane(plane, pc_cpy[i].location)) > max_dist)
+        if((curr_dist = Plane::pt_to_pl_dist(plane, pc_cpy[i].location)) > max_dist)
         {
             max_dist = curr_dist;
         }

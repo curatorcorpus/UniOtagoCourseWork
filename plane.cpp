@@ -30,3 +30,22 @@ Vector4d Plane::compute_plane(Vector3d a, Vector3d b, Vector3d c) {
 
   	return plane;
 }
+
+/**
+*   Method for computing the distance from plane to a point.
+*   Formula for distance between point and plane:
+*       P = (x,y,z)
+*       Plane = (a,b,c,d)
+*       D = (|ax+by+cz+d|/sqrt(pow(a,2)+pow(b,2)+pow(c,2)))
+*   
+*   @param plane is the plane we want to measure the point from. 
+*   @param point is the point we want to measure the point to.
+*   @return the point-plane distance.
+*/
+double Plane::pt_to_pl_dist(Vector4d plane, Vector3d point)
+{
+    double nominator   = std::abs(plane[0]*point[0]+plane[1]*point[1]+plane[2]*point[2]+plane[3]);
+    double denominator = std::sqrt(plane[0]*plane[0]+plane[1]*plane[1]+plane[2]*plane[2]);
+
+    return nominator / denominator;
+}
