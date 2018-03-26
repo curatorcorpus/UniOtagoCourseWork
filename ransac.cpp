@@ -82,6 +82,10 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
                                         << best_plane[2] << ")z + (" << best_plane[3] << ") = 0" << std::endl;
         std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
     }
+
+    // Add remaining Points.
+    results.push_back(pc_cpy);
+
     return results;
 }
 
@@ -183,8 +187,8 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
         pc_cpy = new_pc;
 
         ++p;
-        std::cout << "Plane Equation: " << best_plane[0] << "x + " << best_plane[1] << "y + " 
-                                        << best_plane[2] << "z + " << best_plane[3] << " = 0" << std::endl;
+        std::cout << "Plane Equation: (" << best_plane[0] << ")x + (" << best_plane[1] << ")y + (" 
+                                        << best_plane[2] << ")z + (" << best_plane[3] << ") = 0" << std::endl;
         std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
     }
 
