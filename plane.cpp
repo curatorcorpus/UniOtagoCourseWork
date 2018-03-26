@@ -1,3 +1,7 @@
+/**
+*   @Author Jung-Woo (Noel) Park.
+*/
+
 #include "plane.hpp"
 
 /**

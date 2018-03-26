@@ -1,3 +1,7 @@
+/**
+*   @Author Jung-Woo (Noel) Park.
+*/
+
 #ifndef RANSAC_HPP_
 #define RANSAC_HPP_
 

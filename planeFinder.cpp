@@ -1,3 +1,7 @@
+/**
+*   @Author Jung-Woo (Noel) Park.
+*/
+
 #include "cmd_parser.hpp"
 #include "plane.hpp"
 #include "ransac.hpp"
@@ -14,38 +18,70 @@ using namespace Eigen;
 */
 int main (int argc, char *argv[]) 
 {
-    bool run_raw = false, filter_outliers = false, percent_thresh_altered = false;
-    double threshold, success_rate, thresh_prob = 0.21;
-    int no_planes, n_trials;
+    bool   run_raw = false;
+    bool   filter_outliers = false;
+    double threshold;
+    double success_rate = 0.9;
+    double thresh_prob = 0.21;
+    int    no_planes;
+    int    n_trials;
 
     std::string input, output;
 
-    CMDParser p("<input file> <output file> <success rate>");
-
-    p.addOpt("f", -1, "fout, [Filters out outliers in write out file].");
+    CMDParser p("<input file> <output file>");
+    p.addOpt("f", -1, "fout", "[Filters out outliers in write out file].");
+    p.addOpt("p", 1, "prob", "[Success Probability] - Default: 0.9");
     p.addOpt("r", 5, "raw", "[Raw RANSAC Method] Usage: planeFinder <input file> <output file> <number of planes> <point-plane threshold> <number of RANSAC trials>");
     p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.2");
-
     p.init(argc, argv);
-        
+    
+    // obtain input and output file names.
     input = argv[1];
     output = argv[2];
-    success_rate = atof(argv[3]);
 
     if(p.isOptSet("f"))
     {
         filter_outliers = true;
     }
+    if(p.isOptSet("p"))
+    {
+        success_rate = atof(p.getOptsString("p")[0].c_str());
+        if(success_rate >= 1.0 || success_rate <= 0)
+        {
+            cerr << "Invalid Success Rate!" << endl;
+            return 0;
+        }
+    }
     if(p.isOptSet("t"))
     {
-        percent_thresh_altered = true;
         thresh_prob = atof(p.getOptsString("t")[0].c_str());
+        if(thresh_prob >= 1.0 || thresh_prob <= 0)
+        {
+            cerr << "Invalid Success Rate!" << endl;
+            return 0;
+        }
     }
     if(p.isOptSet("r")) 
     {
-        no_planes  = atoi(argv[3]);
-        threshold = atof(argv[4]);
-        n_trials  = atoi(argv[5]);
+        no_planes  = atoi(p.getOptsString("r")[0].c_str());
+        threshold = atof(p.getOptsString("r")[1].c_str());
+        n_trials  = atoi(p.getOptsString("r")[2].c_str());
+
+        if(no_planes <= 0)
+        {
+            cerr << "Invalid! Negative/zero number of planes." << endl;
+            return 0;
+        } 
+        if(threshold <= 0) 
+        {
+            cerr << "Invalid! Negative/zero number for threshold distance." << endl;
+            return 0;
+        }
+        if(n_trials <= 0)
+        {
+            cerr << "Invalid! Negative/zero number of trials." << endl;
+            return 0;
+        }
 
         run_raw = true;
 

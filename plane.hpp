@@ -1,3 +1,7 @@
+/**
+*   @Author Jung-Woo (Noel) Park.
+*/
+
 #ifndef PLANE_HPP_
 #define PLANE_HPP_
 
