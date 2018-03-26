@@ -12,10 +12,10 @@ using namespace Eigen;
 /**
 *   Main method.
 */
-int main (int argc, char *argv[]) {
-
+int main (int argc, char *argv[]) 
+{
     bool run_raw = false, filter_outliers = false, percent_thresh_altered = false;
-    double threshold, success_rate, thresh_prob = 0.2;
+    double threshold, success_rate, thresh_prob = 0.21;
     int no_planes, n_trials;
 
     std::string input, output;
@@ -52,10 +52,6 @@ int main (int argc, char *argv[]) {
         std::cout << "Searching for " << no_planes << " planes" << std::endl;
         std::cout << "Using a point-plane threshold of " << threshold << " units" << std::endl;
         std::cout << "Applying RANSAC with " << n_trials << " trials" << std::endl;
-    }
-    if(!filter_outliers)  
-    {
-        thresh_prob = atof(argv[5]);
     }
 
     // Storage for the point cloud.ll
@@ -126,7 +122,7 @@ int main (int argc, char *argv[]) {
     }
 
     // Add remaining Colors.
-    if(filter_outliers) 
+    if(!filter_outliers) 
     {
         for(int p = no_planes; p < results.size(); p++) 
         {

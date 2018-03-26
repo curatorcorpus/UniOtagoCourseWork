@@ -207,7 +207,7 @@ int Ransac::estimate_trials(double success_rate, double no_inliers, int sample_s
     double neumerator  = log(1-success_rate);
     double demoninator = log(1-pow((no_inliers/total_size), sample_size));
 
-    return neumerator / demoninator;
+    return std::ceil(neumerator / demoninator); // ceil used to prevent infinite loops when trial value becomes less than 1.
 }
 
 /**
