@@ -1,0 +1,158 @@
+fileFormatVersion: 2
+guid: 33803c019e9588a47a08396fa71e5dc9
+timeCreated: 1521081759
+licenseType: Free
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b000000
+  assetHash:
+    serializedVersion: 2
+    Hash: 79227bd6c7f2bf594ddf8f5f5679cb4c
+  longitude: -105.242139
+  latitude: 40.018309
+  northCorrection: -0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: -2.5049663, y: 0.37277076, z: -0.14358418}
+      lookAt: {x: 21.867035, y: 3.1759443, z: 0.42963713}
+      up: {x: -0.114200085, y: 0.99345416, z: -0.0026859478}
+      fov: 35
+      aspectRatio: 0
+      orthoSize: 1
+      isPerspective: 1
+    scenes: []
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: leg
+    100002: leg 1
+    100004: leg 2
+    100006: leg 3
+    100008: //RootNode
+    100010: table
+    100012: top
+    400000: leg
+    400002: leg 1
+    400004: leg 2
+    400006: leg 3
+    400008: //RootNode
+    400010: table
+    400012: top
+    2300000: leg
+    2300002: leg 1
+    2300004: leg 2
+    2300006: leg 3
+    2300008: top
+    3300000: leg
+    3300002: leg 1
+    3300004: leg 2
+    3300006: leg 3
+    3300008: top
+    4300000: Mesh leg
+    4300002: Mesh top
+    6400000: leg
+    6400002: leg 1
+    6400004: leg 2
+    6400006: leg 3
+    6400008: top
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 0078_DarkSlateGray
+    second: {fileID: 2100000, guid: 76552b194175cd941b7d59b49cbbbfdf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood Lumber ButtJoined
+    second: {fileID: 2100000, guid: 96f5afc8ed9c3414399568d21b219081, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[0078_DarkSlateGray]'
+    second: {fileID: 2100000, guid: 53d78bd024d736e41bf55f85489a7dd2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: '[Wood Lumber ButtJoined]'
+    second: {fileID: 2100000, guid: 2ef8477602ac6dc49923c29a53abb787, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 2
+    materialSearch: 0
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.0254
+    meshCompression: 3
+    addColliders: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
