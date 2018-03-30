@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/curator/Repository/plane_finder
+CMAKE_SOURCE_DIR = /mnt/c/Users/itach/Documents/Github/plane_finder
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/curator/Repository/plane_finder/build
+CMAKE_BINARY_DIR = /mnt/c/Users/itach/Documents/Github/plane_finder/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/planeFinder.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/planeFinder.dir/flags.make
 
 CMakeFiles/planeFinder.dir/cmd_parser.cpp.o: CMakeFiles/planeFinder.dir/flags.make
 CMakeFiles/planeFinder.dir/cmd_parser.cpp.o: ../cmd_parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/planeFinder.dir/cmd_parser.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/cmd_parser.cpp.o -c /home/curator/Repository/plane_finder/cmd_parser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/planeFinder.dir/cmd_parser.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/cmd_parser.cpp.o -c /mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.cpp
 
 CMakeFiles/planeFinder.dir/cmd_parser.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/planeFinder.dir/cmd_parser.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/curator/Repository/plane_finder/cmd_parser.cpp > CMakeFiles/planeFinder.dir/cmd_parser.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.cpp > CMakeFiles/planeFinder.dir/cmd_parser.cpp.i
 
 CMakeFiles/planeFinder.dir/cmd_parser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/planeFinder.dir/cmd_parser.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/curator/Repository/plane_finder/cmd_parser.cpp -o CMakeFiles/planeFinder.dir/cmd_parser.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.cpp -o CMakeFiles/planeFinder.dir/cmd_parser.cpp.s
 
 CMakeFiles/planeFinder.dir/cmd_parser.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/planeFinder.dir/cmd_parser.cpp.o.provides.build: CMakeFiles/planeFind
 
 CMakeFiles/planeFinder.dir/plane.cpp.o: CMakeFiles/planeFinder.dir/flags.make
 CMakeFiles/planeFinder.dir/plane.cpp.o: ../plane.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/planeFinder.dir/plane.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/plane.cpp.o -c /home/curator/Repository/plane_finder/plane.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/planeFinder.dir/plane.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/plane.cpp.o -c /mnt/c/Users/itach/Documents/Github/plane_finder/plane.cpp
 
 CMakeFiles/planeFinder.dir/plane.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/planeFinder.dir/plane.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/curator/Repository/plane_finder/plane.cpp > CMakeFiles/planeFinder.dir/plane.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/itach/Documents/Github/plane_finder/plane.cpp > CMakeFiles/planeFinder.dir/plane.cpp.i
 
 CMakeFiles/planeFinder.dir/plane.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/planeFinder.dir/plane.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/curator/Repository/plane_finder/plane.cpp -o CMakeFiles/planeFinder.dir/plane.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/itach/Documents/Github/plane_finder/plane.cpp -o CMakeFiles/planeFinder.dir/plane.cpp.s
 
 CMakeFiles/planeFinder.dir/plane.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/planeFinder.dir/plane.cpp.o.provides.build: CMakeFiles/planeFinder.di
 
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: CMakeFiles/planeFinder.dir/flags.make
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o: ../planeFinder.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/planeFinder.dir/planeFinder.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/planeFinder.cpp.o -c /home/curator/Repository/plane_finder/planeFinder.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/planeFinder.dir/planeFinder.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/planeFinder.cpp.o -c /mnt/c/Users/itach/Documents/Github/plane_finder/planeFinder.cpp
 
 CMakeFiles/planeFinder.dir/planeFinder.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/planeFinder.dir/planeFinder.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/curator/Repository/plane_finder/planeFinder.cpp > CMakeFiles/planeFinder.dir/planeFinder.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/itach/Documents/Github/plane_finder/planeFinder.cpp > CMakeFiles/planeFinder.dir/planeFinder.cpp.i
 
 CMakeFiles/planeFinder.dir/planeFinder.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/planeFinder.dir/planeFinder.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/curator/Repository/plane_finder/planeFinder.cpp -o CMakeFiles/planeFinder.dir/planeFinder.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/itach/Documents/Github/plane_finder/planeFinder.cpp -o CMakeFiles/planeFinder.dir/planeFinder.cpp.s
 
 CMakeFiles/planeFinder.dir/planeFinder.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/planeFinder.dir/planeFinder.cpp.o.provides.build: CMakeFiles/planeFin
 
 CMakeFiles/planeFinder.dir/ransac.cpp.o: CMakeFiles/planeFinder.dir/flags.make
 CMakeFiles/planeFinder.dir/ransac.cpp.o: ../ransac.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/planeFinder.dir/ransac.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/ransac.cpp.o -c /home/curator/Repository/plane_finder/ransac.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/planeFinder.dir/ransac.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/ransac.cpp.o -c /mnt/c/Users/itach/Documents/Github/plane_finder/ransac.cpp
 
 CMakeFiles/planeFinder.dir/ransac.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/planeFinder.dir/ransac.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/curator/Repository/plane_finder/ransac.cpp > CMakeFiles/planeFinder.dir/ransac.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/itach/Documents/Github/plane_finder/ransac.cpp > CMakeFiles/planeFinder.dir/ransac.cpp.i
 
 CMakeFiles/planeFinder.dir/ransac.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/planeFinder.dir/ransac.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/curator/Repository/plane_finder/ransac.cpp -o CMakeFiles/planeFinder.dir/ransac.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/itach/Documents/Github/plane_finder/ransac.cpp -o CMakeFiles/planeFinder.dir/ransac.cpp.s
 
 CMakeFiles/planeFinder.dir/ransac.cpp.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/planeFinder.dir/ransac.cpp.o.provides.build: CMakeFiles/planeFinder.d
 
 CMakeFiles/planeFinder.dir/SimplePly.cpp.o: CMakeFiles/planeFinder.dir/flags.make
 CMakeFiles/planeFinder.dir/SimplePly.cpp.o: ../SimplePly.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/planeFinder.dir/SimplePly.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/SimplePly.cpp.o -c /home/curator/Repository/plane_finder/SimplePly.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/planeFinder.dir/SimplePly.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/planeFinder.dir/SimplePly.cpp.o -c /mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.cpp
 
 CMakeFiles/planeFinder.dir/SimplePly.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/planeFinder.dir/SimplePly.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/curator/Repository/plane_finder/SimplePly.cpp > CMakeFiles/planeFinder.dir/SimplePly.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.cpp > CMakeFiles/planeFinder.dir/SimplePly.cpp.i
 
 CMakeFiles/planeFinder.dir/SimplePly.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/planeFinder.dir/SimplePly.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/curator/Repository/plane_finder/SimplePly.cpp -o CMakeFiles/planeFinder.dir/SimplePly.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.cpp -o CMakeFiles/planeFinder.dir/SimplePly.cpp.s
 
 CMakeFiles/planeFinder.dir/SimplePly.cpp.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/planeFinder.dir/SimplePly.cpp.o.provides.build: CMakeFiles/planeFinde
 
 CMakeFiles/planeFinder.dir/rply.c.o: CMakeFiles/planeFinder.dir/flags.make
 CMakeFiles/planeFinder.dir/rply.c.o: ../rply.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/planeFinder.dir/rply.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/planeFinder.dir/rply.c.o   -c /home/curator/Repository/plane_finder/rply.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/planeFinder.dir/rply.c.o"
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/planeFinder.dir/rply.c.o   -c /mnt/c/Users/itach/Documents/Github/plane_finder/rply.c
 
 CMakeFiles/planeFinder.dir/rply.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/planeFinder.dir/rply.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/curator/Repository/plane_finder/rply.c > CMakeFiles/planeFinder.dir/rply.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /mnt/c/Users/itach/Documents/Github/plane_finder/rply.c > CMakeFiles/planeFinder.dir/rply.c.i
 
 CMakeFiles/planeFinder.dir/rply.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/planeFinder.dir/rply.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/curator/Repository/plane_finder/rply.c -o CMakeFiles/planeFinder.dir/rply.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /mnt/c/Users/itach/Documents/Github/plane_finder/rply.c -o CMakeFiles/planeFinder.dir/rply.c.s
 
 CMakeFiles/planeFinder.dir/rply.c.o.requires:
 
@@ -221,7 +221,7 @@ planeFinder: CMakeFiles/planeFinder.dir/SimplePly.cpp.o
 planeFinder: CMakeFiles/planeFinder.dir/rply.c.o
 planeFinder: CMakeFiles/planeFinder.dir/build.make
 planeFinder: CMakeFiles/planeFinder.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable planeFinder"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable planeFinder"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/planeFinder.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -243,6 +243,6 @@ CMakeFiles/planeFinder.dir/clean:
 .PHONY : CMakeFiles/planeFinder.dir/clean
 
 CMakeFiles/planeFinder.dir/depend:
-	cd /home/curator/Repository/plane_finder/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/curator/Repository/plane_finder /home/curator/Repository/plane_finder /home/curator/Repository/plane_finder/build /home/curator/Repository/plane_finder/build /home/curator/Repository/plane_finder/build/CMakeFiles/planeFinder.dir/DependInfo.cmake --color=$(COLOR)
+	cd /mnt/c/Users/itach/Documents/Github/plane_finder/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/Users/itach/Documents/Github/plane_finder /mnt/c/Users/itach/Documents/Github/plane_finder /mnt/c/Users/itach/Documents/Github/plane_finder/build /mnt/c/Users/itach/Documents/Github/plane_finder/build /mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles/planeFinder.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/planeFinder.dir/depend
 

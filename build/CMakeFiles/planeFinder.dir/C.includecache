@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/curator/Repository/plane_finder/rply.c
+/mnt/c/Users/itach/Documents/Github/plane_finder/rply.c
 stdio.h
 -
 ctype.h
@@ -26,13 +26,13 @@ stdlib.h
 stddef.h
 -
 rply.h
-/home/curator/Repository/plane_finder/rply.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/rply.h
 rplyfile.h
-/home/curator/Repository/plane_finder/rplyfile.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/rplyfile.h
 stdint.h
 -
 
-/home/curator/Repository/plane_finder/rply.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/rply.h
 
-/home/curator/Repository/plane_finder/rplyfile.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/rplyfile.h
 

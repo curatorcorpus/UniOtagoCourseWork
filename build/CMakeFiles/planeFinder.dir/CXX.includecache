@@ -6,17 +6,17 @@
 
 #IncludeRegexTransform: 
 
-/home/curator/Repository/plane_finder/SimplePly.cpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.cpp
 SimplePly.h
-/home/curator/Repository/plane_finder/SimplePly.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.h
 rply.h
-/home/curator/Repository/plane_finder/rply.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/rply.h
 iostream
 -
 fstream
 -
 
-/home/curator/Repository/plane_finder/SimplePly.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.h
 Eigen/Core
 -
 vector
@@ -24,15 +24,15 @@ vector
 string
 -
 
-/home/curator/Repository/plane_finder/cmd_parser.cpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.cpp
 cmd_parser.hpp
-/home/curator/Repository/plane_finder/cmd_parser.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.hpp
 iostream
 -
 stdlib.h
 -
 
-/home/curator/Repository/plane_finder/cmd_parser.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.hpp
 string
 -
 vector
@@ -40,23 +40,23 @@ vector
 map
 -
 
-/home/curator/Repository/plane_finder/plane.cpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/plane.cpp
 plane.hpp
-/home/curator/Repository/plane_finder/plane.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/plane.hpp
 
-/home/curator/Repository/plane_finder/plane.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/plane.hpp
 Eigen/Core
 -
 Eigen/Geometry
 -
 
-/home/curator/Repository/plane_finder/planeFinder.cpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/planeFinder.cpp
 cmd_parser.hpp
-/home/curator/Repository/plane_finder/cmd_parser.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/cmd_parser.hpp
 plane.hpp
-/home/curator/Repository/plane_finder/plane.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/plane.hpp
 ransac.hpp
-/home/curator/Repository/plane_finder/ransac.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/ransac.hpp
 iostream
 -
 chrono
@@ -64,17 +64,17 @@ chrono
 Eigen/Geometry
 -
 
-/home/curator/Repository/plane_finder/ransac.cpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/ransac.cpp
 ransac.hpp
-/home/curator/Repository/plane_finder/ransac.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/ransac.hpp
 plane.hpp
-/home/curator/Repository/plane_finder/plane.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/plane.hpp
 map
 -
 cmath
 -
 
-/home/curator/Repository/plane_finder/ransac.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/ransac.hpp
 iostream
 -
 vector
@@ -84,11 +84,11 @@ Eigen/Core
 Eigen/Geometry
 -
 SimplePly.h
-/home/curator/Repository/plane_finder/SimplePly.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/SimplePly.h
 plane.hpp
-/home/curator/Repository/plane_finder/plane.hpp
+/mnt/c/Users/itach/Documents/Github/plane_finder/plane.hpp
 
-/home/curator/Repository/plane_finder/rply.h
+/mnt/c/Users/itach/Documents/Github/plane_finder/rply.h
 
 /usr/include/eigen3/Eigen/Cholesky
 Core

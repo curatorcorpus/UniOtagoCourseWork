@@ -24,7 +24,7 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
 {   
     std::vector<std::vector<PlyPoint>> results;
 
-    // make deep copy
+    // dereference list of points.
     std::vector<PlyPoint> pc_cpy = (*point_cloud);
     int size = pc_cpy.size();
 
