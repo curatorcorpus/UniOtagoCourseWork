@@ -32,7 +32,7 @@ int main (int argc, char *argv[])
     p.addOpt("f", -1, "fout", "[Filters out outliers in write out file].");
     p.addOpt("p", 1, "prob", "[Success Probability] - Default: 0.9");
     p.addOpt("r", 3, "raw", "[Raw RANSAC Method] Usage: planeFinder <number of planes> <point-plane threshold> <number of RANSAC trials>");
-    p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.2");
+    p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.21");
     p.init(argc, argv);
     
     // obtain input and output file names.

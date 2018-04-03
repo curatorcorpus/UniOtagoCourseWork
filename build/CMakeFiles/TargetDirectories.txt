@@ -1,3 +1,1 @@
-/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/itach/Documents/Github/plane_finder/build/CMakeFiles/planeFinder.dir
+/mnt/d/GitHub/plane_finder/build/CMakeFiles/planeFinder.dir

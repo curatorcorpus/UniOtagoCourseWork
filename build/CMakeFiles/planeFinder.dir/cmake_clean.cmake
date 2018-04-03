@@ -1,4 +1,4 @@
-file(REMOVE_RECURSE
+FILE(REMOVE_RECURSE
   "CMakeFiles/planeFinder.dir/cmd_parser.cpp.o"
   "CMakeFiles/planeFinder.dir/plane.cpp.o"
   "CMakeFiles/planeFinder.dir/planeFinder.cpp.o"
@@ -10,6 +10,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang C CXX)
-  include(CMakeFiles/planeFinder.dir/cmake_clean_${lang}.cmake OPTIONAL)
-endforeach()
+FOREACH(lang C CXX)
+  INCLUDE(CMakeFiles/planeFinder.dir/cmake_clean_${lang}.cmake OPTIONAL)
+ENDFOREACH(lang)

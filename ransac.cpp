@@ -111,6 +111,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
     int size = pc_cpy.size();
     int inliers = 3;
     int p = 0;
+    int total_trials = 0;
 
     // for each plane count until max number of planes.
     int target_remain_pc = pc_cpy.size()*0.1;
@@ -135,9 +136,12 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
             trials = std::numeric_limits<int>::max();
         }
 
+        int total_iterations = 0;
+
         // for each ransac trial until max number of ransac trials.
         for(int r = 0; r < trials; r++)
         {
+            ++total_iterations;
             // generate plane from three random points
             Vector4d plane = Plane::compute_plane(pc_cpy[rand()%pc_size].location,
                                                   pc_cpy[rand()%pc_size].location, 
@@ -173,6 +177,8 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
             }
         }
 
+        total_trials += total_iterations;
+
         std::vector<PlyPoint> tmp;
         std::vector<PlyPoint> new_pc;
         // remove best pc from point cloud copy.
@@ -190,7 +196,8 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
         ++p;
         std::cout << "Plane Equation: (" << best_plane[0] << ")x + (" << best_plane[1] << ")y + (" 
                                         << best_plane[2] << ")z + (" << best_plane[3] << ") = 0" << std::endl;
-        std::cout << "Remain points: " << new_pc.size() << std::endl << std::endl;
+        std::cout << "Remain points: " << new_pc.size() << std::endl;
+        std::cout << "Total Iterations: " << total_iterations << std::endl << std::endl;
     }
 
     // Add remaining Points.
@@ -199,6 +206,8 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
     no_planes = p;
 
     std::cout << "RANSAC Search Finished!" << std::endl;
+    std::cout << "Total Trials: " << total_trials << std::endl;
+
     return results;
 }
 

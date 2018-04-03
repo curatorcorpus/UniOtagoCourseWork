@@ -6,33 +6,3 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/Users/itach/Documents/Github/plane_finder/rply.c
-stdio.h
--
-ctype.h
--
-assert.h
--
-string.h
--
-limits.h
--
-float.h
--
-stdarg.h
--
-stdlib.h
--
-stddef.h
--
-rply.h
-/mnt/c/Users/itach/Documents/Github/plane_finder/rply.h
-rplyfile.h
-/mnt/c/Users/itach/Documents/Github/plane_finder/rplyfile.h
-stdint.h
--
-
-/mnt/c/Users/itach/Documents/Github/plane_finder/rply.h
-
-/mnt/c/Users/itach/Documents/Github/plane_finder/rplyfile.h
-
