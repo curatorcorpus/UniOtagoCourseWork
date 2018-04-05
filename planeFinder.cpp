@@ -135,7 +135,7 @@ int main (int argc, char *argv[])
     {
         int r = rand() % 255 + 1;
         int g = rand() % 255 + 1;
-        int b = rand() % 255 + 1;
+        int b = 0;
         for(int i = 4; i < no_planes; i++) 
         {
             colours.push_back(Eigen::Vector3i(r,g,b));

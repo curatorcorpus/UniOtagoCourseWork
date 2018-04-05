@@ -165,7 +165,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
                 best_plane  = plane;
                 best_points = curr_pc;
 
-                inliers = curr_pc.size()+results.size();
+                inliers = curr_pc.size();
                 trials = estimate_trials(success_rate, double(inliers), 3, (double)pc_cpy.size());
 
                 if(trials < 0) 
