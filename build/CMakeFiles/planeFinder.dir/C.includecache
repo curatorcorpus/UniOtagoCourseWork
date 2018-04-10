@@ -6,3 +6,33 @@
 
 #IncludeRegexTransform: 
 
+/home/curator/Repository/plane_finder/rply.c
+stdio.h
+-
+ctype.h
+-
+assert.h
+-
+string.h
+-
+limits.h
+-
+float.h
+-
+stdarg.h
+-
+stdlib.h
+-
+stddef.h
+-
+rply.h
+/home/curator/Repository/plane_finder/rply.h
+rplyfile.h
+/home/curator/Repository/plane_finder/rplyfile.h
+stdint.h
+-
+
+/home/curator/Repository/plane_finder/rply.h
+
+/home/curator/Repository/plane_finder/rplyfile.h
+

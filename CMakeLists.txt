@@ -21,18 +21,24 @@ CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
     MESSAGE(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 ENDIF()
 
+ADD_DEFINITIONS(-frounding-math)
+
 # CMake Settings
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake_modules")
 
+FIND_PACKAGE(CGAL REQUIRED)
 FIND_PACKAGE(Eigen3 REQUIRED)
+FIND_PACKAGE(GMP REQUIRED)
 
 INCLUDE_DIRECTORIES(
-
+  
 	${EIGEN3_INCLUDE_DIR}
+	${CGAL_INCLUDE_DIR}
+	${GMP_INCLUDE_DIR}
 )
 
 ADD_EXECUTABLE(planeFinder
-
+  
   cmd_parser.hpp
   cmd_parser.cpp
 	plane.hpp
@@ -44,4 +50,13 @@ ADD_EXECUTABLE(planeFinder
 	SimplePly.cpp
 	rply.h
 	rply.c
+)
+
+ADD_EXECUTABLE(triangulate
+
+  test.cpp
+)
+
+TARGET_LINK_LIBRARIES(triangulate ${CGAL_LIBRARIES}
+  ${GMP_LIBRARIES}
 )
