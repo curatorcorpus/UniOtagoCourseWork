@@ -175,14 +175,14 @@ int main (int argc, char *argv[])
 
     int total_inlier_pts = 0;
 
-    vector<list<Point>> lpts; // for triangulating results.
+    list<Delaunay> meshes; // for triangulating results.
     SimplePly new_ply;
     Vector3d min, max;
     int min_sum = 0, max_sum = numeric_limits<int>::max();
     // Add all inliers and assign plane colours.
     for(int p = 0; p < no_planes; p++) 
     {
-        list<Point> pts;
+        Delaunay tris;
         Vector3i col = colours[p];
         vector<PlyPoint> plane_pc = results[p];
         
@@ -196,7 +196,7 @@ int main (int argc, char *argv[])
             if(triangulate) 
             {
                 Point tmp = Point(pt(0),pt(1),pt(2));
-                pts.push_front(tmp);
+                tris.insert(tmp);
 
                 int sum;
                 sum += pt(0) + pt(1) + pt(2);
@@ -211,7 +211,7 @@ int main (int argc, char *argv[])
                 };
             }
         }
-        lpts.push_back(pts);
+        if(triangulate) meshes.push_back(tris);
     }
 
     // Add remaining Colors.
@@ -244,22 +244,7 @@ int main (int argc, char *argv[])
 
     if(triangulate) 
     {   
-        cout << "Triangulating with CGAL Delaunay Triangulation!" << endl;
-        cout << "Triangulating Point Cloud Planes!" << endl;
-        cout << "Total Planes to Triangulate: " << lpts.size() << endl;
-
-        list<Delaunay> meshes;
-        for(int i = 0; i < lpts.size(); i++) 
-        {
-            cout << "Remaining Planes to Triangulate: " << (lpts.size() - i) << endl;
-            Delaunay tris;
-            list<Point> pt = lpts[i];
-            for(Point p : pt)
-            {
-                tris.insert(p);
-            }
-            meshes.push_back(tris);
-        }
+        cout << "Rendering CGAL Delaunay Triangulation Planes!" << endl;
 
         int minx = min(0)*2;
         int miny = min(1)*2;
@@ -275,18 +260,9 @@ int main (int argc, char *argv[])
         int ctr = 0;
         for(Delaunay mesh : meshes) 
         {   
-            Vector3i col = colours[ctr++];
-            Delaunay::Finite_vertices_iterator vit;
-            for (vit = mesh.finite_vertices_begin(); vit != mesh.finite_vertices_end(); ++vit)
-            {
-                int r = col(0);
-                int g = col(1);
-                int b = col(2);
-                CGAL::Color v_col(r,g,b);
-                vit->info() = v_col;
-            }
+            Delaunay tmp = mesh;
             cout << "Rendering!" << endl;
-            gv << mesh;
+            gv << tmp;
         }
         cout << "Finished Rendering Triangles!" << endl;
         while(true);
