@@ -37,9 +37,10 @@ using namespace Eigen;
 */
 int main (int argc, char *argv[]) 
 {
-    bool   run_raw = false;
+    bool   run_raw         = false;
     bool   filter_outliers = false;
-    bool   triangulate = false;
+    bool   triangulate     = false;
+    bool   wireframe       = false;
     double threshold;
     double success_rate = 0.9;
     double thresh_prob = 0.21;
@@ -54,6 +55,7 @@ int main (int argc, char *argv[])
     p.addOpt("r", 3, "raw", "[Raw RANSAC Method] Usage: planeFinder <number of planes> <point-plane threshold> <number of RANSAC trials>");
     p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.21");
     p.addOpt("tr",-1, "trig", "[Triangulates Planes Points]");
+    p.addOpt("w", -1, "wireframe", "[Show triangulation with wireframe, must have triangulation active!]");
     p.init(argc, argv);
     
     // obtain input and output file names.
@@ -121,6 +123,10 @@ int main (int argc, char *argv[])
     if(p.isOptSet("tr"))
     {
         triangulate = true;
+        if(p.isOptSet("w"))
+        {
+            wireframe = true;
+        }
     }
 
     // Storage for the point cloud.ll
@@ -179,6 +185,13 @@ int main (int argc, char *argv[])
     SimplePly new_ply;
     Vector3d min, max;
     int min_sum = 0, max_sum = numeric_limits<int>::max();
+
+    cout << endl;
+    if(triangulate) 
+        cout << "Preparing Ply file & Triangulating!" << endl;
+    else
+        cout << "Preparing Ply file!" << endl;
+
     // Add all inliers and assign plane colours.
     for(int p = 0; p < no_planes; p++) 
     {
@@ -195,8 +208,7 @@ int main (int argc, char *argv[])
             new_ply.add_point_cloud(plane_pc[i]);
             if(triangulate) 
             {
-                Point tmp = Point(pt(0),pt(1),pt(2));
-                tris.insert(tmp);
+                tris.insert(Point(plane_pc[i].location(0),plane_pc[i].location(1),plane_pc[i].location(2)));
 
                 int sum;
                 sum += pt(0) + pt(1) + pt(2);
@@ -211,7 +223,12 @@ int main (int argc, char *argv[])
                 };
             }
         }
-        if(triangulate) meshes.push_back(tris);
+        if(triangulate) 
+        {
+            meshes.push_back(tris);
+            cout << "Plane " << (p+1) << " triangulated!" << endl;
+        }
+        cout << "Plane " << (p+1) << " coloured!" << endl;
     }
 
     // Add remaining Colors.
@@ -230,6 +247,7 @@ int main (int argc, char *argv[])
         }
     }
 
+    cout << endl;
     cout << "Total Inlier Points:  " << total_inlier_pts << endl;
     cout << "Total Outlier Points: " << (ply.size() - total_inlier_pts) << endl;
     cout << "Total Planes Found:   " << no_planes << endl << endl;
@@ -255,14 +273,15 @@ int main (int argc, char *argv[])
 
         CGAL::Geomview_stream gv(CGAL::Bbox_3(minx,miny,minz,maxx,maxy,maxz));
         gv.set_bg_color(CGAL::Color(255, 255, 255));
-        gv.set_wired(false);
+        if(wireframe)
+        {
+            gv.set_wired(true);
+        }
         gv.clear();
-        int ctr = 0;
-        for(Delaunay mesh : meshes) 
+        for(Delaunay& mesh : meshes) 
         {   
-            Delaunay tmp = mesh;
             cout << "Rendering!" << endl;
-            gv << tmp;
+            gv << mesh;
         }
         cout << "Finished Rendering Triangles!" << endl;
         while(true);
