@@ -86,7 +86,7 @@ int main (int argc, char *argv[])
         thresh_prob = atof(p.getOptsString("t")[0].c_str());
         if(thresh_prob >= 1.0 || thresh_prob <= 0)
         {
-            cerr << "Invalid Success Rate!" << endl;
+            cerr << "Invalid Threshold Percentage!" << endl;
             return 0;
         }
     }
@@ -181,7 +181,7 @@ int main (int argc, char *argv[])
 
     int total_inlier_pts = 0;
 
-    list<Delaunay> meshes; // for triangulating results.
+    vector<Delaunay> meshes; // for triangulating results.
     SimplePly new_ply;
     Vector3d min, max;
     int min_sum = 0, max_sum = numeric_limits<int>::max();
@@ -208,10 +208,9 @@ int main (int argc, char *argv[])
             new_ply.add_point_cloud(plane_pc[i]);
             if(triangulate) 
             {
-                tris.insert(Point(plane_pc[i].location(0),plane_pc[i].location(1),plane_pc[i].location(2)));
+                tris.insert(Point(pt(0),pt(1),pt(2)));
 
-                int sum;
-                sum += pt(0) + pt(1) + pt(2);
+                int sum = pt(0)+pt(1)+pt(2);
                 if(sum < min_sum)
                 {
                     min_sum = sum;
@@ -278,7 +277,7 @@ int main (int argc, char *argv[])
             gv.set_wired(true);
         }
         gv.clear();
-        for(Delaunay& mesh : meshes) 
+        for(auto const& mesh : meshes) 
         {   
             cout << "Rendering!" << endl;
             gv << mesh;
