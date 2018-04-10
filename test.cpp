@@ -53,6 +53,7 @@ int main()
  
   gv.set_wired(false);
   gv << T;
+    gv << T;
   while(true);
   gv.clear();
 

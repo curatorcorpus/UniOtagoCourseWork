@@ -1,12 +1,31 @@
 /**
 *   @Author Jung-Woo (Noel) Park.
 */
+#include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
+//#include <CGAL/Triangulation_3.h>
+#include <CGAL/IO/Geomview_stream.h>
+#include <CGAL/IO/Triangulation_geomview_ostream_3.h>
+#include <CGAL/IO/Color.h>
+#include <CGAL/Delaunay_triangulation_3.h>
+#include <CGAL/Triangulation_vertex_base_with_info_3.h>
+#include <CGAL/IO/Color.h>
+
+#include <iostream>
+#include <fstream>
+#include <cassert>
+#include <list>
+#include <vector>
+
+typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+typedef CGAL::Triangulation_vertex_base_with_info_3<CGAL::Color, K> Vb;
+typedef CGAL::Triangulation_data_structure_3<Vb>                    Tds;
+typedef CGAL::Delaunay_triangulation_3<K, Tds>                      Delaunay;
+typedef Delaunay::Point         Point;
 
 #include "cmd_parser.hpp"
 #include "plane.hpp"
 #include "ransac.hpp"
 
-#include <iostream>
 #include <chrono>
 #include <Eigen/Geometry>
 
@@ -20,6 +39,7 @@ int main (int argc, char *argv[])
 {
     bool   run_raw = false;
     bool   filter_outliers = false;
+    bool   triangulate = false;
     double threshold;
     double success_rate = 0.9;
     double thresh_prob = 0.21;
@@ -33,12 +53,19 @@ int main (int argc, char *argv[])
     p.addOpt("p", 1, "prob", "[Success Probability] - Default: 0.9");
     p.addOpt("r", 3, "raw", "[Raw RANSAC Method] Usage: planeFinder <number of planes> <point-plane threshold> <number of RANSAC trials>");
     p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.21");
+    p.addOpt("tr",-1, "trig", "[Triangulates Planes Points]");
     p.init(argc, argv);
     
     // obtain input and output file names.
     input = argv[1];
     output = argv[2];
 
+  /*  if(input == "" && output == "")
+    {
+        cerr << "Please provide both input and output file!" << endl;
+        return -1;
+    }
+*/
     if(p.isOptSet("f"))
     {
         filter_outliers = true;
@@ -90,6 +117,10 @@ int main (int argc, char *argv[])
         std::cout << "Searching for " << no_planes << " planes" << std::endl;
         std::cout << "Using a point-plane threshold of " << threshold << " units" << std::endl;
         std::cout << "Applying RANSAC with " << n_trials << " trials" << std::endl;
+    }
+    if(p.isOptSet("tr"))
+    {
+        triangulate = true;
     }
 
     // Storage for the point cloud.ll
@@ -144,19 +175,43 @@ int main (int argc, char *argv[])
 
     int total_inlier_pts = 0;
 
+    vector<list<Point>> lpts; // for triangulating results.
     SimplePly new_ply;
+    Vector3d min, max;
+    int min_sum = 0, max_sum = numeric_limits<int>::max();
+    // Add all inliers and assign plane colours.
     for(int p = 0; p < no_planes; p++) 
     {
+        list<Point> pts;
         Vector3i col = colours[p];
         vector<PlyPoint> plane_pc = results[p];
-    
+        
         int size = plane_pc.size();
         total_inlier_pts += size;
         for(int i = 0; i < size; i++) 
         {
+            Vector3d pt = plane_pc[i].location;
             plane_pc[i].colour = col;
             new_ply.add_point_cloud(plane_pc[i]);
+            if(triangulate) 
+            {
+                Point tmp = Point(pt(0),pt(1),pt(2));
+                pts.push_front(tmp);
+
+                int sum;
+                sum += pt(0) + pt(1) + pt(2);
+                if(sum < min_sum)
+                {
+                    min_sum = sum;
+                    min = pt;
+                }else if(sum > max_sum)
+                {
+                    max_sum = sum;
+                    max = pt;
+                };
+            }
         }
+        lpts.push_back(pts);
     }
 
     // Add remaining Colors.
@@ -180,12 +235,64 @@ int main (int argc, char *argv[])
     cout << "Total Planes Found:   " << no_planes << endl << endl;
 
     // Write the resulting (re-coloured) point cloud to a PLY file.
-    std::cout << "Writing PLY data to " << output << std::endl;
+    std::cout << "Writing PLY data to " << output << std::endl << endl;
     if (!new_ply.write(output))
     {
         std::cout << "Could not write PLY data to file " << output << std::endl;
         return -2;
     }
+
+    if(triangulate) 
+    {   
+        cout << "Triangulating with CGAL Delaunay Triangulation!" << endl;
+        cout << "Triangulating Point Cloud Planes!" << endl;
+        cout << "Total Planes to Triangulate: " << lpts.size() << endl;
+
+        list<Delaunay> meshes;
+        for(int i = 0; i < lpts.size(); i++) 
+        {
+            cout << "Remaining Planes to Triangulate: " << (lpts.size() - i) << endl;
+            Delaunay tris;
+            list<Point> pt = lpts[i];
+            for(Point p : pt)
+            {
+                tris.insert(p);
+            }
+            meshes.push_back(tris);
+        }
+
+        int minx = min(0)*2;
+        int miny = min(1)*2;
+        int minz = min(2)*2;
+        int maxx = max(0)*2;
+        int maxy = max(1)*2;
+        int maxz = max(2)*2;
+
+        CGAL::Geomview_stream gv(CGAL::Bbox_3(minx,miny,minz,maxx,maxy,maxz));
+        gv.set_bg_color(CGAL::Color(255, 255, 255));
+        gv.set_wired(false);
+        gv.clear();
+        int ctr = 0;
+        for(Delaunay mesh : meshes) 
+        {   
+            Vector3i col = colours[ctr++];
+            Delaunay::Finite_vertices_iterator vit;
+            for (vit = mesh.finite_vertices_begin(); vit != mesh.finite_vertices_end(); ++vit)
+            {
+                int r = col(0);
+                int g = col(1);
+                int b = col(2);
+                CGAL::Color v_col(r,g,b);
+                vit->info() = v_col;
+            }
+            cout << "Rendering!" << endl;
+            gv << mesh;
+        }
+        cout << "Finished Rendering Triangles!" << endl;
+        while(true);
+        gv.clear();
+    }
+
     return 0;
 }
 

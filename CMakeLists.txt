@@ -57,6 +57,14 @@ ADD_EXECUTABLE(triangulate
   test.cpp
 )
 
-TARGET_LINK_LIBRARIES(triangulate ${CGAL_LIBRARIES}
+TARGET_LINK_LIBRARIES(planeFinder 
+
+  ${CGAL_LIBRARIES}
+  ${GMP_LIBRARIES}
+)
+
+TARGET_LINK_LIBRARIES(triangulate 
+
+  ${CGAL_LIBRARIES}
   ${GMP_LIBRARIES}
 )

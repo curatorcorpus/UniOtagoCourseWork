@@ -220,6 +220,8 @@ planeFinder: CMakeFiles/planeFinder.dir/ransac.cpp.o
 planeFinder: CMakeFiles/planeFinder.dir/SimplePly.cpp.o
 planeFinder: CMakeFiles/planeFinder.dir/rply.c.o
 planeFinder: CMakeFiles/planeFinder.dir/build.make
+planeFinder: /usr/lib/x86_64-linux-gnu/libCGAL.so
+planeFinder: /usr/lib/x86_64-linux-gnu/libgmp.so
 planeFinder: CMakeFiles/planeFinder.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable planeFinder"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/planeFinder.dir/link.txt --verbose=$(VERBOSE)
