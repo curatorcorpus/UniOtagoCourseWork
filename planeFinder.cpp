@@ -54,7 +54,7 @@ int main (int argc, char *argv[])
     p.addOpt("p", 1, "prob", "[Success Probability] - Default: 0.9");
     p.addOpt("r", 3, "raw", "[Raw RANSAC Method] Usage: planeFinder <number of planes> <point-plane threshold> <number of RANSAC trials>");
     p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.21");
-    p.addOpt("tr",-1, "trig", "[Triangulates Planes Points]");
+    p.addOpt("tr",-1, "tri", "[Triangulates Planes Points]");
     p.addOpt("w", -1, "wireframe", "[Show triangulation with wireframe, must have triangulation active!]");
     p.init(argc, argv);
     
@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
 
     // Recolour points - here we are just doing colour based on index
     vector<PlyPoint>* point_cloud = ply.get_points();
-
+    int total_size = point_cloud->size();
     // Search for planes using RANSAC.
     std::vector<std::vector<PlyPoint>> results;
 
@@ -181,7 +181,7 @@ int main (int argc, char *argv[])
 
     int total_inlier_pts = 0;
 
-    vector<Delaunay> meshes; // for triangulating results.
+    Delaunay meshes[no_planes]; // for triangulating results.
     SimplePly new_ply;
     Vector3d min, max;
     int min_sum = 0, max_sum = numeric_limits<int>::max();
@@ -191,6 +191,15 @@ int main (int argc, char *argv[])
         cout << "Preparing Ply file & Triangulating!" << endl;
     else
         cout << "Preparing Ply file!" << endl;
+
+    int neglect_value;
+    if(triangulate) 
+    {
+        if(total_size > 100000)
+        {
+            neglect_value = total_size * 0.01;
+        }
+    }
 
     // Add all inliers and assign plane colours.
     for(int p = 0; p < no_planes; p++) 
@@ -207,9 +216,21 @@ int main (int argc, char *argv[])
             plane_pc[i].colour = col;
             new_ply.add_point_cloud(plane_pc[i]);
             if(triangulate) 
-            {
-                tris.insert(Point(pt(0),pt(1),pt(2)));
+            {   
+                // insert point for triangulation.
+                if(total_size > 100000)
+                {
+                    if(i % neglect_value == 0) 
+                    {
+                        tris.insert(Point(pt(0),pt(1),pt(2)));
+                    }
+                }
+                else
+                {
+                    tris.insert(Point(pt(0),pt(1),pt(2)));
+                }
 
+                // sum point values and determine min and max bounding box.
                 int sum = pt(0)+pt(1)+pt(2);
                 if(sum < min_sum)
                 {
@@ -224,7 +245,7 @@ int main (int argc, char *argv[])
         }
         if(triangulate) 
         {
-            meshes.push_back(tris);
+            meshes[p] = tris;
             cout << "Plane " << (p+1) << " triangulated!" << endl;
         }
         cout << "Plane " << (p+1) << " coloured!" << endl;
@@ -263,13 +284,29 @@ int main (int argc, char *argv[])
     {   
         cout << "Rendering CGAL Delaunay Triangulation Planes!" << endl;
 
-        int minx = min(0)*2;
-        int miny = min(1)*2;
-        int minz = min(2)*2;
-        int maxx = max(0)*2;
-        int maxy = max(1)*2;
-        int maxz = max(2)*2;
+        // increase initial bounding box.
+        double minx = min(0)*2.0;
+        double miny = min(1)*2.0;
+        double minz = min(2)*2.0;
+        double maxx = max(0)*2.0;
+        double maxy = max(1)*2.0;
+        double maxz = max(2)*2.0;
 
+        // checks if values are out of bounds.
+        if(minx < 1e-2 || miny < 1e-2 || minz < 1e-2)
+        {
+            minx = -3;
+            miny = -3;
+            minz = -3;
+        }
+        if(maxx < 1e-2 || maxy < 1e-2 || maxz < 1e-2) 
+        {
+            maxx = 3;
+            maxy = 3;
+            maxz = 3;
+        }
+
+        // draw triangulated points.
         CGAL::Geomview_stream gv(CGAL::Bbox_3(minx,miny,minz,maxx,maxy,maxz));
         gv.set_bg_color(CGAL::Color(255, 255, 255));
         if(wireframe)
@@ -277,13 +314,15 @@ int main (int argc, char *argv[])
             gv.set_wired(true);
         }
         gv.clear();
-        for(auto const& mesh : meshes) 
+        for(int i = 0; i < no_planes; i++) 
         {   
+            gv << meshes[i];
             cout << "Rendering!" << endl;
-            gv << mesh;
         }
         cout << "Finished Rendering Triangles!" << endl;
-        while(true);
+        std::cout << "Enter any key to finish" << std::endl;
+        char ch;
+        std::cin >> ch;
         gv.clear();
     }
 
