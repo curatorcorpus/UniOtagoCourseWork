@@ -15,6 +15,7 @@
 #include <cassert>
 #include <list>
 #include <vector>
+#include <regex>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Triangulation_vertex_base_with_info_3<CGAL::Color, K> Vb;
@@ -58,16 +59,17 @@ int main (int argc, char *argv[])
     p.addOpt("w", -1, "wireframe", "[Show triangulation with wireframe, must have triangulation active!]");
     p.init(argc, argv);
     
+    regex e(".ply");
+
     // obtain input and output file names.
     input = argv[1];
     output = argv[2];
 
-  /*  if(input == "" && output == "")
-    {
-        cerr << "Please provide both input and output file!" << endl;
-        return -1;
+    if (!regex_search(input,e) || !regex_search(output,e)) {
+        cerr << "Incorrect input or output file!" << endl;
+        return 0;
     }
-*/
+
     if(p.isOptSet("f"))
     {
         filter_outliers = true;

@@ -75,6 +75,8 @@ list
 -
 vector
 -
+regex
+-
 cmd_parser.hpp
 /home/curator/Repository/plane_finder/cmd_parser.hpp
 plane.hpp
