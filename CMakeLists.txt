@@ -52,10 +52,10 @@ ADD_EXECUTABLE(planeFinder
 	rply.c
 )
 
-ADD_EXECUTABLE(triangulate
+#ADD_EXECUTABLE(triangulate
 
-  test.cpp
-)
+# test.cpp
+#)
 
 TARGET_LINK_LIBRARIES(planeFinder 
 
@@ -63,8 +63,8 @@ TARGET_LINK_LIBRARIES(planeFinder
   ${GMP_LIBRARIES}
 )
 
-TARGET_LINK_LIBRARIES(triangulate 
+#TARGET_LINK_LIBRARIES(triangulate 
 
-  ${CGAL_LIBRARIES}
-  ${GMP_LIBRARIES}
-)
+#  ${CGAL_LIBRARIES}
+#  ${GMP_LIBRARIES}
+#)

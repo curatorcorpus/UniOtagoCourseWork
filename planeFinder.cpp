@@ -42,9 +42,10 @@ int main (int argc, char *argv[])
     bool   filter_outliers = false;
     bool   triangulate     = false;
     bool   wireframe       = false;
+    double success_rate    = 0.9;
+    double thresh_prob     = 0.21;
+    double plane_percent   = 0.1;
     double threshold;
-    double success_rate = 0.9;
-    double thresh_prob = 0.21;
     int    no_planes;
     int    n_trials;
 
@@ -57,6 +58,7 @@ int main (int argc, char *argv[])
     p.addOpt("t", 1, "tpercent","[Estimate percentage of points that defines the biggest plane] - Default: 0.21");
     p.addOpt("tr",-1, "tri", "[Triangulates Planes Points]");
     p.addOpt("w", -1, "wireframe", "[Show triangulation with wireframe, must have triangulation active!]");
+    p.addOpt("pp", 1, "planepercent", "[Sets the plane search termination criteria for RANSAC] - Default 0.1");
     p.init(argc, argv);
     
     regex e(".ply");
@@ -89,6 +91,15 @@ int main (int argc, char *argv[])
         if(thresh_prob >= 1.0 || thresh_prob <= 0)
         {
             cerr << "Invalid Threshold Percentage!" << endl;
+            return 0;
+        }
+    }
+    if(p.isOptSet("pp")) 
+    {
+        plane_percent = atof(p.getOptsString("pp")[0].c_str());
+        if(plane_percent >= 1.0 || plane_percent <= 0)
+        {
+            cerr << "Invalid Plane Percentage!" << endl;
             return 0;
         }
     }
@@ -154,7 +165,7 @@ int main (int argc, char *argv[])
         results = Ransac::search(point_cloud, no_planes, threshold, n_trials);
     } else 
     {
-        results = Ransac::auto_param_search(point_cloud, success_rate, thresh_prob);
+        results = Ransac::auto_param_search(point_cloud, success_rate, thresh_prob, plane_percent);
     }
 
     // Generate plane colours

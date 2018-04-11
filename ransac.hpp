@@ -30,7 +30,7 @@ class Ransac
         static int no_planes;
 
         static std::vector<std::vector<PlyPoint>> search(std::vector<PlyPoint>* point_cloud, int no_planes, double threshold_distance, int no_ransac_trials);
-        static std::vector<std::vector<PlyPoint>> auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate, double thresh_prob);
+        static std::vector<std::vector<PlyPoint>> auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate, double thresh_prob, double plane_percentage);
 };
 
 #endif

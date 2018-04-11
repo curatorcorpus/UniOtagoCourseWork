@@ -101,7 +101,7 @@ std::vector<std::vector<PlyPoint>> Ransac::search(std::vector<PlyPoint>* point_c
 *   @param success_rate is the probability you will pick all inliers for each sample points [TODO: revise on definition].
 *   @return list of points grouped into planes.
 */
-std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate, double thresh_prob)
+std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoint>* point_cloud, double success_rate, double thresh_prob, double plane_percentage)
 {
     std::vector<std::vector<PlyPoint>> results;
 
@@ -114,7 +114,7 @@ std::vector<std::vector<PlyPoint>> Ransac::auto_param_search(std::vector<PlyPoin
     int total_trials = 0;
 
     // for each plane count until max number of planes.
-    int target_remain_pc = pc_cpy.size()*0.1;
+    int target_remain_pc = pc_cpy.size()*plane_percentage;
 
     //double threshold = estimate_trials_thresh_distance(point_cloud);
 

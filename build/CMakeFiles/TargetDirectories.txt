@@ -1,4 +1,3 @@
 /home/curator/Repository/plane_finder/build/CMakeFiles/edit_cache.dir
 /home/curator/Repository/plane_finder/build/CMakeFiles/rebuild_cache.dir
-/home/curator/Repository/plane_finder/build/CMakeFiles/triangulate.dir
 /home/curator/Repository/plane_finder/build/CMakeFiles/planeFinder.dir

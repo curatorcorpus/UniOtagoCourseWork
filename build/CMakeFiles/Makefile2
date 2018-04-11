@@ -60,43 +60,6 @@ CMAKE_SOURCE_DIR = /home/curator/Repository/plane_finder
 CMAKE_BINARY_DIR = /home/curator/Repository/plane_finder/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/triangulate.dir
-
-# All Build rule for target.
-CMakeFiles/triangulate.dir/all:
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/depend
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/curator/Repository/plane_finder/build/CMakeFiles --progress-num=8,9 "Built target triangulate"
-.PHONY : CMakeFiles/triangulate.dir/all
-
-# Include target in all.
-all: CMakeFiles/triangulate.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-CMakeFiles/triangulate.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curator/Repository/plane_finder/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/triangulate.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/curator/Repository/plane_finder/build/CMakeFiles 0
-.PHONY : CMakeFiles/triangulate.dir/rule
-
-# Convenience name for target.
-triangulate: CMakeFiles/triangulate.dir/rule
-
-.PHONY : triangulate
-
-# clean rule for target.
-CMakeFiles/triangulate.dir/clean:
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/clean
-.PHONY : CMakeFiles/triangulate.dir/clean
-
-# clean rule for target.
-clean: CMakeFiles/triangulate.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
 # Target rules for target CMakeFiles/planeFinder.dir
 
 # All Build rule for target.

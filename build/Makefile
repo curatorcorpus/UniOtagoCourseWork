@@ -111,19 +111,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named triangulate
-
-# Build rule for target.
-triangulate: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 triangulate
-.PHONY : triangulate
-
-# fast build rule for target.
-triangulate/fast:
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/build
-.PHONY : triangulate/fast
-
-#=============================================================================
 # Target rules for targets named planeFinder
 
 # Build rule for target.
@@ -298,33 +285,6 @@ rply.c.s:
 	$(MAKE) -f CMakeFiles/planeFinder.dir/build.make CMakeFiles/planeFinder.dir/rply.c.s
 .PHONY : rply.c.s
 
-test.o: test.cpp.o
-
-.PHONY : test.o
-
-# target to build an object file
-test.cpp.o:
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/test.cpp.o
-.PHONY : test.cpp.o
-
-test.i: test.cpp.i
-
-.PHONY : test.i
-
-# target to preprocess a source file
-test.cpp.i:
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/test.cpp.i
-.PHONY : test.cpp.i
-
-test.s: test.cpp.s
-
-.PHONY : test.s
-
-# target to generate assembly for a file
-test.cpp.s:
-	$(MAKE) -f CMakeFiles/triangulate.dir/build.make CMakeFiles/triangulate.dir/test.cpp.s
-.PHONY : test.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -333,7 +293,6 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... triangulate"
 	@echo "... planeFinder"
 	@echo "... SimplePly.o"
 	@echo "... SimplePly.i"
@@ -353,9 +312,6 @@ help:
 	@echo "... rply.o"
 	@echo "... rply.i"
 	@echo "... rply.s"
-	@echo "... test.o"
-	@echo "... test.i"
-	@echo "... test.s"
 .PHONY : help
 
 
