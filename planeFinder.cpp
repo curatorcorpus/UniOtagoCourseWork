@@ -197,7 +197,7 @@ int main (int argc, char *argv[])
     {
         if(total_size > 100000)
         {
-            neglect_value = total_size * 0.01;
+            neglect_value = total_size * 0.001;
         }
     }
 
