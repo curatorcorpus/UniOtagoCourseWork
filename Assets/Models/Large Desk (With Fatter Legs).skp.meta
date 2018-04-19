@@ -67,12 +67,12 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Color M01
-    second: {fileID: 2100000, guid: 7d7bf3a4b7c016649a9867b15cdfa60c, type: 2}
+    second: {fileID: 2100000, guid: 46181f798b074f24aa2c921fcbd258a0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood Floor
-    second: {fileID: 2100000, guid: 706cd277ebb123743bed9d85cbb4e7f2, type: 2}
+    second: {fileID: 2100000, guid: 88d7ceb0aa230314796f763b87f074fc, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -87,10 +87,10 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: _defaultMat
-    second: {fileID: 2100000, guid: 6743eb42761a81e49bdfd5bf2b138dd1, type: 2}
+    second: {fileID: 2100000, guid: 55267ce9347de01439c0369cb3d2ff6d, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -130,8 +130,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

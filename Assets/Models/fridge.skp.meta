@@ -39,7 +39,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: c630578e192696348a949547f712a077, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -79,8 +79,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

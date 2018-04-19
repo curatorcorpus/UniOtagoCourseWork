@@ -64,7 +64,7 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 0130_Gainsboro
-    second: {fileID: 2100000, guid: afdbc3288e3409b45ac0ce533723011f, type: 2}
+    second: {fileID: 2100000, guid: 0c87f382885dff9418ebbef9eec969a9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -72,7 +72,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: 75b7c6fc77a864e428694cabda327350, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -112,8 +112,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

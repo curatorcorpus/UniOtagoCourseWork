@@ -36,12 +36,12 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Color M02
-    second: {fileID: 2100000, guid: 590052c19d19db14cb9ba501d1441df6, type: 2}
+    second: {fileID: 2100000, guid: b1f08ea1a775c41469c83f8d17c763f2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Color M03
-    second: {fileID: 2100000, guid: 6616f736367e28e4b80607e7cb3cc6a8, type: 2}
+    second: {fileID: 2100000, guid: 81b2e66d30b974047979ee10ddbbefce, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -59,7 +59,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: f07e679d99471074f9e9231cde07b04d, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -99,8 +99,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

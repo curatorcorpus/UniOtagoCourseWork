@@ -61,12 +61,12 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 0105_Navy
-    second: {fileID: 2100000, guid: 0276c7a22da6bf642a15ebdd70cb329e, type: 2}
+    second: {fileID: 2100000, guid: 149f9a3447148e444ae01f76ee076a05, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Metal Silver
-    second: {fileID: 2100000, guid: 8dbd693abaeb1bb4188b9c346b33c8da, type: 2}
+    second: {fileID: 2100000, guid: 6152a64964772d741ac061b04e00fa81, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -84,7 +84,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: f1a8e9704736dd447b21bcae4d9e56b4, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -124,8 +124,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

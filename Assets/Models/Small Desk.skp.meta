@@ -36,12 +36,12 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Steel Brushed Stainless
-    second: {fileID: 2100000, guid: 4aee079f3fdb38740b5c71c7f4e9cde2, type: 2}
+    second: {fileID: 2100000, guid: a31ec9321f5b46f4884d03c91e616171, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood Floor
-    second: {fileID: 2100000, guid: ee24a1796874c5c41880748df379f17b, type: 2}
+    second: {fileID: 2100000, guid: 88d7ceb0aa230314796f763b87f074fc, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -59,7 +59,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: 09e19633c05201a4cabdc9773d054f05, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -99,8 +99,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

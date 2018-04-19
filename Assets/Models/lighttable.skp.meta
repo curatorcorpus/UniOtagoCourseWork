@@ -61,12 +61,12 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 0078_DarkSlateGray
-    second: {fileID: 2100000, guid: 76552b194175cd941b7d59b49cbbbfdf, type: 2}
+    second: {fileID: 2100000, guid: 0081bfe9b95f29f4c8980592416f84af, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood Lumber ButtJoined
-    second: {fileID: 2100000, guid: 96f5afc8ed9c3414399568d21b219081, type: 2}
+    second: {fileID: 2100000, guid: 4736bb0af6c84c3438a1946059a31d8a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -79,7 +79,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: 2ef8477602ac6dc49923c29a53abb787, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -119,8 +119,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

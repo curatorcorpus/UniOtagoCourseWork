@@ -38,7 +38,7 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: 0131_Silver
-    second: {fileID: 2100000, guid: ec291362397a57f47bf6c2825a61716a, type: 2}
+    second: {fileID: 2100000, guid: 9c178d75b81557a4a882c189c5ba742f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -46,7 +46,7 @@ SketchUpImporter:
     second: {fileID: 2100000, guid: aadc8efa9c5851c47951071c3b9b4367, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -86,8 +86,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88

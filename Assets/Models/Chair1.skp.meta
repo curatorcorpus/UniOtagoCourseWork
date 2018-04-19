@@ -74,7 +74,7 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Color M08
-    second: {fileID: 2100000, guid: e37c14a84b270bf4e8251ffba9544668, type: 2}
+    second: {instanceID: 0}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -84,15 +84,15 @@ SketchUpImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: _defaultMat
-    second: {fileID: 2100000, guid: 7b56464eeebb841489b7da2e7f9ea5d1, type: 2}
+    second: {fileID: 2100000, guid: 55267ce9347de01439c0369cb3d2ff6d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: texture
-    second: {fileID: 2100000, guid: adab776cc96f9e54681650c6779c5a57, type: 2}
+    second: {fileID: 2100000, guid: ee926fb846b174745ad9e911cb7d67a1, type: 2}
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 0
     materialLocation: 0
   animations:
@@ -132,8 +132,6 @@ SketchUpImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
