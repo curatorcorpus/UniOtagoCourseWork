@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INFO410", "INFO410.csproj", "{FC69069F-591F-4FA3-16B3-D359BC3F08F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "INFO410.Editor", "INFO410.Editor.csproj", "{5494A5DF-D19A-4A73-2D3C-DD2A71AFD970}"
