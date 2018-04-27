@@ -696,23 +696,15 @@
     <Compile Include="Assets\OBJImport\TextureLoader.cs" />
     <Compile Include="Assets\Scripts\AnchorStorage.cs" />
     <Compile Include="Assets\Scripts\FastObjImporter.cs" />
-    <Compile Include="Assets\Scripts\FileBrowser.cs" />
     <Compile Include="Assets\Scripts\GainMovement.cs" />
-    <Compile Include="Assets\Scripts\GUILayoutx.cs" />
     <Compile Include="Assets\Scripts\InputCapture.cs" />
-    <Compile Include="Assets\Scripts\IStandaloneFileBrowser.cs" />
     <Compile Include="Assets\Scripts\LoadModel.cs" />
-    <Compile Include="Assets\Scripts\ModelFileFinder.cs" />
     <Compile Include="Assets\Scripts\PlaceAnchor.cs" />
     <Compile Include="Assets\Scripts\PlayerLook.cs" />
     <Compile Include="Assets\Scripts\PlayerMove.cs" />
     <Compile Include="Assets\Scripts\RotateTap.cs" />
     <Compile Include="Assets\Scripts\ScaleTap.cs" />
     <Compile Include="Assets\Scripts\SpawnMenu.cs" />
-    <Compile Include="Assets\Scripts\StandaloneFileBrowser.cs" />
-    <Compile Include="Assets\Scripts\StandaloneFileBrowserEditor.cs" />
-    <Compile Include="Assets\Scripts\StandaloneFileBrowserMac.cs" />
-    <Compile Include="Assets\Scripts\StandaloneFileBrowserWindows.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\HoloToolkit\Common\Shaders\FastConfigurable\Shaders\FastConfigurable.cginc" />

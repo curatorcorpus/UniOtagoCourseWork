@@ -39,7 +39,6 @@ public class SpawnMenu : MonoBehaviour, IInputHandler
     void Start()
     {
         text = canvas.GetComponent<Text>();
-      //  UnityEngine.Debug.LogFormat("UnityThread: {0}", Thread.CurrentThread.ManagedThreadId);
     }
 
     public void OnInputDown(InputEventData e)
@@ -87,11 +86,8 @@ public class SpawnMenu : MonoBehaviour, IInputHandler
             labelText = "File picker operation cancelled";
         }
         
-        UnityEngine.Debug.Log( labelText );
-
-     //   UnityEngine.WSA.Application.InvokeOnAppThread( ThreadCallback, false );
-
-     //   UnityEngine.WSA.Application.InvokeOnAppThread( new AppCallbackItem( () => { label.text = labelText; } ), false );
+        UnityEngine.WSA.Application.InvokeOnAppThread( ThreadCallback, false );
+        UnityEngine.WSA.Application.InvokeOnAppThread( new AppCallbackItem( () => { text.text = labelText; } ), false );
     }
 
 #endif
