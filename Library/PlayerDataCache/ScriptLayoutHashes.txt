@@ -35,7 +35,7 @@ a7e7543e2a0b972c935fd5bb8bfd1eca Assembly-CSharp.dll:HoloToolkit.Unity.SpatialMa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:HoloToolkit.Unity.SpatialUnderstandingSourceMesh
 b526ecf4e3794d9827ce0bbc0f84fab7 Assembly-CSharp.dll:HoloToolkit.UI.Keyboard.SymbolKeyboard
 8714e4ea92846f892ee81ba59e5c04e1 Assembly-CSharp.dll:HoloToolkit.Unity.SpatialUnderstandingCustomMesh
-79e4b76dbc8426bf032b137584b46fda Assembly-CSharp.dll:.SpawnMenu
+30481ebbbfa27f6b8faf29342495cd7d Assembly-CSharp.dll:.SpawnMenu
 c1f1b3627c7e19aef2ba0762a3785f80 Assembly-CSharp.dll:HoloToolkit.Unity.TextToSpeech
 b2a36b1a2bf9a27cacd7eb66b78ffc76 Assembly-CSharp.dll:HoloToolkit.Sharing.SharingStage
 53b4b0917610f0ddbd7927228eb839ba Assembly-CSharp.dll:HoloToolkit.Unity.UX.Rectangle

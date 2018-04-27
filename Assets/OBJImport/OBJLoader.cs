@@ -433,14 +433,14 @@ public class OBJLoader
                 
                 if (materialCache == null)
                 {
-                    processedMaterials[i] = new Material(Shader.Find("Standard (Specular setup)"));
+                    processedMaterials[i] = new Material(Shader.Find("Standard"));// was "Standard (Specular setup)"
                 }
                 else
                 {
                     Material mfn = Array.Find(materialCache, x => x.name == meshMaterialNames[i]); ;
                     if (mfn == null)
                     {
-                        processedMaterials[i] = new Material(Shader.Find("Standard (Specular setup)"));
+                        processedMaterials[i] = new Material(Shader.Find("Standard"));// was "Standard (Specular setup)"
                     }
                     else
                     {
@@ -453,7 +453,6 @@ public class OBJLoader
 
             mr.materials = processedMaterials;
             mf.mesh = m;
-
         }
 
         return parentObject;
