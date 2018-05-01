@@ -1,3 +1,6 @@
 *.avi
 *.dvd
 *.mpeg
+*._.DS_Store
+*.DS_Store
+*._
